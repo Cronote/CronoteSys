@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="Screen" fx:id="pnlRoot" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.LoginController">
+   <children>
+      <Button fx:id="btnLogin" layoutX="294.0" layoutY="469.0" mnemonicParsing="false" onAction="#btnLoginClicked" opacity="0.88" prefHeight="44.0" prefWidth="351.0" style="" styleClass="btn" text="Login" textFill="#23a1d3">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <TextField fx:id="txtEmail" alignment="TOP_CENTER" layoutX="294.0" layoutY="335.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="351.0" promptText="E-mail" styleClass="TextFild" AnchorPane.topAnchor="335.0">
+         <font>
+            <Font size="14.0" />
+         </font></TextField>
+      <PasswordField fx:id="txtPassword" alignment="TOP_CENTER" layoutX="294.0" layoutY="423.0" prefHeight="17.0" prefWidth="351.0" promptText="Senha" styleClass="TextFild">
+         <font>
+            <Font size="14.0" />
+         </font></PasswordField>
+      <ImageView fx:id="imgCronote" fitHeight="181.0" fitWidth="386.0" layoutX="277.0" layoutY="107.0" pickOnBounds="true" preserveRatio="true" smooth="false" AnchorPane.bottomAnchor="515.9342041015625" AnchorPane.leftAnchor="277.0" AnchorPane.rightAnchor="277.0" AnchorPane.topAnchor="107.0">
+         <image>
+            <Image url="@../image/cronote_logo_white.png" />
+         </image>
+
+      </ImageView>
+      <Hyperlink fx:id="linkRecover" layoutX="394.0" layoutY="583.0" onAction="#linkRecoverClicked" text="Esqueceu a sua senha?">
+         <font>
+            <Font size="14.0" />
+         </font></Hyperlink>
+      <Label fx:id="lblNotMember" layoutX="622.0" layoutY="14.0" prefHeight="37.0" prefWidth="151.0" text="Não é membro?" textFill="WHITE" AnchorPane.rightAnchor="167.0" AnchorPane.topAnchor="14.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnSignUp" layoutX="773.0" layoutY="18.0" mnemonicParsing="false" onAction="#btnSignUpClicked" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Cadastre-se" textFill="#23a1d3" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="18.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <ImageView fx:id="imgEye" fitHeight="26.0" fitWidth="26.0" layoutX="631.0" layoutY="422.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/icon/eye.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

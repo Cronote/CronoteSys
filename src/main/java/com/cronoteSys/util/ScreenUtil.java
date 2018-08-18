@@ -1,0 +1,192 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.cronoteSys.util;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
+/**
+ * Class that cares about all Screen functions
+ *
+ * @author bruno
+ */
+public class ScreenUtil {
+
+	/**
+	 * Method that opens a new screen
+	 *
+	 * @param oldStage   is the old window, that will be closed
+	 * @param sSceneName is the scene's name, that will be loaded
+	 * @param isModal    True or false about the modal property
+	 */
+	public void openNewWindow(Stage oldStage, String sSceneName, boolean isModal) {
+
+		Stage newStage = new Stage();
+		Parent root = loadScene(sSceneName);
+
+		Scene scene = new Scene(root);
+		scene.getStylesheets().add("/styles/Styles.css");
+		newStage.setTitle("Cronote");
+		newStage.setScene(scene);
+		if (isModal) {
+			newStage.initOwner(oldStage);
+			newStage.initModality(Modality.APPLICATION_MODAL);
+		}
+		newStage.show();
+		if (!isModal) {
+			closeOldStageAndSetNewStageOnCloseRequest(oldStage, newStage);
+		}
+	}
+
+	/**
+	 * Method that opens a new screen, thanks to 'hashMapValues' we can now pass
+	 * objects from one screen to another
+	 *
+	 * @param oldStage      is the old window, that will be closed
+	 * @param sSceneName    is the scene's name, that will be loaded
+	 * @param isModal       True or false about the modal property
+	 * @param hashMapValues Its filled with the objects that we need to pass to the
+	 *                      new window
+	 */
+	public void openNewWindow(Stage oldStage, String sSceneName, boolean isModal,
+			HashMap<String, Object> hashMapValues) {
+		Stage newStage = new Stage();
+
+		Parent root = loadScene(sSceneName);
+		Scene scene = new Scene(root);
+		scene.getStylesheets().add("/styles/Styles.css");
+		newStage.setTitle("Cronote");
+		newStage.setScene(scene);
+		if (isModal) {
+			newStage.initOwner(oldStage);
+			newStage.initModality(Modality.APPLICATION_MODAL);
+		}
+		notifyAllListeners(sSceneName, hashMapValues);
+		newStage.show();
+		if (!isModal) {
+			closeOldStageAndSetNewStageOnCloseRequest(oldStage, newStage);
+
+		}
+	}
+
+	private Parent loadScene(String sSceneName) {
+		Parent root = null;
+
+		try {
+			URL url = new File(getClass().getResource("/fxml/" + sSceneName + ".fxml").getPath()).toURI().toURL();
+			root = FXMLLoader.load(url);
+		} catch (IOException ex) {
+			System.out.println(ex.getMessage());
+		}
+		return root;
+	}
+
+	private void closeOldStageAndSetNewStageOnCloseRequest(Stage oldStage, Stage newStage) {
+		if (newStage != null) {
+			newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+				public void handle(WindowEvent event) {
+					// TODO Auto-generated method stub
+
+				}
+			});
+		}
+		if (oldStage != null) {
+			oldStage.close();
+		}
+	}
+
+	/**
+	 *
+	 *
+	 * @param oldStage
+	 *
+	 *
+	 * @author bruno
+	 *
+	 *
+	 */
+	public boolean isFilledFields(Stage oldStage, Pane pnl) {
+		ObservableList<Node> comp = pnl.getChildren();
+		for (Node node : comp) {
+			if (node instanceof TextField) {
+				if (node.isVisible()) {
+					if (((TextField) node).getText().trim().equals("")) {
+						node.requestFocus();
+						HashMap<String, Object> hmapValues = new HashMap<String, Object>();
+						hmapValues.put("msg", "Preencha o campo " + ((TextField) node).getPromptText());
+						openNewWindow(oldStage, "AlertDialog", true, hmapValues);
+						addORRemoveErrorClass(node, true);
+						return false;
+					} else {
+						addORRemoveErrorClass(node, false);
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	public void addORRemoveErrorClass(Node node, boolean isAdd) {
+		if (node != null) {
+			if (isAdd) {
+				node.getStyleClass().remove("error");
+				node.getStyleClass().add("error");
+			} else {
+				node.getStyleClass().remove("error");
+			}
+		}
+	}
+
+	private void openErrorDialog() {
+
+	}
+
+	public void addORRemoveErrorClass(java.util.List<Node> node, boolean isAdd) {
+		for (Node n : node) {
+			if (n != null) {
+				if (isAdd) {
+					n.getStyleClass().remove("error");
+					n.getStyleClass().add("error");
+				} else {
+					n.getStyleClass().remove("error");
+				}
+			}
+		}
+
+	}
+
+	private static ArrayList<OnChangeScreen> listeners = new ArrayList<OnChangeScreen>();
+
+	public interface OnChangeScreen {
+		void onScreenChanged(String newScreen, HashMap<String, Object> hmap);
+	}
+
+	public static void addOnChangeScreenListener(OnChangeScreen newListener) {
+		listeners.add(newListener);
+	}
+
+	private void notifyAllListeners(String newScreen, HashMap<String, Object> hmap) {
+		for (OnChangeScreen l : listeners) {
+			l.onScreenChanged(newScreen, hmap);
+		}
+	}
+}
