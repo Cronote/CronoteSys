@@ -1,3 +1,13 @@
 .test{
-	-fx-background-color: red;
+	-fx-background-color: #333333;
+	-fx-background-radius: 10; 
 }
+
+#Screen {
+	
+	-fx-background-image: url(../image/background_sunrise.jpg)
+}
+
+.btn {
+		
+} 
