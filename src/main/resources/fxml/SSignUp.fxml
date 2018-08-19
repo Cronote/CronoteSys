@@ -1,8 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.textfield.CustomPasswordField?>
 
-
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="425.0" prefWidth="987.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1">
-	<!-- TODO Add Nodes -->
+<AnchorPane id="Screen" fx:id="pnlRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.SignUpController">
+   <children>
+      <TextField id="txt_email" fx:id="txtName" alignment="TOP_LEFT" layoutX="129.0" layoutY="192.0" prefHeight="17.0" prefWidth="351.0" promptText="Nome*"  styleClass="TextFild">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <TextField id="txt_email" fx:id="txtBirthday" alignment="TOP_LEFT" layoutX="129.0" layoutY="258.0" prefHeight="17.0" prefWidth="351.0" promptText="Data de Nascimento*"  styleClass="TextFild">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <TextField id="txt_email" fx:id="txtEmail" alignment="TOP_LEFT" layoutX="129.0" layoutY="325.0" prefHeight="17.0" prefWidth="351.0" promptText="E-mail*" styleClass="TextFild">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <Button fx:id="btnProfile" contentDisplay="CENTER" layoutX="648.0" layoutY="197.0" mnemonicParsing="false" prefHeight="174.0" prefWidth="174.0">
+         <graphic>
+            <ImageView fx:id="imgProfile" fitHeight="156.0" fitWidth="162.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../image/icon/ImgPessoal.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Hyperlink fx:id="linkProfile" layoutX="651.0" layoutY="380.0" text="Adicione imagem ao perfil" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Hyperlink>
+      <ImageView id="img_cronote" fx:id="imgCronote" fitHeight="90.0" fitWidth="242.0" layoutX="375.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+         <image>
+            <Image url="@../image/cronote_logo_white.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="btnSignUp" onAction="#btnSignUpClicked" layoutX="234.0" layoutY="518.0" mnemonicParsing="false" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Cadastrar" textFill="#23a1d3">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <PasswordField id="txt_password" fx:id="txtPwd" alignment="TOP_LEFT" layoutX="129.0" layoutY="393.0" prefHeight="17.0" prefWidth="351.0" promptText="Senha*"  styleClass="TextFild">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </PasswordField>
+      <PasswordField id="txt_password" fx:id="txtConfirmPwd" alignment="TOP_LEFT" layoutX="129.0" layoutY="456.0" prefHeight="17.0" prefWidth="351.0" promptText="Digite a senha novamente*"  styleClass="TextFild">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </PasswordField>
+      <Button fx:id="btnBack" onAction="#btnBackClicked" layoutX="43.0" layoutY="59.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="44.0">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../image/icon/backBlue.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <styleClass>
+            <String fx:value="btn" />
+            <String fx:value="btnDirectional" />
+         </styleClass>
+      </Button>
+   </children>
 </AnchorPane>
