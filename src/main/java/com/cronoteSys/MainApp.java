@@ -11,13 +11,6 @@ public class MainApp extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-
-			public void handle(WindowEvent event) {
-				System.out.println("teste");
-
-			}
-		});
 		new ScreenUtil().openNewWindow(null, "SLogin", false);
 	}
 

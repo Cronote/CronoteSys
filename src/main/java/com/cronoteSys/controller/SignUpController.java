@@ -7,14 +7,12 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import org.controlsfx.control.textfield.CustomPasswordField;
-import org.controlsfx.control.textfield.TextFields;
-
 import com.cronoteSys.model.bo.LoginBO;
 import com.cronoteSys.model.bo.UserBO;
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.EmailUtil;
+import com.cronoteSys.util.GenHash;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 
@@ -70,7 +68,8 @@ public class SignUpController extends MasterController {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!newValue) {
 
-					bPasswordOk = verifyPassFields(txtPwd.getText().trim(), txtConfirmPwd.getText().trim(), lst);
+					bPasswordOk = verifyPassFields(txtPwd.getText().trim(),
+							txtConfirmPwd.getText().trim(), lst);
 				}
 
 			}
@@ -78,7 +77,8 @@ public class SignUpController extends MasterController {
 		txtConfirmPwd.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!newValue) {
-					bPasswordOk = verifyPassFields(txtConfirmPwd.getText().trim(), txtPwd.getText().trim(), lst);
+					bPasswordOk = verifyPassFields(txtConfirmPwd.getText().trim(),
+							txtPwd.getText().trim(), lst);
 				}
 			}
 		});
@@ -109,7 +109,7 @@ public class SignUpController extends MasterController {
 						UserVO objUser = new UserVO();
 						objLogin.setTbUser(objUser);
 						objLogin.setEmail(sEmail);
-						objLogin.setPasswd(sPass);
+						objLogin.setPasswd(new GenHash().hashIt(sPass));
 						objUser.setCompleteName(txtName.getText().trim());
 						objUser.setStats(Byte.parseByte("1"));
 						String newDate = null;

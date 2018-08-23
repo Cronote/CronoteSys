@@ -12,6 +12,7 @@ import java.util.List;
 import com.cronoteSys.model.bo.LoginBO;
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.UserVO;
+import com.cronoteSys.util.GenHash;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 
@@ -43,18 +44,18 @@ public class LoginController extends MasterController {
 	private PasswordField txtPassword;
 	@FXML
 	private Hyperlink linkRecover;
-	private HashMap<String, Object> hmp;
 	@FXML 
 	private ImageView imgEye;
+	private HashMap<String, Object> hmp;
 
-
+	
 	@FXML
 	public void initialize() {
 		hmp = new HashMap<String,Object>();
 		hmp.put("previewScene", "SLogin");
 		ScreenUtil.addOnChangeScreenListener(new OnChangeScreen() {
 			public void onScreenChanged(String newScreen, HashMap<String, Object> hmap) {
-
+				//por enquanto nada
 			}
 		});
 		txtEmail.setOnKeyPressed(new javafx.event.EventHandler<KeyEvent>() {
@@ -87,8 +88,9 @@ public class LoginController extends MasterController {
 
 		UserVO user = new LoginBO().login(login);
 		if (user != null) {
-			new ScreenUtil().openNewWindow(getThisStage(), "Scene", false);
-			getThisStage().close();
+			System.out.println("Logou!!");
+			//new ScreenUtil().openNewWindow(getThisStage(), "Scene", false);
+			//getThisStage().close();
 		} else {
 			List<Node> lst = new ArrayList<Node>();
 			lst.add(txtEmail);
@@ -114,7 +116,8 @@ public class LoginController extends MasterController {
 	private void btnLoginClicked(ActionEvent event) {
 		if (new ScreenUtil().isFilledFields(getThisStage(), pnlRoot)) {
 			String sUsername = txtEmail.getText().trim(), sPasswd = txtPassword.getText().trim();
-			login(new LoginVO(null, sUsername, sPasswd));
+			login(new LoginVO(null, sUsername, new GenHash().hashIt(sPasswd)));
 		}
+		
 	}
 }

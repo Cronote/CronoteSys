@@ -16,6 +16,10 @@ import org.apache.commons.mail.SimpleEmail;
  * 
  */
 public class EmailUtil {
+	private final String sUser = "cronotesys@gmail.com";
+	private final String sPass = "Cro12345";
+	private final int iSmtpPort = 465;
+	private final String sHostName = "smtp.googlemail.com";
 
 	/**
 	 * 
@@ -25,33 +29,15 @@ public class EmailUtil {
 	 * @return true if email was sent and false if not
 	 * @author Fernando
 	 */
-	public boolean sendEmail(String sEmailTo) throws EmailException {
-		try {
-			Email email = new SimpleEmail();
-			email.setHostName("smtp.googlemail.com");
-			email.setSmtpPort(465);
-			email.setAuthenticator(new DefaultAuthenticator("testesmpt@gmail.com", "Omega1390-"));
-			email.setSSLOnConnect(true);
-			email.setFrom("testesmpt@gmail.com");
-			email.setSubject("Testando");
-			email.setMsg("Isso aqui é um testão");
-			email.addTo(sEmailTo);
-			email.send();
-			return true;
-		} catch (EmailException e) {
-			e.getMessage();
-		}
-		return false;
-	}
 	
 	public boolean sendEmail(String sEmailTo,String sMessage, String sSubject) throws EmailException {
 		try {
 			Email email = new SimpleEmail();
-			email.setHostName("smtp.googlemail.com");
-			email.setSmtpPort(465);
-			email.setAuthenticator(new DefaultAuthenticator("cronotesys@gmail.com", "Cro12345"));
+			email.setHostName(sHostName);
+			email.setSmtpPort(iSmtpPort);
+			email.setAuthenticator(new DefaultAuthenticator(sUser, sPass));
 			email.setSSLOnConnect(true);
-			email.setFrom("cronotesys@gmail.com","Cronote");
+			email.setFrom(sUser,"Cronote");
 			email.setSubject(sSubject);
 			email.setMsg(sMessage);
 			email.addTo(sEmailTo);

@@ -52,7 +52,7 @@
             <Image url="@../image/icon/eye.png" />
          </image>
       </ImageView>
-      <PasswordField alignment="CENTER" layoutX="294.0" layoutY="387.0" prefHeight="30.0" prefWidth="351.0" promptText="Senha">
+      <PasswordField fx:id="txtPassword" alignment="CENTER" layoutX="294.0" layoutY="387.0" prefHeight="30.0" prefWidth="351.0" promptText="Senha">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>

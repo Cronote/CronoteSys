@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -21,7 +20,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 /**
  * Class that cares about all Screen functions
@@ -52,7 +50,7 @@ public class ScreenUtil {
 		}
 		newStage.show();
 		if (!isModal) {
-			closeOldStageAndSetNewStageOnCloseRequest(oldStage, newStage);
+			closeOldStage(oldStage, newStage);
 		}
 	}
 
@@ -82,7 +80,7 @@ public class ScreenUtil {
 		notifyAllListeners(sSceneName, hashMapValues);
 		newStage.show();
 		if (!isModal) {
-			closeOldStageAndSetNewStageOnCloseRequest(oldStage, newStage);
+			closeOldStage(oldStage, newStage);
 
 		}
 	}
@@ -99,16 +97,7 @@ public class ScreenUtil {
 		return root;
 	}
 
-	private void closeOldStageAndSetNewStageOnCloseRequest(Stage oldStage, Stage newStage) {
-		if (newStage != null) {
-			newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-
-				public void handle(WindowEvent event) {
-					// TODO Auto-generated method stub
-
-				}
-			});
-		}
+	private void closeOldStage(Stage oldStage, Stage newStage) {
 		if (oldStage != null) {
 			oldStage.close();
 		}
@@ -156,9 +145,6 @@ public class ScreenUtil {
 		}
 	}
 
-	private void openErrorDialog() {
-
-	}
 
 	public void addORRemoveErrorClass(java.util.List<Node> node, boolean isAdd) {
 		for (Node n : node) {

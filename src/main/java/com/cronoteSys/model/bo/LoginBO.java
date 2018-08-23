@@ -8,6 +8,8 @@ package com.cronoteSys.model.bo;
 import com.cronoteSys.model.dao.LoginDAO;
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.UserVO;
+import com.cronoteSys.util.GenHash;
+
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -17,31 +19,32 @@ import javax.swing.JOptionPane;
  */
 public class LoginBO {
 
-    public boolean save(LoginVO login) {
-        return new LoginDAO().save(login);
-    }
+	public boolean save(LoginVO login) {
 
-    public void update(LoginVO login) {
-        new LoginDAO().update(login);
-    }
+		return new LoginDAO().save(login);
+	}
 
-    public void delete(LoginVO login) {
-        new LoginDAO().delete(login);
-    }
+	public void update(LoginVO login) {
+		new LoginDAO().update(login);
+	}
 
-    public List<LoginVO> listAll() {
-        return new LoginDAO().listAll();
-    }
+	public void delete(LoginVO login) {
+		new LoginDAO().delete(login);
+	}
 
-    public UserVO login(LoginVO login) {
-        UserVO user = new LoginDAO().verifiedUser(login.getEmail(), login.getPasswd());
-        return (user!=null && user.getStats() ==1) ? user : null;
-    }
+	public List<LoginVO> listAll() {
+		return new LoginDAO().listAll();
+	}
 
-    public LoginVO loginExists(String sEmail){
-        return new LoginDAO().loginExists(sEmail);
-    }
-    
+	public UserVO login(LoginVO login) {
+		UserVO user = new LoginDAO().verifiedUser(login.getEmail(), login.getPasswd());
+		return (user != null && user.getStats() == 1) ? user : null;
+	}
+
+	public LoginVO loginExists(String sEmail) {
+		return new LoginDAO().loginExists(sEmail);
+	}
+
 	public boolean validatePassword(String passwd) {
 		boolean bHaveNumber = false;
 		boolean bHaveSpecialChar = false;
