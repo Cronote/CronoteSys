@@ -16,7 +16,7 @@
    <children>
       <AnchorPane layoutX="258.0" layoutY="143.0" prefHeight="503.0" prefWidth="424.0" styleClass="imputpanel">
          <children>
-            <Hyperlink fx:id="linkSignUp" layoutX="239.0" layoutY="432.0" onAction="#linkRecoverClicked" text="Cadastre-se" textFill="#b03a07">
+            <Hyperlink fx:id="linkSignUp" layoutX="239.0" layoutY="432.0" onAction="#linkSignUpClicked" text="Cadastre-se" textFill="#b03a07">
                <font>
                   <Font size="14.0" />
                </font>

@@ -37,15 +37,13 @@ public class LoginController extends MasterController {
 	@FXML
 	private Button btnLogin;
 	@FXML
-	private Button btnSignUp;
+	private Hyperlink linkSignUp;
 	@FXML
 	private TextField txtEmail;
 	@FXML
 	private PasswordField txtPassword;
 	@FXML
 	private Hyperlink linkRecover;
-	@FXML 
-	private ImageView imgEye;
 	private HashMap<String, Object> hmp;
 
 	
@@ -72,16 +70,7 @@ public class LoginController extends MasterController {
 				}
 			}
 		});
-		imgEye.setOnMousePressed(new javafx.event.EventHandler<MouseEvent>() {
-			public void handle(MouseEvent event) {
-				System.out.println("pressionado");
-			}
-		});
-		imgEye.setOnMouseReleased(new javafx.event.EventHandler<MouseEvent>() {
-			public void handle(MouseEvent event) {
-				System.out.println("'soltado'");
-			}
-		});
+		
 	}
 
 	public void login(LoginVO login) {
@@ -108,7 +97,7 @@ public class LoginController extends MasterController {
 	}
 
 	@FXML
-	private void btnSignUpClicked() {
+	private void linkSignUpClicked() {
 		new ScreenUtil().openNewWindow(getThisStage(), "SSignUp", false, hmp);
 	}
 
