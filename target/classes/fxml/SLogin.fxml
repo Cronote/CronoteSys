@@ -14,24 +14,24 @@
 
 <AnchorPane id="Screen" fx:id="pnlRoot" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.LoginController">
    <children>
-      <Button fx:id="btnLogin" layoutX="295.0" layoutY="448.0" mnemonicParsing="false" onAction="#btnLoginClicked" opacity="0.88" prefHeight="44.0" prefWidth="351.0" style="" styleClass="test" text="Login" textFill="#23a1d3">
+      <Button fx:id="btnLogin" layoutX="261.0" layoutY="471.0" mnemonicParsing="false" onAction="#btnLoginClicked" opacity="0.88" prefHeight="44.0" prefWidth="351.0" style="" styleClass="test" text="Login" textFill="#23a1d3">
          <font>
             <Font size="14.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <TextField fx:id="txtEmail" alignment="TOP_CENTER" layoutX="294.0" layoutY="335.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="351.0" promptText="E-mail" styleClass="TextFild" AnchorPane.topAnchor="335.0">
+      <TextField fx:id="txtEmail" alignment="TOP_CENTER" layoutX="261.0" layoutY="361.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="351.0" promptText="E-mail" styleClass="TextFild" AnchorPane.topAnchor="361.0">
          <font>
             <Font size="14.0" />
          </font></TextField>
-      <ImageView fx:id="imgCronote" fitHeight="181.0" fitWidth="386.0" layoutX="277.0" layoutY="107.0" pickOnBounds="true" preserveRatio="true" smooth="false" AnchorPane.bottomAnchor="515.9342041015625" AnchorPane.leftAnchor="277.0" AnchorPane.rightAnchor="277.0" AnchorPane.topAnchor="107.0">
+      <ImageView fx:id="imgCronote" fitHeight="145.0" fitWidth="365.0" layoutX="259.0" layoutY="166.0" pickOnBounds="true" preserveRatio="true" smooth="false" AnchorPane.bottomAnchor="471.0" AnchorPane.leftAnchor="259.0" AnchorPane.rightAnchor="279.62188720703125" AnchorPane.topAnchor="166.0">
          <image>
-            <Image url="@../image/cronote_logo_white.png" />
+            <Image url="@../image/cronote_logo_dark.png" />
          </image>
 
       </ImageView>
-      <Hyperlink fx:id="linkRecover" layoutX="395.0" layoutY="524.0" onAction="#linkRecoverClicked" text="Esqueceu a sua senha?">
+      <Hyperlink fx:id="linkRecover" layoutX="361.0" layoutY="556.0" onAction="#linkRecoverClicked" text="Esqueceu a sua senha?">
          <font>
             <Font size="14.0" />
          </font></Hyperlink>
@@ -52,7 +52,7 @@
             <Image url="@../image/icon/eye.png" />
          </image>
       </ImageView>
-      <PasswordField fx:id="txtPassword" alignment="CENTER" layoutX="294.0" layoutY="387.0" prefHeight="30.0" prefWidth="351.0" promptText="Senha">
+      <PasswordField fx:id="txtPassword" alignment="CENTER" layoutX="261.0" layoutY="418.0" prefHeight="30.0" prefWidth="351.0" promptText="Senha">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>

@@ -1,4 +1,4 @@
-.test{
+.btn{
 	-fx-background-color: #333333;
 	-fx-background-radius: 10; 
 }
@@ -8,6 +8,20 @@
 	-fx-background-image: url(../image/background_sunrise.jpg)
 }
 
-.btn {
-		
-} 
+.imputpanel {
+	 -fx-background-color: rgba(245,244,225,.5);
+	 -fx-background-radius: 10;
+	 /* -fx-opacity: 42%; */
+	
+}
+
+.textfild {
+	
+	-fx-prompt-text-fill: #333;
+	-fx-text-fill: #333333;
+	-fx-border-width : 0 0 1 0;
+	-fx-background-color: transparent;
+	-fx-border-color: #333333;
+	
+}
+
