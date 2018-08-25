@@ -30,8 +30,10 @@
 	<session-factory>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/cronote?zeroDateTimeBehavior=convertToNull</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/cronote?zeroDateTimeBehavior=CONVERT_TO_NULL </property>
+		<property name="hibernate.connection.serverTimezone">UTC</property>
 		<property name="hibernate.connection.username">root</property>
+		
 		<mapping class="com.cronoteSys.model.vo.LoginVO" />
 		<mapping class="com.cronoteSys.model.vo.UserVO" />
 	</session-factory>

@@ -87,7 +87,8 @@ public class LoginController extends MasterController {
 			new ScreenUtil().addORRemoveErrorClass(lst, true);
 			HashMap<String, Object> hmapValues = new HashMap<String, Object>();
 			hmapValues.put("msg", "Usuário ou senha incorretos!");
-			new ScreenUtil().openNewWindow(getThisStage(), "AlertDialog", true, hmapValues);
+			System.out.println("deu errado");
+			//new ScreenUtil().openNewWindow(getThisStage(), "AlertDialog", true, hmapValues);
 		}
 	}
 

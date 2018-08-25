@@ -38,6 +38,7 @@ public class LoginBO {
 
 	public UserVO login(LoginVO login) {
 		UserVO user = new LoginDAO().verifiedUser(login.getEmail(), login.getPasswd());
+		System.out.println(user);
 		return (user != null && user.getStats() == 1) ? user : null;
 	}
 

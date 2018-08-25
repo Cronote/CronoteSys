@@ -89,6 +89,7 @@ public class ScreenUtil {
 		Parent root = null;
 
 		try {
+			System.out.println("Scene>>>> " +sSceneName);
 			URL url = new File(getClass().getResource("/fxml/" + sSceneName + ".fxml").getPath()).toURI().toURL();
 			root = FXMLLoader.load(url);
 		} catch (IOException ex) {
