@@ -89,7 +89,7 @@ public class ScreenUtil {
 		Parent root = null;
 
 		try {
-			System.out.println("Scene>>>> " +sSceneName);
+			System.out.println("Scene>>>> " + sSceneName);
 			URL url = new File(getClass().getResource("/fxml/" + sSceneName + ".fxml").getPath()).toURI().toURL();
 			root = FXMLLoader.load(url);
 		} catch (IOException ex) {
@@ -135,6 +135,15 @@ public class ScreenUtil {
 		return true;
 	}
 
+	public void clearFields(Stage oldStage, Pane pnl) {
+		ObservableList<Node> comp = pnl.getChildren();
+		for (Node node : comp) {
+			if (node instanceof TextField) {
+				((TextField) node).setText("");
+			}
+		}
+	}
+
 	public void addORRemoveErrorClass(Node node, boolean isAdd) {
 		if (node != null) {
 			if (isAdd) {
@@ -145,7 +154,6 @@ public class ScreenUtil {
 			}
 		}
 	}
-
 
 	public void addORRemoveErrorClass(java.util.List<Node> node, boolean isAdd) {
 		for (Node n : node) {

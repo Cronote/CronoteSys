@@ -1,5 +1,6 @@
 package com.cronoteSys.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 public class SignUpController extends MasterController {
 
@@ -49,6 +51,7 @@ public class SignUpController extends MasterController {
 
 	private boolean bPasswordOk;
 	private LoginVO objLogin;
+	@FXML AnchorPane pnlInput;
 
 	@FXML
 	protected void initialize() {
@@ -100,7 +103,7 @@ public class SignUpController extends MasterController {
 
 	@FXML
 	public void btnSignUpClicked() {
-		if (new ScreenUtil().isFilledFields(getThisStage(), pnlRoot)) {
+		if (new ScreenUtil().isFilledFields(getThisStage(), pnlInput)) {
 			String sEmail = txtEmail.getText().trim();
 			if (new EmailUtil().validateEmail(sEmail)) {
 				if (new LoginBO().loginExists(sEmail) == null) {
@@ -112,11 +115,12 @@ public class SignUpController extends MasterController {
 						objLogin.setPasswd(new GenHash().hashIt(sPass));
 						objUser.setCompleteName(txtName.getText().trim());
 						objUser.setStats(Byte.parseByte("1"));
-						String newDate = null;
 						String[] vetAux = txtBirthday.getText().split("/");
 						if (vetAux.length == 3) {
-							newDate = vetAux[2] + "/" + vetAux[1] + "/" + vetAux[0];
-							objUser.setBirthDate(new Date(newDate));
+							
+							objUser.setBirthDate(LocalDate.of(Integer.parseInt(vetAux[2]),
+									Integer.parseInt(vetAux[1]),Integer.parseInt(vetAux[0])));
+							
 						} else {
 							return;
 						}
@@ -124,6 +128,8 @@ public class SignUpController extends MasterController {
 
 							
 							JOptionPane.showMessageDialog(null, "Mensagem de sucesso");
+							new ScreenUtil().clearFields(getThisStage(), pnlInput);
+							
 						} else {
 							JOptionPane.showMessageDialog(null, "Mensagem de falha");
 						}

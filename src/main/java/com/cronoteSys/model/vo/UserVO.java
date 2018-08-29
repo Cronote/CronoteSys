@@ -1,6 +1,7 @@
 package com.cronoteSys.model.vo;
 // Generated 25/06/2018 22:33:40 by Hibernate Tools 4.3.1
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,7 +33,7 @@ public class UserVO implements java.io.Serializable {
 
 	private Integer idUser;
 	private String completeName;
-	private Date birthDate;
+	private LocalDate birthDate;
 	private Date registerDate;
 	private String emailRecover;
 	private byte stats;
@@ -42,7 +43,7 @@ public class UserVO implements java.io.Serializable {
 	public UserVO() {
 	}
 
-	public UserVO(String completeName, Date birthDate, byte stats) {
+	public UserVO(String completeName, LocalDate birthDate, byte stats) {
 		this.completeName = completeName;
 		this.birthDate = birthDate;
 		this.stats = stats;
@@ -52,14 +53,14 @@ public class UserVO implements java.io.Serializable {
 		this.idUser = id;
 	}
 
-	public UserVO(Integer id, String completeName, Date birthDate, byte stats) {
+	public UserVO(Integer id, String completeName, LocalDate birthDate, byte stats) {
 		this.idUser = id;
 		this.completeName = completeName;
 		this.birthDate = birthDate;
 		this.stats = stats;
 	}
 
-	public UserVO(String completeName, Date birthDate, Date registerDate, String emailRecover, byte stats,
+	public UserVO(String completeName, LocalDate birthDate, Date registerDate, String emailRecover, byte stats,
 			String avatarPath, Set<UserVO> tbLogins) {
 		this.completeName = completeName;
 		this.birthDate = birthDate;
@@ -90,13 +91,12 @@ public class UserVO implements java.io.Serializable {
 		this.completeName = completeName;
 	}
 
-	@Temporal(TemporalType.DATE)
 	@Column(name = "birth_date", nullable = false)
-	public Date getBirthDate() {
+	public LocalDate getBirthDate() {
 		return this.birthDate;
 	}
 
-	public void setBirthDate(Date birthDate) {
+	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
 

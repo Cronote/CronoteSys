@@ -12,6 +12,7 @@ import com.cronoteSys.model.bo.LoginBO;
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.util.EmailUtil;
 import com.cronoteSys.util.GenCode;
+import com.cronoteSys.util.GenHash;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 
@@ -135,8 +136,8 @@ public class ForgotPwdController extends MasterController {
 			if (sVerificationCode.equalsIgnoreCase(txtCode.getText().trim())) {
 				String sPass = txtPwd.getText().trim();
 				if (bPasswordOk) {
-
-					objLogin.setPasswd(sPass);
+					
+					objLogin.setPasswd(new GenHash().hashIt(sPass));
 					new LoginBO().update(objLogin);
 					JOptionPane.showMessageDialog(null, "Mensagem de Sucesso ");
 				}

@@ -12,7 +12,7 @@
 
 <AnchorPane id="Screen" fx:id="pnlRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.SignUpController">
    <children>
-      <AnchorPane layoutX="85.0" layoutY="175.0" prefHeight="499.0" prefWidth="800.0" styleClass="imputpanel">
+      <AnchorPane fx:id="pnlInput" layoutX="85.0" layoutY="175.0" prefHeight="499.0" prefWidth="800.0" styleClass="imputpanel">
          <children>
             <Button fx:id="btnSignUp" layoutX="330.0" layoutY="425.0" mnemonicParsing="false" onAction="#btnSignUpClicked" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Cadastrar" textFill="WHITE">
                <font>
