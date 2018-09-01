@@ -29,7 +29,7 @@ public class LoginBO {
 	}
 
 	public void delete(LoginVO login) {
-		new LoginDAO().delete(login);
+		new LoginDAO().delete(login.getIdLogin());
 	}
 
 	public List<LoginVO> listAll() {

@@ -7,15 +7,15 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class UserDAO {
+public class UserDAO extends GenericsDAO<UserVO, Integer>{
 
     private Session session;
 
     public UserDAO() {
-
+    	super(UserVO.class);
     }
 
-    public boolean save(UserVO user) {
+    /*public boolean save(UserVO user) {
         session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try {
@@ -70,7 +70,7 @@ public class UserDAO {
         }
 
         return false;
-    }
+    }*/
 
     public List<UserVO> listAll() {
     	session = HibernateUtil.getSessionFactory().openSession();//obtem uma sessao

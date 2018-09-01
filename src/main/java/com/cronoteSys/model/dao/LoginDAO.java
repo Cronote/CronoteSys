@@ -1,5 +1,6 @@
 package com.cronoteSys.model.dao;
 
+
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.HibernateUtil;
@@ -10,11 +11,15 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class LoginDAO {
+public class LoginDAO extends GenericsDAO<LoginVO, Integer> {
 
 	private Session session;
+	
+	public LoginDAO() {
+		super(LoginVO.class);
+	}
 
-	public boolean save(LoginVO login) {
+	/*public boolean save(LoginVO login) {
 		session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = null;
 		try {
@@ -69,7 +74,7 @@ public class LoginDAO {
 		}
 
 		return false;
-	}
+	}*/
 
 	public List<LoginVO> listAll() {
 		try {
