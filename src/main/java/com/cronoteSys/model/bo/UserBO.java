@@ -24,17 +24,17 @@ public class UserBO {
         new UserDAO().update(user);
     }
 
-    public boolean activateOrInactivate(UserVO user) {
-        if (user.getStats() == 1) { //ativado
-            user.setStats(Byte.valueOf("0"));
-        } else { // desativado
-            user.setStats(Byte.valueOf("1"));
-        }
-        return new UserDAO().update(user);
-    }
+//    public boolean activateOrInactivate(UserVO user) {
+//        if (user.getStats() == 1) { //ativado
+//            user.setStats(Byte.valueOf("0"));
+//        } else { // desativado
+//            user.setStats(Byte.valueOf("1"));
+//        }
+//        return new UserDAO().update(user);
+//    }
 
     public void delete(UserVO user) {
-        new UserDAO().delete(user);
+        new UserDAO().delete(user.getIdUser());
 
     }
 
