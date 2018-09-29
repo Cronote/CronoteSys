@@ -99,7 +99,7 @@ public class LoginController extends MasterController {
 
 	@FXML
 	private void linkSignUpClicked() {
-		new ScreenUtil().openNewWindow(getThisStage(), "SSignUp", false, hmp);
+		new ScreenUtil().openNewWindow(getThisStage(), "SSignUp2", false, hmp);
 	}
 
 	@FXML

@@ -51,13 +51,14 @@ public class SignUpController extends MasterController {
 
 	private boolean bPasswordOk;
 	private LoginVO objLogin;
-	@FXML AnchorPane pnlInput;
+	@FXML
+	private AnchorPane pnlInput;
 
 	@FXML
 	protected void initialize() {
-		final List<Node> lst = new ArrayList<Node>();
-		lst.add(txtPwd);
-		lst.add(txtConfirmPwd);
+		final List<Node> lstPasswordNodes = new ArrayList<Node>();
+		lstPasswordNodes.add(txtPwd);
+		lstPasswordNodes.add(txtConfirmPwd);
 		objLogin = new LoginVO();
 		ScreenUtil.addOnChangeScreenListener(new OnChangeScreen() {
 			public void onScreenChanged(String newScreen, HashMap<String, Object> hmap) {
@@ -71,8 +72,7 @@ public class SignUpController extends MasterController {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!newValue) {
 
-					bPasswordOk = verifyPassFields(txtPwd.getText().trim(),
-							txtConfirmPwd.getText().trim(), lst);
+					bPasswordOk = verifyPassFields(txtPwd.getText().trim(), txtConfirmPwd.getText().trim(), lstPasswordNodes);
 				}
 
 			}
@@ -80,19 +80,18 @@ public class SignUpController extends MasterController {
 		txtConfirmPwd.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!newValue) {
-					bPasswordOk = verifyPassFields(txtConfirmPwd.getText().trim(),
-							txtPwd.getText().trim(), lst);
+					bPasswordOk = verifyPassFields(txtConfirmPwd.getText().trim(), txtPwd.getText().trim(), lstPasswordNodes);
 				}
 			}
 		});
 	}
 
-	public boolean verifyPassFields(String sPass1, String sPass2, List<Node> lst) {
+	public boolean verifyPassFields(String sPass1, String sPass2, List<Node> lstTextFields) {
 		if (!sPass1.equals(sPass2)) {
-			new ScreenUtil().addORRemoveErrorClass(lst, true);
+			new ScreenUtil().addORRemoveErrorClass(lstTextFields, true);
 			return false;
 		} else {
-			new ScreenUtil().addORRemoveErrorClass(lst, false);
+			new ScreenUtil().addORRemoveErrorClass(lstTextFields, false);
 			if (!new LoginBO().validatePassword(sPass1)) {
 				JOptionPane.showMessageDialog(null, "Mensagem de falha por senhas fora de formato ");
 				return false;
@@ -117,19 +116,18 @@ public class SignUpController extends MasterController {
 						objUser.setStats(Byte.parseByte("1"));
 						String[] vetAux = txtBirthday.getText().split("/");
 						if (vetAux.length == 3) {
-							
-							objUser.setBirthDate(LocalDate.of(Integer.parseInt(vetAux[2]),
-									Integer.parseInt(vetAux[1]),Integer.parseInt(vetAux[0])));
-							
+
+							objUser.setBirthDate(LocalDate.of(Integer.parseInt(vetAux[2]), Integer.parseInt(vetAux[1]),
+									Integer.parseInt(vetAux[0])));
+
 						} else {
 							return;
 						}
 						if (new UserBO().save(objUser) && new LoginBO().save(objLogin)) {
 
-							
 							JOptionPane.showMessageDialog(null, "Mensagem de sucesso");
 							new ScreenUtil().clearFields(getThisStage(), pnlInput);
-							
+
 						} else {
 							JOptionPane.showMessageDialog(null, "Mensagem de falha");
 						}
