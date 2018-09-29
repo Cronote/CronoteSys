@@ -3,6 +3,12 @@
 	-fx-background-radius: 10; 
 }
 
+.btnsize {
+	
+	-fx-pref-height: 26px;
+	-fx-pref-width: 141px;
+}
+
 #Screen {
 	
 	-fx-background-image: url(../image/background_sunrise.jpg)
