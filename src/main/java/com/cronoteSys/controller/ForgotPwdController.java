@@ -135,8 +135,7 @@ public class ForgotPwdController extends MasterController {
 		if (new ScreenUtil().isFilledFields(getThisStage(), pnlRoot)) {
 			if (sVerificationCode.equalsIgnoreCase(txtCode.getText().trim())) {
 				String sPass = txtPwd.getText().trim();
-				if (bPasswordOk) {
-					
+				if (bPasswordOk) {					
 					objLogin.setPasswd(new GenHash().hashIt(sPass));
 					new LoginBO().update(objLogin);
 					JOptionPane.showMessageDialog(null, "Mensagem de Sucesso ");
