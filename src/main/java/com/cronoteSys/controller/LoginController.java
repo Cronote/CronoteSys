@@ -23,10 +23,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 
 /**
  *
@@ -78,8 +76,7 @@ public class LoginController extends MasterController {
 		UserVO user = new LoginBO().login(login);
 		if (user != null) {
 			System.out.println("Logou!!");
-			//new ScreenUtil().openNewWindow(getThisStage(), "Scene", false);
-			//getThisStage().close();
+			//TODO Desenvolver tela principal
 		} else {
 			List<Node> lst = new ArrayList<Node>();
 			lst.add(txtEmail);
@@ -88,7 +85,6 @@ public class LoginController extends MasterController {
 			HashMap<String, Object> hmapValues = new HashMap<String, Object>();
 			hmapValues.put("msg", "Usuário ou senha incorretos!");
 			System.out.println("deu errado");
-			//new ScreenUtil().openNewWindow(getThisStage(), "AlertDialog", true, hmapValues);
 		}
 	}
 

@@ -1,8 +1,6 @@
 package com.cronoteSys.controller;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,6 +20,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -33,9 +32,11 @@ public class SignUpController extends MasterController {
 	@FXML
 	private TextField txtName;
 	@FXML
-	private TextField txtBirthday;
+	private DatePicker dateBirthday;
 	@FXML
 	private TextField txtEmail;
+	@FXML
+	private TextField txtSecondEmail;
 	@FXML
 	private Button btnProfile;
 	@FXML
@@ -48,11 +49,11 @@ public class SignUpController extends MasterController {
 	private PasswordField txtPwd;
 	@FXML
 	private PasswordField txtConfirmPwd;
+	@FXML
+	private AnchorPane pnlInput;
 
 	private boolean bPasswordOk;
 	private LoginVO objLogin;
-	@FXML
-	private AnchorPane pnlInput;
 
 	@FXML
 	protected void initialize() {
@@ -71,8 +72,8 @@ public class SignUpController extends MasterController {
 		txtPwd.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!newValue) {
-
-					bPasswordOk = verifyPassFields(txtPwd.getText().trim(), txtConfirmPwd.getText().trim(), lstPasswordNodes);
+					bPasswordOk = verifyPassFields(txtPwd.getText().trim(), txtConfirmPwd.getText().trim(),
+							lstPasswordNodes);
 				}
 
 			}
@@ -80,7 +81,8 @@ public class SignUpController extends MasterController {
 		txtConfirmPwd.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!newValue) {
-					bPasswordOk = verifyPassFields(txtConfirmPwd.getText().trim(), txtPwd.getText().trim(), lstPasswordNodes);
+					bPasswordOk = verifyPassFields(txtConfirmPwd.getText().trim(), txtPwd.getText().trim(),
+							lstPasswordNodes);
 				}
 			}
 		});
@@ -89,59 +91,54 @@ public class SignUpController extends MasterController {
 	public boolean verifyPassFields(String sPass1, String sPass2, List<Node> lstTextFields) {
 		if (!sPass1.equals(sPass2)) {
 			new ScreenUtil().addORRemoveErrorClass(lstTextFields, true);
+			JOptionPane.showMessageDialog(null, "Mensagem de falha por senhas diferentes");
 			return false;
-		} else {
-			new ScreenUtil().addORRemoveErrorClass(lstTextFields, false);
-			if (!new LoginBO().validatePassword(sPass1)) {
-				JOptionPane.showMessageDialog(null, "Mensagem de falha por senhas fora de formato ");
-				return false;
-			}
-			return true;
 		}
+		new ScreenUtil().addORRemoveErrorClass(lstTextFields, false);
+		if (!new LoginBO().validatePassword(sPass1)) {
+			JOptionPane.showMessageDialog(null, "Mensagem de falha por senhas fora de formato ");
+			return false;
+		}
+		return true;
 	}
 
 	@FXML
 	public void btnSignUpClicked() {
+		System.out.println(dateBirthday.getValue());
 		if (new ScreenUtil().isFilledFields(getThisStage(), pnlInput)) {
 			String sEmail = txtEmail.getText().trim();
-			if (new EmailUtil().validateEmail(sEmail)) {
-				if (new LoginBO().loginExists(sEmail) == null) {
-					String sPass = txtPwd.getText().trim();
-					if (bPasswordOk) {
-						UserVO objUser = new UserVO();
-						objLogin.setTbUser(objUser);
-						objLogin.setEmail(sEmail);
-						objLogin.setPasswd(new GenHash().hashIt(sPass));
-						objUser.setCompleteName(txtName.getText().trim());
-						objUser.setStats(Byte.parseByte("1"));
-						String[] vetAux = txtBirthday.getText().split("/");
-						if (vetAux.length == 3) {
-
-							objUser.setBirthDate(LocalDate.of(Integer.parseInt(vetAux[2]), Integer.parseInt(vetAux[1]),
-									Integer.parseInt(vetAux[0])));
-
-						} else {
-							return;
-						}
-						if (new UserBO().save(objUser) && new LoginBO().save(objLogin)) {
-
-							JOptionPane.showMessageDialog(null, "Mensagem de sucesso");
-							new ScreenUtil().clearFields(getThisStage(), pnlInput);
-
-						} else {
-							JOptionPane.showMessageDialog(null, "Mensagem de falha");
-						}
-					} else {
-						JOptionPane.showMessageDialog(null, "Mensagem de falha por senhas diferentes");
-					}
-				} else {
-					JOptionPane.showMessageDialog(null, "Mensagem de falha por email ja cadastrado");
-				}
-			} else {
+			if (!new EmailUtil().validateEmail(sEmail)) {
 				JOptionPane.showMessageDialog(null, "Mensagem de falha por formato de email");
+				return;
 			}
+			if (new LoginBO().loginExists(sEmail) != null) {
+				JOptionPane.showMessageDialog(null, "Mensagem de falha por email já cadastrado");
+			}
+			if (!bPasswordOk) {
+				JOptionPane.showMessageDialog(null, "Mensagem de falha por senhas diferentes");
+				return;
+			}
+			String sPassPureText = txtPwd.getText().trim();
+			String sPassEncrypted = new GenHash().hashIt(sPassPureText);
 
+			UserVO objUser = new UserVO();
+			objLogin.setTbUser(objUser);
+			objLogin.setEmail(sEmail);
+			objLogin.setPasswd(sPassEncrypted);
+
+			objUser.setCompleteName(txtName.getText().trim());
+			objUser.setEmailRecover(txtSecondEmail.getText().trim());
+			objUser.setBirthDate(dateBirthday.getValue());
+			objUser.setAvatarPath(null);// TODO Implementar a escolha de avatar
+			objUser.setStats(Byte.parseByte("1"));
+
+			if (new UserBO().save(objUser) && new LoginBO().save(objLogin)) {
+				JOptionPane.showMessageDialog(null, "Mensagem de sucesso");
+				new ScreenUtil().clearFields(getThisStage(), pnlInput);
+
+			} else {
+				JOptionPane.showMessageDialog(null, "Mensagem de falha");
+			}
 		}
 	}
-
 }

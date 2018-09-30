@@ -26,10 +26,34 @@ create table if not exists tb_user_bussiness(
     constraint FK_bussinessuser_user foreign key(id_user) references tb_user(id_user)
 );
 
+drop table tb_category;
+Create table if not exists tb_Category(
+	id_category int not null auto_increment primary key,
+    title varchar(50),
+    id_user int not null,
+    
+    constraint fk_categoria_user foreign key(id_user) references tb_user(id_user) 
+);
 
-insert into tb_user values(null,'Bruno Cardoso Ambrosio','1998-12-11',null,null,0,null);
+drop table tb_activity;
+Create table if not exists tb_activity(
+	id_activity int not null auto_increment primary key,
+    title varchar(50),
+    description varchar(256),
+    
+    status int,
+    Last_modification timestamp default now()
+
+	
+);
+
+select * from tb_user;
+select * from tb_login;
+
+insert into tb_user values(null,'Bruno Cardoso Ambrosio','1998-12-11',null,null,1,null);
 describe tb_login;
 insert into tb_login values(null,'a','123',1);
+
 /*select current_date();
 select date_format(now(),"%d/%m/%Y") as a_ from tb_user;
 

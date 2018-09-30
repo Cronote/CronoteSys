@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane id="Screen" gridLinesVisible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="939.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.ForgotPwdController">
+<GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="939.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.ForgotPwdController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="127.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="707.0" minWidth="10.0" prefWidth="693.0" />
@@ -27,7 +27,7 @@
     <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <AnchorPane fx:id="pnlRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="526.0" prefWidth="689.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="526.0" prefWidth="689.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
             <Pane layoutX="73.0" layoutY="26.0" prefHeight="156.0" prefWidth="566.0" styleClass="imputpanel">
                <children>
@@ -55,7 +55,7 @@
                   </Label>
                </children>
             </Pane>
-            <Pane layoutX="73.0" layoutY="197.0" prefHeight="264.0" prefWidth="566.0" styleClass="imputpanel">
+            <Pane fx:id="pnlVerification" layoutX="73.0" layoutY="197.0" prefHeight="264.0" prefWidth="566.0" styleClass="imputpanel" visible="false">
                <children>
                   <Label layoutX="393.0" layoutY="56.0" text="Erros de confirmação" textFill="#333333">
                      <font>
@@ -80,7 +80,7 @@
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnCancel" layoutX="33.0" layoutY="193.0" mnemonicParsing="false" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Cancelar" textFill="WHITE">
+                  <Button fx:id="btnCancel" onAction="#btnCancelClicked" layoutX="33.0" layoutY="193.0" mnemonicParsing="false" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Cancelar" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>

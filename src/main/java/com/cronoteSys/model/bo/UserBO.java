@@ -5,6 +5,7 @@
  */
 package com.cronoteSys.model.bo;
 
+import java.util.Date;
 import java.util.List;
 
 import com.cronoteSys.model.dao.UserDAO;
@@ -17,6 +18,7 @@ import com.cronoteSys.model.vo.UserVO;
 public class UserBO {
 
     public boolean save(UserVO user) {
+    	if(user.getRegisterDate() == null) user.setRegisterDate(new Date());
         return new UserDAO().save(user);
     }
 

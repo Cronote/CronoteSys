@@ -101,7 +101,7 @@ public class UserVO implements java.io.Serializable {
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "register_date")
+	@Column(name = "register_date" )
 	public Date getRegisterDate() {
 		return this.registerDate;
 	}

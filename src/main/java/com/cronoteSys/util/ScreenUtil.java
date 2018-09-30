@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -117,20 +118,29 @@ public class ScreenUtil {
 	public boolean isFilledFields(Stage oldStage, Pane pnl) {
 		ObservableList<Node> comp = pnl.getChildren();
 		for (Node node : comp) {
+			if (!node.isVisible())
+				continue;
+			if (node.getStyleClass().contains("NotRequired"))
+				continue;
 			if (node instanceof TextField) {
-				if (node.isVisible()) {
-					if (((TextField) node).getText().trim().equals("")) {
-						node.requestFocus();
-						HashMap<String, Object> hmapValues = new HashMap<String, Object>();
-						hmapValues.put("msg", "Preencha o campo " + ((TextField) node).getPromptText());
-						openNewWindow(oldStage, "AlertDialog", true, hmapValues);
-						addORRemoveErrorClass(node, true);
-						return false;
-					} else {
-						addORRemoveErrorClass(node, false);
-					}
+
+				if (((TextField) node).getText().trim().equals("")) {
+					node.requestFocus();
+					HashMap<String, Object> hmapValues = new HashMap<String, Object>();
+					hmapValues.put("msg", "Preencha o campo " + ((TextField) node).getPromptText());
+					addORRemoveErrorClass(node, true);
+					return false;
+				} else {
+					addORRemoveErrorClass(node, false);
 				}
 			}
+			if (node instanceof DatePicker) {
+				if (((DatePicker) node).getValue() == null) {
+					node.requestFocus();
+					return false;
+				}
+			}
+
 		}
 		return true;
 	}
@@ -140,6 +150,9 @@ public class ScreenUtil {
 		for (Node node : comp) {
 			if (node instanceof TextField) {
 				((TextField) node).setText("");
+			}
+			if (node instanceof DatePicker) {
+				((DatePicker) node).setValue(null);
 			}
 		}
 	}

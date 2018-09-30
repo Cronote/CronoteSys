@@ -1,15 +1,15 @@
 package com.cronoteSys.model.dao;
 
 
-import com.cronoteSys.model.vo.LoginVO;
-import com.cronoteSys.model.vo.UserVO;
-import com.cronoteSys.util.HibernateUtil;
 import java.util.List;
 
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+
+import com.cronoteSys.model.vo.LoginVO;
+import com.cronoteSys.model.vo.UserVO;
+import com.cronoteSys.util.HibernateUtil;
 
 public class LoginDAO extends GenericsDAO<LoginVO, Integer> {
 
@@ -18,63 +18,6 @@ public class LoginDAO extends GenericsDAO<LoginVO, Integer> {
 	public LoginDAO() {
 		super(LoginVO.class);
 	}
-
-	/*public boolean save(LoginVO login) {
-		session = HibernateUtil.getSessionFactory().openSession();
-		Transaction tx = null;
-		try {
-			tx = session.beginTransaction();
-			session.save(login);
-			tx.commit();// faz a transacao
-			session.close();
-			return true;
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			tx.rollback();
-		} finally {
-			session.close();
-		}
-
-		return false;
-	}
-
-	public boolean update(LoginVO login) {
-		session = HibernateUtil.getSessionFactory().openSession();
-		Transaction tx = null;
-		try {
-			tx = session.beginTransaction();
-			session.update(login);
-			tx.commit();// faz a transacao
-			session.close();
-			return true;
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			tx.rollback();
-		} finally {
-			session.close();
-		}
-
-		return false;
-	}
-
-	public boolean delete(LoginVO login) {
-		session = HibernateUtil.getSessionFactory().openSession();
-		Transaction tx = null;
-		try {
-			tx = session.beginTransaction();
-			session.delete(login);
-			tx.commit();// faz a transacao
-			session.close();
-			return true;
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			tx.rollback();
-		} finally {
-			session.close();
-		}
-
-		return false;
-	}*/
 
 	public List<LoginVO> listAll() {
 		try {
@@ -108,7 +51,7 @@ public class LoginDAO extends GenericsDAO<LoginVO, Integer> {
 			}
 
 		} catch (Exception e) {
-			System.out.println("aaaaaaaaaa" + e.getMessage());
+			System.out.println("Erro de verificação de usuario: " + e.getMessage());
 		} finally {
 			session.close();
 		}

@@ -28,7 +28,6 @@ public abstract class GenericsDAO<T, I extends Serializable> {
     }
 
     public boolean save(T entity) {
-        System.out.println(entityManager.getClass());
         EntityTransaction t = entityManager.getTransaction();
         t.begin();
         entityManager.persist(entity);
@@ -62,7 +61,6 @@ public abstract class GenericsDAO<T, I extends Serializable> {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> query = builder.createQuery(persistedClass);
         query.from(persistedClass);
-        System.out.println("\n\n\n\n" + persistedClass.getSimpleName().substring(0, persistedClass.getSimpleName().length() - 2));
         return entityManager.createQuery(query).getResultList();
     }
 

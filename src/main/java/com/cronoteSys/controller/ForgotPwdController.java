@@ -45,7 +45,7 @@ public class ForgotPwdController extends MasterController {
 	@FXML
 	private Label lblErrorsIndex;
 	@FXML
-	private Pane pnlInfo;
+	private Pane pnlVerification;
 
 	private String sVerificationCode;
 	private boolean bPasswordOk;
@@ -68,7 +68,6 @@ public class ForgotPwdController extends MasterController {
 		txtPwd.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!newValue) {
-
 					bPasswordOk = verifyPassFields(txtPwd.getText().trim(), txtConfirmPwd.getText().trim(), lst);
 				}
 
@@ -87,85 +86,81 @@ public class ForgotPwdController extends MasterController {
 		if (!sPass1.equals(sPass2)) {
 			new ScreenUtil().addORRemoveErrorClass(lst, true);
 			return false;
-		} else {
-			new ScreenUtil().addORRemoveErrorClass(lst, false);
-			if (!new LoginBO().validatePassword(sPass1)) {
-				JOptionPane.showMessageDialog(null, "Mensagem de falha por senhas fora de formato ");
-				return false;
-			}
-			return true;
 		}
+		new ScreenUtil().addORRemoveErrorClass(lst, false);
+		if (!new LoginBO().validatePassword(sPass1)) {
+			JOptionPane.showMessageDialog(null, "Mensagem de falha por senhas fora de formato ");
+			return false;
+		}
+		return true;
 	}
 
 	@FXML
 	public void btnSendClicked() {
 		if (new ScreenUtil().isFilledFields(getThisStage(), pnlRoot)) {
 			String email = txtEmail.getText().trim();
-			if (new EmailUtil().validateEmail(email)) { // Email em formato valido
-				objLogin = new LoginBO().loginExists(email);
-				if (objLogin != null) {// Conta com este email existe
-					boolean bEmailSent = false;
-					sVerificationCode = new GenCode().genCode();
-					try {
-						bEmailSent = new EmailUtil().sendEmail(email, "Olá,\n Aqui está seu código de confirmação: "
-								+ sVerificationCode + "\nDesculpe o transtorno...", "Alteração de senha");
-					} catch (EmailException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					txtCode.setVisible(bEmailSent);
-					txtPwd.setVisible(bEmailSent);
-					txtConfirmPwd.setVisible(bEmailSent);
-					btnConfirm.setVisible(bEmailSent);
-					btnCancel.setVisible(bEmailSent);
-					pnlInfo.setVisible(bEmailSent);
-				} else {
-					JOptionPane.showMessageDialog(null, "Mensagem de falha por n existir conta com esse email");
-					// exibir Email não cadastrado
-				}
-			} else {
+			if (!new EmailUtil().validateEmail(email)) { // Email em formato valido
 				JOptionPane.showMessageDialog(null, "Mensagem de falha por email inválido");
-				// exibir email invalido
+				return;
 			}
+
+			objLogin = new LoginBO().loginExists(email);
+			if (objLogin == null) {// Conta com este email n existe
+				JOptionPane.showMessageDialog(null, "Mensagem de falha por n existir conta com esse email");
+				return;
+			}
+
+			boolean bEmailSent = false;
+			sVerificationCode = new GenCode().genCode();
+			try {
+				bEmailSent = new EmailUtil().sendEmail(email, "Olá,\n Aqui está seu código de confirmação: "
+						+ sVerificationCode + "\nUse-o no sistema para trocar sua senha.", "Alteração de senha");
+			} catch (EmailException e) {
+				e.printStackTrace();
+			}
+			pnlVerification.setVisible(bEmailSent);
 		}
 	}
 
 	@FXML
 	public void btnConfirmClicked() {
-		if (new ScreenUtil().isFilledFields(getThisStage(), pnlRoot)) {
-			if (sVerificationCode.equalsIgnoreCase(txtCode.getText().trim())) {
-				String sPass = txtPwd.getText().trim();
-				if (bPasswordOk) {					
-					objLogin.setPasswd(new GenHash().hashIt(sPass));
-					new LoginBO().update(objLogin);
-					JOptionPane.showMessageDialog(null, "Mensagem de Sucesso ");
-				}
-			} else {
-				// Codigo incorreto
-				int iAtempt = Integer.parseInt(lblErrorsIndex.getText());
-				iAtempt++;
-				lblErrorsIndex.setText(String.valueOf(iAtempt));
-				if (iAtempt > 2) {
-					JOptionPane.showMessageDialog(null, "Mensagem de falha por estourar numero de tentativas");
-					// rotina de limpar campos e deixa-los invisiveis
-					// limpar
-					txtCode.setText("");
-					txtPwd.setText("");
-					txtConfirmPwd.setText("");
-					btnConfirm.setText("");
-					btnCancel.setText("");
-					lblErrorsIndex.setText("0");
-					// esconder
-					txtCode.setVisible(false);
-					txtPwd.setVisible(false);
-					txtConfirmPwd.setVisible(false);
-					btnConfirm.setVisible(false);
-					btnCancel.setVisible(false);
-					pnlInfo.setVisible(false);
-					return;
-				}
+		if (!new ScreenUtil().isFilledFields(getThisStage(), pnlRoot)) {
+			return;
+		}
+
+		if (sVerificationCode.equalsIgnoreCase(txtCode.getText().trim())) {
+			if (!bPasswordOk) {
+				JOptionPane.showMessageDialog(null, "Mensagem de falha, senhas n OK ");
+				return;
 			}
 
+			String sPassPureText = txtPwd.getText().trim();
+			objLogin.setPasswd(new GenHash().hashIt(sPassPureText));
+			JOptionPane.showMessageDialog(null, "Mensagem de Sucesso!");
+			resetScreen();
+
+		} else {
+			int iAttempt = Integer.parseInt(lblErrorsIndex.getText());
+			iAttempt++;
+			lblErrorsIndex.setText(String.valueOf(iAttempt));
+			if (iAttempt > 2) {
+				JOptionPane.showMessageDialog(null, "Mensagem de falha por estourar numero de tentativas");
+				resetScreen();
+				return;
+
+			}
 		}
+	}
+
+	@FXML
+	public void btnCancelClicked() {
+		resetScreen();
+	}
+
+	private void resetScreen() {
+		new ScreenUtil().clearFields(getThisStage(), pnlVerification);
+		txtEmail.setText("");
+		lblErrorsIndex.setText("0");
+		pnlVerification.setVisible(false);
 	}
 }
