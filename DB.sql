@@ -26,7 +26,50 @@ create table if not exists tb_user_bussiness(
     constraint FK_bussinessuser_user foreign key(id_user) references tb_user(id_user)
 );
 
+create table if not exists tb_category(
+	id_category int not null auto_increment primary key,
+    description varchar(255) not null,
+    id_user int not null,
+    
+    constraint FK_category_user foreign key(id_user) references tb_user(id_user)
+);
 
+create table if not exists tb_project(
+	id_project int not null auto_increment primary key,
+    title varchar(255) not null,
+    description varchar(255) not null,
+    last_modification timestamp not null,
+    start_date date not null,
+    finish_date date not null,
+    stats tinyint not null
+);
+
+create table if not exists tb_activity(
+	id_activity int not null auto_increment primary key,
+    title varchar(255) not null,
+    estimated_time varchar(255) not null,
+    description varchar(255) not null,
+    stats tinyint not null,
+    real_time date not null,
+    priority tinyint not null,
+    last_modification date not null,
+    id_user int not null,
+    id_project int not null,
+    id_category int not null,
+    
+    constraint FK_activity_user foreign key (id_user) references tb_user(id_user),
+    constraint FK_activity_project foreign key(id_project) references tb_project(id_project),
+    constraint FK_activity_category foreign key(id_category) references tb_category(id_category)
+);
+
+create table if not exists tb_execution_time(
+	id_execution_time int not null auto_increment primary key,
+    start_date date not null,
+    finish_date date not null,
+    id_activity int not null,
+    
+    constraint FK_execution_time_activity foreign key(id_activity) references tb_activity(id_activity)
+);
 insert into tb_user values(null,'Bruno Cardoso Ambrosio','1998-12-11',null,null,0,null);
 describe tb_login;
 insert into tb_login values(null,'a','123',1);
