@@ -39,9 +39,12 @@ create table if not exists tb_project(
     title varchar(255) not null,
     description varchar(255) not null,
     last_modification timestamp not null,
-    start_date date not null,
-    finish_date date not null,
-    stats tinyint not null
+    start_date timestamp not null,
+    finish_date timestamp not null,
+    stats tinyint not null,
+    id_user int not null,
+    
+	constraint FK_project_user foreign key(id_user) references tb_user(id_user)
 );
 
 create table if not exists tb_activity(
@@ -50,9 +53,9 @@ create table if not exists tb_activity(
     estimated_time varchar(255) not null,
     description varchar(255) not null,
     stats tinyint not null,
-    real_time date not null,
+    real_time timestamp not null,
     priority tinyint not null,
-    last_modification date not null,
+    last_modification timestamp not null,
     id_user int not null,
     id_project int not null,
     id_category int not null,
@@ -64,8 +67,8 @@ create table if not exists tb_activity(
 
 create table if not exists tb_execution_time(
 	id_execution_time int not null auto_increment primary key,
-    start_date date not null,
-    finish_date date not null,
+    start_date timestamp not null,
+    finish_date timestamp not null,
     id_activity int not null,
     
     constraint FK_execution_time_activity foreign key(id_activity) references tb_activity(id_activity)
