@@ -16,7 +16,7 @@ import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "tb_execution_time")
-public class ExecutionTImeVO implements java.io.Serializable {
+public class ExecutionTimeVO implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,11 +25,11 @@ public class ExecutionTImeVO implements java.io.Serializable {
 	private LocalDate _finish_Date;
 	private ActivityVO _ActivityVO;
 	
-	public ExecutionTImeVO() {
+	public ExecutionTimeVO() {
 		
 	}
 	
-	public ExecutionTImeVO(int idExecutionTime, LocalDate startDate, LocalDate finishDate, ActivityVO activityVO) {
+	public ExecutionTimeVO(int idExecutionTime, LocalDate startDate, LocalDate finishDate, ActivityVO activityVO) {
 		this.set_id_Execution_Time(idExecutionTime);
 		this.set_start_Date(startDate);
 		this._finish_Date = finishDate;
