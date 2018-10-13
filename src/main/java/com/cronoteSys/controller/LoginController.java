@@ -44,14 +44,13 @@ public class LoginController extends MasterController {
 	private Hyperlink linkRecover;
 	private HashMap<String, Object> hmp;
 
-	
 	@FXML
 	public void initialize() {
-		hmp = new HashMap<String,Object>();
+		hmp = new HashMap<String, Object>();
 		hmp.put("previewScene", "SLogin");
 		ScreenUtil.addOnChangeScreenListener(new OnChangeScreen() {
 			public void onScreenChanged(String newScreen, HashMap<String, Object> hmap) {
-				//por enquanto nada
+				// por enquanto nada
 			}
 		});
 		txtEmail.setOnKeyPressed(new javafx.event.EventHandler<KeyEvent>() {
@@ -68,7 +67,7 @@ public class LoginController extends MasterController {
 				}
 			}
 		});
-		
+
 	}
 
 	public void login(LoginVO login) {
@@ -76,7 +75,7 @@ public class LoginController extends MasterController {
 		UserVO user = new LoginBO().login(login);
 		if (user != null) {
 			System.out.println("Logou!!");
-			//TODO Desenvolver tela principal
+			// TODO Desenvolver tela principal
 		} else {
 			List<Node> lst = new ArrayList<Node>();
 			lst.add(txtEmail);
@@ -104,6 +103,6 @@ public class LoginController extends MasterController {
 			String sUsername = txtEmail.getText().trim(), sPasswd = txtPassword.getText().trim();
 			login(new LoginVO(null, sUsername, new GenHash().hashIt(sPasswd)));
 		}
-		
+
 	}
 }

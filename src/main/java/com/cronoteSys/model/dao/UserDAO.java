@@ -1,11 +1,12 @@
 package com.cronoteSys.model.dao;
 
-import com.cronoteSys.model.vo.UserVO;
-import com.cronoteSys.util.HibernateUtil;
 import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+
+import com.cronoteSys.model.vo.UserVO;
+import com.cronoteSys.util.HibernateUtil;
 
 public class UserDAO extends GenericsDAO<UserVO, Integer>{
 
