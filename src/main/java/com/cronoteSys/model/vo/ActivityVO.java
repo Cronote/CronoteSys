@@ -23,7 +23,7 @@ public class ActivityVO implements java.io.Serializable {
 	private Integer _id_Activity;
 	private String _title;
 	private String _estimated_Time;
-	private Integer _stats;
+	private StatusEnum _stats;
 	private LocalDate _realtime;
 	private Integer _priority;
 	private LocalDate _last_Modification;
@@ -35,7 +35,7 @@ public class ActivityVO implements java.io.Serializable {
 		
 	}
 	
-	public ActivityVO(int idActivity, String title, String estimatedTime, int stats, LocalDate realtime, Integer priority, LocalDate lastModification, UserVO userVO, ProjectVO projectVO, CategoryVO categoryVO) {
+	public ActivityVO(int idActivity, String title, String estimatedTime, StatusEnum stats, LocalDate realtime, Integer priority, LocalDate lastModification, UserVO userVO, ProjectVO projectVO, CategoryVO categoryVO) {
 		this._id_Activity = idActivity;
 		this._title = title;
 		this._estimated_Time = estimatedTime;
@@ -77,11 +77,11 @@ public class ActivityVO implements java.io.Serializable {
 	}
 
 	@Column(name = "stats", nullable = false)
-	public Integer get_stats() {
+	public StatusEnum get_stats() {
 		return _stats;
 	}
 
-	public void set_stats(Integer _stats) {
+	public void set_stats(StatusEnum _stats) {
 		this._stats = _stats;
 	}
 

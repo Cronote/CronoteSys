@@ -100,7 +100,7 @@ public class ProjectVO implements java.io.Serializable {
 		this._finish_Date = _finish_Date;
 	}
 
-	@Column(name = "finish_date", nullable = false)
+	@Column(name = "stats", nullable = false)
 	public Integer get_stats() {
 		return _stats;
 	}

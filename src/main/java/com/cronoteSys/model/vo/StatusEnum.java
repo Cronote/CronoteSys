@@ -1,0 +1,7 @@
+package com.cronoteSys.model.vo;
+
+public enum StatusEnum {
+	
+	NOT_STARTED, NROMAL_IN_PROGRESS, NORMAL_PAUSED, NORMAL_FINALIZED,
+	BROKEN_IN_PROGRESS, BROKEN_PAUSED, BROKEN_FINALIZED;  
+}
