@@ -19,6 +19,7 @@ public class FacebookLoginController extends MasterController {
 
 	@FXML
 	private WebView web;
+	HashMap<String, String> paramMap = new HashMap<>();
 
 	@FXML
 	protected void initialize() {
@@ -40,33 +41,24 @@ public class FacebookLoginController extends MasterController {
 								return;
 							if (doc.getDocumentElement().getTextContent().contains("Success")) {
 								System.out.println(engine.getLocation());
-								getAccessToken(engine.getLocation());
+								paramMap = mapParams(engine.getLocation().split("#")[1]);
 							}
-							
+
 						}
 					}
 				});
 			}
 		});
 	}
-	
-	private String getAccessToken(String URL) {
-		String params = URL.split("#")[1];
-		HashMap<String, String> paramMap = mapParams(params);
-		
-		
-		return "";
-	}
-	
+
 	private HashMap<String, String> mapParams(String params) {
-		HashMap<String, String> paramMap = new HashMap<>();
+		HashMap<String, String> hmp = new HashMap<String, String>();
 		String[] paramsAux = params.split("&");
 		for (int i = 0; i < paramsAux.length; i++) {
-			paramMap.put(paramsAux[i].split("=")[0], paramsAux[i].split("=")[1]);
+			hmp.put(paramsAux[i].split("=")[0], paramsAux[i].split("=")[1]);
 		}
-		System.out.println(paramMap.get("access_token"));
-		
-		return paramMap;
+
+		return hmp;
 	}
 
 }
