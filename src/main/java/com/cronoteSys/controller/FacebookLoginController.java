@@ -19,7 +19,7 @@ public class FacebookLoginController extends MasterController {
 
 	@FXML
 	private WebView web;
-	HashMap<String, String> paramMap = new HashMap<>();
+	HashMap<String, String> paramMap = new HashMap<String, String>();
 
 	@FXML
 	protected void initialize() {
