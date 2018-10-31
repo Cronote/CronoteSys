@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<GridPane id="Screen" fx:id="pnlRoot" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.SignUpController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="230.0" minWidth="79.19999389648439" prefWidth="230.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="400.0" minWidth="342.0" prefWidth="342.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="482.0" prefWidth="482.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="744.0" minHeight="10.0" prefHeight="598.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <VBox prefHeight="569.0" prefWidth="355.0" GridPane.columnIndex="1">
+         <children>
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="355.0" />
+            <ScrollPane maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="541.0" prefWidth="355.0" />
+            <Pane maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="57.0" prefWidth="355.0" />
+         </children>
+      </VBox>
+      <VBox prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Pane prefHeight="355.0" prefWidth="230.0">
+               <children>
+                  <Pane fx:id="btnActivities" layoutX="-2.0" layoutY="101.0" prefHeight="44.0" prefWidth="230.0" styleClass="imputpanel">
+                     <children>
+                        <ImageView fitHeight="44.0" fitWidth="82.0" layoutX="-12.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/icon/IconActivitiesDark.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="133.0" layoutY="10.0" prefHeight="25.0" prefWidth="89.0" text="ATIVIDADES">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="btnActivities1" layoutX="-2.0" layoutY="145.0" prefHeight="44.0" prefWidth="230.0" styleClass="imputpanel">
+                     <children>
+                        <ImageView fitHeight="38.0" fitWidth="59.0" layoutX="-2.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/icon/IconProjectDark.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="147.0" layoutY="10.0" prefHeight="25.0" prefWidth="75.0" text="PROJETOS">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="btnActivities2" layoutX="-2.0" layoutY="189.0" prefHeight="44.0" prefWidth="230.0" styleClass="imputpanel">
+                     <children>
+                        <ImageView fitHeight="33.0" fitWidth="59.0" layoutX="-1.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/icon/IconReportDark.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="130.0" layoutY="10.0" prefHeight="25.0" prefWidth="96.0" text="RELATÓRIOS">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+               </children>
+            </Pane>
+            <Pane prefHeight="240.0" prefWidth="230.0" />
+            <Pane prefHeight="114.0" prefWidth="230.0" />
+         </children>
+      </VBox>
+   </children>
+</GridPane>
