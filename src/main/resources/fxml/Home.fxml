@@ -26,9 +26,9 @@
          <children>
             <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="355.0">
                <children>
-                  <Pane prefHeight="25.0" prefWidth="355.0" style="-fx-background-color: #333333;" />
+                  <Pane prefHeight="26.0" prefWidth="355.0" style="-fx-background-color: red;" />
                </children></AnchorPane>
-            <ScrollPane maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="541.0" prefWidth="355.0" />
+            <ScrollPane maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="542.0" prefWidth="341.0" />
             <Pane maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="57.0" prefWidth="355.0">
                <children>
                   <ImageView fitHeight="33.0" fitWidth="67.0" layoutX="148.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
@@ -85,7 +85,12 @@
                         </Label>
                      </children>
                   </Pane>
-                  <Pane prefHeight="25.0" prefWidth="230.0" style="-fx-background-color: #333333;" />
+                  <Pane prefHeight="26.0" prefWidth="230.0" style="-fx-background-color: #333333;" />
+                  <ImageView fitHeight="66.0" fitWidth="185.0" layoutX="34.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/cronote_logo_dark.png" />
+                     </image>
+                  </ImageView>
                </children>
             </Pane>
             <Pane prefHeight="240.0" prefWidth="230.0" />
@@ -122,5 +127,10 @@
                </children></Pane>
          </children>
       </VBox>
+      <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+         <children>
+            <Pane layoutX="1.0" prefHeight="26.0" prefWidth="494.0" style="-fx-background-color: blue;" />
+         </children>
+      </Pane>
    </children>
 </GridPane>
