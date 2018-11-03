@@ -24,9 +24,19 @@
    <children>
       <VBox prefHeight="569.0" prefWidth="355.0" GridPane.columnIndex="1">
          <children>
-            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="355.0" />
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="355.0">
+               <children>
+                  <Pane prefHeight="25.0" prefWidth="355.0" style="-fx-background-color: #333333;" />
+               </children></AnchorPane>
             <ScrollPane maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="541.0" prefWidth="355.0" />
-            <Pane maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="57.0" prefWidth="355.0" />
+            <Pane maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="57.0" prefWidth="355.0">
+               <children>
+                  <ImageView fitHeight="33.0" fitWidth="67.0" layoutX="148.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/icon/IconAddDark.png" />
+                     </image>
+                  </ImageView>
+               </children></Pane>
          </children>
       </VBox>
       <VBox prefHeight="200.0" prefWidth="100.0">
@@ -75,10 +85,41 @@
                         </Label>
                      </children>
                   </Pane>
+                  <Pane prefHeight="25.0" prefWidth="230.0" style="-fx-background-color: #333333;" />
                </children>
             </Pane>
             <Pane prefHeight="240.0" prefWidth="230.0" />
-            <Pane prefHeight="114.0" prefWidth="230.0" />
+            <Pane prefHeight="114.0" prefWidth="230.0">
+               <children>
+                  <Pane fx:id="btnActivities3" layoutY="14.0" prefHeight="44.0" prefWidth="230.0" styleClass="imputpanel">
+                     <children>
+                        <ImageView fitHeight="33.0" fitWidth="67.0" layoutX="-2.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/icon/IconConfigDark.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="93.0" layoutY="10.0" prefHeight="25.0" prefWidth="129.0" text="CONFIGURAÇÕES">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="btnActivities4" layoutY="58.0" prefHeight="44.0" prefWidth="230.0" styleClass="imputpanel">
+                     <children>
+                        <ImageView fitHeight="33.0" fitWidth="66.0" layoutX="-2.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/icon/IconInterrDark.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="171.0" layoutY="10.0" prefHeight="25.0" prefWidth="51.0" text="AJUDA" textAlignment="RIGHT">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+               </children></Pane>
          </children>
       </VBox>
    </children>
