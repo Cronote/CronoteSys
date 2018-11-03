@@ -55,11 +55,8 @@
                   </Label>
                </children>
             </Pane>
-<<<<<<< HEAD
+
             <Pane fx:id="pnlVerification" layoutX="73.0" layoutY="197.0" prefHeight="264.0" prefWidth="566.0" styleClass="imputpanel" visible="false">
-=======
-            <Pane layoutX="73.0" layoutY="202.0" prefHeight="257.0" prefWidth="566.0" styleClass="imputpanel">
->>>>>>> Victoria
                <children>
                   <Label layoutX="393.0" layoutY="56.0" text="Erros de confirmação" textFill="#333333">
                      <font>
