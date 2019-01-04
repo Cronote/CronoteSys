@@ -31,6 +31,11 @@
 	
 }
 
+.textfillwhite {
+	-fx-prompt-text-fill: #fff;
+	-fx-text-fill: #fff;
+}
+
 .error{
 	-fx-border-color: red;
 }
