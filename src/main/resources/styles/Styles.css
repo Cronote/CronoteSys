@@ -11,7 +11,9 @@
 
 #Screen {
 	
-	-fx-background-image: url(../image/background_sunrise.jpg)
+	-fx-background-image: url(../image/background_sunrise.jpg);
+	-fx-background-repeat: no-repeat ;
+	-fx-background-size: 100.0% 100.0% ;
 }
 
 .imputpanel {
