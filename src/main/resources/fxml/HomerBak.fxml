@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="pnlRoot" minHeight="700.0" minWidth="1080.0" prefHeight="700.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.SignUpController">
+<GridPane fx:id="pnlRoot" minHeight="700.0" minWidth="1080.0" prefHeight="700.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.SignUpController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="230.0" minWidth="79.19999389648439" prefWidth="230.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="400.0" minWidth="342.0" prefWidth="342.0" />
