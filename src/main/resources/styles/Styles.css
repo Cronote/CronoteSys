@@ -11,7 +11,9 @@
 
 #Screen {
 	
-	-fx-background-image: url(../image/background_sunrise.jpg)
+	-fx-background-image: url(../image/background_sunrise.jpg);
+	-fx-background-repeat: no-repeat ;
+	-fx-background-size: 100.0% 100.0% ;
 }
 
 .imputpanel {
@@ -28,6 +30,7 @@
 	-fx-border-width : 0 0 1 0;
 	-fx-background-color: transparent;
 	-fx-border-color: #333333;
+	-fx-font-size: 14;
 	
 }
 
@@ -40,7 +43,26 @@
 	-fx-border-color: red;
 }
 
-DatePicker {
-	-fx-control-inner-background: rgba(251,170,49,.8);
+.textfild:editable .arrow-button {
+	-fx-background-color: #333333; 
 }
 
+.textfild:editable .arrow-button .arrow {
+	-fx-text-fill: #fff;
+}
+
+.textfild:editable .date-picker-display-node {
+	-fx-background-color: transparent;
+	-fx-prompt-text-fill: #333;
+	-fx-text-fill: #333;
+}
+
+.scroll-pane, .viewport{
+	-fx-background-color: transparent;
+	-fx-pref-width: 100.0%;	
+}
+
+.activityCard {
+	-fx-background-radius: 15; 
+	-fx-border-radius: 15; 
+}

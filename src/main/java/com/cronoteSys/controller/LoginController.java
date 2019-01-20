@@ -5,9 +5,11 @@
  */
 package com.cronoteSys.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 import com.cronoteSys.model.bo.LoginBO;
 import com.cronoteSys.model.vo.LoginVO;
@@ -43,15 +45,23 @@ public class LoginController extends MasterController {
 	@FXML
 	private Hyperlink linkRecover;
 	private HashMap<String, Object> hmp;
+	private boolean rememberMe = true;
 
-	
 	@FXML
 	public void initialize() {
-		hmp = new HashMap<String,Object>();
+		try {
+			Properties prop = getProp();
+			txtEmail.setText(prop.getProperty("LoginScreen.username"));
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		hmp = new HashMap<String, Object>();
 		hmp.put("previewScene", "SLogin");
 		ScreenUtil.addOnChangeScreenListener(new OnChangeScreen() {
 			public void onScreenChanged(String newScreen, HashMap<String, Object> hmap) {
-				//por enquanto nada
+				// por enquanto nada
 			}
 		});
 		txtEmail.setOnKeyPressed(new javafx.event.EventHandler<KeyEvent>() {
@@ -68,15 +78,27 @@ public class LoginController extends MasterController {
 				}
 			}
 		});
-		
+
 	}
 
 	public void login(LoginVO login) {
 
 		UserVO user = new LoginBO().login(login);
 		if (user != null) {
+			if (rememberMe) {
+				try {
+					Properties prop = getProp();
+					prop.setProperty("LoginScreen.username",login.getEmail());
+					saveProp(prop);
+
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
 			System.out.println("Logou!!");
-			//TODO Desenvolver tela principal
+			// TODO Desenvolver tela principal
 		} else {
 			List<Node> lst = new ArrayList<Node>();
 			lst.add(txtEmail);
@@ -104,6 +126,6 @@ public class LoginController extends MasterController {
 			String sUsername = txtEmail.getText().trim(), sPasswd = txtPassword.getText().trim();
 			login(new LoginVO(null, sUsername, new GenHash().hashIt(sPasswd)));
 		}
-		
+
 	}
 }

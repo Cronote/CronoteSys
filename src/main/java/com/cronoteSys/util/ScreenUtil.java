@@ -79,7 +79,7 @@ public class ScreenUtil {
 			newStage.initModality(Modality.APPLICATION_MODAL);
 		}
 		notifyAllListeners(sSceneName, hashMapValues);
-		newStage.show();
+		newStage.showAndWait();
 		if (!isModal) {
 			closeOldStage(oldStage, newStage);
 
