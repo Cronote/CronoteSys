@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" prefHeight="788.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.LoginController">
+<GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" prefHeight="788.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.LoginController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="232.20003662109374" prefWidth="256.60003662109375" />
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="427.7999633789062" minWidth="351.0" prefWidth="427.7999633789062" />

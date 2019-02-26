@@ -15,21 +15,21 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane id="Screen" fx:id="pnlRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="788.0" minWidth="940.0" prefHeight="788.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.SignUpController">
+<GridPane id="Screen" fx:id="pnlRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="788.0" minWidth="940.0" prefHeight="788.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.SignUpController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="79.19999389648439" prefWidth="88.00000305175782" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="776.9999755859375" minWidth="720.7999511718751" prefWidth="763.3999969482422" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="87.20004882812498" prefWidth="87.20004882812498" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="79.19999389648439" prefWidth="254.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="432.0" prefWidth="432.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="87.20004882812498" prefWidth="254.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="256.79999389648435" minHeight="10.0" prefHeight="113.39998779296874" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="582.3999633789062" minHeight="10.0" prefHeight="553.6000122070312" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="141.60001220703123" minHeight="10.0" prefHeight="64.80002441406248" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="256.79999389648435" minHeight="10.0" prefHeight="156.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="582.3999633789062" minHeight="10.0" prefHeight="465.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="192.0" minHeight="10.0" prefHeight="167.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <AnchorPane fx:id="pnlInput" prefHeight="502.0" prefWidth="800.0" styleClass="imputpanel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+      <AnchorPane fx:id="pnlInput" prefHeight="453.0" prefWidth="432.0" styleClass="imputpanel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <children>
-            <Button fx:id="btnSignUp" layoutX="331.0" layoutY="433.0" mnemonicParsing="false" onAction="#btnSignUpClicked" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Cadastrar" textFill="WHITE">
+            <Button fx:id="btnSignUp" layoutX="145.0" layoutY="409.0" mnemonicParsing="false" onAction="#btnSignUpClicked" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Cadastrar" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
@@ -37,39 +37,27 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="btnProfile" contentDisplay="CENTER" layoutX="519.0" layoutY="143.0" mnemonicParsing="false" prefHeight="174.0" prefWidth="174.0" styleClass="btn" textFill="#cdc9c9" AnchorPane.rightAnchor="23.399999999999977">
-               <graphic>
-                  <ImageView fx:id="imgProfile" fitHeight="156.0" fitWidth="162.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../image/icon/ImgPessoal.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <TextField fx:id="txtName" alignment="TOP_LEFT" layoutX="50.0" layoutY="85.0" prefHeight="17.0" prefWidth="351.0" promptText="Nome*" styleClass="textfild">
+            <TextField fx:id="txtName" alignment="TOP_LEFT" layoutX="42.0" layoutY="82.0" prefHeight="17.0" prefWidth="351.0" promptText="Nome*" styleClass="textfild">
                <font>
                   <Font size="14.0" />
                </font>
             </TextField>
-            <TextField fx:id="txtEmail" alignment="TOP_LEFT" layoutX="49.0" layoutY="184.0" prefHeight="17.0" prefWidth="351.0" promptText="E-mail*" styleClass="textfild">
+            <TextField fx:id="txtEmail" alignment="TOP_LEFT" layoutX="41.0" layoutY="181.0" prefHeight="17.0" prefWidth="351.0" promptText="E-mail*" styleClass="textfild">
                <font>
                   <Font size="14.0" />
                </font>
             </TextField>
-            <PasswordField fx:id="txtPwd" alignment="TOP_LEFT" layoutX="49.0" layoutY="285.0" prefHeight="17.0" prefWidth="351.0" promptText="Senha*" styleClass="textfild">
+            <PasswordField fx:id="txtPwd" alignment="TOP_LEFT" layoutX="41.0" layoutY="282.0" prefHeight="17.0" prefWidth="351.0" promptText="Senha*" styleClass="textfild">
                <font>
                   <Font size="14.0" />
                </font>
             </PasswordField>
-            <PasswordField fx:id="txtConfirmPwd" alignment="TOP_LEFT" layoutX="50.0" layoutY="335.0" prefHeight="17.0" prefWidth="351.0" promptText="Digite a senha novamente*" styleClass="textfild">
+            <PasswordField fx:id="txtConfirmPwd" alignment="TOP_LEFT" layoutX="42.0" layoutY="332.0" prefHeight="17.0" prefWidth="351.0" promptText="Digite a senha novamente*" styleClass="textfild">
                <font>
                   <Font size="14.0" />
                </font>
             </PasswordField>
-            <TextField fx:id="txtSecondEmail" alignment="TOP_LEFT" layoutX="49.0" layoutY="234.0" prefHeight="31.0" prefWidth="351.0" promptText="E-mail de recuperação">
+            <TextField fx:id="txtSecondEmail" alignment="TOP_LEFT" layoutX="41.0" layoutY="231.0" prefHeight="31.0" prefWidth="351.0" promptText="E-mail de recuperação">
                <font>
                   <Font size="14.0" />
                </font>
@@ -78,8 +66,8 @@
                   <String fx:value="NotRequired" />
                </styleClass>
             </TextField>
-            <DatePicker fx:id="dateBirthday" layoutX="48.0" layoutY="143.0" prefHeight="25.0" prefWidth="351.0" promptText="Data de Nascimento*" styleClass="textfild" />
-            <Text fill="#333333d6" layoutX="181.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Criar uma nova conta" textAlignment="CENTER" wrappingWidth="410.13671875">
+            <DatePicker fx:id="dateBirthday" layoutX="40.0" layoutY="135.0" prefHeight="25.0" prefWidth="351.0" promptText="Data de Nascimento*" styleClass="textfild" />
+            <Text fill="#333333d6" layoutX="61.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Criar uma nova conta" textAlignment="CENTER" wrappingWidth="309.13671875">
                <font>
                   <Font size="22.0" />
                </font>

@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="939.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.ForgotPwdController">
+<GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="939.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.ForgotPwdController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="127.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="707.0" minWidth="10.0" prefWidth="693.0" />
@@ -29,9 +29,9 @@
    <children>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="526.0" prefWidth="689.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <Pane layoutX="73.0" layoutY="26.0" prefHeight="156.0" prefWidth="566.0" styleClass="imputpanel">
+            <Pane layoutX="73.0" layoutY="49.0" prefHeight="137.0" prefWidth="566.0" styleClass="imputpanel">
                <children>
-                  <Button fx:id="btnSend" layoutX="388.0" layoutY="98.0" mnemonicParsing="false" onAction="#btnSendClicked" opacity="0.88" prefHeight="30.0" prefWidth="91.0" text="Enviar" textFill="WHITE">
+                  <Button fx:id="btnSend" layoutX="390.0" layoutY="68.0" mnemonicParsing="false" onAction="#btnSendClicked" opacity="0.88" prefHeight="30.0" prefWidth="91.0" text="Enviar" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -43,18 +43,19 @@
                         <String fx:value="btnsize" />
                      </styleClass>
                   </Button>
-                  <TextField id="txt_email" fx:id="txtEmail" alignment="TOP_LEFT" layoutX="21.0" layoutY="98.0" prefHeight="17.0" prefWidth="351.0" promptText="E-mail*" styleClass="textfild">
+                  <TextField id="txt_email" fx:id="txtEmail" alignment="TOP_LEFT" layoutX="21.0" layoutY="67.0" prefHeight="17.0" prefWidth="351.0" promptText="E-mail*" styleClass="textfild">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </TextField>
-                  <Label layoutX="21.0" layoutY="49.0" text="Digite seu email para receber o código">
+                  <Label layoutX="21.0" layoutY="26.0" text="Digite seu email para receber o código">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
                </children>
             </Pane>
+
             <Pane fx:id="pnlVerification" layoutX="73.0" layoutY="197.0" prefHeight="264.0" prefWidth="566.0" styleClass="imputpanel" visible="false">
                <children>
                   <Label layoutX="393.0" layoutY="56.0" text="Erros de confirmação" textFill="#333333">
