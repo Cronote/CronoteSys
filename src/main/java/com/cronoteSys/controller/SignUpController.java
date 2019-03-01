@@ -26,6 +26,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 
 public class SignUpController extends MasterController {
 
@@ -72,8 +73,7 @@ public class SignUpController extends MasterController {
 		txtPwd.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!newValue) {
-					bPasswordOk = verifyPassFields(txtPwd.getText().trim(), txtConfirmPwd.getText().trim(),
-							lstPasswordNodes);
+					bPasswordOk = ScreenUtil.verifyPassFields(txtPwd.getText().trim(), txtConfirmPwd.getText().trim(), lstPasswordNodes);
 				}
 
 			}
@@ -81,25 +81,10 @@ public class SignUpController extends MasterController {
 		txtConfirmPwd.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!newValue) {
-					bPasswordOk = verifyPassFields(txtConfirmPwd.getText().trim(), txtPwd.getText().trim(),
-							lstPasswordNodes);
+					bPasswordOk = ScreenUtil.verifyPassFields(txtConfirmPwd.getText().trim(), txtPwd.getText().trim(), lstPasswordNodes);
 				}
 			}
 		});
-	}
-
-	public boolean verifyPassFields(String sPass1, String sPass2, List<Node> lstTextFields) {
-		if (!sPass1.equals(sPass2)) {
-			new ScreenUtil().addORRemoveErrorClass(lstTextFields, true);
-			JOptionPane.showMessageDialog(null, "Mensagem de falha por senhas diferentes");
-			return false;
-		}
-		new ScreenUtil().addORRemoveErrorClass(lstTextFields, false);
-		if (!new LoginBO().validatePassword(sPass1)) {
-			JOptionPane.showMessageDialog(null, "Mensagem de falha por senhas fora de formato ");
-			return false;
-		}
-		return true;
 	}
 
 	@FXML
