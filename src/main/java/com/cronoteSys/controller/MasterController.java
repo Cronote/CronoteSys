@@ -1,5 +1,10 @@
 package com.cronoteSys.controller;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 import com.cronoteSys.util.ScreenUtil;
 
 import javafx.fxml.FXML;
@@ -14,7 +19,7 @@ public class MasterController {
 	private Button btnBack;
 	@FXML
 	protected Pane pnlRoot;
-	
+
 	private String sPreviewsScene;
 
 	public void btnBackClicked() {
@@ -23,8 +28,21 @@ public class MasterController {
 
 	protected Stage getThisStage() {
 		thisStage = (Stage) pnlRoot.getScene().getWindow(); // get the stage
-																// off this screen
+															// off this screen
 		return thisStage;
+	}
+
+	public static Properties getProp() throws IOException {
+		Properties props = new Properties();
+		FileInputStream file = new FileInputStream("./application.properties");
+		props.load(file);
+		return props;
+
+	}
+
+	public static void saveProp(Properties prop)throws IOException {
+		FileOutputStream file = new FileOutputStream("./application.properties");
+		prop.store(file, "");
 	}
 
 	/**

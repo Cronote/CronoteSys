@@ -15,11 +15,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane id="Screen" fx:id="pnlRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="788.0" minWidth="940.0" prefHeight="788.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.SignUpController">
+<GridPane id="Screen" fx:id="pnlRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="788.0" minWidth="940.0" prefHeight="788.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.SignUpController">
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="359.0" minWidth="79.19999389648439" prefWidth="254.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="776.9999755859375" prefWidth="432.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="254.0" minWidth="87.20004882812498" prefWidth="254.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="79.19999389648439" prefWidth="254.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="432.0" prefWidth="432.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="87.20004882812498" prefWidth="254.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="256.79999389648435" minHeight="10.0" prefHeight="156.0" vgrow="SOMETIMES" />

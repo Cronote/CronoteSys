@@ -11,6 +11,8 @@ import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.HibernateUtil;
 
+import com.cronoteSys.model.dao.GenericsDAO;
+
 public class LoginDAO extends GenericsDAO<LoginVO, Integer> {
 
 	private Session session;
