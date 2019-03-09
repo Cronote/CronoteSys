@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="939.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.ForgotPwdController">
+<GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="939.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.ForgotPwdController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="127.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="707.0" minWidth="10.0" prefWidth="693.0" />
@@ -63,7 +63,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblErrorsIndex" layoutX="531.0" layoutY="56.0" prefHeight="20.0" prefWidth="12.0" text="0" textFill="#dd0000">
+                  <Label fx:id="lblErrorsIndex" layoutX="537.0" layoutY="56.0" prefHeight="20.0" prefWidth="12.0" text="0" textFill="#dd0000">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -81,7 +81,7 @@
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnCancel" onAction="#btnCancelClicked" layoutX="33.0" layoutY="193.0" mnemonicParsing="false" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Cancelar" textFill="WHITE">
+                  <Button fx:id="btnCancel" layoutX="33.0" layoutY="193.0" mnemonicParsing="false" onAction="#btnCancelClicked" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Cancelar" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
