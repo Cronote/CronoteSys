@@ -1,17 +1,15 @@
 package com.cronoteSys.controller;
 
 import java.util.HashMap;
-import java.util.Map;
-
-import javax.json.JsonObject;
-import javax.swing.JOptionPane;
 
 import org.w3c.dom.Document;
 
+import com.cronoteSys.test.FacebookLogin;
 import com.cronoteSys.util.GenCode;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 
+import facebook4j.FacebookException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker.State;
@@ -43,7 +41,12 @@ public class FacebookLoginController extends MasterController {
 							if (doc == null)
 								return;
 							if (doc.getDocumentElement().getTextContent().contains("Success")) {
-								mapURLParams(engine.getLocation().split("#")[1]);
+								try {
+									mapURLParams(engine.getLocation().split("#")[1]);
+								} catch (FacebookException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 							}
 							if (doc.getDocumentElement().getTextContent().contains("\"data\"")) {
 								mapJSONParams(doc.getDocumentElement().getTextContent());
@@ -56,7 +59,7 @@ public class FacebookLoginController extends MasterController {
 		});
 	}
 
-	private void mapURLParams(String params) {
+	private void mapURLParams(String params) throws FacebookException {
 		HashMap<String, String> hmp = new HashMap<String, String>();
 		String[] paramsAux = params.split("&");
 		for (int i = 0; i < paramsAux.length; i++) {
@@ -127,13 +130,26 @@ public class FacebookLoginController extends MasterController {
 
 		engine.load("https://www.facebook.com/v3.1/dialog/oauth?client_id=254397622087268"
 				+ "&redirect_uri=https://www.facebook.com/connect/login_success.html" + "&response_type=token"
-				+ "&scope=email" + "&state=" + st.concat(ds));
+			 + "&state=" + st.concat(ds));
 	}
 
-	private void checkToken(WebEngine engine) {
+	private void checkToken(WebEngine engine) throws FacebookException {
 		engine.load("https://graph.facebook.com/debug_token?input_token=" + paramMap.get("access_token")
 				+ "&access_token=254397622087268|lUuoEDdEW9RziQJkmC4OM2NdP0c");
+		
+		try {
+			FacebookLogin.login(paramMap.get("access_token").toString());
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FacebookException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println("https://graph.facebook.com/debug_token?input_token=" + paramMap.get("access_token")
 				+ "&access_token=254397622087268|lUuoEDdEW9RziQJkmC4OM2NdP0c");
+		
+		engine.load("https://graph.facebook.com/"+FacebookLogin.login(FacebookLogin.getToken()).toString()+"?fields=id,name,birthday,email&access_token="+FacebookLogin.getToken().toString());
+		System.out.println("===================\nhttps://graph.facebook.com/"+ FacebookLogin.login(paramMap.get("access_token").toString())+"?fields=id,email,name,birthday&access_token="+paramMap.get("access_token"));
 	}
 }
