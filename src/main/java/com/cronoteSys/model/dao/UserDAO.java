@@ -3,14 +3,11 @@ package com.cronoteSys.model.dao;
 import java.util.List;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 
 import com.cronoteSys.model.vo.UserVO;
-import com.cronoteSys.util.HibernateUtil;
 
 public class UserDAO extends GenericsDAO<UserVO, Integer>{
 
-    private Session session;
 
     public UserDAO() {
     	super(UserVO.class);
@@ -74,10 +71,9 @@ public class UserDAO extends GenericsDAO<UserVO, Integer>{
     }*/
 
     public List<UserVO> listAll() {
-    	session = HibernateUtil.getSessionFactory().openSession();//obtem uma sessao
     	try {
             List<UserVO> Pessoas;
-            Pessoas = session.createNativeQuery("SELECT * FROM tb_user", UserVO.class).list();
+            Pessoas = entityManager.createNativeQuery("SELECT * FROM tb_user", UserVO.class).getResultList();
             
             if (Pessoas.size() > 0) {
                 return Pessoas;

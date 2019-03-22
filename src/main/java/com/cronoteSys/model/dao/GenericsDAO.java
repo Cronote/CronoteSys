@@ -14,7 +14,7 @@ import com.cronoteSys.util.HibernateUtil;
 public abstract class GenericsDAO<T, I extends Serializable> {
 
     //Fonte preciosa https://developer.jboss.org/wiki/GenericDataAccessObjects
-    protected EntityManager entityManager;
+    protected EntityManager entityManager = HibernateUtil.getEntityManager();
 
     private Class<T> persistedClass;
 
@@ -24,7 +24,6 @@ public abstract class GenericsDAO<T, I extends Serializable> {
     protected GenericsDAO(Class<T> persistedClass) {
         this();
         this.persistedClass = persistedClass;
-        entityManager = HibernateUtil.getSessionFactory().createEntityManager();
     }
 
     public boolean save(T entity) {
