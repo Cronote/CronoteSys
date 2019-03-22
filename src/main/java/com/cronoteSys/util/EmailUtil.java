@@ -17,7 +17,7 @@ import org.apache.commons.mail.SimpleEmail;
  */
 public class EmailUtil {
 	private final String sUser = "cronotesys@gmail.com";
-	private final String sPass = "Cro12345";
+	private final String sPass = "qfkmpdycmduuzfmr";
 	private final int iSmtpPort = 465;
 	private final String sHostName = "smtp.googlemail.com";
 
