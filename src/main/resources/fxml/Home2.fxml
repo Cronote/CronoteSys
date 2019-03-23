@@ -8,13 +8,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.Home2Controller">
    <children>
       <TitledPane alignment="CENTER" animated="false" collapsible="false" contentDisplay="TEXT_ONLY" text="Home" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="945.0" prefWidth="188.0">
                <children>
-                  <Button alignment="CENTER_RIGHT" layoutX="39.0" layoutY="71.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="130.0" text="Atividades" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+                  <Button fx:id="btnActivity" onAction="#btnActivityClicked" alignment="CENTER_RIGHT" layoutX="39.0" layoutY="71.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="130.0" text="Atividades" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
                   <StackPane layoutX="20.0" layoutY="74.0" prefHeight="27.0" prefWidth="24.0">
                      <children>
                         <ImageView fitHeight="43.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
@@ -24,7 +24,7 @@
                         </ImageView>
                      </children>
                   </StackPane>
-                  <Button alignment="CENTER_RIGHT" layoutX="20.0" layoutY="118.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="130.0" text="Projetos" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+                  <Button fx:id="btnProject" onAction="#btnProjectClicked" alignment="CENTER_RIGHT" layoutX="20.0" layoutY="118.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="130.0" text="Projetos" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
                   <StackPane layoutX="22.0" layoutY="122.0" prefHeight="27.0" prefWidth="24.0">
                      <children>
                         <ImageView fitHeight="30.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
