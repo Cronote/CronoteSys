@@ -1,38 +1,49 @@
 package com.CronoteSys;
 
-import junit.framework.Test;
+import java.time.LocalDate;
+
+import org.junit.Test;
+
+import com.cronoteSys.model.dao.ActivityDAO;
+import com.cronoteSys.model.dao.CategoryDAO;
+import com.cronoteSys.model.dao.UserDAO;
+import com.cronoteSys.model.vo.ActivityVO;
+import com.cronoteSys.model.vo.CategoryVO;
+import com.cronoteSys.model.vo.StatusEnum;
+
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * Unit test for simple App.
  */
-public class AppTest 
-    extends TestCase
-{
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
-    }
+public class AppTest extends TestCase {
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
-    }
+	@Test
+	public void testInsertCategory() {
+		UserDAO userDao = new UserDAO();
+		CategoryDAO catDao = new CategoryDAO();
 
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
-    }
+		CategoryVO cat = new CategoryVO();
+		cat.set_description("Programção");
+		cat.set_userVO(userDao.find(7));
+		catDao.save(cat);
+
+	}
+
+	@Test
+	public void testInsertActivity() {
+		ActivityDAO acDao = new ActivityDAO();
+		CategoryDAO catDao = new CategoryDAO();
+
+		ActivityVO ac = new ActivityVO();
+		CategoryVO cat = catDao.find(1);
+		ac.set_categoryVO(cat);
+		ac.set_last_Modification(LocalDate.now());
+		ac.set_priority(0);
+		ac.set_stats(StatusEnum.NOT_STARTED);
+		ac.set_title("Atividade 1");
+		ac.set_userVO(cat.get_userVO());
+
+		acDao.save(ac);
+	}
 }
