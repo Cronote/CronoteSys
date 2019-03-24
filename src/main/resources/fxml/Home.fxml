@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="pnlRoot" minHeight="700.0" minWidth="1080.0" prefHeight="700.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.SignUpController">
+<GridPane fx:id="pnlRoot" minHeight="700.0" minWidth="1080.0" prefHeight="700.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.SignUpController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="232.0" minWidth="79.19999389648439" prefWidth="232.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="342.0" prefWidth="353.0" />
@@ -36,7 +36,7 @@
                               <Image url="@../image/icon/IconActivitiesDark.png" />
                            </image>
                         </ImageView>
-                        <Label layoutX="133.0" layoutY="10.0" prefHeight="25.0" prefWidth="89.0" text="ATIVIDADES">
+                        <Label layoutX="128.0" layoutY="10.0" prefHeight="25.0" prefWidth="96.0" text="ATIVIDADES">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -50,7 +50,7 @@
                               <Image url="@../image/icon/IconProjectDark.png" />
                            </image>
                         </ImageView>
-                        <Label layoutX="147.0" layoutY="10.0" prefHeight="25.0" prefWidth="75.0" text="PROJETOS">
+                        <Label layoutX="144.0" layoutY="10.0" prefHeight="25.0" prefWidth="78.0" text="PROJETOS">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -88,7 +88,7 @@
                               <Image url="@../image/icon/IconConfigDark.png" />
                            </image>
                         </ImageView>
-                        <Label layoutX="93.0" layoutY="10.0" prefHeight="25.0" prefWidth="129.0" text="CONFIGURAÇÕES">
+                        <Label layoutX="87.0" layoutY="10.0" prefHeight="25.0" prefWidth="135.0" text="CONFIGURAÇÕES">
                            <font>
                               <Font size="16.0" />
                            </font>
