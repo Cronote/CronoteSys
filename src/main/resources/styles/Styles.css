@@ -92,3 +92,7 @@
 .btnWindows:selected{
 	-fx-background-color:#f39c12;
 }
+
+.titled-pane>*.content>VBox { /* FX theme stylesheet */
+	-fx-padding: 0.0em;
+}
