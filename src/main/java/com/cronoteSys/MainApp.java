@@ -13,8 +13,9 @@ public class MainApp extends Application {
 	public void start(Stage stage) throws Exception {
 
 		System.setProperty("javax.xml.bind.JAXBContextFactory", "org.eclipse.persistence.jaxb.JAXBContextFactory");
-		new ScreenUtil().openNewWindow(null, "SLogin", false);
-//		new ScreenUtil().openNewWindow(null, "SFacebookLogin", true, null);
+				new ScreenUtil().openNewWindow(null, "Test", false);
+//				new ScreenUtil().openNewWindow(null, "SLogin", false);
+		//new ScreenUtil().openNewWindow(null, "SFacebookLogin", true, null);
 
 	}
 
