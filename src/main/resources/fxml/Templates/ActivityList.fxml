@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 
-<TitledPane alignment="CENTER" animated="false" collapsible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="353.0" styleClass="activityList" text="ATIVIDADES" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<TitledPane alignment="CENTER" animated="false" collapsible="false" maxWidth="-Infinity" maxHeight="Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="353.0" styleClass="activityList" text="ATIVIDADES" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.test.ActivityListController">
    <content>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f39c12;">
          <children>
@@ -23,7 +23,7 @@
                   </FlowPane>
                </content>
             </ScrollPane>
-            <Button fx:id="btnAddActivity" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="137.0" layoutY="624.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Button" AnchorPane.leftAnchor="137.0" AnchorPane.rightAnchor="137.0">
+            <Button fx:id="btnAddActivity" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="137.0" layoutY="624.0" mnemonicParsing="false" onAction="#btnAddActivityClicked" style="-fx-background-color: transparent;" text="Button" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="137.0" AnchorPane.rightAnchor="137.0">
                <graphic>
                   <ImageView fitHeight="33.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="true">
                      <image>

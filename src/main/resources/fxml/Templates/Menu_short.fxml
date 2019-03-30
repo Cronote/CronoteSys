@@ -8,61 +8,68 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<TitledPane alignment="CENTER" animated="false" collapsible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="80.0" styleClass="homeRootPane" text="Home" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
-   <content>
-      <VBox prefHeight="664.0" prefWidth="257.0" style="-fx-background-color: #f6e59f;">
-         <children>
-            <AnchorPane prefHeight="82.0" prefWidth="139.0" />
-            <ToggleButton contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="42.0" prefWidth="80.0" styleClass="btnWindows">
-               <graphic>
-                  <ImageView fitHeight="43.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+<TitledPane alignment="CENTER" animated="false" collapsible="false" maxHeight="Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="80.0" styleClass="homeRootPane" text="Home" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+	<content>
+		<VBox prefHeight="664.0" prefWidth="257.0" style="-fx-background-color: #f6e59f;">
+			<children>
+				<AnchorPane prefHeight="82.0" prefWidth="139.0">
+               <children>
+                  <ImageView fitHeight="69.0" fitWidth="64.0" layoutX="16.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../image/icon/IconActivitiesDark.png" />
+                        <Image url="@../../image/cronote_logo_dark_short.png" />
                      </image>
                   </ImageView>
-               </graphic>
-               <toggleGroup>
-                  <ToggleGroup fx:id="btnWindows" />
-               </toggleGroup>
-            </ToggleButton>
-            <ToggleButton contentDisplay="GRAPHIC_ONLY" layoutX="20.0" layoutY="102.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="80.0" styleClass="btnWindows" toggleGroup="$btnWindows">
-               <graphic>
-                  <ImageView fitHeight="43.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/icon/IconProjectDark.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </ToggleButton>
-            <ToggleButton contentDisplay="GRAPHIC_ONLY" layoutX="20.0" layoutY="149.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="80.0" styleClass="btnWindows" toggleGroup="$btnWindows">
-               <graphic>
-                  <ImageView fitHeight="43.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/icon/IconReportDark.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </ToggleButton>
-            <AnchorPane prefHeight="475.0" prefWidth="57.0" VBox.vgrow="ALWAYS" />
-            <ToggleButton contentDisplay="GRAPHIC_ONLY" layoutX="20.0" layoutY="176.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="80.0" styleClass="btnWindows" toggleGroup="$btnWindows">
-               <graphic>
-                  <ImageView fitHeight="43.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/icon/IconConfigDark.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </ToggleButton>
-            <ToggleButton contentDisplay="GRAPHIC_ONLY" layoutX="20.0" layoutY="618.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="80.0" styleClass="btnWindows" toggleGroup="$btnWindows">
-               <graphic>
-                  <ImageView fitHeight="43.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/icon/IconInterrDark.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </ToggleButton>
-         </children>
-      </VBox>
-   </content>
+               </children></AnchorPane>
+				<ToggleButton fx:id="btnActivity" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="53.0" prefWidth="110.0" styleClass="btnWindows">
+					<graphic>
+      						<ImageView fitHeight="43.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+      							<image>
+      								<Image url="@../../image/icon/IconActivitiesDark.png" />
+      							</image>
+      						</ImageView>
+					</graphic>
+					<toggleGroup>
+						<ToggleGroup fx:id="btnWindows" />
+					</toggleGroup>
+				</ToggleButton>
+				<ToggleButton fx:id="btnProject" contentDisplay="GRAPHIC_ONLY" layoutX="20.0" layoutY="102.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="80.0" styleClass="btnWindows" toggleGroup="$btnWindows">
+					<graphic>
+						<ImageView fitHeight="43.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+							<image>
+								<Image url="@../../image/icon/IconProjectDark.png" />
+							</image>
+						</ImageView>
+					</graphic>
+				</ToggleButton>
+				<ToggleButton fx:id="btnReport" contentDisplay="GRAPHIC_ONLY" layoutX="20.0" layoutY="149.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="80.0" styleClass="btnWindows" toggleGroup="$btnWindows">
+					<graphic>
+						<ImageView fitHeight="43.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+							<image>
+								<Image url="@../../image/icon/IconReportDark.png" />
+							</image>
+						</ImageView>
+					</graphic>
+				</ToggleButton>
+				<AnchorPane prefHeight="475.0" prefWidth="57.0" VBox.vgrow="ALWAYS" />
+				<ToggleButton contentDisplay="GRAPHIC_ONLY" layoutX="20.0" layoutY="176.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="80.0" styleClass="btnWindows" toggleGroup="$btnWindows">
+					<graphic>
+						<ImageView fitHeight="43.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+							<image>
+								<Image url="@../../image/icon/IconConfigDark.png" />
+							</image>
+						</ImageView>
+					</graphic>
+				</ToggleButton>
+				<ToggleButton contentDisplay="GRAPHIC_ONLY" layoutX="20.0" layoutY="618.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="80.0" styleClass="btnWindows" toggleGroup="$btnWindows">
+					<graphic>
+						<ImageView fitHeight="43.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+							<image>
+								<Image url="@../../image/icon/IconInterrDark.png" />
+							</image>
+						</ImageView>
+					</graphic>
+				</ToggleButton>
+			</children>
+		</VBox>
+	</content>
 </TitledPane>
