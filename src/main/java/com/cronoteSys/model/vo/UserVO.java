@@ -147,4 +147,12 @@ public class UserVO implements java.io.Serializable {
 		this.tbLogins = tbLogins;
 	}
 
+	@Override
+	public String toString() {
+		return "UserVO [idUser=" + idUser + ", completeName=" + completeName + ", birthDate=" + birthDate
+				+ ", registerDate=" + registerDate + ", emailRecover=" + emailRecover + ", stats=" + stats
+				+ ", avatarPath=" + avatarPath + ", tbLogins=" + tbLogins + "]";
+	}
+
+	
 }

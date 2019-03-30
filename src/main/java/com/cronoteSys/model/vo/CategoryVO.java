@@ -64,6 +64,13 @@ public class CategoryVO implements java.io.Serializable {
 	public void set_userVO(UserVO _userVO) {
 		this._userVO = _userVO;
 	}
+
+	@Override
+	public String toString() {
+		return "CategoryVO [_id_Category=" + _id_Category + ", _description=" + _description + ", _userVO=" + _userVO
+				+ "]";
+	}
+	
 	
 
 }
