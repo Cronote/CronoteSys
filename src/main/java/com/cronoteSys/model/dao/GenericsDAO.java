@@ -29,7 +29,7 @@ public abstract class GenericsDAO<T, I extends Serializable> {
     public boolean save(T entity) {
         EntityTransaction t = entityManager.getTransaction();
         t.begin();
-        entityManager.persist(entity);
+        entityManager.merge(entity);
         entityManager.flush();
         t.commit();
         return true;
@@ -71,11 +71,9 @@ public abstract class GenericsDAO<T, I extends Serializable> {
                 + " p WHERE p." + col + " LIKE :search");
         q.setParameter("search", search + "%");
         return q.getResultList();
-
     }
 
     public T find(I id) {
-
         return entityManager.find(persistedClass, id);
     }
 }

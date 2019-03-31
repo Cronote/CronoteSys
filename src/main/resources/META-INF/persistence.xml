@@ -12,8 +12,7 @@
 			<property name="hibernate.connection.driver_class"
 				value="com.mysql.cj.jdbc.Driver" />
 			<property name="hibernate.connection.url"
-			value="jdbc:mysql://localhost/cronote?useTimezone=true&amp;serverTimezone=UTC"/>
-
+				value="jdbc:mysql://localhost/cronote?useTimezone=true&amp;serverTimezone=UTC" />
 			<property name="hibernate.connection.username" value="root" />
 			<property name="hibernate.connection.password" value="" />
 			<property name="hibernate.connection.autocommit"

@@ -85,7 +85,7 @@ public class ActivityVO implements java.io.Serializable {
 		this._stats = _stats;
 	}
 
-	@Column(name = "real_time", nullable = false)
+	@Column(name = "real_time")
 	public LocalDate get_realtime() {
 		return _realtime;
 	}
@@ -103,7 +103,7 @@ public class ActivityVO implements java.io.Serializable {
 		this._priority = _priority;
 	}
 
-	@Column(name = "last_modification", nullable = false)
+	@Column(name = "last_modification")
 	public LocalDate get_last_Modification() {
 		return _last_Modification;
 	}
@@ -112,9 +112,8 @@ public class ActivityVO implements java.io.Serializable {
 		this._last_Modification = _last_Modification;
 	}
 	
-	@ManyToOne(targetEntity = UserVO.class)
-	@JoinColumn(name = "id_user")
-	@Fetch(FetchMode.SELECT)	
+	@ManyToOne
+	@JoinColumn(name = "id_user", referencedColumnName = "id_user")
 	public UserVO get_userVO() {
 		return _userVO;
 	}
@@ -123,8 +122,8 @@ public class ActivityVO implements java.io.Serializable {
 		this._userVO = userVO;
 	}
 	
-	@ManyToOne(targetEntity = ProjectVO.class)
-	@JoinColumn(name = "id_project")
+	@ManyToOne
+	@JoinColumn(name = "id_project", referencedColumnName = "id_project")
 	@Fetch(FetchMode.SELECT)
 	public ProjectVO get_projectVO() {
 		return _projectVO;
@@ -134,8 +133,8 @@ public class ActivityVO implements java.io.Serializable {
 		this._projectVO = projectVO;
 	}
 
-	@ManyToOne(targetEntity = CategoryVO.class)
-	@JoinColumn(name = "id_category")
+	@ManyToOne
+	@JoinColumn(name = "id_category", referencedColumnName = "id_category")
 	@Fetch(FetchMode.SELECT)
 	public CategoryVO get_categoryVO() {
 		return _categoryVO;
@@ -143,6 +142,14 @@ public class ActivityVO implements java.io.Serializable {
 
 	public void set_categoryVO(CategoryVO categoryVO) {
 		this._categoryVO = categoryVO;
+	}
+
+	@Override
+	public String toString() {
+		return "ActivityVO [_id_Activity=" + _id_Activity + ", _title=" + _title + ", _estimated_Time="
+				+ _estimated_Time + ", _stats=" + _stats + ", _realtime=" + _realtime + ", _priority=" + _priority
+				+ ", _last_Modification=" + _last_Modification + ", _userVO=" + _userVO + ", _projectVO=" + _projectVO
+				+ ", _categoryVO=" + _categoryVO + "]";
 	}
 	
 	

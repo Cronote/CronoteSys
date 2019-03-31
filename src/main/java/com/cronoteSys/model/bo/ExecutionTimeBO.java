@@ -1,28 +1,42 @@
 package com.cronoteSys.model.bo;
 
 import com.cronoteSys.model.dao.ExecutionTimeDAO;
+import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.ExecutionTimeVO;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class ExecutionTimeBO {
+	ExecutionTimeDAO execDAO;
+
 	public ExecutionTimeBO() {
-		
+		execDAO = new ExecutionTimeDAO();
 	}
-	
-	public boolean save(ExecutionTimeVO executionTimeVO) {
-		return new ExecutionTimeDAO().save(executionTimeVO);
-	}
-	
-	public void update(ExecutionTimeVO executionTimeVO) {
-		new ExecutionTimeDAO().update(executionTimeVO);
-	}
-	
+
 	public void delete(ExecutionTimeVO executionTimeVO) {
-		new ExecutionTimeDAO().delete(executionTimeVO.get_id_Execution_Time());
+		execDAO.delete(executionTimeVO.get_id_Execution_Time());
 	}
-	
-	public List<ExecutionTimeVO> listAll(){
-		return new ExecutionTimeDAO().getList();
+
+	public void startExecution(ActivityVO ac) {
+		if (execDAO.executionInProgressByUser(ac.get_userVO()) == 0) {
+			ExecutionTimeVO exec = new ExecutionTimeVO();
+			exec.set_ActivityVO(ac);
+			exec.set_start_Date(LocalDate.now());
+			execDAO.save(exec);
+		}else {
+			System.out.println("Atividades simultâneas não permitido");
+			//TODO: devolver mensagem para avisar que o usuario não pode executar atividades simultâneas
+		}
+	}
+
+	public void finishExecution(ActivityVO ac) {
+		ExecutionTimeVO executionTimeVO = execDAO.executionInProgress(ac);
+		executionTimeVO.set_finish_Date(LocalDate.now());
+		execDAO.update(executionTimeVO);
+	}
+
+	public List<ExecutionTimeVO> listAll() {
+		return execDAO.getList();
 	}
 }
