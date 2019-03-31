@@ -1,16 +1,15 @@
 package com.CronoteSys;
 
-import java.time.LocalDate;
-
 import org.junit.Test;
 
+import com.cronoteSys.model.bo.ActivityBO;
+import com.cronoteSys.model.bo.CategoryBO;
+import com.cronoteSys.model.bo.ExecutionTimeBO;
 import com.cronoteSys.model.dao.ActivityDAO;
 import com.cronoteSys.model.dao.CategoryDAO;
-import com.cronoteSys.model.dao.ExecutionTimeDAO;
 import com.cronoteSys.model.dao.UserDAO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.CategoryVO;
-import com.cronoteSys.model.vo.ExecutionTimeVO;
 import com.cronoteSys.model.vo.StatusEnum;
 
 import junit.framework.TestCase;
@@ -23,60 +22,57 @@ public class AppTest extends TestCase {
 	@Test
 	public void testInsertCategory() {
 		UserDAO userDao = new UserDAO();
-		CategoryDAO catDao = new CategoryDAO();
+		CategoryBO catBO = new CategoryBO();
 
 		CategoryVO cat = new CategoryVO();
-		cat.set_description("Programção");
+		cat.set_description("Programação");
 		cat.set_userVO(userDao.find(7));
-		catDao.save(cat);
+		catBO.save(cat);
 
 	}
 
 	@Test
 	public void testInsertActivity() {
 //		Adding an activity
-		ActivityDAO acDao = new ActivityDAO();
+		ActivityBO acBo = new ActivityBO();
 		CategoryDAO catDao = new CategoryDAO();
 
 		ActivityVO ac = new ActivityVO();
-		CategoryVO cat = catDao.find(1);
-		ac.set_categoryVO(cat);
-		ac.set_estimated_Time("zero");
-		ac.set_priority(0);
-		ac.set_stats(StatusEnum.NOT_STARTED);
+		CategoryVO cat = catDao.find(2);
 		ac.set_title("Atividade 2");
+		ac.set_categoryVO(cat);
+		ac.set_estimated_Time("30 minutos");
+		ac.set_priority(0);
 		ac.set_userVO(cat.get_userVO());
 
-		acDao.save(ac);
+		acBo.save(ac);
 	}
+
+	@Test
 	public void testStartingActivity() {
-		
-//		Starting Activity
 		ActivityDAO acDao = new ActivityDAO();
-		ExecutionTimeDAO executionTimeDAO = new ExecutionTimeDAO();
-		
+		ActivityBO acBo = new ActivityBO();
+		ExecutionTimeBO executionTimeBO = new ExecutionTimeBO();
+
 		ActivityVO activityVO = acDao.find(2);
-		ExecutionTimeVO executionTimeVO = new ExecutionTimeVO();
-		
-		executionTimeVO.set_ActivityVO(activityVO);
-				
-		executionTimeDAO.save(executionTimeVO);
-		activityVO.set_stats(StatusEnum.NORMAL_IN_PROGRESS);
-		acDao.update(activityVO);
-		
+
+		executionTimeBO.startExecution(activityVO);
+		// TODO: futuramente o status tem que ser calculado, tem 2 status para em
+		// progress
+		acBo.switchStatus(activityVO, StatusEnum.NORMAL_IN_PROGRESS);
+
 	}
-	
+
+	@Test
 	public void testPausingActivity() {
-//		Pausing Activity
+		ActivityBO acBo = new ActivityBO();
+		ExecutionTimeBO executionTimeBO = new ExecutionTimeBO();
 		ActivityDAO acDao = new ActivityDAO();
-		ExecutionTimeDAO executionTimeDAO = new ExecutionTimeDAO();
-		
+
 		ActivityVO activityVO = acDao.find(2);
-		ExecutionTimeVO executionTimeVO = executionTimeDAO.executionInProgress(activityVO);
-		
-		executionTimeVO.set_finish_Date(LocalDate.now());
-		executionTimeDAO.update(executionTimeVO);
-		activityVO.set_stats(StatusEnum.NORMAL_PAUSED);
-		acDao.update(activityVO);
+
+		executionTimeBO.finishExecution(activityVO);
+		// TODO: futuramente o status tem que ser calculado, tem 2 status para paused
+		acBo.switchStatus(activityVO, StatusEnum.NORMAL_PAUSED);
 	}
 }

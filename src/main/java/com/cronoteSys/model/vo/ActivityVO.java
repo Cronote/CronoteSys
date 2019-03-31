@@ -103,7 +103,7 @@ public class ActivityVO implements java.io.Serializable {
 		this._priority = _priority;
 	}
 
-	@Column(name = "last_modification", nullable = false)
+	@Column(name = "last_modification")
 	public LocalDate get_last_Modification() {
 		return _last_Modification;
 	}
