@@ -9,11 +9,11 @@ import com.cronoteSys.model.vo.ProjectVO;
 public class ProjectBO {
 
 	public void save(ProjectVO objProject) {
-		new ProjectDAO().save(objProject);
+		new ProjectDAO().saveOrUpdate(objProject);
 	}
 
 	public void update(ProjectVO objProject) {
-		new ProjectDAO().update(objProject);
+		new ProjectDAO().saveOrUpdate(objProject);
 	}
 
 	public void delete(ProjectVO objProject) {

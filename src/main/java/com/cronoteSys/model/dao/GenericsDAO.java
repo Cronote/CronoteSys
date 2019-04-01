@@ -9,6 +9,7 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
+import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.HibernateUtil;
 
 public abstract class GenericsDAO<T, I extends Serializable> {
@@ -26,24 +27,13 @@ public abstract class GenericsDAO<T, I extends Serializable> {
 		this.persistedClass = persistedClass;
 	}
 
-    public boolean save(T entity) {
-        EntityTransaction t = entityManager.getTransaction();
-        t.begin();
-        entityManager.merge(entity);
-        entityManager.flush();
-        t.commit();
-        return true;
-
-	}
-
-	public T update(T entity) {
+	public T saveOrUpdate(T entity) {
 		EntityTransaction t = entityManager.getTransaction();
 		t.begin();
-		entityManager.merge(entity);
+		entity = entityManager.merge(entity);
 		entityManager.flush();
 		t.commit();
 		return entity;
-
 	}
 
 	public void delete(I id) {
@@ -57,20 +47,24 @@ public abstract class GenericsDAO<T, I extends Serializable> {
 	}
 
 	public List<T> getList() {
-		return entityManager.createQuery("select c from " + persistedClass.getSimpleName()+" c").getResultList();
+		return entityManager.createQuery("select c from " + persistedClass.getSimpleName() + " c").getResultList();
 	}
 
-    public List<T> getList(String col, String search) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<T> query = builder.createQuery(persistedClass);
-        Query q = entityManager.createQuery("SELECT p FROM "
-                + persistedClass.getSimpleName()
-                + " p WHERE p." + col + " LIKE :search");
-        q.setParameter("search", search + "%");
-        return q.getResultList();
-    }
+	public List<T> getList(UserVO user) {
+		Query q = entityManager
+				.createQuery("SELECT p FROM " + persistedClass.getSimpleName() + " p WHERE p._userVO = :user");
+		q.setParameter("user", user);
+		return q.getResultList();
+	}
 
-    public T find(I id) {
-        return entityManager.find(persistedClass, id);
-    }
+	public List<T> getList(String col, String search) {
+		Query q = entityManager
+				.createQuery("SELECT p FROM " + persistedClass.getSimpleName() + " p WHERE p." + col + " LIKE :search");
+		q.setParameter("search", search + "%");
+		return q.getResultList();
+	}
+
+	public T find(I id) {
+		return entityManager.find(persistedClass, id);
+	}
 }

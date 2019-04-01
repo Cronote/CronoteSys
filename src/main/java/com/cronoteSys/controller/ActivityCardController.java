@@ -43,7 +43,7 @@ public class ActivityCardController extends Observable implements Initializable 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		lblTitle.setText(activity.get_title());
-		lblStatus.setText(activity.get_stats().toString());
+		lblStatus.setText(activity.get_stats().getDescription());
 		
 		cardRoot.setOnMouseClicked(new EventHandler<Event>() {
 

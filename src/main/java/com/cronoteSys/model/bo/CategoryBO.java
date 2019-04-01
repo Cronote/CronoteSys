@@ -11,12 +11,12 @@ public class CategoryBO {
 		
 	}
 	
-	public boolean save(CategoryVO activityVO) {
-		return new CategoryDAO().save(activityVO);
+	public CategoryVO save(CategoryVO activityVO) {
+		return new CategoryDAO().saveOrUpdate(activityVO);
 	}
 	
 	public void update(CategoryVO activityVO) {
-		new CategoryDAO().update(activityVO);
+		new CategoryDAO().saveOrUpdate(activityVO);
 	}
 	
 	public void delete(CategoryVO activityVO) {

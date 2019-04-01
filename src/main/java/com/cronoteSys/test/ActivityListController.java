@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 
 import com.cronoteSys.controller.ActivityCardController;
 import com.cronoteSys.model.bo.ActivityBO;
+import com.cronoteSys.model.bo.ActivityBO.OnActivityAddedI;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.util.ScreenUtil;
 
@@ -29,10 +30,9 @@ public class ActivityListController implements Initializable, Observer {
 	Button btnAddActivity;
 	@FXML
 	FlowPane cardsList;
-	List<ActivityVO> lst = new ArrayList<ActivityVO>();
+	List<ActivityVO> activityList = new ArrayList<ActivityVO>();
 
 	public void btnAddActivityClicked(ActionEvent e) {
-		// TODO: por hora, apenas faz o jogo de panes
 		System.out.println("hueuehue falando");
 		notifyAllListeners("", null);
 
@@ -41,20 +41,41 @@ public class ActivityListController implements Initializable, Observer {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		ActivityBO actBO = new ActivityBO();
-		lst = actBO.listAll();
-		for (ActivityVO act : lst) {
-			FXMLLoader card = loadTemplate("ActivitCard");
-			ActivityCardController acController = new ActivityCardController(act);
-			card.setController(acController);
-			acController.addObserver(this);
+		activityList = actBO.listAll();
+		renderList();
+		ActivityBO.addOnActivityAddedIListener(new OnActivityAddedI() {
+			@Override
+			public void onActivityAddedI(ActivityVO act) {
+				FXMLLoader card = makeCard(act);
+				activityList.add(0, act);
+				try {
+					cardsList.getChildren().add(0, (Node) card.load());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+
+	}
+
+	private void renderList() {
+		for (ActivityVO act : activityList) {
 			try {
-				cardsList.getChildren().add((Node) card.load());
+				cardsList.getChildren().add((Node) makeCard(act).load());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+	}
 
+	private FXMLLoader makeCard(ActivityVO act) {
+		FXMLLoader card = loadTemplate("ActivitCard");
+		ActivityCardController acController = new ActivityCardController(act);
+		card.setController(acController);
+		acController.addObserver(this);
+		return card;
 	}
 
 	private FXMLLoader loadTemplate(String template) {

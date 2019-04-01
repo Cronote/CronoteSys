@@ -23,7 +23,7 @@ public class ExecutionTimeBO {
 			ExecutionTimeVO exec = new ExecutionTimeVO();
 			exec.set_ActivityVO(ac);
 			exec.set_start_Date(LocalDate.now());
-			execDAO.save(exec);
+			execDAO.saveOrUpdate(exec);
 		}else {
 			System.out.println("Atividades simultâneas não permitido");
 			//TODO: devolver mensagem para avisar que o usuario não pode executar atividades simultâneas
@@ -33,7 +33,7 @@ public class ExecutionTimeBO {
 	public void finishExecution(ActivityVO ac) {
 		ExecutionTimeVO executionTimeVO = execDAO.executionInProgress(ac);
 		executionTimeVO.set_finish_Date(LocalDate.now());
-		execDAO.update(executionTimeVO);
+		execDAO.saveOrUpdate(executionTimeVO);
 	}
 
 	public List<ExecutionTimeVO> listAll() {

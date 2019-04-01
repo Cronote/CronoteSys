@@ -17,13 +17,13 @@ import com.cronoteSys.model.vo.UserVO;
  */
 public class UserBO {
 
-    public boolean save(UserVO user) {
+    public UserVO save(UserVO user) {
     	if(user.getRegisterDate() == null) user.setRegisterDate(new Date());
-        return new UserDAO().save(user);
+        return new UserDAO().saveOrUpdate(user);
     }
 
     public void update(UserVO user) {
-        new UserDAO().update(user);
+        new UserDAO().saveOrUpdate(user);
     }
 
 //    public boolean activateOrInactivate(UserVO user) {

@@ -2,14 +2,16 @@ package com.cronoteSys.converter;
 
 import com.cronoteSys.model.dao.CategoryDAO;
 import com.cronoteSys.model.vo.CategoryVO;
+import com.cronoteSys.model.vo.UserVO;
 
 import javafx.util.StringConverter;
 
 public class CategoryConverter extends StringConverter<CategoryVO>  {
 	CategoryDAO catDAO;
-
-	public CategoryConverter() {
+	UserVO userVO ;
+	public CategoryConverter(UserVO user ) {
 		catDAO = new CategoryDAO();
+		this.userVO = user;
 	}
 
 	@Override
@@ -20,7 +22,7 @@ public class CategoryConverter extends StringConverter<CategoryVO>  {
 
 	@Override
 	public CategoryVO fromString(String string) {
-		CategoryVO cat = catDAO.findByDescription(string);
+		CategoryVO cat = catDAO.findByDescriptionAndUser(string,userVO);
 		return cat;
 	}
 

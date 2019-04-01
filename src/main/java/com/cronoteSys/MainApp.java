@@ -10,6 +10,11 @@ import javafx.stage.Stage;
 public class MainApp extends Application {
 
 	@Override
+	public void stop() throws Exception {
+		super.stop();
+		System.exit(0);
+	}
+	@Override
 	public void start(Stage stage) throws Exception {
 
 		System.setProperty("javax.xml.bind.JAXBContextFactory", "org.eclipse.persistence.jaxb.JAXBContextFactory");

@@ -19,9 +19,10 @@ import org.hibernate.annotations.FetchMode;
 public class ActivityVO implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer _id_Activity;
 	private String _title;
+	private String _description;
 	private String _estimated_Time;
 	private StatusEnum _stats;
 	private LocalDate _realtime;
@@ -30,12 +31,13 @@ public class ActivityVO implements java.io.Serializable {
 	private UserVO _userVO;
 	private ProjectVO _projectVO;
 	private CategoryVO _categoryVO;
-	
+
 	public ActivityVO() {
-		
+
 	}
-	
-	public ActivityVO(int idActivity, String title, String estimatedTime, StatusEnum stats, LocalDate realtime, Integer priority, LocalDate lastModification, UserVO userVO, ProjectVO projectVO, CategoryVO categoryVO) {
+
+	public ActivityVO(int idActivity, String title, String estimatedTime, StatusEnum stats, LocalDate realtime,
+			Integer priority, LocalDate lastModification, UserVO userVO, ProjectVO projectVO, CategoryVO categoryVO) {
 		this._id_Activity = idActivity;
 		this._title = title;
 		this._estimated_Time = estimatedTime;
@@ -47,13 +49,14 @@ public class ActivityVO implements java.io.Serializable {
 		this._projectVO = projectVO;
 		this._categoryVO = categoryVO;
 	}
-	
+
 	@Id
 	@Column(name = "id_activity", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer get_id_Activity() {
 		return _id_Activity;
 	}
+
 	public void set_id_Activity(Integer _id_Activity) {
 		this._id_Activity = _id_Activity;
 	}
@@ -65,6 +68,15 @@ public class ActivityVO implements java.io.Serializable {
 
 	public void set_title(String _title) {
 		this._title = _title;
+	}
+
+	@Column(name = "description", nullable = true)
+	public String get_description() {
+		return _description;
+	}
+
+	public void set_description(String _description) {
+		this._description = _description;
 	}
 
 	@Column(name = "estimated_time", nullable = false)
@@ -85,7 +97,7 @@ public class ActivityVO implements java.io.Serializable {
 		this._stats = _stats;
 	}
 
-	@Column(name = "real_time")
+	@Column(name = "real_time", nullable = true)
 	public LocalDate get_realtime() {
 		return _realtime;
 	}
@@ -111,7 +123,7 @@ public class ActivityVO implements java.io.Serializable {
 	public void set_last_Modification(LocalDate _last_Modification) {
 		this._last_Modification = _last_Modification;
 	}
-	
+
 	@ManyToOne
 	@JoinColumn(name = "id_user", referencedColumnName = "id_user")
 	public UserVO get_userVO() {
@@ -121,7 +133,7 @@ public class ActivityVO implements java.io.Serializable {
 	public void set_userVO(UserVO userVO) {
 		this._userVO = userVO;
 	}
-	
+
 	@ManyToOne
 	@JoinColumn(name = "id_project", referencedColumnName = "id_project")
 	@Fetch(FetchMode.SELECT)
@@ -146,12 +158,12 @@ public class ActivityVO implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "ActivityVO [_id_Activity=" + _id_Activity + ", _title=" + _title + ", _estimated_Time="
-				+ _estimated_Time + ", _stats=" + _stats + ", _realtime=" + _realtime + ", _priority=" + _priority
-				+ ", _last_Modification=" + _last_Modification + ", _userVO=" + _userVO + ", _projectVO=" + _projectVO
-				+ ", _categoryVO=" + _categoryVO + "]";
+		return "ActivityVO [_id_Activity=" + _id_Activity + ", _title=" + _title + ", _description=" + _description
+				+ ", _estimated_Time=" + _estimated_Time + ", _stats=" + _stats + ", _realtime=" + _realtime
+				+ ", _priority=" + _priority + ", _last_Modification=" + _last_Modification + ", _userVO=" + _userVO
+				+ ", _projectVO=" + _projectVO + ", _categoryVO=" + _categoryVO + "]";
 	}
-	
-	
+
+
 
 }

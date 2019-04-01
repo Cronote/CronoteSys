@@ -73,7 +73,8 @@ public class SignUpController extends MasterController {
 		txtPwd.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!newValue) {
-					bPasswordOk = ScreenUtil.verifyPassFields(txtPwd.getText().trim(), txtConfirmPwd.getText().trim(), lstPasswordNodes);
+					bPasswordOk = ScreenUtil.verifyPassFields(txtPwd.getText().trim(), txtConfirmPwd.getText().trim(),
+							lstPasswordNodes);
 				}
 
 			}
@@ -81,7 +82,8 @@ public class SignUpController extends MasterController {
 		txtConfirmPwd.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!newValue) {
-					bPasswordOk = ScreenUtil.verifyPassFields(txtConfirmPwd.getText().trim(), txtPwd.getText().trim(), lstPasswordNodes);
+					bPasswordOk = ScreenUtil.verifyPassFields(txtConfirmPwd.getText().trim(), txtPwd.getText().trim(),
+							lstPasswordNodes);
 				}
 			}
 		});
@@ -114,10 +116,9 @@ public class SignUpController extends MasterController {
 			objUser.setCompleteName(txtName.getText().trim());
 			objUser.setEmailRecover(txtSecondEmail.getText().trim());
 			objUser.setBirthDate(dateBirthday.getValue());
-			objUser.setAvatarPath(null);// TODO Implementar a escolha de avatar
 			objUser.setStats(Byte.parseByte("1"));
 
-			if (new UserBO().save(objUser) && new LoginBO().save(objLogin)) {
+			if (new UserBO().save(objUser) != null && new LoginBO().save(objLogin) != null) {
 				JOptionPane.showMessageDialog(null, "Mensagem de sucesso");
 				new ScreenUtil().clearFields(getThisStage(), pnlInput);
 

@@ -19,12 +19,12 @@ import javax.swing.JOptionPane;
  */
 public class LoginBO {
 
-	public boolean save(LoginVO login) {
-		return new LoginDAO().save(login);
+	public LoginVO save(LoginVO login) {
+		return new LoginDAO().saveOrUpdate(login);
 	}
 
 	public void update(LoginVO login) {
-		new LoginDAO().update(login);
+		new LoginDAO().saveOrUpdate(login);
 	}
 
 	public void delete(LoginVO login) {

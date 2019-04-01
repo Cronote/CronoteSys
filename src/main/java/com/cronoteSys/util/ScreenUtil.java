@@ -14,7 +14,9 @@ import java.util.List;
 
 import com.cronoteSys.model.bo.LoginBO;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -25,6 +27,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * Class that cares about all Screen functions
@@ -43,8 +46,17 @@ public class ScreenUtil {
 	public void openNewWindow(Stage oldStage, String sSceneName, boolean isModal) {
 
 		Stage newStage = new Stage();
+
+		newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+			@Override
+			public void handle(WindowEvent event) {
+				System.out.println("asd");
+				Platform.exit();
+
+			}
+		});
 		Parent root = loadScene(sSceneName);
-		
 
 		Scene scene = new Scene(root);
 		scene.setRoot(root);
@@ -74,6 +86,15 @@ public class ScreenUtil {
 	public void openNewWindow(Stage oldStage, String sSceneName, boolean isModal,
 			HashMap<String, Object> hashMapValues) {
 		Stage newStage = new Stage();
+		newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+			@Override
+			public void handle(WindowEvent event) {
+				System.out.println("asd");
+				Platform.exit();
+
+			}
+		});
 
 		Parent root = loadScene(sSceneName);
 		Scene scene = new Scene(root);
@@ -175,24 +196,24 @@ public class ScreenUtil {
 	}
 
 	public static boolean verifyPassFields(String sPass1, String sPass2, List<Node> lstTextFields) {
-		if (sPass1.equals("")|| sPass2.equals("")) 
+		if (sPass1.equals("") || sPass2.equals(""))
 			return false;
-		
+
 		if (!new LoginBO().validatePassword(sPass1)) {
-				System.out.println("Mensagem de falha por senhas fora de formato ");
-				new ScreenUtil().addORRemoveErrorClass(lstTextFields, true);
-				return false; 
-			}
+			System.out.println("Mensagem de falha por senhas fora de formato ");
+			new ScreenUtil().addORRemoveErrorClass(lstTextFields, true);
+			return false;
+		}
 		if (!sPass1.equals(sPass2)) {
 			new ScreenUtil().addORRemoveErrorClass(lstTextFields, true);
-			System.out.println(	 "Mensagem de falha por senhas diferentes");
+			System.out.println("Mensagem de falha por senhas diferentes");
 			return false;
 		}
 		new ScreenUtil().addORRemoveErrorClass(lstTextFields, false);
 
 		return true;
 	}
-	
+
 	public void addORRemoveErrorClass(java.util.List<Node> node, boolean isAdd) {
 		for (Node n : node) {
 			if (n != null) {
@@ -222,7 +243,7 @@ public class ScreenUtil {
 			l.onScreenChanged(newScreen, hmap);
 		}
 	}
-	
+
 	public static HBox recoverRoot(Node node) {
 		while (node.getParent() != null) {
 			node = node.getParent();

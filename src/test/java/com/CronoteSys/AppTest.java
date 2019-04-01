@@ -74,5 +74,6 @@ public class AppTest extends TestCase {
 		executionTimeBO.finishExecution(activityVO);
 		// TODO: futuramente o status tem que ser calculado, tem 2 status para paused
 		acBo.switchStatus(activityVO, StatusEnum.NORMAL_PAUSED);
+		
 	}
 }
