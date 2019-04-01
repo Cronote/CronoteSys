@@ -37,7 +37,7 @@ public class ExecutionTimeVO implements java.io.Serializable {
 	}
 	
 	@Id
-	@Column(name = "id_estimated_time")
+	@Column(name = "id_execution_time")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer get_id_Execution_Time() {
 		return _id_Execution_Time;
@@ -65,9 +65,8 @@ public class ExecutionTimeVO implements java.io.Serializable {
 		this._finish_Date = _finish_Date;
 	}
 	
-	@ManyToOne(targetEntity = ActivityVO.class)
-	@JoinColumn(name = "id_Activity")
-	@Fetch(FetchMode.SELECT)
+	@ManyToOne
+	@JoinColumn(name = "id_activity", referencedColumnName = "id_activity")
 	public ActivityVO get_ActivityVO() {
 		return _ActivityVO;
 	}

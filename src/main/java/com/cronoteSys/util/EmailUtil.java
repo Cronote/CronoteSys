@@ -1,5 +1,6 @@
 package com.cronoteSys.util;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,12 +42,22 @@ public class EmailUtil {
 			email.setSubject(sSubject);
 			email.setMsg(sMessage);
 			email.addTo(sEmailTo);
-			email.send();
+			sendEmail(email);
 			return true;
 		} catch (EmailException e) {
 			e.getMessage();
 		}
 		return false;
+	}
+	
+	public void sendEmail(Email email) {
+		CompletableFuture.runAsync(() ->{
+			try {
+				email.send();
+			} catch (EmailException e) {
+				e.printStackTrace();
+			}
+		});
 	}
 
 	public boolean validateEmail(String sEmail) {

@@ -26,13 +26,13 @@ public abstract class GenericsDAO<T, I extends Serializable> {
 		this.persistedClass = persistedClass;
 	}
 
-	public boolean save(T entity) {
-		EntityTransaction t = entityManager.getTransaction();
-		t.begin();
-		entityManager.persist(entity);
-		entityManager.flush();
-		t.commit();
-		return true;
+    public boolean save(T entity) {
+        EntityTransaction t = entityManager.getTransaction();
+        t.begin();
+        entityManager.merge(entity);
+        entityManager.flush();
+        t.commit();
+        return true;
 
 	}
 
@@ -60,18 +60,17 @@ public abstract class GenericsDAO<T, I extends Serializable> {
 		return entityManager.createQuery("select c from " + persistedClass.getSimpleName()+" c").getResultList();
 	}
 
-	public List<T> getList(String col, String search) {
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<T> query = builder.createQuery(persistedClass);
-		Query q = entityManager
-				.createQuery("SELECT p FROM " + persistedClass.getSimpleName() + " p WHERE p." + col + " LIKE :search");
-		q.setParameter("search", search + "%");
-		return q.getResultList();
+    public List<T> getList(String col, String search) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> query = builder.createQuery(persistedClass);
+        Query q = entityManager.createQuery("SELECT p FROM "
+                + persistedClass.getSimpleName()
+                + " p WHERE p." + col + " LIKE :search");
+        q.setParameter("search", search + "%");
+        return q.getResultList();
+    }
 
-	}
-
-	public T find(I id) {
-
-		return entityManager.find(persistedClass, id);
-	}
+    public T find(I id) {
+        return entityManager.find(persistedClass, id);
+    }
 }
