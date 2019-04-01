@@ -19,13 +19,6 @@ create table if not exists tb_login(
     constraint FK_login_user foreign key (id_user) references tb_user(id_user)
 );
 
-create table if not exists tb_user_bussiness(
-	id_user_bussiness int not null auto_increment primary key,
-    id_user int not null,
-    
-    constraint FK_bussinessuser_user foreign key(id_user) references tb_user(id_user)
-);
-
 create table if not exists tb_category(
 	id_category int not null auto_increment primary key,
     description varchar(255) not null,
@@ -37,7 +30,7 @@ create table if not exists tb_category(
 create table if not exists tb_project(
 	id_project int not null auto_increment primary key,
     title varchar(255) not null,
-    description varchar(255) not null,
+    description varchar(255),
     last_modification timestamp not null,
     start_date timestamp not null,
     finish_date timestamp not null,
@@ -51,9 +44,9 @@ create table if not exists tb_activity(
 	id_activity int not null auto_increment primary key,
     title varchar(255) not null,
     estimated_time varchar(255) not null,
-    description varchar(255) not null,
+    description varchar(255),
     stats tinyint not null,
-    real_time timestamp not null,
+    real_time timestamp,
     priority tinyint not null,
     last_modification timestamp not null,
     id_user int not null,
@@ -68,12 +61,11 @@ create table if not exists tb_activity(
 create table if not exists tb_execution_time(
 	id_execution_time int not null auto_increment primary key,
     start_date timestamp not null,
-    finish_date timestamp not null,
+    finish_date timestamp,
     id_activity int not null,
     
     constraint FK_execution_time_activity foreign key(id_activity) references tb_activity(id_activity)
 );
-
 /*
 insert into tb_user values(null,'Bruno Cardoso Ambrosio','1998-12-11',null,null,0,null);
 select current_date();

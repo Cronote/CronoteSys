@@ -88,16 +88,15 @@ public class LoginController extends MasterController {
 			if (rememberMe) {
 				try {
 					Properties prop = getProp();
-					prop.setProperty("LoginScreen.username",login.getEmail());
+					prop.setProperty("LoginScreen.username", login.getEmail());
 					saveProp(prop);
 
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 			}
-			System.out.println("Logou!!");
+			hmp.put("user", user);
+			new ScreenUtil().openNewWindow(getThisStage(), "Test", false, hmp);
 			// TODO Desenvolver tela principal
 		} else {
 			List<Node> lst = new ArrayList<Node>();

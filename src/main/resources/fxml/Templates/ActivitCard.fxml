@@ -7,26 +7,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="105.0" prefWidth="335.0" style="-fx-background-color: green;" styleClass="activityCard" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="cardRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="105.0" prefWidth="335.0" styleClass="activityCard" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="246.0" text="ESTUDAR LÓGICA DE PROGRAMAÇÃO" wrapText="true">
+      <Label fx:id="lblTitle" layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="246.0" text="ESTUDAR LÓGICA DE PROGRAMAÇÃO" textFill="WHITE" wrapText="true">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <Label layoutX="14.0" layoutY="49.0" prefHeight="17.0" prefWidth="105.0" text="NÃO INICIADO" />
-      <ProgressBar layoutX="14.0" layoutY="76.0" prefHeight="18.0" prefWidth="276.0" progress="0.28" />
+      <Label fx:id="lblStatus" layoutX="14.0" layoutY="49.0" prefHeight="17.0" text="NÃO INICIADO" textFill="WHITE" />
+      <ProgressBar fx:id="pgbProgress" layoutX="14.0" layoutY="76.0" prefHeight="18.0" prefWidth="276.0" progress="0.28" />
       <ImageView fitHeight="19.0" fitWidth="42.0" layoutX="289.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../image/icon/IconTrashDark.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="19.0" fitWidth="34.0" layoutX="266.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../image/icon/IconEditDark.png" />
-         </image>
-      </ImageView>
-      <Label layoutX="295.0" layoutY="76.0" text="100%" />
+      <Label layoutX="295.0" layoutY="76.0" text="100%" textFill="WHITE" />
    </children>
 </AnchorPane>

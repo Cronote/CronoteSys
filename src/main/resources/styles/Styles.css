@@ -1,12 +1,12 @@
 .btn{
 	-fx-background-color: #333333;
-	-fx-background-radius: 10; 
+	-fx-background-radius: 10.0; 
 }
 
 .btnsize {
 	
-	-fx-pref-height: 26px;
-	-fx-pref-width: 141px;
+	-fx-pref-height: 26.0px;
+	-fx-pref-width: 141.0px;
 }
 
 #Screen {
@@ -17,8 +17,8 @@
 }
 
 .imputpanel {
-	 -fx-background-color: rgba(245,244,225,.5);
-	 -fx-background-radius: 10;
+	 -fx-background-color: rgba(245.0,244.0,225.0,0.5);
+	 -fx-background-radius: 10.0;
 	 /* -fx-opacity: 42%; */
 	
 }
@@ -27,10 +27,10 @@
 	
 	-fx-prompt-text-fill: #333;
 	-fx-text-fill: #333333;
-	-fx-border-width : 0 0 1 0;
+	-fx-border-width : 0.0 0.0 1.0 0.0;
 	-fx-background-color: transparent;
 	-fx-border-color: #333333;
-	-fx-font-size: 14;
+	-fx-font-size: 14.0;
 	
 }
 
@@ -61,8 +61,47 @@
 	-fx-background-color: transparent;
 	-fx-pref-width: 100.0%;	
 }
-
+/*===============Cartoes de atividade================*/
 .activityCard {
-	-fx-background-radius: 15; 
-	-fx-border-radius: 15; 
+	-fx-background-radius: 15.0; 
+	-fx-border-radius: 15.0;
+	-fx-border-color:#e59311; 
+	-fx-border-width:2.0px; 
+}
+
+.activityCard:hover {
+	-fx-cursor: HAND;
+	-fx-background-color: #ecf0f1;
+}
+.activityCard:hover>*.label {
+	-fx-text-fill:#000000;
+}
+.homeRootPane>*.title { /* FX theme stylesheet */
+	-fx-background-color:  #e5d694;
+}
+
+.activityList>*.title { /* FX theme stylesheet */
+	-fx-background-color:  #e59311;
+}
+.activityList .title .text{
+	-fx-fill: #fff;
+}
+.activityDetails>*.title { /* FX theme stylesheet */
+	-fx-background-color:   #bdc3c7;
+}
+.btnWindows{
+	-fx-background-color:transparent;
+} 
+
+.btnWindows:hover{
+	-fx-background-color:#f39c12;
+	-fx-cursor: HAND;
+}
+
+.btnWindows:selected{
+	-fx-background-color:#f39c12;
+}
+
+.titled-pane>*.content>VBox { /* FX theme stylesheet */
+	-fx-padding: 0;
 }
