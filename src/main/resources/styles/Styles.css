@@ -103,5 +103,5 @@
 }
 
 .titled-pane>*.content>VBox { /* FX theme stylesheet */
-	-fx-padding: 0.0em;
+	-fx-padding: 0;
 }

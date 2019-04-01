@@ -3,18 +3,22 @@ package com.cronoteSys.test;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.ResourceBundle;
 
+import com.cronoteSys.controller.ActivityDetailsController;
+import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.test.ActivityListController.btnAddActivityClickedI;
+import com.cronoteSys.util.ScreenUtil;
+import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -23,7 +27,7 @@ public class TestController implements Initializable {
 
 	@FXML
 	HBox root;
-
+	HashMap<String, Object> hmp;
 	private FXMLLoader loadTemplate(String template) {
 		FXMLLoader root = null;
 
@@ -49,6 +53,10 @@ public class TestController implements Initializable {
 		}
 	}
 
+	private void addNode(Node node) {
+		root.getChildren().add(node);
+	}
+
 	private Node addNode(FXMLLoader fxml) {
 		try {
 			Node node = (Node) fxml.load();
@@ -60,15 +68,23 @@ public class TestController implements Initializable {
 		}
 	}
 
-	private void addNode(Node node) {
-		root.getChildren().add((Node) node);
+	private Node FXMLLoaderToNode(FXMLLoader fxml) {
+		try {
+			return ((Node) fxml.load());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		FXMLLoader menu = loadTemplate("Menu_short");
+		FXMLLoader menu = loadTemplate("Menu_large");
 		menu.setController(new MenuController());
 		addNode(menu);
+		
+		
 		ActivityListController.addBtnAddActivityClickedListener(new btnAddActivityClickedI() {
 
 			@Override
@@ -76,10 +92,23 @@ public class TestController implements Initializable {
 				if (root.getChildren().size() > 2)
 					root.getChildren().remove(2);
 				System.out.println("hueuehue ouvindo");
-				FXMLLoader detailsFxml = loadTemplate("ThirdPanel");
-				Node nodeDetails = addNode(detailsFxml);
-				root.setHgrow(nodeDetails, Priority.ALWAYS);
+				FXMLLoader detailsFxml = loadTemplate("DetailsInserting");
+				detailsFxml.setController(new ActivityDetailsController((UserVO) hmp.get("user")));
+				Node nodeDetails = FXMLLoaderToNode(detailsFxml);
+				TitledPane titledPane = new TitledPane("DETALHES", nodeDetails);
+				titledPane.setCollapsible(false);
+				titledPane.setAlignment(Pos.CENTER);
+				titledPane.getStyleClass().add("activityDetails");
+				titledPane.setMaxHeight(Double.POSITIVE_INFINITY);
+				addNode(titledPane);
+				root.setHgrow(titledPane, Priority.ALWAYS);
 
+			}
+
+		});
+		ScreenUtil.addOnChangeScreenListener(new OnChangeScreen() {
+			public void onScreenChanged(String newScreen, HashMap<String, Object> hmap) {
+				hmp = hmap;
 			}
 		});
 

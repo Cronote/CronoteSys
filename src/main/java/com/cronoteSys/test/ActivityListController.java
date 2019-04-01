@@ -5,11 +5,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.ResourceBundle;
 
 import com.cronoteSys.controller.ActivityCardController;
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.vo.ActivityVO;
+import com.cronoteSys.util.ScreenUtil;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,8 +21,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 
-public class ActivityListController implements Initializable {
+public class ActivityListController implements Initializable, Observer {
 
 	@FXML
 	Button btnAddActivity;
@@ -40,8 +44,9 @@ public class ActivityListController implements Initializable {
 		lst = actBO.listAll();
 		for (ActivityVO act : lst) {
 			FXMLLoader card = loadTemplate("ActivitCard");
-			card.setController(new ActivityCardController(act));
-
+			ActivityCardController acController = new ActivityCardController(act);
+			card.setController(acController);
+			acController.addObserver(this);
 			try {
 				cardsList.getChildren().add((Node) card.load());
 			} catch (IOException e) {
@@ -74,6 +79,12 @@ public class ActivityListController implements Initializable {
 		for (btnAddActivityClickedI l : listeners) {
 			l.btnAddActivityClicked(newScreen, hmap);
 		}
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		HBox root = ScreenUtil.recoverRoot(btnAddActivity);
+
 	}
 
 }

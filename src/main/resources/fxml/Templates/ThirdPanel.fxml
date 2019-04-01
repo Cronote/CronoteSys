@@ -5,23 +5,18 @@
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<TitledPane alignment="CENTER" animated="false" collapsible="false" minHeight="-Infinity" minWidth="-Infinity" maxHeight="Infinity" prefHeight="700.0" prefWidth="482.0" styleClass="activityDetails" text="DETALHES" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
-   <content>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ecf0f1;">
-         <children>
-            <TextField layoutX="14.0" layoutY="34.0" prefHeight="28.0" prefWidth="439.0" text="TItulo" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
-            <TextArea layoutX="20.0" layoutY="126.0" prefHeight="135.0" prefWidth="421.0" text="Descricao" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
-            <ComboBox layoutX="20.0" layoutY="81.0" prefWidth="150.0" promptText="Categoria" />
-            <Label layoutX="20.0" layoutY="285.0" text="TEMPO ESTIMADO" />
-            <Spinner layoutX="21.0" layoutY="311.0" prefHeight="28.0" prefWidth="70.0" />
-            <ComboBox layoutX="96.0" layoutY="311.0" prefHeight="28.0" prefWidth="119.0" />
-            <Label layoutX="21.0" layoutY="368.0" text="TEMPO ESTIMADO" />
-            <Spinner layoutX="22.0" layoutY="394.0" prefHeight="28.0" prefWidth="70.0" />
-            <ComboBox layoutX="97.0" layoutY="394.0" prefHeight="28.0" prefWidth="119.0" />
-         </children>
-      </AnchorPane>
-   </content>
-</TitledPane>
+<AnchorPane style="-fx-background-color: #ecf0f1;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextField layoutX="14.0" layoutY="34.0" prefHeight="28.0" prefWidth="439.0" text="TItulo" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+      <TextArea layoutX="20.0" layoutY="126.0" prefHeight="135.0" prefWidth="421.0" text="Descricao" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+      <ComboBox layoutX="20.0" layoutY="81.0" prefWidth="150.0" promptText="Categoria" />
+      <Label layoutX="20.0" layoutY="285.0" text="TEMPO ESTIMADO" />
+      <Spinner layoutX="21.0" layoutY="311.0" prefHeight="28.0" prefWidth="70.0" />
+      <ComboBox layoutX="96.0" layoutY="311.0" prefHeight="28.0" prefWidth="119.0" />
+      <Label layoutX="21.0" layoutY="368.0" text="TEMPO ESTIMADO" />
+      <Spinner layoutX="22.0" layoutY="394.0" prefHeight="28.0" prefWidth="70.0" />
+      <ComboBox layoutX="97.0" layoutY="394.0" prefHeight="28.0" prefWidth="119.0" />
+   </children>
+</AnchorPane>
