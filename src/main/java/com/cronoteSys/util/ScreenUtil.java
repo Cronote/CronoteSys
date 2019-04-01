@@ -21,6 +21,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -43,8 +44,10 @@ public class ScreenUtil {
 
 		Stage newStage = new Stage();
 		Parent root = loadScene(sSceneName);
+		
 
 		Scene scene = new Scene(root);
+		scene.setRoot(root);
 		scene.getStylesheets().add("/styles/Styles.css");
 		newStage.setTitle("Cronote");
 		newStage.setScene(scene);
@@ -82,7 +85,7 @@ public class ScreenUtil {
 			newStage.initModality(Modality.APPLICATION_MODAL);
 		}
 		notifyAllListeners(sSceneName, hashMapValues);
-		newStage.showAndWait();
+		newStage.show();
 		if (!isModal) {
 			closeOldStage(oldStage, newStage);
 
@@ -218,5 +221,12 @@ public class ScreenUtil {
 		for (OnChangeScreen l : listeners) {
 			l.onScreenChanged(newScreen, hmap);
 		}
+	}
+	
+	public static HBox recoverRoot(Node node) {
+		while (node.getParent() != null) {
+			node = node.getParent();
+		}
+		return (HBox) node;
 	}
 }

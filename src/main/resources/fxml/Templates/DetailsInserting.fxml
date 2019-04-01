@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" style="-fx-background-color: #ecf0f1;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="14.0" layoutY="15.0" text="TÍTULO" AnchorPane.leftAnchor="14.0">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtTitle" layoutX="14.0" layoutY="38.0" prefHeight="28.0" prefWidth="439.0" text="TItulo" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+      <Label layoutX="14.0" layoutY="75.0" text="CATEGORIA" AnchorPane.leftAnchor="14.0">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="cboCategory" layoutX="14.0" layoutY="100.0" prefWidth="150.0" promptText="Categoria" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+      <Label layoutX="14.0" layoutY="139.0" text="DESCRIÇÃO - (opcional)" AnchorPane.leftAnchor="14.0">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="txtDescription" layoutX="14.0" layoutY="163.0" prefHeight="135.0" prefWidth="421.0" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+      <Label layoutX="14.0" layoutY="314.0" text="PRIORIDADE" AnchorPane.leftAnchor="14.0">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <HBox layoutX="14.0" layoutY="338.0" prefHeight="28.0" prefWidth="220.0" spacing="10.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+         <children>
+            <ToggleButton fx:id="tgbVeryLow" mnemonicParsing="false" text="MUITO BAIXA">
+               <toggleGroup>
+                  <ToggleGroup fx:id="tggPriority" />
+               </toggleGroup>
+            </ToggleButton>
+            <ToggleButton fx:id="tgbLow"  mnemonicParsing="false" text="BAIXA" toggleGroup="$tggPriority" />
+            <ToggleButton fx:id="tgbMedium" mnemonicParsing="false" selected="true" text="REGULAR" toggleGroup="$tggPriority" />
+            <ToggleButton fx:id="tgbHigh" mnemonicParsing="false" text="ALTA" toggleGroup="$tggPriority" />
+            <ToggleButton fx:id="tgbVeryHigh" contentDisplay="TEXT_ONLY" mnemonicParsing="false" text="MUITO ALTA" toggleGroup="$tggPriority" />
+         </children>
+      </HBox>
+      <Label layoutX="11.0" layoutY="379.0" text="TEMPO ESTIMADO" AnchorPane.leftAnchor="11.0">
+         <font>
+            <Font size="17.0" />
+         </font></Label>
+      <Spinner fx:id="spnEstimatedTimeNumber"  layoutX="11.0" layoutY="403.0" prefHeight="28.0" prefWidth="70.0" AnchorPane.leftAnchor="11.0" />
+      <ComboBox fx:id="cboEstimatedTimeUnity" layoutX="86.0" layoutY="403.0" prefHeight="28.0" prefWidth="119.0" AnchorPane.leftAnchor="86.0" />
+    <Button fx:id="btnSave" layoutX="406.0" layoutY="660.0" mnemonicParsing="false" text="Save" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="14.0" />
+   </children>
+</AnchorPane>
