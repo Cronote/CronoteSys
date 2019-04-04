@@ -43,6 +43,10 @@
 	-fx-border-color: red;
 }
 
+.error-label{
+	-fx-text-fill: red;
+}
+
 .textfild:editable .arrow-button {
 	-fx-background-color: #333333; 
 }

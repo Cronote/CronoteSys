@@ -165,11 +165,15 @@ public class ScreenUtil {
 
 	public void addORRemoveErrorClass(Node node, boolean isAdd) {
 		if (node != null) {
-			if (isAdd) {
-				node.getStyleClass().remove("error");
-				node.getStyleClass().add("error");
-			} else {
-				node.getStyleClass().remove("error");
+			if(!node.isVisible()) {
+				node.setVisible(true);
+			}else {
+				if (isAdd) {
+					node.getStyleClass().remove("error");
+					node.getStyleClass().add("error");
+				} else {
+					node.getStyleClass().remove("error");
+				}
 			}
 		}
 	}
@@ -196,11 +200,15 @@ public class ScreenUtil {
 	public void addORRemoveErrorClass(java.util.List<Node> node, boolean isAdd) {
 		for (Node n : node) {
 			if (n != null) {
-				if (isAdd) {
-					n.getStyleClass().remove("error");
-					n.getStyleClass().add("error");
-				} else {
-					n.getStyleClass().remove("error");
+				if(!n.isVisible()) {
+					n.setVisible(true);
+				}else {
+					if (isAdd) {
+						n.getStyleClass().remove("error");
+						n.getStyleClass().add("error");
+					} else {
+						n.getStyleClass().remove("error");
+					}
 				}
 			}
 		}
