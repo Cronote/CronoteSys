@@ -1,91 +1,145 @@
 package com.cronoteSys.controller;
 
 import java.net.URL;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.Duration;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import com.cronoteSys.converter.CategoryConverter;
+import com.cronoteSys.converter.UnityTimeEnumConverter;
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.dao.CategoryDAO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.CategoryVO;
-import com.cronoteSys.model.vo.StatusEnum;
+import com.cronoteSys.model.vo.UnityTimeEnum;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.ScreenUtil;
 
-import javafx.fxml.Initializable;
-import javafx.beans.NamedArg;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleButton;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
 
 public class ActivityDetailsController implements Initializable {
 
 	private ActivityVO activity;
+	private UserVO user;
 	@FXML
-	TextField txtTitle;
+	private TextField txtTitle;
 	@FXML
-	AnchorPane detailsRoot;
+	private AnchorPane detailsRoot;
 	@FXML
-	ComboBox<CategoryVO> cboCategory;
+	private ComboBox<CategoryVO> cboCategory;
 	@FXML
-	TextArea txtDescription;
+	private TextArea txtDescription;
 	@FXML
-	ToggleGroup tggPriority;
+	private ToggleGroup tggPriority;
 	@FXML
-	Spinner<Double> spnEstimatedTimeNumber;
+	private Spinner<Double> spnEstimatedTimeNumber;
 	@FXML
-	ComboBox<String> cboEstimatedTimeUnity;
+	private ComboBox<UnityTimeEnum> cboEstimatedTimeUnity;
 	@FXML
-	Button btnSave;
+	private Button btnSave;
+	@FXML
+	private Label lblTitle;
+	@FXML
+	private Label lblCategory;
+	@FXML
+	private Label lblDescription;
+	@FXML
+	private Label lblEstimatedTime;
+	@FXML
+	private Label lblRealTime;
+	@FXML
+	private ProgressIndicator pgiProgress;
+	@FXML
+	private Label lblStatus;
+	@FXML
+	private Label lblLastModified;
+
+	private String mode;
 
 	public ActivityDetailsController(UserVO user) {
-		this.activity = new ActivityVO();
-		activity.set_userVO(user);
+		this.user = user;
+		mode = "edit";
 	}
 
-	public ActivityDetailsController(ActivityVO act) {
+	public ActivityDetailsController(ActivityVO act, String mode) {
 		this.activity = act;
+		this.user = act.getUserVO();
+		this.mode = mode;
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		List<CategoryVO> lstCategory = new CategoryDAO().getList(activity.get_userVO());
-		ObservableList<CategoryVO> obsLstCategory = FXCollections.observableList(lstCategory);
-		cboCategory.setItems(obsLstCategory);
-		cboCategory.setConverter(new CategoryConverter(activity.get_userVO()));
-		ObservableList<String> obsLstEstimatedTimeUnity = FXCollections.observableArrayList("Horas", "Minutos");
-		cboEstimatedTimeUnity.setItems(obsLstEstimatedTimeUnity);
-		for (int i = 0; i < tggPriority.getToggles().size(); i++) {
-			tggPriority.getToggles().get(i).setUserData(i);
-		}
-		spnEstimatedTimeNumber.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 6000, 1, 1));
-		cboEstimatedTimeUnity.getSelectionModel().clearAndSelect(1);
+		initEvents();
+		initForm();
+	}
 
-		cboEstimatedTimeUnity.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				cboEstimatedTimeUnitySelectionChanged(event);
+	private void initForm() {
+		if (mode.equals("edit")) {
+			List<CategoryVO> lstCategory = new CategoryDAO().getList(user);
+			ObservableList<CategoryVO> obsLstCategory = FXCollections.observableList(lstCategory);
+			cboCategory.setConverter(new CategoryConverter(user));
+			cboCategory.setItems(obsLstCategory);
+			ObservableList<UnityTimeEnum> obsLstEstimatedTimeUnity = FXCollections
+					.observableArrayList(UnityTimeEnum.values());
+			cboEstimatedTimeUnity.setItems(obsLstEstimatedTimeUnity);
+			cboEstimatedTimeUnity.setConverter(new UnityTimeEnumConverter());
+			for (int i = 0; i < tggPriority.getToggles().size(); i++) {
+				tggPriority.getToggles().get(i).setUserData(i);
+			}
+			if (activity == null) {
+				activity = new ActivityVO();
+				activity.setUserVO(user);
+			} else {
+				txtTitle.setText(activity.getTitle());
+				cboCategory.getSelectionModel().select(activity.getCategoryVO());
 
 			}
-		});
+		} else {
+			lblTitle.setText(activity.getTitle());
+			lblCategory.setText(activity.getCategoryVO().getDescription());
+			lblDescription.setText(activity.getDescription());
+			lblLastModified.setText(activity.getLastModification().toString());
+			if (activity.getEstimatedTimeUnit().equals(UnityTimeEnum.HOURS)) {
+				lblEstimatedTime.setText(String.format("%02d " + UnityTimeEnum.HOURS.getDescription(),
+						activity.getEstimatedTime().toHours()));
+			} else {
+				lblEstimatedTime.setText(String.format("%02d " + UnityTimeEnum.MINUTES.getDescription(),
+						activity.getEstimatedTime().toMinutes()));
+			}
+			lblStatus.setText(activity.getStats().getDescription().toUpperCase());
+			lblLastModified.setText(activity.getLastModification()
+					.format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm", new Locale("pt", "BR"))));
+		}
+	}
+
+	private void initEvents() {
+		if (cboEstimatedTimeUnity != null) {
+			cboEstimatedTimeUnity.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					cboEstimatedTimeUnitySelectionChanged(event);
+
+				}
+			});
+		}
 		btnSave.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -95,8 +149,10 @@ public class ActivityDetailsController implements Initializable {
 	}
 
 	private void cboEstimatedTimeUnitySelectionChanged(ActionEvent event) {
-		String value = cboEstimatedTimeUnity.getValue();
-		if (value.equalsIgnoreCase("Minutos")) {
+		UnityTimeEnum value = cboEstimatedTimeUnity.getValue();
+		if (value == null)
+			return;
+		if (value.equals(UnityTimeEnum.MINUTES)) {
 			spnEstimatedTimeNumber.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 6000, 1, 1));
 		} else {
 			spnEstimatedTimeNumber.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 100, 0.5, 0.5));
@@ -104,18 +160,25 @@ public class ActivityDetailsController implements Initializable {
 	}
 
 	private void btnSaveClicked(ActionEvent event) {
-		activity.set_title(txtTitle.getText());
-		activity.set_categoryVO(cboCategory.getValue());
-		activity.set_description(txtDescription.getText());
-		activity.set_estimated_Time(spnEstimatedTimeNumber.getValue().toString() + cboEstimatedTimeUnity.getValue());
-		activity.set_priority(Integer.parseInt(tggPriority.getSelectedToggle().getUserData().toString()));
+		activity.setTitle(txtTitle.getText());
+		activity.setCategoryVO(cboCategory.getValue());
+		activity.setDescription(txtDescription.getText());
+		Duration d = Duration.ZERO;
+		if (cboEstimatedTimeUnity.getValue().equals(UnityTimeEnum.MINUTES)) {
+			d = Duration.ofMinutes(spnEstimatedTimeNumber.getValue().longValue());
+
+		} else {
+			d = Duration.ofHours(spnEstimatedTimeNumber.getValue().longValue());
+		}
+		activity.setEstimatedTime(d);
+		activity.setEstimatedTimeUnit(cboEstimatedTimeUnity.getValue());
+		activity.setPriority(Integer.parseInt(tggPriority.getSelectedToggle().getUserData().toString()));
 		activity = new ActivityBO().save(activity);
 		if (activity != null) {
 			new ScreenUtil().clearFields((Stage) btnSave.getScene().getWindow(), detailsRoot);
+			tggPriority.getToggles().get(2).setSelected(true);
 
 		}
 	}
 
-	
-	
 }

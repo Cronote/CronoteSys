@@ -1,6 +1,6 @@
 package com.cronoteSys.model.vo;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,113 +11,177 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 @Entity
 @Table(name = "tb_project")
 public class ProjectVO implements java.io.Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
-	private Integer _id_Project;
-	private String _title;
-	private String _description;
-	private LocalDate _last_Modification;
-	private LocalDate _start_Date;
-	private LocalDate _finish_Date;
-	private Integer _stats;
-	private UserVO _userVO;
-	
+
+	private Integer id;
+	private String title;
+	private String description;
+	private LocalDateTime lastModification;
+	private LocalDateTime startDate;
+	private LocalDateTime finishDate;
+	private Integer stats;
+	private UserVO userVO;
+
 	public ProjectVO() {
-		
+
 	}
-	
-	public ProjectVO(int idProject, String title, String description, LocalDate lastModification, LocalDate startDate, LocalDate finishDate, int stats, UserVO userVO) {
-		this._id_Project = idProject;
-		this._title = title;
-		this._description = description;
-		this._last_Modification = lastModification;
-		this._start_Date = startDate;
-		this._finish_Date = finishDate;
-		this._stats = stats;
-		this._userVO = userVO;
+
+	public ProjectVO(int idProject, String title, String description, LocalDateTime lastModification,
+			LocalDateTime startDate, LocalDateTime finishDate, int stats, UserVO userVO) {
+		this.id = idProject;
+		this.title = title;
+		this.description = description;
+		this.lastModification = lastModification;
+		this.startDate = startDate;
+		this.finishDate = finishDate;
+		this.stats = stats;
+		this.userVO = userVO;
 	}
 
 	@Id
 	@Column(name = "id_project")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Integer get_id_Project() {
-		return _id_Project;
+	public Integer getId() {
+		return id;
 	}
 
-	public void set_id_Project(Integer _id_Project) {
-		this._id_Project = _id_Project;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	@Column(name = "title", nullable = false)
-	public String get_title() {
-		return _title;
+	public String getTitle() {
+		return title;
 	}
 
-	public void set_title(String _title) {
-		this._title = _title;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	@Column(name = "description", nullable = false)
-	public String get_description() {
-		return _description;
+	@Column(name = "description", nullable = true)
+	public String getDescription() {
+		return description;
 	}
 
-	public void set_description(String _description) {
-		this._description = _description;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Column(name = "last_modification", nullable = false)
-	public LocalDate get_last_Modification() {
-		return _last_Modification;
+	public LocalDateTime getLastModification() {
+		return lastModification;
 	}
 
-	public void set_last_Modification(LocalDate _last_Modification) {
-		this._last_Modification = _last_Modification;
+	public void setLastModification(LocalDateTime lastModification) {
+		this.lastModification = lastModification;
 	}
 
 	@Column(name = "start_date", nullable = false)
-	public LocalDate get_start_Date() {
-		return _start_Date;
+	public LocalDateTime getStartDate() {
+		return startDate;
 	}
 
-	public void set_start_Date(LocalDate _start_Date) {
-		this._start_Date = _start_Date;
+	public void setStartDate(LocalDateTime startDate) {
+		this.startDate = startDate;
 	}
 
 	@Column(name = "finish_date", nullable = false)
-	public LocalDate get_finish_Date() {
-		return _finish_Date;
+	public LocalDateTime getFinishDate() {
+		return finishDate;
 	}
 
-	public void set_finish_Date(LocalDate _finish_Date) {
-		this._finish_Date = _finish_Date;
+	public void setFinishDate(LocalDateTime finishDate) {
+		this.finishDate = finishDate;
 	}
 
 	@Column(name = "stats", nullable = false)
-	public Integer get_stats() {
-		return _stats;
+	public Integer getStats() {
+		return stats;
 	}
 
-	public void set_stats(Integer _stats) {
-		this._stats = _stats;
-	}
-	
-	@ManyToOne(targetEntity = UserVO.class)
-	@JoinColumn(name = "id_user")
-	@Fetch(FetchMode.SELECT)
-	public UserVO get_userVO() {
-		return _userVO;
+	public void setStats(Integer stats) {
+		this.stats = stats;
 	}
 
-	public void set_userVO(UserVO userVO) {
-		this._userVO = userVO;
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "id_user", referencedColumnName = "id_user")
+	public UserVO getUserVO() {
+		return userVO;
+	}
+
+	public void setUserVO(UserVO userVO) {
+		this.userVO = userVO;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((finishDate == null) ? 0 : finishDate.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((lastModification == null) ? 0 : lastModification.hashCode());
+		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
+		result = prime * result + ((stats == null) ? 0 : stats.hashCode());
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		result = prime * result + ((userVO == null) ? 0 : userVO.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ProjectVO other = (ProjectVO) obj;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (finishDate == null) {
+			if (other.finishDate != null)
+				return false;
+		} else if (!finishDate.equals(other.finishDate))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (lastModification == null) {
+			if (other.lastModification != null)
+				return false;
+		} else if (!lastModification.equals(other.lastModification))
+			return false;
+		if (startDate == null) {
+			if (other.startDate != null)
+				return false;
+		} else if (!startDate.equals(other.startDate))
+			return false;
+		if (stats == null) {
+			if (other.stats != null)
+				return false;
+		} else if (!stats.equals(other.stats))
+			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
+		if (userVO == null) {
+			if (other.userVO != null)
+				return false;
+		} else if (!userVO.equals(other.userVO))
+			return false;
+		return true;
 	}
 
 }

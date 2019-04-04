@@ -44,7 +44,6 @@ public class FacebookLoginController extends MasterController {
 								try {
 									mapURLParams(engine.getLocation().split("#")[1]);
 								} catch (FacebookException e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
 							}
@@ -140,10 +139,8 @@ public class FacebookLoginController extends MasterController {
 		try {
 			FacebookLogin.login(paramMap.get("access_token").toString());
 		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FacebookException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println("https://graph.facebook.com/debug_token?input_token=" + paramMap.get("access_token")

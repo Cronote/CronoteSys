@@ -17,7 +17,7 @@ public class CategoryConverter extends StringConverter<CategoryVO>  {
 	@Override
 	public String toString(CategoryVO object) {
 
-		return object != null ? object.get_description() : null;
+		return object != null ? object.getDescription() : null;
 	}
 
 	@Override

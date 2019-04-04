@@ -6,8 +6,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.HibernateUtil;
@@ -31,7 +29,6 @@ public abstract class GenericsDAO<T, I extends Serializable> {
 		EntityTransaction t = entityManager.getTransaction();
 		t.begin();
 		entity = entityManager.merge(entity);
-		entityManager.flush();
 		t.commit();
 		return entity;
 	}
@@ -52,7 +49,7 @@ public abstract class GenericsDAO<T, I extends Serializable> {
 
 	public List<T> getList(UserVO user) {
 		Query q = entityManager
-				.createQuery("SELECT p FROM " + persistedClass.getSimpleName() + " p WHERE p._userVO = :user");
+				.createQuery("SELECT p FROM " + persistedClass.getSimpleName() + " p WHERE p.userVO = :user");
 		q.setParameter("user", user);
 		return q.getResultList();
 	}

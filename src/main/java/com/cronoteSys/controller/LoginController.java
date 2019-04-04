@@ -54,7 +54,6 @@ public class LoginController extends MasterController {
 			txtEmail.setText(prop.getProperty("LoginScreen.username"));
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		hmp = new HashMap<String, Object>();
@@ -97,7 +96,6 @@ public class LoginController extends MasterController {
 			}
 			hmp.put("user", user);
 			new ScreenUtil().openNewWindow(getThisStage(), "Test", false, hmp);
-			// TODO Desenvolver tela principal
 		} else {
 			List<Node> lst = new ArrayList<Node>();
 			lst.add(txtEmail);

@@ -1,6 +1,6 @@
 package com.cronoteSys.model.bo;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.cronoteSys.model.dao.ProjectDAO;
@@ -17,7 +17,7 @@ public class ProjectBO {
 	}
 
 	public void delete(ProjectVO objProject) {
-		int projectID = objProject.get_id_Project();
+		int projectID = objProject.getId();
 		if(projectID == 0)
 			return;
 		new ProjectDAO().delete(projectID);
@@ -25,18 +25,18 @@ public class ProjectBO {
 
 	public List<ProjectVO> listAll() {
 		List<ProjectVO> projects = new ProjectDAO().getList();
-		if(projects.get(0).get_id_Project() == 0)
+		if(projects.get(0).getId() == 0)
 			projects.remove(0);
 		return projects;
 	}
 	
 	public void lastModificationToNow(ProjectVO objProject) {
-		objProject.set_last_Modification(LocalDate.now());
+		objProject.setLastModification(LocalDateTime.now());
 		update(objProject);
 	}
 	
 	public void changeStatus(ProjectVO objProject, int status) {
-		objProject.set_stats(status);
+		objProject.setStats(status);
 		update(objProject);
 	}
 }

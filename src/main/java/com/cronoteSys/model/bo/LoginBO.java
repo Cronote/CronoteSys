@@ -5,13 +5,11 @@
  */
 package com.cronoteSys.model.bo;
 
+import java.util.List;
+
 import com.cronoteSys.model.dao.LoginDAO;
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.UserVO;
-import com.cronoteSys.util.GenHash;
-
-import java.util.List;
-import javax.swing.JOptionPane;
 
 /**
  *

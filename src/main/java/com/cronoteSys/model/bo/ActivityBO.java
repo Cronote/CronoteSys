@@ -1,14 +1,13 @@
 package com.cronoteSys.model.bo;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import com.cronoteSys.model.dao.ActivityDAO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.StatusEnum;
-import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
+import com.cronoteSys.model.vo.UserVO;
 
 public class ActivityBO {
 	ActivityDAO acDAO;
@@ -18,10 +17,10 @@ public class ActivityBO {
 	}
 
 	public ActivityVO save(ActivityVO activityVO) {
-		if (activityVO.get_id_Activity() == null) {
-			activityVO.set_stats(StatusEnum.NOT_STARTED);
+		if (activityVO.getId() == null) {
+			activityVO.setStats(StatusEnum.NOT_STARTED);
 		}
-		activityVO.set_last_Modification(LocalDate.now());
+		activityVO.setLastModification(LocalDateTime.now());
 		activityVO = acDAO.saveOrUpdate(activityVO);
 		notifyAllListeners(activityVO);
 		return activityVO;
@@ -32,16 +31,16 @@ public class ActivityBO {
 	}
 
 	public void delete(ActivityVO activityVO) {
-		acDAO.delete(activityVO.get_id_Activity());
+		acDAO.delete(activityVO.getId());
 	}
 
 	public void switchStatus(ActivityVO ac, StatusEnum stats) {
-		ac.set_stats(stats);
+		ac.setStats(stats);
 		acDAO.saveOrUpdate(ac);
 	}
 
-	public List<ActivityVO> listAll() {
-		return acDAO.getList();
+	public List<ActivityVO> listAllByUser(UserVO user) {
+		return acDAO.getList(user);
 	}
 
 	private static ArrayList<OnActivityAddedI> listeners = new ArrayList<OnActivityAddedI>();

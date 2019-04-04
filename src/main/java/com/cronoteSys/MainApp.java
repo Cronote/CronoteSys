@@ -1,7 +1,6 @@
 
 package com.cronoteSys;
 
-import com.cronoteSys.test.FacebookLogin;
 import com.cronoteSys.util.ScreenUtil;
 
 import javafx.application.Application;
@@ -17,7 +16,6 @@ public class MainApp extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 
-		System.setProperty("javax.xml.bind.JAXBContextFactory", "org.eclipse.persistence.jaxb.JAXBContextFactory");
 //		new ScreenUtil().openNewWindow(null, "Test", false);
 		new ScreenUtil().openNewWindow(stage, "SLogin", false);
 		// new ScreenUtil().openNewWindow(null, "SFacebookLogin", true, null);

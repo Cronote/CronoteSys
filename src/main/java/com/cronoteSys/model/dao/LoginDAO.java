@@ -4,13 +4,9 @@ import java.util.List;
 
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.UserVO;
-import com.cronoteSys.util.HibernateUtil;
-
-import com.cronoteSys.model.dao.GenericsDAO;
 
 public class LoginDAO extends GenericsDAO<LoginVO, Integer> {
 

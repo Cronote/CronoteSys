@@ -1,13 +1,13 @@
-package com.cronoteSys.test;
+package com.cronoteSys.controller;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import com.cronoteSys.controller.ActivityDetailsController;
+import com.cronoteSys.controller.ActivityListController.btnAddActivityClickedI;
+import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.UserVO;
-import com.cronoteSys.test.ActivityListController.btnAddActivityClickedI;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 
@@ -23,11 +23,110 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
-public class TestController implements Initializable {
+public class HomeController implements Initializable {
 
 	@FXML
-	HBox root;
-	HashMap<String, Object> hmp;
+	protected HBox root;
+	private HashMap<String, Object> hmp;
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		FXMLLoader menu = loadTemplate("Menu_large");
+		menu.setController(new MenuController());
+		addNode(menu);
+
+		ActivityListController.addBtnAddActivityClickedListener(new btnAddActivityClickedI() {
+			@Override
+			public void btnAddActivityClicked(HashMap<String, Object> hmap) {
+				if (root.getChildren().size() > 2)
+					root.getChildren().remove(2);
+				FXMLLoader detailsFxml = loadTemplate("DetailsInserting");
+				if (hmap == null) {
+					detailsFxml.setController(new ActivityDetailsController((UserVO) hmp.get("user")));
+				} else {
+					String action = (String) hmap.get("action");
+					ActivityVO activity = (ActivityVO) hmap.get("activity");
+					if (action.equalsIgnoreCase("view")) {
+						detailsFxml = loadTemplate("ActivityDetailsView");
+					}
+					detailsFxml.setController(new ActivityDetailsController(activity, action));
+				}
+				System.out.println("tadam");
+				Node nodeDetails = FXMLLoaderToNode(detailsFxml);
+				TitledPane titledPane = new TitledPane("DETALHES", nodeDetails);
+				titledPane.setCollapsible(false);
+				titledPane.setAlignment(Pos.CENTER);
+				titledPane.getStyleClass().add("activityDetails");
+				titledPane.setMaxHeight(Double.POSITIVE_INFINITY);
+				addNode(titledPane);
+				HBox.setHgrow(titledPane, Priority.ALWAYS);
+			}
+		});
+		ScreenUtil.addOnChangeScreenListener(new OnChangeScreen() {
+			public void onScreenChanged(String newScreen, HashMap<String, Object> hmap) {
+				hmp = hmap;
+			}
+		});
+
+	}
+
+	class MenuController implements Initializable {
+		@FXML
+		private ToggleButton btnActivity;
+		@FXML
+		private ToggleButton btnProject;
+		@FXML
+		private ToggleButton btnReport;
+
+		public void btnActivityClicked(ActionEvent e) {
+			clearRoot(false, (Node) e.getSource());
+			if (btnActivity.isSelected()) {
+				FXMLLoader p = loadTemplate("ActivityList");
+				p.setController(new ActivityListController((UserVO) hmp.get("user")));
+				try {
+					root.getChildren().addAll((Node) p.load());
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+
+		public void btnProjectClicked(ActionEvent e) {
+			// TODO: implementar
+			clearRoot(false, (Node) e.getSource());
+		}
+
+		public void btnReportClicked(ActionEvent e) {
+			// TODO: implementar
+			clearRoot(false, (Node) e.getSource());
+		}
+
+		@Override
+		public void initialize(URL location, ResourceBundle resources) {
+			btnActivity.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					btnActivityClicked(event);
+
+				}
+			});
+			btnProject.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					btnProjectClicked(event);
+
+				}
+			});
+			btnReport.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					btnReportClicked(event);
+
+				}
+			});
+		}
+	}
+
 	private FXMLLoader loadTemplate(String template) {
 		FXMLLoader root = null;
 
@@ -72,103 +171,8 @@ public class TestController implements Initializable {
 		try {
 			return ((Node) fxml.load());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
 	}
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		FXMLLoader menu = loadTemplate("Menu_large");
-		menu.setController(new MenuController());
-		addNode(menu);
-		
-		
-		ActivityListController.addBtnAddActivityClickedListener(new btnAddActivityClickedI() {
-
-			@Override
-			public void btnAddActivityClicked(String newScreen, HashMap<String, Object> hmap) {
-				if (root.getChildren().size() > 2)
-					root.getChildren().remove(2);
-				System.out.println("hueuehue ouvindo");
-				FXMLLoader detailsFxml = loadTemplate("DetailsInserting");
-				detailsFxml.setController(new ActivityDetailsController((UserVO) hmp.get("user")));
-				Node nodeDetails = FXMLLoaderToNode(detailsFxml);
-				TitledPane titledPane = new TitledPane("DETALHES", nodeDetails);
-				titledPane.setCollapsible(false);
-				titledPane.setAlignment(Pos.CENTER);
-				titledPane.getStyleClass().add("activityDetails");
-				titledPane.setMaxHeight(Double.POSITIVE_INFINITY);
-				addNode(titledPane);
-				root.setHgrow(titledPane, Priority.ALWAYS);
-
-			}
-
-		});
-		ScreenUtil.addOnChangeScreenListener(new OnChangeScreen() {
-			public void onScreenChanged(String newScreen, HashMap<String, Object> hmap) {
-				hmp = hmap;
-			}
-		});
-
-	}
-
-	class MenuController implements Initializable {
-		@FXML
-		ToggleButton btnActivity;
-		@FXML
-		ToggleButton btnProject;
-		@FXML
-		ToggleButton btnReport;
-
-		public void btnActivityClicked(ActionEvent e) {
-			clearRoot(false, (Node) e.getSource());
-			if (btnActivity.isSelected()) {
-				FXMLLoader p = loadTemplate("ActivityList");
-				try {
-					root.getChildren().addAll((Node) p.load());
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		}
-
-		public void btnProjectClicked(ActionEvent e) {
-			// TODO: implementar
-			clearRoot(false, (Node) e.getSource());
-		}
-
-		public void btnReportClicked(ActionEvent e) {
-			// TODO: implementar
-			clearRoot(false, (Node) e.getSource());
-		}
-
-		@Override
-		public void initialize(URL location, ResourceBundle resources) {
-			btnActivity.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					btnActivityClicked(event);
-
-				}
-			});
-			btnProject.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					btnProjectClicked(event);
-
-				}
-			});
-			btnReport.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					btnReportClicked(event);
-
-				}
-			});
-		}
-	}
-
 }

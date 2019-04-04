@@ -16,15 +16,21 @@ import com.cronoteSys.model.vo.UserVO;
  * @author bruno
  */
 public class UserBO {
+	private UserDAO userDao;
 
-    public UserVO save(UserVO user) {
-    	if(user.getRegisterDate() == null) user.setRegisterDate(new Date());
-        return new UserDAO().saveOrUpdate(user);
-    }
+	public UserBO() {
+		userDao = new UserDAO();
+	}
 
-    public void update(UserVO user) {
-        new UserDAO().saveOrUpdate(user);
-    }
+	public UserVO save(UserVO user) {
+		if (user.getRegisterDate() == null) user.setRegisterDate(new Date());
+		user = userDao.saveOrUpdate(user);
+		return user;
+	}
+
+	public void update(UserVO user) {
+		userDao.saveOrUpdate(user);
+	}
 
 //    public boolean activateOrInactivate(UserVO user) {
 //        if (user.getStats() == 1) { //ativado
@@ -35,13 +41,13 @@ public class UserBO {
 //        return new UserDAO().update(user);
 //    }
 
-    public void delete(UserVO user) {
-        new UserDAO().delete(user.getIdUser());
+	public void delete(UserVO user) {
+		userDao.delete(user.getIdUser());
 
-    }
+	}
 
-    public List<UserVO> listAll() {
-        return new UserDAO().listAll();
+	public List<UserVO> listAll() {
+		return userDao.listAll();
 
-    }
+	}
 }

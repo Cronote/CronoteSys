@@ -20,7 +20,7 @@ public class CategoryBO {
 	}
 	
 	public void delete(CategoryVO activityVO) {
-		new CategoryDAO().delete(activityVO.get_id_Category());
+		new CategoryDAO().delete(activityVO.getId());
 	}
 	
 	public List<CategoryVO> listAll(){
