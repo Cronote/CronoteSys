@@ -165,8 +165,12 @@ public class ScreenUtil {
 
 	public void addORRemoveErrorClass(Node node, boolean isAdd) {
 		if (node != null) {
-			if(!node.isVisible()) {
-				node.setVisible(true);
+			if(node.getStyleClass().contains("hide")) {
+				node.getStyleClass().remove("hide");
+				node.getStyleClass().add("show");
+			}else if(node.getStyleClass().contains("show")){
+				node.getStyleClass().remove("show");
+				node.getStyleClass().add("hide");
 			}else {
 				if (isAdd) {
 					node.getStyleClass().remove("error");
@@ -178,12 +182,15 @@ public class ScreenUtil {
 		}
 	}
 
-	public static boolean verifyPassFields(String sPass1, String sPass2, List<Node> lstTextFields) {
+	public static boolean verifyPassFields(String sPass1, String sPass2, List<Node> lstTextFields, List<Node> lstLabel) {
 		if (sPass1.equals("")|| sPass2.equals("")) 
 			return false;
 		
 		if (!new LoginBO().validatePassword(sPass1)) {
-				System.out.println("Mensagem de falha por senhas fora de formato ");
+				lstLabel.get(0).getStyleClass().remove("hide");
+				lstLabel.get(0).getStyleClass().add("show");
+				lstLabel.get(1).getStyleClass().remove("hide");
+				lstLabel.get(1).getStyleClass().add("show");
 				new ScreenUtil().addORRemoveErrorClass(lstTextFields, true);
 				return false; 
 			}
@@ -200,8 +207,12 @@ public class ScreenUtil {
 	public void addORRemoveErrorClass(java.util.List<Node> node, boolean isAdd) {
 		for (Node n : node) {
 			if (n != null) {
-				if(!n.isVisible()) {
-					n.setVisible(true);
+				if(n.getStyleClass().contains("hide")) {
+					n.getStyleClass().remove("hide");
+					n.getStyleClass().add("show");
+				}else if(n.getStyleClass().contains("show")){
+					n.getStyleClass().remove("show");
+					n.getStyleClass().add("hide");
 				}else {
 					if (isAdd) {
 						n.getStyleClass().remove("error");

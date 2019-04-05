@@ -43,10 +43,6 @@
 	-fx-border-color: red;
 }
 
-.error-label{
-	-fx-text-fill: red;
-}
-
 .textfild:editable .arrow-button {
 	-fx-background-color: #333333; 
 }
@@ -108,4 +104,16 @@
 
 .titled-pane>*.content>VBox { /* FX theme stylesheet */
 	-fx-padding: 0;
+}
+
+.error-color{
+	-fx-text-fill: red;
+}
+
+.hide{
+	visibility: hidden;	
+}
+
+.show{
+	visibility: visible;
 }
