@@ -46,6 +46,14 @@ public class ForgotPwdController extends MasterController {
 	private Label lblErrorsIndex;
 	@FXML
 	private Pane pnlVerification;
+	@FXML
+	private Label lblEmailSend;
+	@FXML
+	private Label lblCode;
+	@FXML
+	private Label lblNewPwd;
+	@FXML
+	private Label lblConfirmPwd;
 
 	private String sVerificationCode;
 	private boolean bPasswordOk;
@@ -68,7 +76,10 @@ public class ForgotPwdController extends MasterController {
 		txtPwd.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!newValue) {
-					bPasswordOk = ScreenUtil.verifyPassFields(txtPwd.getText().trim(), txtConfirmPwd.getText().trim(), lst);
+					List<Node> lstLabel = new ArrayList<Node>();
+					lstLabel.add(lblNewPwd);
+					lstLabel.add(lblConfirmPwd);
+					bPasswordOk = ScreenUtil.verifyPassFields(txtPwd.getText().trim(), txtConfirmPwd.getText().trim(), lst, lstLabel);
 				}
 
 			}
@@ -76,7 +87,10 @@ public class ForgotPwdController extends MasterController {
 		txtConfirmPwd.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!newValue) {
-					bPasswordOk = ScreenUtil.verifyPassFields(txtConfirmPwd.getText().trim(), txtPwd.getText().trim(), lst);
+					List<Node> lstLabel = new ArrayList<Node>();
+					lstLabel.add(lblNewPwd);
+					lstLabel.add(lblConfirmPwd);
+					bPasswordOk = ScreenUtil.verifyPassFields(txtConfirmPwd.getText().trim(), txtPwd.getText().trim(), lst, lstLabel);
 				}
 			}
 		});
@@ -97,16 +111,24 @@ public class ForgotPwdController extends MasterController {
 
 	@FXML
 	public void btnSendClicked() {
+		lblEmailSend.getStyleClass().remove("show");
+		lblEmailSend.getStyleClass().add("hide");
 		if (new ScreenUtil().isFilledFields(getThisStage(), pnlRoot)) {
 			String email = txtEmail.getText().trim();
 			if (!new EmailUtil().validateEmail(email)) { // Email em formato valido
-				JOptionPane.showMessageDialog(null, "Mensagem de falha por email inválido");
+				lblEmailSend.setText("Email invalido");
+				lblEmailSend.getStyleClass().remove("hide");
+				lblEmailSend.getStyleClass().add("show");
+//				JOptionPane.showMessageDialog(null, "Mensagem de falha por email inválido");
 				return;
 			}
 
 			objLogin = new LoginBO().loginExists(email);
 			if (objLogin == null) {// Conta com este email n existe
-				JOptionPane.showMessageDialog(null, "Mensagem de falha por n existir conta com esse email");
+				lblEmailSend.setText("Email não existe");
+				lblEmailSend.getStyleClass().remove("hide");
+				lblEmailSend.getStyleClass().add("show");
+//				JOptionPane.showMessageDialog(null, "Mensagem de falha por n existir conta com esse email");
 				return;
 			}
 
@@ -118,12 +140,19 @@ public class ForgotPwdController extends MasterController {
 			} catch (EmailException e) {
 				e.printStackTrace();
 			}
-			pnlVerification.setVisible(bEmailSent);
+			if(bEmailSent) {
+				pnlVerification.getStyleClass().remove("hide");
+				pnlVerification.getStyleClass().add("show");
+			}
+//			pnlVerification.setVisible(bEmailSent);
 		}
 	}
 
 	@FXML
 	public void btnConfirmClicked() {
+		lblCode.getStyleClass().remove("show");
+		lblCode.getStyleClass().add("hide");
+		txtCode.getStyleClass().remove("error");
 		if (!new ScreenUtil().isFilledFields(getThisStage(), pnlRoot)) {
 			return;
 		}
@@ -143,6 +172,9 @@ public class ForgotPwdController extends MasterController {
 			int iAttempt = Integer.parseInt(lblErrorsIndex.getText());
 			iAttempt++;
 			lblErrorsIndex.setText(String.valueOf(iAttempt));
+			txtCode.getStyleClass().add("error");
+			lblCode.getStyleClass().remove("hide");
+			lblCode.getStyleClass().add("show");
 			if (iAttempt > 2) {
 				JOptionPane.showMessageDialog(null, "Mensagem de falha por estourar numero de tentativas");
 				resetScreen();

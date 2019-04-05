@@ -56,8 +56,8 @@
          <font>
             <Font size="17.0" />
          </font></Label>
-      <Spinner fx:id="spnEstimatedTimeNumber" layoutX="11.0" layoutY="403.0" prefHeight="28.0" prefWidth="70.0" AnchorPane.leftAnchor="14.0" />
       <ComboBox fx:id="cboEstimatedTimeUnity" layoutX="86.0" layoutY="403.0" prefHeight="28.0" prefWidth="196.0" promptText="Selecione uma unidade" AnchorPane.leftAnchor="95.0" />
+      <Spinner fx:id="spnEstimatedTimeNumber" layoutX="11.0" layoutY="403.0" prefHeight="28.0" prefWidth="70.0" AnchorPane.leftAnchor="14.0" />
     <Button fx:id="btnSave" contentDisplay="GRAPHIC_ONLY" layoutX="416.0" layoutY="657.0" mnemonicParsing="false" text="Save" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0">
          <graphic>
             <ImageView fitHeight="19.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">

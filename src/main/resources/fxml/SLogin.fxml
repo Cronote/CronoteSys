@@ -70,8 +70,8 @@
                   <Font size="14.0" />
                </font>
             </Hyperlink>
-            <Label fx:id="lblEmail" layoutX="37.0" layoutY="228.0" prefHeight="17.0" prefWidth="351.0" text="Email não encontrado" textFill="RED" visible="false" />
-            <Label fx:id="lblPassword" layoutX="37.0" layoutY="279.0" prefHeight="17.0" prefWidth="351.0" text="Senha inserida incorretamente" textFill="RED" visible="false" />
+            <Label fx:id="lblEmail" layoutX="37.0" layoutY="228.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Email não encontrado" textFill="RED" />
+            <Label fx:id="lblPassword" layoutX="37.0" layoutY="279.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Senha inserida incorretamente" textFill="RED" />
          </children>
       </AnchorPane>
    </children>

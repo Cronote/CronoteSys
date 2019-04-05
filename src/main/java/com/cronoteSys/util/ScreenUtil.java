@@ -153,9 +153,7 @@ public class ScreenUtil {
 				continue;
 			if (node.getStyleClass().contains("NotRequired"))
 				continue;
-			if (node instanceof Pane) {
-				return isFilledFields(oldStage, (Pane)node);
-			}
+
 			if (node instanceof TextInputControl) {
 				if (((TextInputControl) node).getText().trim().equals("")) {
 					node.requestFocus();
@@ -166,6 +164,7 @@ public class ScreenUtil {
 				}
 			}
 			if (node instanceof ComboBox<?>) {
+				System.out.println("Combo value " + ((ComboBox<?>) node).getValue());
 				if (((ComboBox<?>) node).getSelectionModel().isEmpty()) {
 					node.requestFocus();
 					addORRemoveErrorClass(node, true);
@@ -192,7 +191,19 @@ public class ScreenUtil {
 					return false;
 				}
 			}
+			if (node instanceof ToggleButton) {
 
+				if (((ToggleButton) node).getToggleGroup().getSelectedToggle() == null) {
+					node.requestFocus();
+					addORRemoveErrorClass(node, true);
+					return false;
+				} else {
+					addORRemoveErrorClass(node, false);
+				}
+			}
+			if (node instanceof Pane) {
+				isFilledFields(oldStage, (Pane) node);
+			}
 		}
 		return true;
 	}
@@ -214,8 +225,12 @@ public class ScreenUtil {
 
 	public void addORRemoveErrorClass(Node node, boolean isAdd) {
 		if (node != null) {
-			if (!node.isVisible()) {
-				node.setVisible(true);
+			if (node.getStyleClass().contains("hide")) {
+				node.getStyleClass().remove("hide");
+				node.getStyleClass().add("show");
+			} else if (node.getStyleClass().contains("show")) {
+				node.getStyleClass().remove("show");
+				node.getStyleClass().add("hide");
 			} else {
 				if (isAdd) {
 					node.getStyleClass().remove("error");
@@ -227,11 +242,15 @@ public class ScreenUtil {
 		}
 	}
 
-	public static boolean verifyPassFields(String sPass1, String sPass2, List<Node> lstTextFields) {
+	public static boolean verifyPassFields(String sPass1, String sPass2, List<Node> lstTextFields,
+			List<Node> lstLabel) {
 		if (sPass1.equals("") || sPass2.equals(""))
 			return false;
 		if (!new LoginBO().validatePassword(sPass1)) {
-			System.out.println("Mensagem de falha por senhas fora de formato ");
+			lstLabel.get(0).getStyleClass().remove("hide");
+			lstLabel.get(0).getStyleClass().add("show");
+			lstLabel.get(1).getStyleClass().remove("hide");
+			lstLabel.get(1).getStyleClass().add("show");
 			new ScreenUtil().addORRemoveErrorClass(lstTextFields, true);
 			return false;
 		}
@@ -247,8 +266,12 @@ public class ScreenUtil {
 	public void addORRemoveErrorClass(java.util.List<Node> node, boolean isAdd) {
 		for (Node n : node) {
 			if (n != null) {
-				if (!n.isVisible()) {
-					n.setVisible(true);
+				if (n.getStyleClass().contains("hide")) {
+					n.getStyleClass().remove("hide");
+					n.getStyleClass().add("show");
+				} else if (n.getStyleClass().contains("show")) {
+					n.getStyleClass().remove("show");
+					n.getStyleClass().add("hide");
 				} else {
 					if (isAdd) {
 						n.getStyleClass().remove("error");

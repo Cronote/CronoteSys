@@ -73,12 +73,12 @@
                   <Font size="22.0" />
                </font>
             </Text>
-            <Label fx:id="lblName" layoutX="42.0" layoutY="112.0" prefHeight="17.0" prefWidth="351.0" text="Nome incorreto" textFill="RED" visible="false" />
-            <Label fx:id="lblBirthDate" layoutX="42.0" layoutY="160.0" prefHeight="17.0" prefWidth="351.0" text="Data de nascimento incorreta" textFill="RED" visible="false" />
-            <Label fx:id="lblEmail" layoutX="42.0" layoutY="211.0" prefHeight="17.0" prefWidth="351.0" text="Email incorreto" textFill="RED" visible="false" />
-            <Label fx:id="lblRecoverEmail" layoutX="42.0" layoutY="262.0" prefHeight="17.0" prefWidth="351.0" text="Email de recuperação não esta no formato" textFill="RED" visible="false" />
-            <Label fx:id="lblPassword" layoutX="42.0" layoutY="312.0" prefHeight="17.0" prefWidth="351.0" text="Senha não está no formato" textFill="RED" visible="false" />
-            <Label fx:id="lblConfirmPassword" layoutX="42.0" layoutY="362.0" prefHeight="17.0" prefWidth="351.0" text="Senha não combina " textFill="RED" visible="false" />
+            <Label fx:id="lblName" layoutX="42.0" layoutY="112.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Nome incorreto" textFill="RED" />
+            <Label fx:id="lblBirthDate" layoutX="42.0" layoutY="160.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Data de nascimento incorreta" textFill="RED" />
+            <Label fx:id="lblEmail" layoutX="42.0" layoutY="211.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Email incorreto" textFill="RED" />
+            <Label fx:id="lblSecondEmail" layoutX="42.0" layoutY="262.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Email de recuperação não esta no formato" textFill="RED" />
+            <Label fx:id="lblPwd" layoutX="42.0" layoutY="312.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Senha não está no formato" textFill="RED" />
+            <Label fx:id="lblConfirmPwd" layoutX="42.0" layoutY="362.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Senha não combina " textFill="RED" />
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="132.0" prefWidth="722.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
