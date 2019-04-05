@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.ActivityBO.OnActivityAddedI;
+import com.cronoteSys.model.bo.ActivityBO.OnActivityDeletedI;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.UserVO;
 
@@ -24,7 +25,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 
-public class ActivityListController implements Initializable, Observer {
+public class ActivityListController extends ShowEditViewActivityObservable implements Initializable, Observer {
 
 	@FXML
 	private Button btnAddActivity;
@@ -36,7 +37,6 @@ public class ActivityListController implements Initializable, Observer {
 
 	public ActivityListController(UserVO loggedUser) {
 		this.loggedUser = loggedUser;
-		System.out.println("adoadoado");
 	}
 
 	@Override
@@ -57,10 +57,20 @@ public class ActivityListController implements Initializable, Observer {
 				FXMLLoader card = makeCard(act);
 				activityList.add(0, act);
 				try {
-					cardsList.getChildren().add(0, (Node) card.load());
+					Node node = (Node) card.load();
+					node.getStyleClass().add("activityCardSelected");
+					cardsList.getChildren().add(0, node);
+					deselectOthersCards(node);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			}
+		});
+		ActivityBO.addOnActivityDeletedListener(new OnActivityDeletedI() {
+			@Override
+			public void onActivityDeleted(ActivityVO act) {
+				activityList.remove(act);
+				renderList();
 			}
 		});
 	}
@@ -104,35 +114,19 @@ public class ActivityListController implements Initializable, Observer {
 
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("ue");
 				btnAddActivityClicked(event);
 
 			}
 		});
 	}
 
-	private static ArrayList<btnAddActivityClickedI> listeners = new ArrayList<btnAddActivityClickedI>();
-
-	public interface btnAddActivityClickedI {
-		void btnAddActivityClicked(HashMap<String, Object> hmp);
-	}
-
-	public static void addBtnAddActivityClickedListener(btnAddActivityClickedI newListener) {
-		listeners.add(newListener);
-	}
-
-	private void notifyAllListeners(HashMap<String, Object> hmp) {
-		for (btnAddActivityClickedI l : listeners) {
-			l.btnAddActivityClicked(hmp);
-		}
-	}
-
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println("Card clickado");
 		if (arg instanceof HashMap<?, ?>) {
 			String action = ((HashMap<?, ?>) arg).get("action").toString();
 			ActivityVO act = (ActivityVO) ((HashMap<?, ?>) arg).get("activity");
+			Node card = (Node) ((HashMap<?, ?>) arg).get("card");
+			deselectOthersCards(card);
 			if (action.equalsIgnoreCase("remove")) {
 				activityList.remove(act);
 				renderList();
@@ -143,4 +137,12 @@ public class ActivityListController implements Initializable, Observer {
 		}
 	}
 
+	public void deselectOthersCards(Node card) {
+		for (Node node : cardsList.getChildren()) {
+			if (!node.equals(card)) {
+				node.getStyleClass().remove("activityCardSelected");
+			}
+		}
+
+	}
 }

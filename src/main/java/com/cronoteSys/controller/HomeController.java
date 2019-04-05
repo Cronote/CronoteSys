@@ -5,7 +5,9 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import com.cronoteSys.controller.ActivityListController.btnAddActivityClickedI;
+import com.cronoteSys.controller.ShowEditViewActivityObservable.ShowEditViewActivityI;
+import com.cronoteSys.model.bo.ActivityBO;
+import com.cronoteSys.model.bo.ActivityBO.OnActivityDeletedI;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.ScreenUtil;
@@ -35,11 +37,10 @@ public class HomeController implements Initializable {
 		menu.setController(new MenuController());
 		addNode(menu);
 
-		ActivityListController.addBtnAddActivityClickedListener(new btnAddActivityClickedI() {
+		ShowEditViewActivityObservable.addShowEditViewActivityListener(new ShowEditViewActivityI() {
 			@Override
-			public void btnAddActivityClicked(HashMap<String, Object> hmap) {
-				if (root.getChildren().size() > 2)
-					root.getChildren().remove(2);
+			public void showEditViewActivity(HashMap<String, Object> hmap) {
+				removeIndexFromRoot(2);
 				FXMLLoader detailsFxml = loadTemplate("DetailsInserting");
 				if (hmap == null) {
 					detailsFxml.setController(new ActivityDetailsController((UserVO) hmp.get("user")));
@@ -51,7 +52,6 @@ public class HomeController implements Initializable {
 					}
 					detailsFxml.setController(new ActivityDetailsController(activity, action));
 				}
-				System.out.println("tadam");
 				Node nodeDetails = FXMLLoaderToNode(detailsFxml);
 				TitledPane titledPane = new TitledPane("DETALHES", nodeDetails);
 				titledPane.setCollapsible(false);
@@ -62,6 +62,15 @@ public class HomeController implements Initializable {
 				HBox.setHgrow(titledPane, Priority.ALWAYS);
 			}
 		});
+
+		ActivityBO.addOnActivityDeletedListener(new OnActivityDeletedI() {
+			@Override
+			public void onActivityDeleted(ActivityVO act) {
+				removeIndexFromRoot(2);
+
+			}
+		});
+
 		ScreenUtil.addOnChangeScreenListener(new OnChangeScreen() {
 			public void onScreenChanged(String newScreen, HashMap<String, Object> hmap) {
 				hmp = hmap;
@@ -130,7 +139,6 @@ public class HomeController implements Initializable {
 	private FXMLLoader loadTemplate(String template) {
 		FXMLLoader root = null;
 
-		System.out.println("template>>>> " + template);
 		root = new FXMLLoader(getClass().getResource("/fxml/Templates/" + template + ".fxml"));
 		return root;
 	}
@@ -174,5 +182,10 @@ public class HomeController implements Initializable {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	private void removeIndexFromRoot(int index) {
+		if (root.getChildren().size() > index)
+			root.getChildren().remove(index);
 	}
 }

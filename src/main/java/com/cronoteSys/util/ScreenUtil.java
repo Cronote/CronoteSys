@@ -32,6 +32,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -152,16 +153,38 @@ public class ScreenUtil {
 				continue;
 			if (node.getStyleClass().contains("NotRequired"))
 				continue;
-			if (node instanceof TextField) {
-				if (((TextField) node).getText().trim().equals("")) {
+			if (node instanceof Pane) {
+				return isFilledFields(oldStage, (Pane)node);
+			}
+			if (node instanceof TextInputControl) {
+				if (((TextInputControl) node).getText().trim().equals("")) {
 					node.requestFocus();
-					HashMap<String, Object> hmapValues = new HashMap<String, Object>();
-					hmapValues.put("msg", "Preencha o campo " + ((TextField) node).getPromptText());
 					addORRemoveErrorClass(node, true);
 					return false;
 				} else {
 					addORRemoveErrorClass(node, false);
 				}
+			}
+			if (node instanceof ComboBox<?>) {
+				if (((ComboBox<?>) node).getSelectionModel().isEmpty()) {
+					node.requestFocus();
+					addORRemoveErrorClass(node, true);
+					return false;
+				} else {
+					addORRemoveErrorClass(node, false);
+				}
+
+			}
+
+			if (node instanceof Spinner<?>) {
+				if (((Spinner<?>) node).getValue() == null) {
+					node.requestFocus();
+					addORRemoveErrorClass(node, true);
+					return false;
+				} else {
+					addORRemoveErrorClass(node, false);
+				}
+
 			}
 			if (node instanceof DatePicker) {
 				if (((DatePicker) node).getValue() == null) {
@@ -191,9 +214,9 @@ public class ScreenUtil {
 
 	public void addORRemoveErrorClass(Node node, boolean isAdd) {
 		if (node != null) {
-			if(!node.isVisible()) {
+			if (!node.isVisible()) {
 				node.setVisible(true);
-			}else {
+			} else {
 				if (isAdd) {
 					node.getStyleClass().remove("error");
 					node.getStyleClass().add("error");
@@ -224,9 +247,9 @@ public class ScreenUtil {
 	public void addORRemoveErrorClass(java.util.List<Node> node, boolean isAdd) {
 		for (Node n : node) {
 			if (n != null) {
-				if(!n.isVisible()) {
+				if (!n.isVisible()) {
 					n.setVisible(true);
-				}else {
+				} else {
 					if (isAdd) {
 						n.getStyleClass().remove("error");
 						n.getStyleClass().add("error");

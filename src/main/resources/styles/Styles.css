@@ -73,6 +73,13 @@
 	-fx-border-color:#e59311; 
 	-fx-border-width:2.0px; 
 }
+.activityCardSelected {
+	-fx-cursor: HAND;
+	-fx-background-color: #ecf0f1;
+}
+.activityCardSelected>*.label {
+	-fx-text-fill:#000000;
+}
 .activityCard>*.button {
 	visibility:hidden;
 }
@@ -89,6 +96,7 @@
 .activityCard:hover>*.label {
 	-fx-text-fill:#000000;
 }
+
 
 /*===============Fim Cartoes de atividade================*/
 .homeRootPane>*.title {

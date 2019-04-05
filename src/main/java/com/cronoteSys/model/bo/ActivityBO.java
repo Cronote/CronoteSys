@@ -22,16 +22,17 @@ public class ActivityBO {
 		}
 		activityVO.setLastModification(LocalDateTime.now());
 		activityVO = acDAO.saveOrUpdate(activityVO);
-		notifyAllListeners(activityVO);
+		notifyAllActivityAddedListeners(activityVO);
 		return activityVO;
 	}
 
-	public void update(ActivityVO activityVO) {
-		acDAO.saveOrUpdate(activityVO);
+	public ActivityVO update(ActivityVO activityVO) {
+		return acDAO.saveOrUpdate(activityVO);
 	}
 
 	public void delete(ActivityVO activityVO) {
 		acDAO.delete(activityVO.getId());
+		notifyAllactivityDeletedListeners(activityVO);
 	}
 
 	public void switchStatus(ActivityVO ac, StatusEnum stats) {
@@ -43,19 +44,35 @@ public class ActivityBO {
 		return acDAO.getList(user);
 	}
 
-	private static ArrayList<OnActivityAddedI> listeners = new ArrayList<OnActivityAddedI>();
+	private static ArrayList<OnActivityAddedI> activityAddedListeners = new ArrayList<OnActivityAddedI>();
 
 	public interface OnActivityAddedI {
 		void onActivityAddedI(ActivityVO act);
 	}
 
 	public static void addOnActivityAddedIListener(OnActivityAddedI newListener) {
-		listeners.add(newListener);
+		activityAddedListeners.add(newListener);
 	}
 
-	private void notifyAllListeners(ActivityVO act) {
-		for (OnActivityAddedI l : listeners) {
+	private void notifyAllActivityAddedListeners(ActivityVO act) {
+		for (OnActivityAddedI l : activityAddedListeners) {
 			l.onActivityAddedI(act);
+		}
+	}
+
+	private static ArrayList<OnActivityDeletedI> activityDeletedListeners = new ArrayList<OnActivityDeletedI>();
+
+	public interface OnActivityDeletedI {
+		void onActivityDeleted(ActivityVO act);
+	}
+
+	public static void addOnActivityDeletedListener(OnActivityDeletedI newListener) {
+		activityDeletedListeners.add(newListener);
+	}
+
+	private void notifyAllactivityDeletedListeners(ActivityVO act) {
+		for (OnActivityDeletedI l : activityDeletedListeners) {
+			l.onActivityDeleted(act);
 		}
 	}
 }

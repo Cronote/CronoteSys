@@ -3,6 +3,7 @@ package com.cronoteSys.controller;
 import java.net.URL;
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -31,11 +32,12 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-public class ActivityDetailsController implements Initializable {
+public class ActivityDetailsController extends ShowEditViewActivityObservable implements Initializable {
 
 	private ActivityVO activity;
 	private UserVO user;
@@ -53,8 +55,7 @@ public class ActivityDetailsController implements Initializable {
 	private Spinner<Double> spnEstimatedTimeNumber;
 	@FXML
 	private ComboBox<UnityTimeEnum> cboEstimatedTimeUnity;
-	@FXML
-	private Button btnSave;
+
 	@FXML
 	private Label lblTitle;
 	@FXML
@@ -71,8 +72,14 @@ public class ActivityDetailsController implements Initializable {
 	private Label lblStatus;
 	@FXML
 	private Label lblLastModified;
-
+	@FXML
+	private Button btnSave;
+	@FXML
+	private Button btnEdit;
+	@FXML
+	private Button btnDelete;
 	private String mode;
+	HashMap<String, Object> hmp = new HashMap<String, Object>();
 
 	public ActivityDetailsController(UserVO user) {
 		this.user = user;
@@ -93,30 +100,41 @@ public class ActivityDetailsController implements Initializable {
 
 	private void initForm() {
 		if (mode.equals("edit")) {
-			List<CategoryVO> lstCategory = new CategoryDAO().getList(user);
-			ObservableList<CategoryVO> obsLstCategory = FXCollections.observableList(lstCategory);
-			cboCategory.setConverter(new CategoryConverter(user));
-			cboCategory.setItems(obsLstCategory);
-			ObservableList<UnityTimeEnum> obsLstEstimatedTimeUnity = FXCollections
-					.observableArrayList(UnityTimeEnum.values());
-			cboEstimatedTimeUnity.setItems(obsLstEstimatedTimeUnity);
-			cboEstimatedTimeUnity.setConverter(new UnityTimeEnumConverter());
-			for (int i = 0; i < tggPriority.getToggles().size(); i++) {
-				tggPriority.getToggles().get(i).setUserData(i);
-			}
+			defaultData();
 			if (activity == null) {
 				activity = new ActivityVO();
 				activity.setUserVO(user);
 			} else {
 				txtTitle.setText(activity.getTitle());
 				cboCategory.getSelectionModel().select(activity.getCategoryVO());
+				txtDescription.setText(activity.getDescription());
+				for (int i = 0; i < tggPriority.getToggles().size(); i++) {
+					boolean isPriorityIndex = i == activity.getPriority();
+					((ToggleButton) tggPriority.getToggles().get(i)).setSelected(isPriorityIndex);
+				}
+				cboEstimatedTimeUnity.getSelectionModel().select(activity.getEstimatedTimeUnit());
+				if (activity.getEstimatedTimeUnit().equals(UnityTimeEnum.HOURS)) {
+					spnEstimatedTimeNumber
+							.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 100, 0.5, 0.5));
+					spnEstimatedTimeNumber.getValueFactory().setValue((double) activity.getEstimatedTime().toHours());
+
+				} else {
+					spnEstimatedTimeNumber
+							.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 6000, 1, 1));
+					spnEstimatedTimeNumber.getValueFactory().setValue((double) activity.getEstimatedTime().toMinutes());
+
+				}
 
 			}
 		} else {
 			lblTitle.setText(activity.getTitle());
 			lblCategory.setText(activity.getCategoryVO().getDescription());
 			lblDescription.setText(activity.getDescription());
-			lblLastModified.setText(activity.getLastModification().toString());
+			for (int i = 0; i < tggPriority.getToggles().size(); i++) {
+				boolean isPriorityIndex = i == activity.getPriority();
+				((ToggleButton) tggPriority.getToggles().get(i)).setSelected(isPriorityIndex);
+				((ToggleButton) tggPriority.getToggles().get(i)).setDisable(!isPriorityIndex);
+			}
 			if (activity.getEstimatedTimeUnit().equals(UnityTimeEnum.HOURS)) {
 				lblEstimatedTime.setText(String.format("%02d " + UnityTimeEnum.HOURS.getDescription(),
 						activity.getEstimatedTime().toHours()));
@@ -130,6 +148,20 @@ public class ActivityDetailsController implements Initializable {
 		}
 	}
 
+	private void defaultData() {
+		List<CategoryVO> lstCategory = new CategoryDAO().getList(user);
+		ObservableList<CategoryVO> obsLstCategory = FXCollections.observableList(lstCategory);
+		cboCategory.setConverter(new CategoryConverter(user));
+		cboCategory.setItems(obsLstCategory);
+		ObservableList<UnityTimeEnum> obsLstEstimatedTimeUnity = FXCollections
+				.observableArrayList(UnityTimeEnum.values());
+		cboEstimatedTimeUnity.setItems(obsLstEstimatedTimeUnity);
+		cboEstimatedTimeUnity.setConverter(new UnityTimeEnumConverter());
+		for (int i = 0; i < tggPriority.getToggles().size(); i++) {
+			tggPriority.getToggles().get(i).setUserData(i);
+		}
+	}
+
 	private void initEvents() {
 		if (cboEstimatedTimeUnity != null) {
 			cboEstimatedTimeUnity.setOnAction(new EventHandler<ActionEvent>() {
@@ -140,12 +172,33 @@ public class ActivityDetailsController implements Initializable {
 				}
 			});
 		}
-		btnSave.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				btnSaveClicked(event);
-			}
-		});
+		if (btnSave != null) {
+			btnSave.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					btnSaveClicked(event);
+				}
+			});
+		}
+		if (btnEdit != null) {
+			btnEdit.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					hmp.put("activity", activity);
+					hmp.put("action", "edit");
+					notifyAllListeners(hmp);
+				}
+			});
+		}
+		if (btnDelete != null) {
+			btnDelete.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					new ActivityBO().delete(activity);
+				}
+			});
+		}
+
 	}
 
 	private void cboEstimatedTimeUnitySelectionChanged(ActionEvent event) {
@@ -160,24 +213,31 @@ public class ActivityDetailsController implements Initializable {
 	}
 
 	private void btnSaveClicked(ActionEvent event) {
-		activity.setTitle(txtTitle.getText());
-		activity.setCategoryVO(cboCategory.getValue());
-		activity.setDescription(txtDescription.getText());
-		Duration d = Duration.ZERO;
-		if (cboEstimatedTimeUnity.getValue().equals(UnityTimeEnum.MINUTES)) {
-			d = Duration.ofMinutes(spnEstimatedTimeNumber.getValue().longValue());
+		if (new ScreenUtil().isFilledFields((Stage) btnSave.getScene().getWindow(), detailsRoot)) {
+			activity.setTitle(txtTitle.getText());
+			activity.setCategoryVO(cboCategory.getValue());
+			activity.setDescription(txtDescription.getText());
+			Duration d = Duration.ZERO;
+			if (cboEstimatedTimeUnity.getValue().equals(UnityTimeEnum.MINUTES)) {
+				d = Duration.ofMinutes(spnEstimatedTimeNumber.getValue().longValue());
 
-		} else {
-			d = Duration.ofHours(spnEstimatedTimeNumber.getValue().longValue());
-		}
-		activity.setEstimatedTime(d);
-		activity.setEstimatedTimeUnit(cboEstimatedTimeUnity.getValue());
-		activity.setPriority(Integer.parseInt(tggPriority.getSelectedToggle().getUserData().toString()));
-		activity = new ActivityBO().save(activity);
-		if (activity != null) {
-			new ScreenUtil().clearFields((Stage) btnSave.getScene().getWindow(), detailsRoot);
-			tggPriority.getToggles().get(2).setSelected(true);
+			} else {
+				d = Duration.ofHours(spnEstimatedTimeNumber.getValue().longValue());
+			}
+			activity.setEstimatedTime(d);
+			activity.setEstimatedTimeUnit(cboEstimatedTimeUnity.getValue());
+			activity.setPriority(Integer.parseInt(tggPriority.getSelectedToggle().getUserData().toString()));
+			if (activity.getId() == null) {
+				activity = new ActivityBO().save(activity);
 
+			} else {
+				activity = new ActivityBO().update(activity);
+			}
+			if (activity != null) {
+				hmp.put("activity", activity);
+				hmp.put("action", "view");
+				notifyAllListeners(hmp);
+			}
 		}
 	}
 
