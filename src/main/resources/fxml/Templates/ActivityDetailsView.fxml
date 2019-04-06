@@ -96,7 +96,7 @@
 				<Font size="15.0" />
 			</font>
 		</Label>
-		<Button fx:id="btnEdit" contentDisplay="GRAPHIC_ONLY" layoutX="349.0" layoutY="655.0" mnemonicParsing="false" text="Save" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="78.0">
+		<Button fx:id="btnEdit" contentDisplay="GRAPHIC_ONLY" layoutX="363.0" layoutY="655.0" mnemonicParsing="false" text="Save" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="66.0">
 			<graphic>
 				<ImageView fitHeight="21.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true" smooth="false">
 					<image>
@@ -105,7 +105,7 @@
 				</ImageView>
 			</graphic>
 		</Button>
-		<Button fx:id="btnDelete" contentDisplay="GRAPHIC_ONLY" layoutX="396.0" layoutY="657.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="49.0" text="Save" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="6.0">
+		<Button fx:id="btnDelete" contentDisplay="GRAPHIC_ONLY" layoutX="396.0" layoutY="657.0" mnemonicParsing="false" prefWidth="40.0" text="Save" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="10.0">
 			<graphic>
 				<ImageView fitHeight="22.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
 					<image>
