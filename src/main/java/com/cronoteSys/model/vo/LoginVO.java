@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -52,8 +51,8 @@ public class LoginVO implements java.io.Serializable {
 		this.idLogin = idLogin;
 	}
 
-	@ManyToOne(targetEntity = UserVO.class)
-	@JoinColumn(name = "id_user")
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "id_user", referencedColumnName = "id_user")
 	@Fetch(FetchMode.SELECT)
 	public UserVO getTbUser() {
 		return this.tbUser;

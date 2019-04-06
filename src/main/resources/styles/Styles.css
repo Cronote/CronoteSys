@@ -14,6 +14,7 @@
 	-fx-background-image: url(../image/background_sunrise.jpg);
 	-fx-background-repeat: no-repeat ;
 	-fx-background-size: 100.0% 100.0% ;
+	
 }
 
 .imputpanel {
@@ -68,31 +69,48 @@
 	-fx-border-color:#e59311; 
 	-fx-border-width:2.0px; 
 }
+.activityCardSelected {
+	-fx-cursor: HAND;
+	-fx-background-color: #ecf0f1;
+}
+.activityCardSelected>*.label {
+	-fx-text-fill:#000000;
+}
+.activityCard>*.button {
+	visibility:hidden;
+}
 
 .activityCard:hover {
 	-fx-cursor: HAND;
 	-fx-background-color: #ecf0f1;
 }
+
+.activityCard:hover>*.button {
+	visibility:visible;
+}
+
 .activityCard:hover>*.label {
 	-fx-text-fill:#000000;
 }
-.homeRootPane>*.title { /* FX theme stylesheet */
+
+
+/*===============Fim Cartoes de atividade================*/
+.homeRootPane>*.title {
 	-fx-background-color:  #e5d694;
 }
 
-.activityList>*.title { /* FX theme stylesheet */
+.activityList>*.title {
 	-fx-background-color:  #e59311;
 }
 .activityList .title .text{
 	-fx-fill: #fff;
 }
-.activityDetails>*.title { /* FX theme stylesheet */
+.activityDetails>*.title {
 	-fx-background-color:   #bdc3c7;
 }
 .btnWindows{
 	-fx-background-color:transparent;
 } 
-
 .btnWindows:hover{
 	-fx-background-color:#f39c12;
 	-fx-cursor: HAND;
@@ -102,8 +120,8 @@
 	-fx-background-color:#f39c12;
 }
 
-.titled-pane>*.content>VBox { /* FX theme stylesheet */
-	-fx-padding: 0;
+.titled-pane>*.content>VBox {
+	-fx-padding: 0.0;
 }
 
 .error-color{

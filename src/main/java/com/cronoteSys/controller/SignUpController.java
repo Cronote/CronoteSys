@@ -27,7 +27,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 
 public class SignUpController extends MasterController {
 
@@ -137,17 +136,16 @@ public class SignUpController extends MasterController {
 			String sPassEncrypted = new GenHash().hashIt(sPassPureText);
 
 			UserVO objUser = new UserVO();
-			objLogin.setTbUser(objUser);
-			objLogin.setEmail(sEmail);
-			objLogin.setPasswd(sPassEncrypted);
-
 			objUser.setCompleteName(txtName.getText().trim());
 			objUser.setEmailRecover(txtSecondEmail.getText().trim());
 			objUser.setBirthDate(dateBirthday.getValue());
-			objUser.setAvatarPath(null);// TODO Implementar a escolha de avatar
 			objUser.setStats(Byte.parseByte("1"));
-
-			if (new UserBO().save(objUser) && new LoginBO().save(objLogin)) {
+			objUser = new UserBO().save(objUser);
+			objLogin.setTbUser(objUser);
+			objLogin.setEmail(sEmail);
+			objLogin.setPasswd(sPassEncrypted);
+			objLogin = new LoginBO().save(objLogin);
+			if (objUser != null && objLogin != null) {
 				JOptionPane.showMessageDialog(null, "Mensagem de sucesso");
 				new ScreenUtil().clearFields(getThisStage(), pnlInput);
 

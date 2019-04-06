@@ -1,15 +1,19 @@
 package com.cronoteSys.controller;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.ResourceBundle;
 
+import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.vo.ActivityVO;
 
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.AnchorPane;
@@ -17,23 +21,24 @@ import javafx.scene.layout.AnchorPane;
 public class ActivityCardController extends Observable implements Initializable {
 
 	@FXML
-	AnchorPane cardRoot;
+	private AnchorPane cardRoot;
 
 	@FXML
-	Label lblTitle;
+	private Label lblTitle;
 
 	@FXML
-	Label lblStatus;
+	private Label lblStatus;
 
 	@FXML
-	ProgressBar pgbProgress;
+	private ProgressBar pgbProgress;
 
-	ActivityVO activity;
-	
-	
+	@FXML
+	private Button btnDelete;
+
+	private ActivityVO activity;
 
 	public ActivityCardController() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public ActivityCardController(ActivityVO activity) {
@@ -42,19 +47,37 @@ public class ActivityCardController extends Observable implements Initializable 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		lblTitle.setText(activity.get_title());
-		lblStatus.setText(activity.get_stats().toString());
-		
-		cardRoot.setOnMouseClicked(new EventHandler<Event>() {
+		lblTitle.setText(activity.getTitle());
+		lblStatus.setText(activity.getStats().getDescription());
+		initEvents();
+	}
+
+	private void initEvents() {
+		HashMap<String, Object> hmp = new HashMap<String, Object>();
+		btnDelete.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
-			public void handle(Event event) {
+			public void handle(ActionEvent event) {
+				cardRoot.getStyleClass().remove("activityCardSelected");
+				new ActivityBO().delete(activity);
+				hmp.put("action", "remove");
+				hmp.put("activity", activity);
 				setChanged();
-				notifyObservers();
+				notifyObservers(hmp);
+
+			}
+		});
+		cardRoot.setOnMouseClicked(new EventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+				cardRoot.getStyleClass().add("activityCardSelected");
+				hmp.put("action", "view");
+				hmp.put("activity", activity);
+				hmp.put("card", cardRoot);
+				setChanged();
+				notifyObservers(hmp);
 			}
 		});
 	}
-	
-
 
 }
