@@ -18,7 +18,7 @@
       <Label fx:id="lblStatus" layoutX="14.0" layoutY="49.0" prefHeight="17.0" text="NÃO INICIADO" textFill="WHITE" />
       <ProgressBar fx:id="pgbProgress" layoutX="14.0" layoutY="76.0" prefHeight="18.0" prefWidth="276.0" progress="0.28" />
       <Label layoutX="295.0" layoutY="76.0" text="100%" textFill="WHITE" />
-      <Button fx:id="btnDelete" contentDisplay="GRAPHIC_ONLY" layoutX="289.0" layoutY="9.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="40.0" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="0.0">
+      <Button fx:id="btnDelete" contentDisplay="GRAPHIC_ONLY" layoutX="289.0" layoutY="19.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="25.0" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
          <graphic>
             <ImageView fitHeight="20.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
                <image>
