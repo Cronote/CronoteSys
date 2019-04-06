@@ -99,15 +99,17 @@ public class SignUpController extends MasterController {
 				if (!newValue) {
 					bPasswordOk = ScreenUtil.verifyPassFields(txtConfirmPwd.getText().trim(), txtPwd.getText().trim(), lstPasswordNodes, lstPasswordLabelNodes);
 				}
+				lblConfirmPwd.getStyleClass().remove("show");
+				lblConfirmPwd.getStyleClass().add("hide");
 			}
 		});
 	}
 
 	@FXML
 	public void btnSignUpClicked() {
-		System.out.println(dateBirthday.getValue());
 		hiddenAllLabels();
-		if (new ScreenUtil().isFilledFields(getThisStage(), pnlInput)) {
+		System.out.println(dateBirthday.getValue());
+		if(new ScreenUtil().isFilledFields(getThisStage(), pnlInput)) {
 			String sEmail = txtEmail.getText().trim();
 			if (!new EmailUtil().validateEmail(sEmail)) {
 				lblEmail.setText("Email fora do formato");
@@ -118,6 +120,7 @@ public class SignUpController extends MasterController {
 			}
 			if (new LoginBO().loginExists(sEmail) != null) {
 				lblEmail.setText("Email já cadastrado");
+				txtEmail.getStyleClass().add("error");
 				lblEmail.getStyleClass().remove("hide");
 				lblEmail.getStyleClass().add("show");
 //				JOptionPane.showMessageDialog(null, "Mensagem de falha por email já cadastrado");
@@ -127,6 +130,8 @@ public class SignUpController extends MasterController {
 				lblConfirmPwd.getStyleClass().remove("hide");
 				lblPwd.getStyleClass().add("show");
 				lblConfirmPwd.getStyleClass().add("show");
+				txtConfirmPwd.getStyleClass().add("error");
+				txtPwd.getStyleClass().add("error");
 				lblPwd.setText("Senhas diferentes");
 				lblConfirmPwd.setText("Senhas diferentes");
 //				JOptionPane.showMessageDialog(null, "Mensagem de falha por senhas diferentes");
@@ -148,7 +153,7 @@ public class SignUpController extends MasterController {
 			if (objUser != null && objLogin != null) {
 				JOptionPane.showMessageDialog(null, "Mensagem de sucesso");
 				new ScreenUtil().clearFields(getThisStage(), pnlInput);
-
+				hiddenAllLabels();
 			} else {
 				JOptionPane.showMessageDialog(null, "Mensagem de falha");
 			}
@@ -161,7 +166,6 @@ public class SignUpController extends MasterController {
 		allLabels = new ArrayList<Node>();
 		allLabels.add(lblName);
 		allLabels.add(lblEmail);
-		allLabels.add(lblBirthDate);
 		allLabels.add(lblSecondEmail);
 		allLabels.add(lblPwd);
 		allLabels.add(lblConfirmPwd);

@@ -54,6 +54,8 @@ public class ForgotPwdController extends MasterController {
 	private Label lblNewPwd;
 	@FXML
 	private Label lblConfirmPwd;
+	@FXML
+	private Pane pnlSendEmail;
 
 	private String sVerificationCode;
 	private boolean bPasswordOk;
@@ -111,12 +113,15 @@ public class ForgotPwdController extends MasterController {
 
 	@FXML
 	public void btnSendClicked() {
-		lblEmailSend.getStyleClass().remove("show");
-		lblEmailSend.getStyleClass().add("hide");
-		if (new ScreenUtil().isFilledFields(getThisStage(), pnlRoot)) {
+		txtEmail.getStyleClass().remove("error");
+		if (new ScreenUtil().isFilledFields(getThisStage(), pnlSendEmail)) {
+			lblEmailSend.getStyleClass().remove("show");
+			lblEmailSend.getStyleClass().add("hide");
 			String email = txtEmail.getText().trim();
+			System.out.println("A baratinha");
 			if (!new EmailUtil().validateEmail(email)) { // Email em formato valido
-				lblEmailSend.setText("Email invalido");
+				lblEmailSend.setText("Email inválido");
+				txtEmail.getStyleClass().add("error");
 				lblEmailSend.getStyleClass().remove("hide");
 				lblEmailSend.getStyleClass().add("show");
 //				JOptionPane.showMessageDialog(null, "Mensagem de falha por email inválido");
@@ -125,7 +130,8 @@ public class ForgotPwdController extends MasterController {
 
 			objLogin = new LoginBO().loginExists(email);
 			if (objLogin == null) {// Conta com este email n existe
-				lblEmailSend.setText("Email não existe");
+				lblEmailSend.setText("Email não existente");
+				txtEmail.getStyleClass().add("error");
 				lblEmailSend.getStyleClass().remove("hide");
 				lblEmailSend.getStyleClass().add("show");
 //				JOptionPane.showMessageDialog(null, "Mensagem de falha por n existir conta com esse email");
@@ -144,21 +150,24 @@ public class ForgotPwdController extends MasterController {
 				pnlVerification.getStyleClass().remove("hide");
 				pnlVerification.getStyleClass().add("show");
 			}
-//			pnlVerification.setVisible(bEmailSent);
 		}
 	}
 
 	@FXML
 	public void btnConfirmClicked() {
-		lblCode.getStyleClass().remove("show");
-		lblCode.getStyleClass().add("hide");
+		resetLabels();
 		txtCode.getStyleClass().remove("error");
-		if (!new ScreenUtil().isFilledFields(getThisStage(), pnlRoot)) {
+		txtPwd.getStyleClass().remove("error");
+		txtConfirmPwd.getStyleClass().remove("error");
+		
+		if (!new ScreenUtil().isFilledFields(getThisStage(), pnlVerification)) {
 			return;
 		}
 
 		if (sVerificationCode.equalsIgnoreCase(txtCode.getText().trim())) {
 			if (!bPasswordOk) {
+				lblConfirmPwd.getStyleClass().remove("hide");
+				lblConfirmPwd.getStyleClass().add("show");
 				JOptionPane.showMessageDialog(null, "Mensagem de falha, senhas n OK ");
 				return;
 			}
@@ -172,6 +181,7 @@ public class ForgotPwdController extends MasterController {
 			int iAttempt = Integer.parseInt(lblErrorsIndex.getText());
 			iAttempt++;
 			lblErrorsIndex.setText(String.valueOf(iAttempt));
+			lblCode.setText("Código inválido");
 			txtCode.getStyleClass().add("error");
 			lblCode.getStyleClass().remove("hide");
 			lblCode.getStyleClass().add("show");
@@ -187,6 +197,15 @@ public class ForgotPwdController extends MasterController {
 	@FXML
 	public void btnCancelClicked() {
 		resetScreen();
+	}
+	
+	public void resetLabels() {
+		lblCode.getStyleClass().remove("show");
+		lblNewPwd.getStyleClass().remove("show");
+		lblConfirmPwd.getStyleClass().remove("show");
+		lblCode.getStyleClass().add("hide");
+		lblNewPwd.getStyleClass().add("hide");
+		lblConfirmPwd.getStyleClass().add("hide");
 	}
 
 	private void resetScreen() {
