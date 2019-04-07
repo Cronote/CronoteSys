@@ -1,5 +1,7 @@
 package com.CronoteSys;
 
+import java.time.Duration;
+
 import org.junit.Test;
 
 import com.cronoteSys.model.bo.ActivityBO;
@@ -25,8 +27,8 @@ public class AppTest extends TestCase {
 		CategoryBO catBO = new CategoryBO();
 
 		CategoryVO cat = new CategoryVO();
-		cat.set_description("Programação");
-		cat.set_userVO(userDao.find(7));
+		cat.setDescription("Planejamento");
+		cat.setUserVO(userDao.find(1));
 		catBO.save(cat);
 
 	}
@@ -39,11 +41,12 @@ public class AppTest extends TestCase {
 
 		ActivityVO ac = new ActivityVO();
 		CategoryVO cat = catDao.find(2);
-		ac.set_title("Atividade 2");
-		ac.set_categoryVO(cat);
-		ac.set_estimated_Time("30 minutos");
-		ac.set_priority(0);
-		ac.set_userVO(cat.get_userVO());
+		ac.setTitle("Atividade 2");
+		ac.setCategoryVO(cat);
+		Duration d = Duration.ofMinutes(4);
+		ac.setEstimatedTime(d);
+		ac.setPriority(0);
+		ac.setUserVO(cat.getUserVO());
 
 		acBo.save(ac);
 	}
@@ -54,7 +57,7 @@ public class AppTest extends TestCase {
 		ActivityBO acBo = new ActivityBO();
 		ExecutionTimeBO executionTimeBO = new ExecutionTimeBO();
 
-		ActivityVO activityVO = acDao.find(2);
+		ActivityVO activityVO = acDao.find(24);
 
 		executionTimeBO.startExecution(activityVO);
 		// TODO: futuramente o status tem que ser calculado, tem 2 status para em
@@ -69,10 +72,11 @@ public class AppTest extends TestCase {
 		ExecutionTimeBO executionTimeBO = new ExecutionTimeBO();
 		ActivityDAO acDao = new ActivityDAO();
 
-		ActivityVO activityVO = acDao.find(2);
+		ActivityVO activityVO = acDao.find(24);
 
 		executionTimeBO.finishExecution(activityVO);
 		// TODO: futuramente o status tem que ser calculado, tem 2 status para paused
 		acBo.switchStatus(activityVO, StatusEnum.NORMAL_PAUSED);
+		
 	}
 }

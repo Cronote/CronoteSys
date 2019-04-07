@@ -5,13 +5,9 @@
  */
 package com.cronoteSys.util;
 
-import org.hibernate.cfg.Configuration;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-
-import org.hibernate.SessionFactory;
 
 /**
  * Hibernate Utility class with a convenient method to get Session Factory

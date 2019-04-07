@@ -8,23 +8,37 @@ package com.cronoteSys.util;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import com.cronoteSys.model.bo.LoginBO;
 
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ButtonBase;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ComboBoxBase;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * Class that cares about all Screen functions
@@ -43,8 +57,14 @@ public class ScreenUtil {
 	public void openNewWindow(Stage oldStage, String sSceneName, boolean isModal) {
 
 		Stage newStage = new Stage();
+
+		newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent event) {
+				Platform.exit();
+			}
+		});
 		Parent root = loadScene(sSceneName);
-		
 
 		Scene scene = new Scene(root);
 		scene.setRoot(root);
@@ -74,6 +94,13 @@ public class ScreenUtil {
 	public void openNewWindow(Stage oldStage, String sSceneName, boolean isModal,
 			HashMap<String, Object> hashMapValues) {
 		Stage newStage = new Stage();
+		newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent event) {
+				System.out.println("asd");
+				Platform.exit();
+			}
+		});
 
 		Parent root = loadScene(sSceneName);
 		Scene scene = new Scene(root);
@@ -94,7 +121,6 @@ public class ScreenUtil {
 
 	private Parent loadScene(String sSceneName) {
 		Parent root = null;
-
 		try {
 			System.out.println("Scene>>>> " + sSceneName);
 			URL url = new File(getClass().getResource("/fxml/" + sSceneName + ".fxml").getPath()).toURI().toURL();
@@ -121,24 +147,65 @@ public class ScreenUtil {
 	 *
 	 *
 	 */
-	public boolean isFilledFields(Stage oldStage, Pane pnl) {
+	public boolean isFilledFields(Stage oldStage, Pane pnl, boolean isRecursive) {
 		ObservableList<Node> comp = pnl.getChildren();
+		int nodeIndex = 0;
 		for (Node node : comp) {
-			if (!node.isVisible())
+			if (!node.isVisible()) {
+				nodeIndex++;
 				continue;
-			if (node.getStyleClass().contains("NotRequired"))
+			}
+			if (node.getStyleClass().contains("NotRequired")) {
+				nodeIndex++;
 				continue;
-			if (node instanceof TextField) {
-
-				if (((TextField) node).getText().trim().equals("")) {
+			}
+			if (node instanceof TextInputControl) {
+				if (((TextInputControl) node).getText().trim().equals("")) {
 					node.requestFocus();
-					HashMap<String, Object> hmapValues = new HashMap<String, Object>();
-					hmapValues.put("msg", "Preencha o campo " + ((TextField) node).getPromptText());
-					addORRemoveErrorClass(node, true);
+					if (!isRecursive) {
+						showErrorLabel(pnl, nodeIndex, "Campo obrigatório");
+						addORRemoveErrorClass(node, true);
+					}
 					return false;
 				} else {
-					addORRemoveErrorClass(node, false);
+					if (!isRecursive) {
+						hideErrorLabel(pnl, nodeIndex);
+						addORRemoveErrorClass(node, false);
+					}
 				}
+			}
+			if (node instanceof ComboBox<?>) {
+				if (((ComboBox<?>) node).getSelectionModel().isEmpty()) {
+					node.requestFocus();
+					if (!isRecursive) {
+						showErrorLabel(pnl, nodeIndex, "Campo obrigatório");
+						addORRemoveErrorClass(node, true);
+					}
+					return false;
+				} else {
+					if (!isRecursive) {
+						hideErrorLabel(pnl, nodeIndex);
+						addORRemoveErrorClass(node, false);
+					}
+				}
+
+			}
+
+			if (node instanceof Spinner<?>) {
+				if (((Spinner<?>) node).getValue() == null) {
+					node.requestFocus();
+					if (!isRecursive) {
+						showErrorLabel(pnl, nodeIndex, "Campo obrigatório");
+						addORRemoveErrorClass(node, true);
+					}
+					return false;
+				} else {
+					if (!isRecursive) {
+						hideErrorLabel(pnl, nodeIndex);
+						addORRemoveErrorClass(node, false);
+					}
+				}
+
 			}
 			if (node instanceof DatePicker) {
 				if (((DatePicker) node).getValue() == null) {
@@ -146,65 +213,216 @@ public class ScreenUtil {
 					return false;
 				}
 			}
+			if (node instanceof ToggleButton) {
 
+				if (((ToggleButton) node).getToggleGroup().getSelectedToggle() == null) {
+					node.requestFocus();
+					return false;
+				}
+			}
+			if (node instanceof Pane) {
+				if (!isFilledFields(oldStage, (Pane) node, true)) {
+					node.getStyleClass().addAll("hasError", "error");
+					showErrorLabel(pnl, nodeIndex, "Campo obrigatório");
+				} else {
+					node.getStyleClass().removeAll("hasError", "error");
+					hideErrorLabel(pnl, nodeIndex);
+				}
+				if (node.getStyleClass().contains("hasError")) {
+					return false;
+				}
+			}
+			nodeIndex++;
 		}
 		return true;
+	}
+
+	private void showErrorLabel(Pane pnl, int nodeIndex, String message) {
+		Label label = (Label) pnl.getChildren().get(nodeIndex + 1);
+		label.getStyleClass().remove("hide");
+		label.getStyleClass().add("show");
+		label.setText(message);
+	}
+
+	private void hideErrorLabel(Pane pnl, int nodeIndex) {
+		Label label = (Label) pnl.getChildren().get(nodeIndex + 1);
+		label.getStyleClass().add("hide");
+		label.getStyleClass().remove("show");
 	}
 
 	public void clearFields(Stage oldStage, Pane pnl) {
 		ObservableList<Node> comp = pnl.getChildren();
 		for (Node node : comp) {
-			if (node instanceof TextField) {
-				((TextField) node).setText("");
+			if (node instanceof TextInputControl) {
+				((TextInputControl) node).setText("");
 			}
 			if (node instanceof DatePicker) {
 				((DatePicker) node).setValue(null);
+			}
+			if (node instanceof ComboBox) {
+				((ComboBox<?>) node).setValue(null);
 			}
 		}
 	}
 
 	public void addORRemoveErrorClass(Node node, boolean isAdd) {
 		if (node != null) {
-			if (isAdd) {
-				node.getStyleClass().remove("error");
-				node.getStyleClass().add("error");
+			if (node.getStyleClass().contains("hide")) {
+				node.getStyleClass().remove("hide");
+				node.getStyleClass().add("show");
+			} else if (node.getStyleClass().contains("show")) {
+				node.getStyleClass().remove("show");
+				node.getStyleClass().add("hide");
 			} else {
-				node.getStyleClass().remove("error");
+				if (isAdd) {
+					node.getStyleClass().remove("error");
+					node.getStyleClass().add("error");
+				} else {
+					node.getStyleClass().remove("error");
+				}
 			}
 		}
 	}
 
-	public static boolean verifyPassFields(String sPass1, String sPass2, List<Node> lstTextFields) {
-		if (sPass1.equals("")|| sPass2.equals("")) 
+	public static boolean verifyPassFields(String sPass1, String sPass2, List<Node> lstTextFields,
+			List<Node> lstLabel) {
+		if (sPass1.equals("") || sPass2.equals(""))
 			return false;
-		
 		if (!new LoginBO().validatePassword(sPass1)) {
-				System.out.println("Mensagem de falha por senhas fora de formato ");
-				new ScreenUtil().addORRemoveErrorClass(lstTextFields, true);
-				return false; 
-			}
+//			lstLabel.get(0).getStyleClass().remove("hide");
+//			lstLabel.get(0).getStyleClass().add("show");
+			new ScreenUtil().addORRemoveErrorClass(lstTextFields, true);
+			return false;
+		}
 		if (!sPass1.equals(sPass2)) {
 			new ScreenUtil().addORRemoveErrorClass(lstTextFields, true);
-			System.out.println(	 "Mensagem de falha por senhas diferentes");
+//			lstLabel.get(1).getStyleClass().remove("hide");
+//			lstLabel.get(1).getStyleClass().add("show");
+			System.out.println("Mensagem de falha por senhas diferentes");
 			return false;
 		}
 		new ScreenUtil().addORRemoveErrorClass(lstTextFields, false);
-
 		return true;
 	}
-	
+
 	public void addORRemoveErrorClass(java.util.List<Node> node, boolean isAdd) {
 		for (Node n : node) {
 			if (n != null) {
-				if (isAdd) {
-					n.getStyleClass().remove("error");
-					n.getStyleClass().add("error");
+				if (n.getStyleClass().contains("hide")) {
+					n.getStyleClass().remove("hide");
+					n.getStyleClass().add("show");
+				} else if (n.getStyleClass().contains("show")) {
+					n.getStyleClass().remove("show");
+					n.getStyleClass().add("hide");
 				} else {
-					n.getStyleClass().remove("error");
+					if (isAdd) {
+						n.getStyleClass().remove("error");
+						n.getStyleClass().add("error");
+					} else {
+						n.getStyleClass().remove("error");
+					}
 				}
 			}
 		}
 
+	}
+
+	public static void removeDefaultStyleClass(List<Node> nodes) {
+		for (Node node : nodes) {
+			if (node instanceof TextField) {
+				node.getStyleClass().removeAll(new TextField().getStyleClass());
+			}
+			if (node instanceof TextArea) {
+				node.getStyleClass().removeAll(new TextArea().getStyleClass());
+			}
+			if (node instanceof ComboBox) {
+				node.getStyleClass().removeAll(new ComboBox<Object>().getStyleClass());
+			}
+			if (node instanceof Spinner) {
+				node.getStyleClass().removeAll(new Spinner<Object>().getStyleClass());
+			}
+		}
+	}
+
+	public static void addDefaultStyleClass(Node node) {
+		if (node instanceof TextField) {
+			node.getStyleClass().addAll(new TextField().getStyleClass());
+		}
+		if (node instanceof TextArea) {
+			node.getStyleClass().addAll(new TextArea().getStyleClass());
+		}
+		if (node instanceof ComboBox) {
+			node.getStyleClass().addAll(new ComboBox<Object>().getStyleClass());
+		}
+		if (node instanceof Spinner) {
+			node.getStyleClass().addAll(new Spinner<Object>().getStyleClass());
+		}
+		if (!(node instanceof Label)) {
+			node.getStyleClass().remove("label");
+		}
+	}
+
+	public static void addDefaultStyleClass(List<Node> nodes) {
+		for (Node node : nodes) {
+			if (node instanceof TextField) {
+				node.getStyleClass().addAll(new TextField().getStyleClass());
+			}
+			if (node instanceof TextArea) {
+				node.getStyleClass().addAll(new TextArea().getStyleClass());
+			}
+			if (node instanceof ComboBox) {
+				node.getStyleClass().addAll(new ComboBox<Object>().getStyleClass());
+			}
+			if (node instanceof Spinner) {
+				node.getStyleClass().addAll(new Spinner<Object>().getStyleClass());
+			}
+			if (!(node instanceof Label)) {
+				node.getStyleClass().remove("label");
+			}
+		}
+	}
+
+	public static void removeStyleClass(List<Node> nodes, String styleClass) {
+		for (Node node : nodes) {
+			if (!(node.getClass().getSimpleName().equalsIgnoreCase(styleClass))) {
+				node.getStyleClass().removeAll(styleClass);
+			}
+		}
+	}
+
+	public static void addStyleClass(List<Node> nodes, String styleClass) {
+		for (Node node : nodes) {
+			if (!(node instanceof ButtonBase || node instanceof ToggleButton)) {
+				node.getStyleClass().addAll(styleClass);
+			}
+		}
+	}
+
+	public static void addStyleClass(List<Node> nodes, List<String> styleClass) {
+		for (Node node : nodes) {
+			node.getStyleClass().addAll(styleClass);
+		}
+	}
+
+	public static void addDefaulClassOnFocusIn(List<Node> nodes) {
+		for (Node node : nodes) {
+			node.focusedProperty().addListener(new ChangeListener<Boolean>() {
+				public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+					if (newValue) {
+						List<Node> lst = new ArrayList<Node>();
+						lst.add(node);
+						addDefaultStyleClass(lst);
+						removeStyleClass(lst, "label");
+					} else {
+						List<Node> lst = new ArrayList<Node>();
+						lst.add(node);
+						removeDefaultStyleClass(lst);
+						addStyleClass(lst, "label");
+					}
+
+				}
+			});
+		}
 	}
 
 	private static ArrayList<OnChangeScreen> listeners = new ArrayList<OnChangeScreen>();
@@ -222,7 +440,7 @@ public class ScreenUtil {
 			l.onScreenChanged(newScreen, hmap);
 		}
 	}
-	
+
 	public static HBox recoverRoot(Node node) {
 		while (node.getParent() != null) {
 			node = node.getParent();

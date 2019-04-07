@@ -23,10 +23,12 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 
 /**
  *
@@ -34,6 +36,10 @@ import javafx.scene.input.KeyEvent;
  */
 public class LoginController extends MasterController {
 
+	@FXML
+	private Label lblEmail;
+	@FXML
+	private Label lblPassword;
 	@FXML
 	private Button btnLogin;
 	@FXML
@@ -46,6 +52,8 @@ public class LoginController extends MasterController {
 	private Hyperlink linkRecover;
 	private HashMap<String, Object> hmp;
 	private boolean rememberMe = true;
+	@FXML
+	AnchorPane pnlLogin;
 
 	@FXML
 	public void initialize() {
@@ -54,7 +62,6 @@ public class LoginController extends MasterController {
 			txtEmail.setText(prop.getProperty("LoginScreen.username"));
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		hmp = new HashMap<String, Object>();
@@ -96,12 +103,13 @@ public class LoginController extends MasterController {
 				}
 			}
 			hmp.put("user", user);
-			new ScreenUtil().openNewWindow(getThisStage(), "Test", false, hmp);
-			// TODO Desenvolver tela principal
+			new ScreenUtil().openNewWindow(getThisStage(), "Home", false, hmp);
 		} else {
 			List<Node> lst = new ArrayList<Node>();
 			lst.add(txtEmail);
 			lst.add(txtPassword);
+			lst.add(lblEmail);
+			lst.add(lblPassword);
 			new ScreenUtil().addORRemoveErrorClass(lst, true);
 			HashMap<String, Object> hmapValues = new HashMap<String, Object>();
 			hmapValues.put("msg", "Usuário ou senha incorretos!");
@@ -121,7 +129,7 @@ public class LoginController extends MasterController {
 
 	@FXML
 	private void btnLoginClicked(ActionEvent event) {
-		if (new ScreenUtil().isFilledFields(getThisStage(), pnlRoot)) {
+		if (new ScreenUtil().isFilledFields(getThisStage(), pnlLogin,false)) {
 			String sUsername = txtEmail.getText().trim(), sPasswd = txtPassword.getText().trim();
 			login(new LoginVO(null, sUsername, new GenHash().hashIt(sPasswd)));
 		}

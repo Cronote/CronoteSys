@@ -91,7 +91,7 @@ public class UserVO implements java.io.Serializable {
 		this.completeName = completeName;
 	}
 
-	@Column(name = "birth_date", nullable = false)
+	@Column(name = "birth_date", nullable = true)
 	public LocalDate getBirthDate() {
 		return this.birthDate;
 	}
@@ -101,7 +101,7 @@ public class UserVO implements java.io.Serializable {
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "register_date" )
+	@Column(name = "register_date")
 	public Date getRegisterDate() {
 		return this.registerDate;
 	}
@@ -154,5 +154,68 @@ public class UserVO implements java.io.Serializable {
 				+ ", avatarPath=" + avatarPath + ", tbLogins=" + tbLogins + "]";
 	}
 
-	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((avatarPath == null) ? 0 : avatarPath.hashCode());
+		result = prime * result + ((birthDate == null) ? 0 : birthDate.hashCode());
+		result = prime * result + ((completeName == null) ? 0 : completeName.hashCode());
+		result = prime * result + ((emailRecover == null) ? 0 : emailRecover.hashCode());
+		result = prime * result + ((idUser == null) ? 0 : idUser.hashCode());
+		result = prime * result + ((registerDate == null) ? 0 : registerDate.hashCode());
+		result = prime * result + stats;
+		result = prime * result + ((tbLogins == null) ? 0 : tbLogins.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UserVO other = (UserVO) obj;
+		if (avatarPath == null) {
+			if (other.avatarPath != null)
+				return false;
+		} else if (!avatarPath.equals(other.avatarPath))
+			return false;
+		if (birthDate == null) {
+			if (other.birthDate != null)
+				return false;
+		} else if (!birthDate.equals(other.birthDate))
+			return false;
+		if (completeName == null) {
+			if (other.completeName != null)
+				return false;
+		} else if (!completeName.equals(other.completeName))
+			return false;
+		if (emailRecover == null) {
+			if (other.emailRecover != null)
+				return false;
+		} else if (!emailRecover.equals(other.emailRecover))
+			return false;
+		if (idUser == null) {
+			if (other.idUser != null)
+				return false;
+		} else if (!idUser.equals(other.idUser))
+			return false;
+		if (registerDate == null) {
+			if (other.registerDate != null)
+				return false;
+		} else if (!registerDate.equals(other.registerDate))
+			return false;
+		if (stats != other.stats)
+			return false;
+		if (tbLogins == null) {
+			if (other.tbLogins != null)
+				return false;
+		} else if (!tbLogins.equals(other.tbLogins))
+			return false;
+		return true;
+	}
+
 }

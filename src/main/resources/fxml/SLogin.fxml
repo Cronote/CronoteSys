@@ -27,21 +27,8 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <AnchorPane prefHeight="503.0" prefWidth="424.0" styleClass="imputpanel" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <AnchorPane fx:id="pnlLogin" prefHeight="503.0" prefWidth="424.0" styleClass="imputpanel" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <Hyperlink fx:id="linkSignUp" layoutX="239.0" layoutY="432.0" onAction="#linkSignUpClicked" text="Cadastre-se" textFill="#b03a07">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Hyperlink>
-            <Button fx:id="btnLogin" layoutX="37.0" layoutY="310.0" mnemonicParsing="false" onAction="#btnLoginClicked" opacity="0.88" prefHeight="44.0" prefWidth="351.0" style="" styleClass="btn" text="Login" textFill="WHITE">
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
             <ImageView fx:id="imgCronote" fitHeight="210.0" fitWidth="351.0" layoutX="37.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" smooth="false">
                <image>
                   <Image url="@../image/cronote_logo_dark.png" />
@@ -52,6 +39,7 @@
                   <Font size="14.0" />
                </font>
             </TextField>
+            <Label fx:id="lblEmail" layoutX="37.0" layoutY="228.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Email não encontrado" textFill="RED" />
             <PasswordField fx:id="txtPassword" alignment="CENTER" layoutX="37.0" layoutY="249.0" prefHeight="30.0" prefWidth="351.0" promptText="Senha" styleClass="textfild">
                <opaqueInsets>
                   <Insets />
@@ -60,12 +48,26 @@
                   <Font size="14.0" />
                </font>
             </PasswordField>
+            <Label fx:id="lblPassword" layoutX="37.0" layoutY="279.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Senha inserida incorretamente" textFill="RED" />
+            <Button fx:id="btnLogin" layoutX="37.0" layoutY="310.0" mnemonicParsing="false" onAction="#btnLoginClicked" opacity="0.88" prefHeight="44.0" prefWidth="351.0" style="" styleClass="btn" text="Login" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Hyperlink fx:id="linkRecover" layoutX="137.0" layoutY="388.0" onAction="#linkRecoverClicked" text="Esqueceu a sua senha?" textFill="#333333">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Hyperlink>
             <Label layoutX="96.0" layoutY="436.0" text="Ainda não é membro?" textFill="#333333">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Hyperlink fx:id="linkRecover" layoutX="137.0" layoutY="388.0" onAction="#linkRecoverClicked" text="Esqueceu a sua senha?" textFill="#333333">
+            <Hyperlink fx:id="linkSignUp" layoutX="239.0" layoutY="432.0" onAction="#linkSignUpClicked" text="Cadastre-se" textFill="#b03a07">
                <font>
                   <Font size="14.0" />
                </font>

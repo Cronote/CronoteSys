@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 
-<TitledPane alignment="CENTER" animated="false" collapsible="false" maxWidth="-Infinity" maxHeight="Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="353.0" styleClass="activityList" text="ATIVIDADES" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.test.ActivityListController">
+<TitledPane alignment="CENTER" animated="false" collapsible="false" maxHeight="Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="353.0" styleClass="activityList" text="ATIVIDADES" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <content>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f39c12;">
          <children>
-            <AnchorPane prefHeight="66.0" prefWidth="355.0" style="-fx-border-color: red;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <AnchorPane prefHeight="66.0" prefWidth="355.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" layoutX="14.0" layoutY="66.0" minWidth="115.0" prefHeight="548.0" prefWidth="343.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="66.0">
                <content>
                   <FlowPane fx:id="cardsList" columnHalignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="552.0" prefWidth="341.0" prefWrapLength="800.0" vgap="5.0">
@@ -23,7 +23,7 @@
                   </FlowPane>
                </content>
             </ScrollPane>
-            <Button fx:id="btnAddActivity" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="137.0" layoutY="624.0" mnemonicParsing="false" onAction="#btnAddActivityClicked" style="-fx-background-color: transparent;" text="Button" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="137.0" AnchorPane.rightAnchor="137.0">
+            <Button fx:id="btnAddActivity" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="137.0" layoutY="624.0" mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="test" text="Button" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="137.0" AnchorPane.rightAnchor="137.0">
                <graphic>
                   <ImageView fitHeight="33.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="true">
                      <image>
