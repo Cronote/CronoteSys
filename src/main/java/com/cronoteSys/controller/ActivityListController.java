@@ -76,7 +76,6 @@ public class ActivityListController extends ShowEditViewActivityObservable imple
 	}
 
 	private void btnAddActivityClicked(ActionEvent e) {
-		System.out.println("hueuehue falando");
 		notifyAllListeners(null);
 
 	}
@@ -94,7 +93,7 @@ public class ActivityListController extends ShowEditViewActivityObservable imple
 	}
 
 	private FXMLLoader makeCard(ActivityVO act) {
-		FXMLLoader card = loadTemplate("ActivitCard");
+		FXMLLoader card = loadTemplate("ActivityCard");
 		ActivityCardController acController = new ActivityCardController(act);
 		card.setController(acController);
 		acController.addObserver(this);
@@ -104,7 +103,6 @@ public class ActivityListController extends ShowEditViewActivityObservable imple
 	private FXMLLoader loadTemplate(String template) {
 		FXMLLoader root = null;
 
-		System.out.println("template>>>> " + template);
 		root = new FXMLLoader(getClass().getResource("/fxml/Templates/" + template + ".fxml"));
 		return root;
 	}

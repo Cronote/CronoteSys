@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" prefHeight="788.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.LoginController">
+<GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" prefHeight="788.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.LoginController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="232.20003662109374" prefWidth="256.60003662109375" />
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="427.7999633789062" minWidth="351.0" prefWidth="427.7999633789062" />
@@ -27,21 +27,8 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <AnchorPane prefHeight="503.0" prefWidth="424.0" styleClass="imputpanel" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <AnchorPane fx:id="pnlLogin" prefHeight="503.0" prefWidth="424.0" styleClass="imputpanel" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <Hyperlink fx:id="linkSignUp" layoutX="239.0" layoutY="432.0" onAction="#linkSignUpClicked" text="Cadastre-se" textFill="#b03a07">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Hyperlink>
-            <Button fx:id="btnLogin" layoutX="37.0" layoutY="310.0" mnemonicParsing="false" onAction="#btnLoginClicked" opacity="0.88" prefHeight="44.0" prefWidth="351.0" style="" styleClass="btn" text="Login" textFill="WHITE">
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
             <ImageView fx:id="imgCronote" fitHeight="210.0" fitWidth="351.0" layoutX="37.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" smooth="false">
                <image>
                   <Image url="@../image/cronote_logo_dark.png" />
@@ -62,12 +49,25 @@
                </font>
             </PasswordField>
             <Label fx:id="lblPassword" layoutX="37.0" layoutY="279.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Senha inserida incorretamente" textFill="RED" />
+            <Button fx:id="btnLogin" layoutX="37.0" layoutY="310.0" mnemonicParsing="false" onAction="#btnLoginClicked" opacity="0.88" prefHeight="44.0" prefWidth="351.0" style="" styleClass="btn" text="Login" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Hyperlink fx:id="linkRecover" layoutX="137.0" layoutY="388.0" onAction="#linkRecoverClicked" text="Esqueceu a sua senha?" textFill="#333333">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Hyperlink>
             <Label layoutX="96.0" layoutY="436.0" text="Ainda não é membro?" textFill="#333333">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Hyperlink fx:id="linkRecover" layoutX="137.0" layoutY="388.0" onAction="#linkRecoverClicked" text="Esqueceu a sua senha?" textFill="#333333">
+            <Hyperlink fx:id="linkSignUp" layoutX="239.0" layoutY="432.0" onAction="#linkSignUpClicked" text="Cadastre-se" textFill="#b03a07">
                <font>
                   <Font size="14.0" />
                </font>

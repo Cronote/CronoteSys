@@ -2,6 +2,7 @@ package com.cronoteSys.model.vo;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "tb_activity")
@@ -161,6 +163,20 @@ public class ActivityVO implements java.io.Serializable {
 
 	public void setCategoryVO(CategoryVO categoryVO) {
 		this.categoryVO = categoryVO;
+	}
+
+	@Transient
+	public String getEstimatedTimeAsString() {
+		long horas = getEstimatedTime().toHours();
+		Duration minutos = getEstimatedTime().minus(horas, ChronoUnit.HOURS);
+		return String.format("%02d:%02d ", horas, minutos.toMinutes());
+	}
+
+	@Transient
+	public String getRealtimeAsString() {
+		long horas = getRealtime().toHours();
+		Duration minutos = getRealtime().minus(horas, ChronoUnit.HOURS);
+		return String.format("%02d:%02d ", horas, minutos.toMinutes());
 	}
 
 	@Override

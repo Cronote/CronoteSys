@@ -114,7 +114,7 @@ public class ForgotPwdController extends MasterController {
 	@FXML
 	public void btnSendClicked() {
 		txtEmail.getStyleClass().remove("error");
-		if (new ScreenUtil().isFilledFields(getThisStage(), pnlSendEmail)) {
+		if (new ScreenUtil().isFilledFields(getThisStage(), pnlSendEmail,false)) {
 			lblEmailSend.getStyleClass().remove("show");
 			lblEmailSend.getStyleClass().add("hide");
 			String email = txtEmail.getText().trim();
@@ -160,7 +160,7 @@ public class ForgotPwdController extends MasterController {
 		txtPwd.getStyleClass().remove("error");
 		txtConfirmPwd.getStyleClass().remove("error");
 		
-		if (!new ScreenUtil().isFilledFields(getThisStage(), pnlVerification)) {
+		if (!new ScreenUtil().isFilledFields(getThisStage(), pnlVerification,false )) {
 			return;
 		}
 

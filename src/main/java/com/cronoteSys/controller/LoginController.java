@@ -28,6 +28,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 
 /**
  *
@@ -51,6 +52,8 @@ public class LoginController extends MasterController {
 	private Hyperlink linkRecover;
 	private HashMap<String, Object> hmp;
 	private boolean rememberMe = true;
+	@FXML
+	AnchorPane pnlLogin;
 
 	@FXML
 	public void initialize() {
@@ -100,7 +103,7 @@ public class LoginController extends MasterController {
 				}
 			}
 			hmp.put("user", user);
-			new ScreenUtil().openNewWindow(getThisStage(), "Test", false, hmp);
+			new ScreenUtil().openNewWindow(getThisStage(), "Home", false, hmp);
 		} else {
 			List<Node> lst = new ArrayList<Node>();
 			lst.add(txtEmail);
@@ -126,7 +129,7 @@ public class LoginController extends MasterController {
 
 	@FXML
 	private void btnLoginClicked(ActionEvent event) {
-		if (new ScreenUtil().isFilledFields(getThisStage(), pnlRoot)) {
+		if (new ScreenUtil().isFilledFields(getThisStage(), pnlLogin,false)) {
 			String sUsername = txtEmail.getText().trim(), sPasswd = txtPassword.getText().trim();
 			login(new LoginVO(null, sUsername, new GenHash().hashIt(sPasswd)));
 		}

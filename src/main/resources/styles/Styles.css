@@ -34,7 +34,9 @@
 	-fx-font-size: 14.0;
 	
 }
-
+*:disabled { /* FX theme stylesheet */
+-fx-opacity: 1.0;
+}
 .textfillwhite {
 	-fx-prompt-text-fill: #fff;
 	-fx-text-fill: #fff;

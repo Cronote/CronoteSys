@@ -13,7 +13,7 @@
    <content>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f39c12;">
          <children>
-            <AnchorPane prefHeight="66.0" prefWidth="355.0" style="-fx-border-color: red;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <AnchorPane prefHeight="66.0" prefWidth="355.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" layoutX="14.0" layoutY="66.0" minWidth="115.0" prefHeight="548.0" prefWidth="343.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="66.0">
                <content>
                   <FlowPane fx:id="cardsList" columnHalignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="552.0" prefWidth="341.0" prefWrapLength="800.0" vgap="5.0">

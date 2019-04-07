@@ -1,11 +1,14 @@
 package com.cronoteSys.controller;
 
 import java.net.URL;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Observable;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 import com.cronoteSys.model.bo.ActivityBO;
+import com.cronoteSys.model.bo.ExecutionTimeBO;
 import com.cronoteSys.model.vo.ActivityVO;
 
 import javafx.event.ActionEvent;
@@ -33,6 +36,9 @@ public class ActivityCardController extends Observable implements Initializable 
 	private ProgressBar pgbProgress;
 
 	@FXML
+	private Label lblProgress;
+
+	@FXML
 	private Button btnDelete;
 
 	private ActivityVO activity;
@@ -49,6 +55,15 @@ public class ActivityCardController extends Observable implements Initializable 
 	public void initialize(URL location, ResourceBundle resources) {
 		lblTitle.setText(activity.getTitle());
 		lblStatus.setText(activity.getStats().getDescription());
+		new ActivityBO().updateRealTime(activity);
+
+		double estimatedTime = activity.getEstimatedTime().toMillis();
+		double realtime = activity.getRealtime().toMillis();
+		pgbProgress.setProgress(realtime / estimatedTime);
+		String progressStr = String.format("%.2f", (pgbProgress.getProgress() * 100));
+
+		lblProgress.setText(progressStr + "%");
+
 		initEvents();
 	}
 

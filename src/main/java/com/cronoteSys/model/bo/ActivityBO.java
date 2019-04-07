@@ -1,12 +1,15 @@
 package com.cronoteSys.model.bo;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.cronoteSys.model.dao.ActivityDAO;
 import com.cronoteSys.model.vo.ActivityVO;
+import com.cronoteSys.model.vo.ExecutionTimeVO;
 import com.cronoteSys.model.vo.StatusEnum;
+import com.cronoteSys.model.vo.UnityTimeEnum;
 import com.cronoteSys.model.vo.UserVO;
 
 public class ActivityBO {
@@ -38,6 +41,13 @@ public class ActivityBO {
 	public void switchStatus(ActivityVO ac, StatusEnum stats) {
 		ac.setStats(stats);
 		acDAO.saveOrUpdate(ac);
+	}
+
+	public void updateRealTime(ActivityVO ac) {
+		Duration realTime = new ExecutionTimeBO().getRealTime(ac);
+		ac.setRealtime(realTime);
+		acDAO.saveOrUpdate(ac);
+
 	}
 
 	public List<ActivityVO> listAllByUser(UserVO user) {

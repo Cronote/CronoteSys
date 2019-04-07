@@ -3,6 +3,7 @@ package com.cronoteSys.controller;
 import java.net.URL;
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -14,6 +15,7 @@ import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.dao.CategoryDAO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.CategoryVO;
+import com.cronoteSys.model.vo.StatusEnum;
 import com.cronoteSys.model.vo.UnityTimeEnum;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.ScreenUtil;
@@ -39,8 +41,6 @@ import javafx.stage.Stage;
 
 public class ActivityDetailsController extends ShowEditViewActivityObservable implements Initializable {
 
-	private ActivityVO activity;
-	private UserVO user;
 	@FXML
 	private TextField txtTitle;
 	@FXML
@@ -55,7 +55,6 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	private Spinner<Double> spnEstimatedTimeNumber;
 	@FXML
 	private ComboBox<UnityTimeEnum> cboEstimatedTimeUnity;
-
 	@FXML
 	private Label lblTitle;
 	@FXML
@@ -80,6 +79,8 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	private Button btnDelete;
 	private String mode;
 	HashMap<String, Object> hmp = new HashMap<String, Object>();
+	private ActivityVO activity;
+	private UserVO user;
 
 	public ActivityDetailsController(UserVO user) {
 		this.user = user;
@@ -122,9 +123,10 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 					spnEstimatedTimeNumber
 							.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 6000, 1, 1));
 					spnEstimatedTimeNumber.getValueFactory().setValue((double) activity.getEstimatedTime().toMinutes());
-
 				}
-
+				if (!activity.getStats().equals(StatusEnum.NOT_STARTED)) {
+					blockEdition();
+				}
 			}
 		} else {
 			lblTitle.setText(activity.getTitle());
@@ -133,18 +135,27 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 			for (int i = 0; i < tggPriority.getToggles().size(); i++) {
 				boolean isPriorityIndex = i == activity.getPriority();
 				((ToggleButton) tggPriority.getToggles().get(i)).setSelected(isPriorityIndex);
-				((ToggleButton) tggPriority.getToggles().get(i)).setDisable(!isPriorityIndex);
+				((ToggleButton) tggPriority.getToggles().get(i)).setDisable(true);
 			}
-			if (activity.getEstimatedTimeUnit().equals(UnityTimeEnum.HOURS)) {
-				lblEstimatedTime.setText(String.format("%02d " + UnityTimeEnum.HOURS.getDescription(),
-						activity.getEstimatedTime().toHours()));
-			} else {
-				lblEstimatedTime.setText(String.format("%02d " + UnityTimeEnum.MINUTES.getDescription(),
-						activity.getEstimatedTime().toMinutes()));
-			}
+
+			lblEstimatedTime.setText(activity.getEstimatedTimeAsString());
+			lblRealTime.setText(activity.getRealtimeAsString());
+			double estimatedTime = activity.getEstimatedTime().toMillis();
+			double realtime = activity.getRealtime().toMillis();
 			lblStatus.setText(activity.getStats().getDescription().toUpperCase());
+			pgiProgress.setProgress(realtime / estimatedTime);
 			lblLastModified.setText(activity.getLastModification()
 					.format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm", new Locale("pt", "BR"))));
+		}
+	}
+
+	private void blockEdition() {
+		txtTitle.setDisable(true);
+		cboCategory.setDisable(true);
+		cboEstimatedTimeUnity.setDisable(true);
+		spnEstimatedTimeNumber.setDisable(true);
+		for (int i = 0; i < tggPriority.getToggles().size(); i++) {
+			((ToggleButton) tggPriority.getToggles().get(i)).setDisable(true);
 		}
 	}
 
@@ -198,7 +209,6 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 				}
 			});
 		}
-
 	}
 
 	private void cboEstimatedTimeUnitySelectionChanged(ActionEvent event) {
@@ -213,7 +223,7 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	}
 
 	private void btnSaveClicked(ActionEvent event) {
-		if (new ScreenUtil().isFilledFields((Stage) btnSave.getScene().getWindow(), detailsRoot)) {
+		if (new ScreenUtil().isFilledFields((Stage) btnSave.getScene().getWindow(), detailsRoot,false)) {
 			activity.setTitle(txtTitle.getText());
 			activity.setCategoryVO(cboCategory.getValue());
 			activity.setDescription(txtDescription.getText());
@@ -240,5 +250,4 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 			}
 		}
 	}
-
 }

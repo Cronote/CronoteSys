@@ -89,7 +89,8 @@ public class SignUpController extends MasterController {
 		txtPwd.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!newValue) {
-					bPasswordOk = ScreenUtil.verifyPassFields(txtPwd.getText().trim(), txtConfirmPwd.getText().trim(), lstPasswordNodes, lstPasswordLabelNodes);
+					bPasswordOk = ScreenUtil.verifyPassFields(txtPwd.getText().trim(), txtConfirmPwd.getText().trim(),
+							lstPasswordNodes, lstPasswordLabelNodes);
 				}
 
 			}
@@ -97,7 +98,8 @@ public class SignUpController extends MasterController {
 		txtConfirmPwd.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (!newValue) {
-					bPasswordOk = ScreenUtil.verifyPassFields(txtConfirmPwd.getText().trim(), txtPwd.getText().trim(), lstPasswordNodes, lstPasswordLabelNodes);
+					bPasswordOk = ScreenUtil.verifyPassFields(txtConfirmPwd.getText().trim(), txtPwd.getText().trim(),
+							lstPasswordNodes, lstPasswordLabelNodes);
 				}
 				lblConfirmPwd.getStyleClass().remove("show");
 				lblConfirmPwd.getStyleClass().add("hide");
@@ -109,7 +111,7 @@ public class SignUpController extends MasterController {
 	public void btnSignUpClicked() {
 		hiddenAllLabels();
 		System.out.println(dateBirthday.getValue());
-		if(new ScreenUtil().isFilledFields(getThisStage(), pnlInput)) {
+		if (new ScreenUtil().isFilledFields(getThisStage(), pnlInput, false)) {
 			String sEmail = txtEmail.getText().trim();
 			if (!new EmailUtil().validateEmail(sEmail)) {
 				lblEmail.setText("Email fora do formato");
@@ -160,8 +162,6 @@ public class SignUpController extends MasterController {
 		}
 	}
 
-	
-	
 	private void hiddenAllLabels() {
 		allLabels = new ArrayList<Node>();
 		allLabels.add(lblName);
@@ -169,9 +169,9 @@ public class SignUpController extends MasterController {
 		allLabels.add(lblSecondEmail);
 		allLabels.add(lblPwd);
 		allLabels.add(lblConfirmPwd);
-		
-		for(Node n : allLabels) {
-			if(n.getStyleClass().contains("show")) {
+
+		for (Node n : allLabels) {
+			if (n.getStyleClass().contains("show")) {
 				n.getStyleClass().remove("show");
 				n.getStyleClass().add("hide");
 			}

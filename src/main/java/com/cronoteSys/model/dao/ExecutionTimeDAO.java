@@ -1,5 +1,7 @@
 package com.cronoteSys.model.dao;
 
+import java.util.List;
+
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
@@ -11,6 +13,13 @@ public class ExecutionTimeDAO extends GenericsDAO<ExecutionTimeVO, Integer> {
 
 	public ExecutionTimeDAO() {
 		super(ExecutionTimeVO.class);
+	}
+
+	public List<ExecutionTimeVO> listByActivity(ActivityVO activityVO) {
+		Query q = entityManager.createQuery(
+				"SELECT p FROM " + ExecutionTimeVO.class.getSimpleName() + " p WHERE p.activityVO = :activity");
+		q.setParameter("activity", activityVO);
+		return q.getResultList();
 	}
 
 	public int executionInProgressByUser(UserVO userVO) {

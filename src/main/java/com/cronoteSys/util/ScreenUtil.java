@@ -8,6 +8,7 @@ package com.cronoteSys.util;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +26,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ComboBoxBase;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
@@ -145,7 +147,7 @@ public class ScreenUtil {
 	 *
 	 *
 	 */
-	public boolean isFilledFields(Stage oldStage, Pane pnl) {
+	public boolean isFilledFields(Stage oldStage, Pane pnl, boolean isRecursive) {
 		ObservableList<Node> comp = pnl.getChildren();
 		int nodeIndex = 0;
 		for (Node node : comp) {
@@ -159,26 +161,32 @@ public class ScreenUtil {
 			}
 			if (node instanceof TextInputControl) {
 				if (((TextInputControl) node).getText().trim().equals("")) {
-					System.out.println(((TextInputControl) node).getPromptText());
 					node.requestFocus();
-					Label label = (Label) pnl.getChildren().get(nodeIndex+1);
-					label.getStyleClass().remove("hide");
-					label.getStyleClass().add("show");
-					label.setText("*Campo obrigatório");
-					addORRemoveErrorClass(node, true);
+					if (!isRecursive) {
+						showErrorLabel(pnl, nodeIndex, "Campo obrigatório");
+						addORRemoveErrorClass(node, true);
+					}
 					return false;
 				} else {
-					addORRemoveErrorClass(node, false);
+					if (!isRecursive) {
+						hideErrorLabel(pnl, nodeIndex);
+						addORRemoveErrorClass(node, false);
+					}
 				}
 			}
 			if (node instanceof ComboBox<?>) {
-				System.out.println("Combo value " + ((ComboBox<?>) node).getValue());
 				if (((ComboBox<?>) node).getSelectionModel().isEmpty()) {
 					node.requestFocus();
-					addORRemoveErrorClass(node, true);
+					if (!isRecursive) {
+						showErrorLabel(pnl, nodeIndex, "Campo obrigatório");
+						addORRemoveErrorClass(node, true);
+					}
 					return false;
 				} else {
-					addORRemoveErrorClass(node, false);
+					if (!isRecursive) {
+						hideErrorLabel(pnl, nodeIndex);
+						addORRemoveErrorClass(node, false);
+					}
 				}
 
 			}
@@ -186,10 +194,16 @@ public class ScreenUtil {
 			if (node instanceof Spinner<?>) {
 				if (((Spinner<?>) node).getValue() == null) {
 					node.requestFocus();
-					addORRemoveErrorClass(node, true);
+					if (!isRecursive) {
+						showErrorLabel(pnl, nodeIndex, "Campo obrigatório");
+						addORRemoveErrorClass(node, true);
+					}
 					return false;
 				} else {
-					addORRemoveErrorClass(node, false);
+					if (!isRecursive) {
+						hideErrorLabel(pnl, nodeIndex);
+						addORRemoveErrorClass(node, false);
+					}
 				}
 
 			}
@@ -207,18 +221,33 @@ public class ScreenUtil {
 				}
 			}
 			if (node instanceof Pane) {
-				if(!isFilledFields(oldStage, (Pane) node)) {
+				if (!isFilledFields(oldStage, (Pane) node, true)) {
 					node.getStyleClass().addAll("hasError", "error");
-				}else {
+					showErrorLabel(pnl, nodeIndex, "Campo obrigatório");
+				} else {
 					node.getStyleClass().removeAll("hasError", "error");
+					hideErrorLabel(pnl, nodeIndex);
 				}
-				if(node.getStyleClass().contains("hasError")) {
+				if (node.getStyleClass().contains("hasError")) {
 					return false;
 				}
 			}
 			nodeIndex++;
 		}
 		return true;
+	}
+
+	private void showErrorLabel(Pane pnl, int nodeIndex, String message) {
+		Label label = (Label) pnl.getChildren().get(nodeIndex + 1);
+		label.getStyleClass().remove("hide");
+		label.getStyleClass().add("show");
+		label.setText(message);
+	}
+
+	private void hideErrorLabel(Pane pnl, int nodeIndex) {
+		Label label = (Label) pnl.getChildren().get(nodeIndex + 1);
+		label.getStyleClass().add("hide");
+		label.getStyleClass().remove("show");
 	}
 
 	public void clearFields(Stage oldStage, Pane pnl) {
