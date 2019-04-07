@@ -70,6 +70,7 @@ public class ActivityCardController extends Observable implements Initializable 
 		cardRoot.setOnMouseClicked(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
+				cardRoot.getStyleClass().remove("activityCardSelected");
 				cardRoot.getStyleClass().add("activityCardSelected");
 				hmp.put("action", "view");
 				hmp.put("activity", activity);

@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="939.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.ForgotPwdController">
+<GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="939.0" styleClass="NotRequired" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.ForgotPwdController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="127.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="707.0" minWidth="10.0" prefWidth="693.0" />
@@ -27,9 +27,9 @@
     <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="526.0" prefWidth="689.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <AnchorPane id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="526.0" prefWidth="689.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <Pane layoutX="73.0" layoutY="49.0" prefHeight="137.0" prefWidth="566.0" styleClass="imputpanel">
+            <Pane id="pane" fx:id="pnlSendEmail" layoutX="73.0" layoutY="49.0" prefHeight="137.0" prefWidth="566.0" styleClass="imputpanel">
                <children>
                   <Button fx:id="btnSend" layoutX="390.0" layoutY="68.0" mnemonicParsing="false" onAction="#btnSendClicked" opacity="0.88" prefHeight="30.0" prefWidth="91.0" text="Enviar" textFill="WHITE">
                      <cursor>
@@ -48,12 +48,12 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <TextField id="txt_email" fx:id="txtEmail" alignment="TOP_LEFT" layoutX="21.0" layoutY="67.0" prefHeight="17.0" prefWidth="351.0" promptText="E-mail*" styleClass="textfild">
+                  <TextField id="txt_email" fx:id="txtEmail" alignment="TOP_LEFT" layoutX="21.0" layoutY="67.0" prefHeight="17.0" prefWidth="351.0" promptText="E-mail*" styleClass="textfild" stylesheets="@../styles/Styles.css">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </TextField>
-                  <Label fx:id="lblEmailSend" layoutX="21.0" layoutY="98.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Email não cadastrado" textFill="RED" />
+                  <Label fx:id="lblEmailSend" layoutX="21.0" layoutY="98.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="*Campo obrigatório" textFill="RED" />
                </children>
             </Pane>
 
@@ -95,19 +95,19 @@
                         <Font size="14.0" />
                      </font>
                   </TextField>
+                  <Label fx:id="lblCode" layoutX="23.0" layoutY="58.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Código incorreto" textFill="RED" />
                   <PasswordField id="txt_password" fx:id="txtPwd" alignment="TOP_LEFT" layoutX="23.0" layoutY="77.0" prefHeight="17.0" prefWidth="351.0" promptText="Nova senha*" styleClass="textfild">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </PasswordField>
+                  <Label fx:id="lblNewPwd" layoutX="23.0" layoutY="107.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Senha inválida" textFill="RED" />
                   <PasswordField id="txt_password" fx:id="txtConfirmPwd" alignment="TOP_LEFT" layoutX="23.0" layoutY="129.0" prefHeight="17.0" prefWidth="351.0" promptText="Confirme a nova senha*" styleClass="textfild">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </PasswordField>
-                  <Label fx:id="lblCode" layoutX="23.0" layoutY="58.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Código incorreto" textFill="RED" />
-                  <Label fx:id="lblNewPwd" layoutX="23.0" layoutY="107.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Senha invalida" textFill="RED" />
-                  <Label fx:id="lblConfirmPwd" layoutX="23.0" layoutY="159.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Senha invalida" textFill="RED" />
+                  <Label fx:id="lblConfirmPwd" layoutX="23.0" layoutY="159.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Senha inválida" textFill="RED" />
                </children>
                <styleClass>
                   <String fx:value="imputpanel" />

@@ -135,3 +135,20 @@
 .show{
 	visibility: visible;
 }
+
+.btnTransparent{
+	-fx-background-color:transparent;
+}
+
+.spinner .decrement-arrow-button{
+	-fx-background-color:white;
+}
+.spinner .increment-arrow-button{
+	-fx-background-color:white;
+}
+.spinner .text-field:readonly{
+	-fx-background-color:white;
+}
+ComboBox{
+	-fx-background-color:white;
+}

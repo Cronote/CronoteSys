@@ -91,7 +91,7 @@ public class UserVO implements java.io.Serializable {
 		this.completeName = completeName;
 	}
 
-	@Column(name = "birth_date", nullable = false)
+	@Column(name = "birth_date", nullable = true)
 	public LocalDate getBirthDate() {
 		return this.birthDate;
 	}

@@ -32,7 +32,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -148,15 +147,24 @@ public class ScreenUtil {
 	 */
 	public boolean isFilledFields(Stage oldStage, Pane pnl) {
 		ObservableList<Node> comp = pnl.getChildren();
+		int nodeIndex = 0;
 		for (Node node : comp) {
-			if (!node.isVisible())
+			if (!node.isVisible()) {
+				nodeIndex++;
 				continue;
-			if (node.getStyleClass().contains("NotRequired"))
+			}
+			if (node.getStyleClass().contains("NotRequired")) {
+				nodeIndex++;
 				continue;
-
+			}
 			if (node instanceof TextInputControl) {
 				if (((TextInputControl) node).getText().trim().equals("")) {
+					System.out.println(((TextInputControl) node).getPromptText());
 					node.requestFocus();
+					Label label = (Label) pnl.getChildren().get(nodeIndex+1);
+					label.getStyleClass().remove("hide");
+					label.getStyleClass().add("show");
+					label.setText("*Campo obrigatório");
 					addORRemoveErrorClass(node, true);
 					return false;
 				} else {
@@ -195,15 +203,20 @@ public class ScreenUtil {
 
 				if (((ToggleButton) node).getToggleGroup().getSelectedToggle() == null) {
 					node.requestFocus();
-					addORRemoveErrorClass(node, true);
 					return false;
-				} else {
-					addORRemoveErrorClass(node, false);
 				}
 			}
 			if (node instanceof Pane) {
-				isFilledFields(oldStage, (Pane) node);
+				if(!isFilledFields(oldStage, (Pane) node)) {
+					node.getStyleClass().addAll("hasError", "error");
+				}else {
+					node.getStyleClass().removeAll("hasError", "error");
+				}
+				if(node.getStyleClass().contains("hasError")) {
+					return false;
+				}
 			}
+			nodeIndex++;
 		}
 		return true;
 	}
@@ -247,15 +260,15 @@ public class ScreenUtil {
 		if (sPass1.equals("") || sPass2.equals(""))
 			return false;
 		if (!new LoginBO().validatePassword(sPass1)) {
-			lstLabel.get(0).getStyleClass().remove("hide");
-			lstLabel.get(0).getStyleClass().add("show");
-			lstLabel.get(1).getStyleClass().remove("hide");
-			lstLabel.get(1).getStyleClass().add("show");
+//			lstLabel.get(0).getStyleClass().remove("hide");
+//			lstLabel.get(0).getStyleClass().add("show");
 			new ScreenUtil().addORRemoveErrorClass(lstTextFields, true);
 			return false;
 		}
 		if (!sPass1.equals(sPass2)) {
 			new ScreenUtil().addORRemoveErrorClass(lstTextFields, true);
+//			lstLabel.get(1).getStyleClass().remove("hide");
+//			lstLabel.get(1).getStyleClass().add("show");
 			System.out.println("Mensagem de falha por senhas diferentes");
 			return false;
 		}
