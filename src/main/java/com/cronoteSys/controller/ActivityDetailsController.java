@@ -20,9 +20,12 @@ import com.cronoteSys.model.vo.UnityTimeEnum;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.ScreenUtil;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -36,6 +39,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -71,6 +76,8 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	private Label lblStatus;
 	@FXML
 	private Label lblLastModified;
+	@FXML
+	private Label lblDescriptionLimit;
 	@FXML
 	private Button btnSave;
 	@FXML
@@ -185,6 +192,7 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 		}
 		if (btnSave != null) {
 			btnSave.setOnAction(new EventHandler<ActionEvent>() {
+
 				@Override
 				public void handle(ActionEvent event) {
 					btnSaveClicked(event);
@@ -201,11 +209,48 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 				}
 			});
 		}
-		if (btnDelete != null) {
+		if (btnDelete != null)
+
+		{
 			btnDelete.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
 					new ActivityBO().delete(activity);
+				}
+			});
+		}
+		if (txtDescription != null) {
+			txtDescription.textProperty().addListener(new ChangeListener<String>() {
+
+				@Override
+				public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+					final int LIMIT = 255;
+					int i = LIMIT - newValue.length();
+					if (i > 5) {
+						lblDescriptionLimit.setStyle("-fx-text-fill:black;");
+					} else {
+						lblDescriptionLimit.setStyle("-fx-text-fill:red;");
+
+					}
+					if (i <= 0) {
+						String s = txtDescription.getText().substring(0, LIMIT);
+						txtDescription.setText(s);
+						lblDescriptionLimit.setText(String.valueOf(0));
+						return;
+					}
+					lblDescriptionLimit.setText(String.valueOf(i));
+				}
+			});
+			txtDescription.setOnKeyTyped(new EventHandler<KeyEvent>() {
+
+				@Override
+				public void handle(KeyEvent event) {
+					final int LIMIT = 255;
+					int i = LIMIT - (((TextArea) event.getSource()).getText().length() + event.getCharacter().length());
+					if (i < 0) {
+						if (event.getCode() != KeyCode.BACK_SPACE || event.isControlDown())
+							event.consume();
+					}
 				}
 			});
 		}
@@ -223,7 +268,7 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	}
 
 	private void btnSaveClicked(ActionEvent event) {
-		if (new ScreenUtil().isFilledFields((Stage) btnSave.getScene().getWindow(), detailsRoot,false)) {
+		if (new ScreenUtil().isFilledFields((Stage) btnSave.getScene().getWindow(), detailsRoot, false)) {
 			activity.setTitle(txtTitle.getText());
 			activity.setCategoryVO(cboCategory.getValue());
 			activity.setDescription(txtDescription.getText());

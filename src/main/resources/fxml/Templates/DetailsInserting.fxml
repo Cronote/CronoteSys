@@ -76,5 +76,7 @@
 				</ImageView>
 			</graphic>
 		</Button>
+      <Label layoutX="313.0" layoutY="326.0" text="Limite de letras:" AnchorPane.rightAnchor="62.0" />
+      <Label fx:id="lblDescriptionLimit" layoutX="407.0" layoutY="327.0" text="255" AnchorPane.rightAnchor="37.0" />
 	</children>
 </AnchorPane>
