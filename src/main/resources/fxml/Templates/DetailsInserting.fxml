@@ -62,8 +62,13 @@
 		</Label>
       <HBox layoutX="14.0" layoutY="437.0" spacing="15.0" AnchorPane.leftAnchor="14.0">
          <children>
-      		<Spinner fx:id="spnEstimatedTimeNumber" prefHeight="28.0" prefWidth="70.0" />
-      		<ComboBox fx:id="cboEstimatedTimeUnity" prefHeight="28.0" prefWidth="196.0" promptText="Selecione uma unidade" />
+      		<Spinner fx:id="spnEstimatedTimeHour" prefHeight="28.0" prefWidth="45.0" styleClass="split-arrows-vertical" />
+            <Label alignment="CENTER" contentDisplay="CENTER" text=":">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <Spinner fx:id="spnEstimatedTimeMinute" prefHeight="56.0" prefWidth="45.0" styleClass="split-arrows-vertical" />
          </children>
       </HBox>
 		<Label layoutX="16.0" layoutY="466.0" prefHeight="18.0" styleClass="hide" text="Campo obrigatório" textFill="RED" AnchorPane.leftAnchor="16.0" />

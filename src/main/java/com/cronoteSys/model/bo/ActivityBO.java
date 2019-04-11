@@ -7,9 +7,7 @@ import java.util.List;
 
 import com.cronoteSys.model.dao.ActivityDAO;
 import com.cronoteSys.model.vo.ActivityVO;
-import com.cronoteSys.model.vo.ExecutionTimeVO;
 import com.cronoteSys.model.vo.StatusEnum;
-import com.cronoteSys.model.vo.UnityTimeEnum;
 import com.cronoteSys.model.vo.UserVO;
 
 public class ActivityBO {

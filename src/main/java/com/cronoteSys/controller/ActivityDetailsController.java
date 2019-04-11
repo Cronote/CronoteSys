@@ -10,13 +10,11 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import com.cronoteSys.converter.CategoryConverter;
-import com.cronoteSys.converter.UnityTimeEnumConverter;
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.dao.CategoryDAO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.CategoryVO;
 import com.cronoteSys.model.vo.StatusEnum;
-import com.cronoteSys.model.vo.UnityTimeEnum;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.ScreenUtil;
 
@@ -25,7 +23,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -57,9 +54,9 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	@FXML
 	private ToggleGroup tggPriority;
 	@FXML
-	private Spinner<Double> spnEstimatedTimeNumber;
+	private Spinner<Integer> spnEstimatedTimeHour;
 	@FXML
-	private ComboBox<UnityTimeEnum> cboEstimatedTimeUnity;
+	private Spinner<Integer> spnEstimatedTimeMinute;
 	@FXML
 	private Label lblTitle;
 	@FXML
@@ -102,8 +99,8 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		initEvents();
 		initForm();
+		initEvents();
 	}
 
 	private void initForm() {
@@ -120,20 +117,17 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 					boolean isPriorityIndex = i == activity.getPriority();
 					((ToggleButton) tggPriority.getToggles().get(i)).setSelected(isPriorityIndex);
 				}
-				cboEstimatedTimeUnity.getSelectionModel().select(activity.getEstimatedTimeUnit());
-				if (activity.getEstimatedTimeUnit().equals(UnityTimeEnum.HOURS)) {
-					spnEstimatedTimeNumber
-							.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 100, 0.5, 0.5));
-					spnEstimatedTimeNumber.getValueFactory().setValue((double) activity.getEstimatedTime().toHours());
-
-				} else {
-					spnEstimatedTimeNumber
-							.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 6000, 1, 1));
-					spnEstimatedTimeNumber.getValueFactory().setValue((double) activity.getEstimatedTime().toMinutes());
-				}
 				if (!activity.getStats().equals(StatusEnum.NOT_STARTED)) {
 					blockEdition();
 				}
+				long horas = activity.getEstimatedTime().toHours();
+				Duration minutos = activity.getEstimatedTime().minus(horas, ChronoUnit.HOURS);
+				String hora = String.format("%02d", horas);
+				String minuto = String.format("%02d", minutos.toMinutes());
+				spnEstimatedTimeHour.getValueFactory().setValue(Integer.parseInt(hora));
+				spnEstimatedTimeMinute.getValueFactory().setValue(Integer.parseInt(minuto));
+				spnEstimatedTimeHour.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
+				spnEstimatedTimeMinute.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 			}
 		} else {
 			lblTitle.setText(activity.getTitle());
@@ -149,8 +143,10 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 			lblRealTime.setText(activity.getRealtimeAsString());
 			double estimatedTime = activity.getEstimatedTime().toMillis();
 			double realtime = activity.getRealtime().toMillis();
+			double progress = realtime / estimatedTime;
+			progress = progress > 1 ? 1 : progress;
 			lblStatus.setText(activity.getStats().getDescription().toUpperCase());
-			pgiProgress.setProgress(realtime / estimatedTime);
+			pgiProgress.setProgress(progress);
 			lblLastModified.setText(activity.getLastModification()
 					.format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm", new Locale("pt", "BR"))));
 		}
@@ -159,8 +155,8 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	private void blockEdition() {
 		txtTitle.setDisable(true);
 		cboCategory.setDisable(true);
-		cboEstimatedTimeUnity.setDisable(true);
-		spnEstimatedTimeNumber.setDisable(true);
+		spnEstimatedTimeHour.setDisable(true);
+		spnEstimatedTimeMinute.setDisable(true);
 		for (int i = 0; i < tggPriority.getToggles().size(); i++) {
 			((ToggleButton) tggPriority.getToggles().get(i)).setDisable(true);
 		}
@@ -171,21 +167,41 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 		ObservableList<CategoryVO> obsLstCategory = FXCollections.observableList(lstCategory);
 		cboCategory.setConverter(new CategoryConverter(user));
 		cboCategory.setItems(obsLstCategory);
-		ObservableList<UnityTimeEnum> obsLstEstimatedTimeUnity = FXCollections
-				.observableArrayList(UnityTimeEnum.values());
-		cboEstimatedTimeUnity.setItems(obsLstEstimatedTimeUnity);
-		cboEstimatedTimeUnity.setConverter(new UnityTimeEnumConverter());
+		spnEstimatedTimeHour.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99999, 0, 1));
+		spnEstimatedTimeMinute.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 60, 1, 1));
+
 		for (int i = 0; i < tggPriority.getToggles().size(); i++) {
 			tggPriority.getToggles().get(i).setUserData(i);
 		}
 	}
 
 	private void initEvents() {
-		if (cboEstimatedTimeUnity != null) {
-			cboEstimatedTimeUnity.setOnAction(new EventHandler<ActionEvent>() {
+		if (spnEstimatedTimeMinute != null) {
+			spnEstimatedTimeMinute.valueProperty().addListener(new ChangeListener<Integer>() {
+
 				@Override
-				public void handle(ActionEvent event) {
-					cboEstimatedTimeUnitySelectionChanged(event);
+				public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
+					if (newValue == 60) {
+						newValue = 0;
+						spnEstimatedTimeMinute.getValueFactory().setValue(newValue);
+						spnEstimatedTimeHour.increment(1);
+					}
+					if (newValue == 0 && spnEstimatedTimeHour.getValue() == 0) {
+						newValue = 1;
+						spnEstimatedTimeMinute.getValueFactory().setValue(newValue);
+					}
+
+				}
+			});
+		}
+		if (spnEstimatedTimeHour != null && spnEstimatedTimeMinute != null) {
+			spnEstimatedTimeHour.valueProperty().addListener(new ChangeListener<Integer>() {
+
+				@Override
+				public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
+					if (newValue != null && newValue == 0 && spnEstimatedTimeMinute.getValue() == 0) {
+						spnEstimatedTimeMinute.increment(1);
+					}
 
 				}
 			});
@@ -209,9 +225,7 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 				}
 			});
 		}
-		if (btnDelete != null)
-
-		{
+		if (btnDelete != null) {
 			btnDelete.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
@@ -219,6 +233,7 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 				}
 			});
 		}
+
 		if (txtDescription != null) {
 			txtDescription.textProperty().addListener(new ChangeListener<String>() {
 
@@ -256,31 +271,15 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 		}
 	}
 
-	private void cboEstimatedTimeUnitySelectionChanged(ActionEvent event) {
-		UnityTimeEnum value = cboEstimatedTimeUnity.getValue();
-		if (value == null)
-			return;
-		if (value.equals(UnityTimeEnum.MINUTES)) {
-			spnEstimatedTimeNumber.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 6000, 1, 1));
-		} else {
-			spnEstimatedTimeNumber.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 100, 0.5, 0.5));
-		}
-	}
-
 	private void btnSaveClicked(ActionEvent event) {
 		if (new ScreenUtil().isFilledFields((Stage) btnSave.getScene().getWindow(), detailsRoot, false)) {
 			activity.setTitle(txtTitle.getText());
 			activity.setCategoryVO(cboCategory.getValue());
 			activity.setDescription(txtDescription.getText());
 			Duration d = Duration.ZERO;
-			if (cboEstimatedTimeUnity.getValue().equals(UnityTimeEnum.MINUTES)) {
-				d = Duration.ofMinutes(spnEstimatedTimeNumber.getValue().longValue());
-
-			} else {
-				d = Duration.ofHours(spnEstimatedTimeNumber.getValue().longValue());
-			}
+			d = d.plusMinutes(spnEstimatedTimeMinute.getValue());
+			d = d.plusHours(spnEstimatedTimeHour.getValue());
 			activity.setEstimatedTime(d);
-			activity.setEstimatedTimeUnit(cboEstimatedTimeUnity.getValue());
 			activity.setPriority(Integer.parseInt(tggPriority.getSelectedToggle().getUserData().toString()));
 			if (activity.getId() == null) {
 				activity = new ActivityBO().save(activity);

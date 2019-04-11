@@ -59,7 +59,9 @@ public class ActivityCardController extends Observable implements Initializable 
 
 		double estimatedTime = activity.getEstimatedTime().toMillis();
 		double realtime = activity.getRealtime().toMillis();
-		pgbProgress.setProgress(realtime / estimatedTime);
+		double progress = realtime / estimatedTime;
+		progress = progress > 1 ? 1 : progress;
+		pgbProgress.setProgress(progress);
 		String progressStr = String.format("%.2f", (pgbProgress.getProgress() * 100));
 
 		lblProgress.setText(progressStr + "%");

@@ -24,7 +24,6 @@ public class ActivityVO implements java.io.Serializable {
 	private String title;
 	private String description;
 	private Duration estimatedTime;
-	private UnityTimeEnum estimatedTimeUnit;
 	private StatusEnum stats;
 	private Duration realtime;
 	private Integer priority;
@@ -90,14 +89,7 @@ public class ActivityVO implements java.io.Serializable {
 		this.estimatedTime = estimatedTime;
 	}
 
-	@Column(name = "estimated_time_unity", nullable = false)
-	public UnityTimeEnum getEstimatedTimeUnit() {
-		return estimatedTimeUnit;
-	}
 
-	public void setEstimatedTimeUnit(UnityTimeEnum estimatedTimeUnit) {
-		this.estimatedTimeUnit = estimatedTimeUnit;
-	}
 
 	@Column(name = "stats", nullable = false)
 	public StatusEnum getStats() {
@@ -194,7 +186,6 @@ public class ActivityVO implements java.io.Serializable {
 		result = prime * result + ((categoryVO == null) ? 0 : categoryVO.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((estimatedTime == null) ? 0 : estimatedTime.hashCode());
-		result = prime * result + ((estimatedTimeUnit == null) ? 0 : estimatedTimeUnit.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((lastModification == null) ? 0 : lastModification.hashCode());
 		result = prime * result + ((priority == null) ? 0 : priority.hashCode());
@@ -229,8 +220,6 @@ public class ActivityVO implements java.io.Serializable {
 			if (other.estimatedTime != null)
 				return false;
 		} else if (!estimatedTime.equals(other.estimatedTime))
-			return false;
-		if (estimatedTimeUnit != other.estimatedTimeUnit)
 			return false;
 		if (id == null) {
 			if (other.id != null)

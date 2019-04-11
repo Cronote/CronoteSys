@@ -151,6 +151,9 @@
 .spinner .text-field:readonly{
 	-fx-background-color:white;
 }
+.split-arrows-vertical .text-field:readonly{
+	-fx-alignment:center; 
+}
 ComboBox{
 	-fx-background-color:white;
 }
