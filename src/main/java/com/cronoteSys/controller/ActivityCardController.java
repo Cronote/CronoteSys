@@ -11,6 +11,8 @@ import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.ExecutionTimeBO;
 import com.cronoteSys.model.vo.ActivityVO;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -19,7 +21,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Skin;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 
 public class ActivityCardController extends Observable implements Initializable {
 
@@ -63,7 +68,6 @@ public class ActivityCardController extends Observable implements Initializable 
 		progress = progress > 1 ? 1 : progress;
 		pgbProgress.setProgress(progress);
 		String progressStr = String.format("%.2f", (pgbProgress.getProgress() * 100));
-
 		lblProgress.setText(progressStr + "%");
 
 		initEvents();
@@ -96,6 +100,14 @@ public class ActivityCardController extends Observable implements Initializable 
 				notifyObservers(hmp);
 			}
 		});
+		pgbProgress.skinProperty().addListener(new ChangeListener<Skin>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Skin> observable, Skin oldValue, Skin newValue) {
+				pgbProgress.lookup(".bar").setStyle("-fx-background-color:" + activity.getStats().getHexColor());
+			}
+		});
+
 	}
 
 }

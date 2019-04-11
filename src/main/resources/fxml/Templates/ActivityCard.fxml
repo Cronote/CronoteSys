@@ -8,24 +8,29 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="cardRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="105.0" prefWidth="335.0" styleClass="activityCard" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <Label fx:id="lblTitle" layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="246.0" text="ESTUDAR LÓGICA DE PROGRAMAÇÃO" textFill="WHITE" wrapText="true">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
-      <Label fx:id="lblStatus" layoutX="14.0" layoutY="49.0" prefHeight="17.0" text="NÃO INICIADO" textFill="WHITE" />
-      <ProgressBar fx:id="pgbProgress" layoutX="14.0" layoutY="76.0" prefHeight="18.0" prefWidth="276.0" progress="0.28" />
-      <Label fx:id="lblProgress" layoutX="293.0" layoutY="76.0" text="100%" textFill="WHITE" />
-      <Button fx:id="btnDelete" contentDisplay="GRAPHIC_ONLY" layoutX="289.0" layoutY="19.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="25.0" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
-         <graphic>
-            <ImageView fitHeight="20.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../image/icon/IconTrashDark.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
-   </children>
+<AnchorPane fx:id="cardRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="126.0" prefWidth="335.0" styleClass="activityCard" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<Label fx:id="lblTitle" layoutX="14.0" layoutY="14.0" prefHeight="42.0" prefWidth="217.0" text="ESTUDAR LÓGICA DE PROGRAMAÇÃO E ALGEBRA LINEAR" textFill="#ff0101" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="104.0" AnchorPane.topAnchor="14.0">
+			<font>
+				<Font name="System Bold" size="13.0" />
+			</font>
+		</Label>
+		<Label fx:id="lblStatus" layoutX="14.0" layoutY="49.0" prefHeight="17.0" text="NÃO INICIADO" textFill="WHITE" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="14.0" />
+		<AnchorPane layoutX="14.0" layoutY="76.0" prefHeight="20.0" prefWidth="317.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="10.0">
+			<children>
+				<ProgressBar fx:id="pgbProgress" prefHeight="20.0" prefWidth="248.0" progress="0.28" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="63.0" />
+				<Label fx:id="lblProgress" prefHeight="18.0" text="100.00%" AnchorPane.rightAnchor="0.0">
+				</Label>
+			</children>
+		</AnchorPane>
+		<Button fx:id="btnDelete" contentDisplay="GRAPHIC_ONLY" layoutX="289.0" layoutY="19.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="25.0" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
+			<graphic>
+				<ImageView fitHeight="20.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+					<image>
+						<Image url="@../../image/icon/IconTrashDark.png" />
+					</image>
+				</ImageView>
+			</graphic>
+		</Button>
+	</children>
 </AnchorPane>

@@ -30,6 +30,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.Skin;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
@@ -39,6 +40,8 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class ActivityDetailsController extends ShowEditViewActivityObservable implements Initializable {
@@ -81,6 +84,7 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	private Button btnEdit;
 	@FXML
 	private Button btnDelete;
+
 	private String mode;
 	HashMap<String, Object> hmp = new HashMap<String, Object>();
 	private ActivityVO activity;
@@ -215,7 +219,9 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 				}
 			});
 		}
-		if (btnEdit != null) {
+		if (btnEdit != null)
+
+		{
 			btnEdit.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
@@ -266,6 +272,21 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 						if (event.getCode() != KeyCode.BACK_SPACE || event.isControlDown())
 							event.consume();
 					}
+				}
+			});
+		}
+		if (pgiProgress != null) {
+			pgiProgress.skinProperty().addListener(new ChangeListener<Skin>() {
+
+				@Override
+				public void changed(ObservableValue<? extends Skin> observable, Skin oldValue, Skin newValue) {
+					StackPane tick = (StackPane) pgiProgress.lookup(".tick");
+					tick.setStyle("-fx-background-image: url(../image/background_sunrise.jpg);");
+					pgiProgress.lookup(".progress")
+							.setStyle("-fx-background-color:" + activity.getStats().getHexColor());
+					Text t = (Text) pgiProgress.lookup(".percentage");
+					String progressStr = String.format("%.2f", (pgiProgress.getProgress() * 100));
+					t.setText(progressStr + "%");
 				}
 			});
 		}

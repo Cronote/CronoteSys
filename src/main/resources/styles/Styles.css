@@ -65,6 +65,9 @@
 	-fx-pref-width: 100.0%;	
 }
 /*===============Cartoes de atividade================*/
+.activityCard>*>.label, .activityCard>*.label {
+	-fx-text-fill:#FFF;
+}
 .activityCard {
 	-fx-background-radius: 15.0; 
 	-fx-border-radius: 15.0;
@@ -75,7 +78,7 @@
 	-fx-cursor: HAND;
 	-fx-background-color: #ecf0f1;
 }
-.activityCardSelected>*.label {
+.activityCardSelected>*>.label, .activityCardSelected>*.label {
 	-fx-text-fill:#000000;
 }
 .activityCard>*.button {
@@ -91,7 +94,7 @@
 	visibility:visible;
 }
 
-.activityCard:hover>*.label {
+.activityCard:hover>*>.label,.activityCard:hover>*.label  {
 	-fx-text-fill:#000000;
 }
 
@@ -154,6 +157,12 @@
 .split-arrows-vertical .text-field:readonly{
 	-fx-alignment:center; 
 }
+
+.progress-indicator:determinate .determinate-indicator .tick{
+	-fx-region-background:none;	
+	
+}
+
 ComboBox{
 	-fx-background-color:white;
 }

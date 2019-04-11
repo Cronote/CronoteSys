@@ -1,27 +1,26 @@
 package com.cronoteSys.model.vo;
 
-import javafx.scene.paint.Color;
 
 public enum StatusEnum {
 
-	NOT_STARTED("Não iniciado", Color.LIGHTGRAY), NORMAL_IN_PROGRESS("Em progresso", Color.BLUE),
-	NORMAL_PAUSED("Pausado", Color.YELLOW), NORMAL_FINALIZED("Finalizado", Color.GREEN),
-	BROKEN_IN_PROGRESS("Em progresso", Color.RED), BROKEN_PAUSED("Pausado", Color.RED),
-	BROKEN_FINALIZED("Finalizado", Color.DARKRED);
+	NOT_STARTED("Não iniciado", "#D3D3D3"), NORMAL_IN_PROGRESS("Em progresso", "#0000FF"),
+	NORMAL_PAUSED("Pausado", "#FFFF00"), NORMAL_FINALIZED("Finalizado", "#008000"),
+	BROKEN_IN_PROGRESS("Em progresso", "#FF0000"), BROKEN_PAUSED("Pausado", "#FF0000"),
+	BROKEN_FINALIZED("Finalizado", "#8B0000");
 
 	private String description;
-	private Color color;
+	private String hexColor;
 
-	private StatusEnum(String description, Color color) {
+	private StatusEnum(String description, String hexColor) {
 		this.description = description;
-		this.color = color;
+		this.hexColor = hexColor;
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
-	public Color getColor() {
-		return color;
+	public String getHexColor() {
+		return hexColor;
 	}
 }
