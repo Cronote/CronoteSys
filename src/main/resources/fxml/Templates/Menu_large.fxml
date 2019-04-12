@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TitledPane?>
@@ -8,6 +9,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -31,11 +33,12 @@
 					<graphic>
 						<AnchorPane prefHeight="44.0" prefWidth="232.0">
 							<children>
-								<ImageView fitHeight="38.0" fitWidth="38.0" layoutX="8.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="8.0">
-									<image>
-										<Image url="@../../image/icon/IconActivitiesDark.png" />
-									</image>
-								</ImageView>
+                        <StackPane cache="false" layoutX="8.0" prefHeight="32.0" prefWidth="35.0" AnchorPane.leftAnchor="8.0">
+                           <styleClass>
+                              <String fx:value="IconCheck" />
+                              <String fx:value="dark" />
+                           </styleClass>
+                        </StackPane>
 								<Label layoutX="128.0" layoutY="10.0" prefHeight="25.0" prefWidth="96.0" text="ATIVIDADES" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0">
 									<font>
 										<Font size="16.0" />
@@ -52,11 +55,12 @@
 					<graphic>
 						<AnchorPane prefHeight="44.0" prefWidth="230.0">
 							<children>
-								<ImageView fitHeight="38.0" fitWidth="59.0" layoutX="-2.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
-									<image>
-										<Image url="@../../image/icon/IconProjectDark.png" />
-									</image>
-								</ImageView>
+                        <StackPane cache="false" layoutY="4.0" prefHeight="32.0" prefWidth="35.0" AnchorPane.leftAnchor="8.0">
+                           <styleClass>
+                              <String fx:value="IconProject" />
+                              <String fx:value="dark" />
+                           </styleClass>
+                        </StackPane>
 								<Label layoutX="144.0" layoutY="10.0" prefHeight="25.0" prefWidth="78.0" text="PROJETOS" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0">
 									<font>
 										<Font size="16.0" />
@@ -70,11 +74,12 @@
 					<graphic>
 						<AnchorPane prefHeight="44.0" prefWidth="230.0">
 							<children>
-								<ImageView fitHeight="33.0" fitWidth="59.0" layoutX="-1.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
-									<image>
-										<Image url="@../../image/icon/IconReportDark.png" />
-									</image>
-								</ImageView>
+                        <StackPane cache="false" prefHeight="32.0" prefWidth="35.0" AnchorPane.leftAnchor="8.0">
+                           <styleClass>
+                              <String fx:value="IconReport" />
+                              <String fx:value="dark" />
+                           </styleClass>
+                        </StackPane>
 								<Label layoutX="118.0" layoutY="4.0" prefHeight="25.0" prefWidth="96.0" text="RELATÓRIOS" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0">
 									<font>
 										<Font size="16.0" />
@@ -89,11 +94,12 @@
 					<graphic>
 						<AnchorPane prefHeight="37.0" prefWidth="216.0">
 							<children>
-								<ImageView fitHeight="33.0" fitWidth="67.0" layoutX="-2.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="2.0" AnchorPane.topAnchor="2.0">
-									<image>
-										<Image url="@../../image/icon/IconConfigDark.png" />
-									</image>
-								</ImageView>
+                        <StackPane cache="false" prefHeight="32.0" prefWidth="35.0" AnchorPane.leftAnchor="8.0">
+                           <styleClass>
+                              <String fx:value="IconConfig" />
+                              <String fx:value="dark" />
+                           </styleClass>
+                        </StackPane>
 								<Label layoutX="158.0" layoutY="4.0" prefHeight="25.0" prefWidth="64.0" text="AJUSTES" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0">
 									<font>
 										<Font size="16.0" />
@@ -107,16 +113,17 @@
 					<graphic>
 						<AnchorPane prefHeight="42.0" prefWidth="230.0">
 							<children>
-								<ImageView fitHeight="33.0" fitWidth="66.0" layoutX="-2.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="2.0" AnchorPane.topAnchor="2.0">
-									<image>
-										<Image url="@../../image/icon/IconInterrDark.png" />
-									</image>
-								</ImageView>
 								<Label layoutX="171.0" layoutY="6.0" prefHeight="25.0" prefWidth="51.0" text="AJUDA" textAlignment="RIGHT" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
 									<font>
 										<Font size="16.0" />
 									</font>
 								</Label>
+                        <StackPane cache="false" layoutX="9.0" layoutY="4.0" prefHeight="28.0" prefWidth="34.0" AnchorPane.leftAnchor="9.0">
+                           <styleClass>
+                              <String fx:value="IconInterr" />
+                              <String fx:value="dark" />
+                           </styleClass>
+                        </StackPane>
 							</children>
 						</AnchorPane>
 					</graphic>
