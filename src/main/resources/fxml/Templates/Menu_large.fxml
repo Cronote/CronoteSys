@@ -33,9 +33,9 @@
 					<graphic>
 						<AnchorPane prefHeight="44.0" prefWidth="232.0">
 							<children>
-                        <StackPane cache="false" layoutX="8.0" prefHeight="32.0" prefWidth="35.0" AnchorPane.leftAnchor="8.0">
+                        <StackPane cache="true" layoutX="8.0" prefHeight="32.0" prefWidth="35.0" AnchorPane.leftAnchor="8.0">
                            <styleClass>
-                              <String fx:value="IconCheck" />
+                              <String fx:value="IconActivities" />
                               <String fx:value="dark" />
                            </styleClass>
                         </StackPane>
@@ -55,7 +55,7 @@
 					<graphic>
 						<AnchorPane prefHeight="44.0" prefWidth="230.0">
 							<children>
-                        <StackPane cache="false" layoutY="4.0" prefHeight="32.0" prefWidth="35.0" AnchorPane.leftAnchor="8.0">
+                        <StackPane cache="true" layoutY="4.0" prefHeight="32.0" prefWidth="35.0" AnchorPane.leftAnchor="8.0">
                            <styleClass>
                               <String fx:value="IconProject" />
                               <String fx:value="dark" />
@@ -74,7 +74,7 @@
 					<graphic>
 						<AnchorPane prefHeight="44.0" prefWidth="230.0">
 							<children>
-                        <StackPane cache="false" prefHeight="32.0" prefWidth="35.0" AnchorPane.leftAnchor="8.0">
+                        <StackPane cache="true" prefHeight="32.0" prefWidth="35.0" AnchorPane.leftAnchor="8.0">
                            <styleClass>
                               <String fx:value="IconReport" />
                               <String fx:value="dark" />
@@ -94,7 +94,7 @@
 					<graphic>
 						<AnchorPane prefHeight="37.0" prefWidth="216.0">
 							<children>
-                        <StackPane cache="false" prefHeight="32.0" prefWidth="35.0" AnchorPane.leftAnchor="8.0">
+                        <StackPane cache="true" prefHeight="32.0" prefWidth="35.0" AnchorPane.leftAnchor="8.0">
                            <styleClass>
                               <String fx:value="IconConfig" />
                               <String fx:value="dark" />
@@ -118,7 +118,7 @@
 										<Font size="16.0" />
 									</font>
 								</Label>
-                        <StackPane cache="false" layoutX="9.0" layoutY="4.0" prefHeight="28.0" prefWidth="34.0" AnchorPane.leftAnchor="9.0">
+                        <StackPane cache="true" layoutX="9.0" layoutY="4.0" prefHeight="28.0" prefWidth="34.0" AnchorPane.leftAnchor="9.0">
                            <styleClass>
                               <String fx:value="IconInterr" />
                               <String fx:value="dark" />
