@@ -15,6 +15,11 @@ import com.cronoteSys.model.bo.ActivityBO.OnActivityDeletedI;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.UserVO;
 
+import de.jensd.fx.glyphs.GlyphIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -43,11 +48,21 @@ public class ActivityListController extends ShowEditViewActivityObservable imple
 	public void initialize(URL location, ResourceBundle resources) {
 
 		ActivityBO actBO = new ActivityBO();
+//
 		activityList = actBO.listAllByUser(loggedUser);
 		renderList();
 		initEvents();
 		initObservers();
-
+		GlyphIcon icon = null;
+		if (activityList.size() > 0) {
+			icon = new MaterialDesignIconView(MaterialDesignIcon.PLAYLIST_PLUS);
+			icon.getStyleClass().addAll("normal-white");
+		} else {
+			icon = new FontAwesomeIconView(FontAwesomeIcon.PLUS);
+			icon.getStyleClass().addAll("outline-white", "rainforce");
+		}
+		icon.setSize("3em");
+		btnAddActivity.setGraphic(icon);
 	}
 
 	private void initObservers() {

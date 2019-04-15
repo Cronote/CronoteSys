@@ -4,8 +4,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 
@@ -23,15 +21,7 @@
                   </FlowPane>
                </content>
             </ScrollPane>
-            <Button fx:id="btnAddActivity" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="137.0" layoutY="624.0" mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="test" text="Button" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="137.0" AnchorPane.rightAnchor="137.0">
-               <graphic>
-                  <ImageView fitHeight="33.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/icon/IconAddLight.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
+            <Button fx:id="btnAddActivity" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="137.0" layoutY="624.0" mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="test" text="Button" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="137.0" AnchorPane.rightAnchor="137.0" />
          </children>
       </AnchorPane>
    </content>

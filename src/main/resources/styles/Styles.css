@@ -65,6 +65,9 @@
 	-fx-pref-width: 100.0%;	
 }
 /*===============Cartoes de atividade================*/
+.activityCard>*>.label, .activityCard>*.label {
+	-fx-text-fill:#FFF;
+}
 .activityCard {
 	-fx-background-radius: 15.0; 
 	-fx-border-radius: 15.0;
@@ -75,11 +78,8 @@
 	-fx-cursor: HAND;
 	-fx-background-color: #ecf0f1;
 }
-.activityCardSelected>*.label {
+.activityCardSelected>*>.label, .activityCardSelected>*.label {
 	-fx-text-fill:#000000;
-}
-.activityCard>*.button {
-	visibility:hidden;
 }
 
 .activityCard:hover {
@@ -87,16 +87,18 @@
 	-fx-background-color: #ecf0f1;
 }
 
-.activityCard:hover>*.button {
-	visibility:visible;
-}
 
-.activityCard:hover>*.label {
+
+.activityCard:hover>*>.label,.activityCard:hover>*.label  {
 	-fx-text-fill:#000000;
 }
 
 
 /*===============Fim Cartoes de atividade================*/
+.progress-indicator:determinate .determinate-indicator .tick{ 
+  -fx-region-background:none;   
+   
+} 
 .homeRootPane>*.title {
 	-fx-background-color:  #e5d694;
 }
@@ -117,9 +119,37 @@
 	-fx-background-color:#f39c12;
 	-fx-cursor: HAND;
 }
-
+.btnWindows:hover *{
+	-fx-text-fill:white;
+	
+}
+.btnWindows:hover .normal{
+	-fx-fill:white;
+	
+}
+.btnWindows:hover .outline{
+	-fx-stroke:white;
+	-fx-border-color:white;
+	-fx-border-width:1.0;
+	
+	
+}
 .btnWindows:selected{
 	-fx-background-color:#f39c12;
+}
+.btnWindows:selected *{
+	-fx-text-fill:white;
+	
+}
+.btnWindows:selected .normal{
+	-fx-fill:white;
+	
+}
+.btnWindows:selected .outline{
+	-fx-stroke:white;
+	-fx-border-color:white;
+	-fx-border-width:1.0;
+	
 }
 
 .titled-pane>*.content>VBox {
@@ -151,6 +181,65 @@
 .spinner .text-field:readonly{
 	-fx-background-color:white;
 }
+.split-arrows-vertical .text-field:readonly{
+	-fx-alignment:center; 
+}
+
+
+
 ComboBox{
 	-fx-background-color:white;
+}
+
+
+
+
+/*Icons*/
+.btnConfirm, .btnConfirm .glyph-icon{
+	cor:green;
+	-fx-fill:transparent;
+	-fx-stroke:cor;
+	-fx-border-color:cor;
+	-fx-border-radius: 15.0;
+	-fx-background-radius: 15.0;
+	
+}
+.btnConfirm:hover, .btnConfirm .glyph-icon{
+	-fx-fill:white;
+	-fx-background-color:green;
+}
+
+.btnCancel, .btnCancel .glyph-icon{
+	cor:red;
+	-fx-fill:transparent;
+	-fx-stroke:cor;
+	-fx-border-color:cor;
+	-fx-border-radius: 15.0;
+	-fx-background-radius: 15.0;
+}
+
+.btnCancel:hover, .btnCancel .glyph-icon{
+	-fx-fill:white;
+	-fx-background-color:red;
+}
+.btnCancel .gliph-icon{
+	-fx-stroke:red;
+}
+.normal-white{
+	-fx-fill:white;
+}
+.outline{
+	-fx-fill:transparent;
+	-fx-stroke:black;
+	-fx-border-color:black;
+	-fx-border-width:1.0;
+}
+.outline-white{
+	-fx-fill:transparent;
+	-fx-stroke:white;
+	-fx-border-color:white;
+	-fx-border-width:1.0;
+}
+.rainforce{
+	-fx-stroke-width:2.0;
 }
