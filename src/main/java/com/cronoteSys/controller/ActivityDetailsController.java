@@ -1,5 +1,6 @@
 package com.cronoteSys.controller;
 
+import java.awt.event.ActionListener;
 import java.net.URL;
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
@@ -9,15 +10,20 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.swing.Timer;
+
 import com.cronoteSys.converter.CategoryConverter;
 import com.cronoteSys.model.bo.ActivityBO;
+import com.cronoteSys.model.bo.CategoryBO;
 import com.cronoteSys.model.dao.CategoryDAO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.CategoryVO;
 import com.cronoteSys.model.vo.StatusEnum;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.ScreenUtil;
+import com.sun.mail.imap.protocol.Status;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -40,18 +46,19 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class ActivityDetailsController extends ShowEditViewActivityObservable implements Initializable {
-
+	// Edição
 	@FXML
 	private TextField txtTitle;
 	@FXML
 	private AnchorPane detailsRoot;
 	@FXML
 	private ComboBox<CategoryVO> cboCategory;
+	@FXML
+	private TextField txtCategory;
 	@FXML
 	private TextArea txtDescription;
 	@FXML
@@ -60,6 +67,15 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	private Spinner<Integer> spnEstimatedTimeHour;
 	@FXML
 	private Spinner<Integer> spnEstimatedTimeMinute;
+	@FXML
+	private Button btnSave;
+	@FXML
+	private Button btnAddCategory;
+	@FXML
+	private Button btnConfirmAdd;
+	@FXML
+	private Button btnCancelAdd;
+	// Visualização
 	@FXML
 	private Label lblTitle;
 	@FXML
@@ -79,8 +95,6 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	@FXML
 	private Label lblDescriptionLimit;
 	@FXML
-	private Button btnSave;
-	@FXML
 	private Button btnEdit;
 	@FXML
 	private Button btnDelete;
@@ -89,6 +103,19 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	HashMap<String, Object> hmp = new HashMap<String, Object>();
 	private ActivityVO activity;
 	private UserVO user;
+	Timer timer = new Timer(60000, new ActionListener() {
+
+		public void actionPerformed(java.awt.event.ActionEvent e) {
+			Platform.runLater(new Runnable() {
+				public void run() {
+					ActivityBO actBo = new ActivityBO();
+					activity = actBo.updateRealTime(activity);
+					loadActivity();
+				}
+			});
+
+		}
+	});
 
 	public ActivityDetailsController(UserVO user) {
 		this.user = user;
@@ -105,6 +132,7 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	public void initialize(URL location, ResourceBundle resources) {
 		initForm();
 		initEvents();
+		timer.setInitialDelay(0);
 	}
 
 	private void initForm() {
@@ -134,26 +162,33 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 				spnEstimatedTimeMinute.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 			}
 		} else {
-			lblTitle.setText(activity.getTitle());
-			lblCategory.setText(activity.getCategoryVO().getDescription());
-			lblDescription.setText(activity.getDescription());
-			for (int i = 0; i < tggPriority.getToggles().size(); i++) {
-				boolean isPriorityIndex = i == activity.getPriority();
-				((ToggleButton) tggPriority.getToggles().get(i)).setSelected(isPriorityIndex);
-				((ToggleButton) tggPriority.getToggles().get(i)).setDisable(true);
-			}
-
-			lblEstimatedTime.setText(activity.getEstimatedTimeAsString());
-			lblRealTime.setText(activity.getRealtimeAsString());
-			double estimatedTime = activity.getEstimatedTime().toMillis();
-			double realtime = activity.getRealtime().toMillis();
-			double progress = realtime / estimatedTime;
-			progress = progress > 1 ? 1 : progress;
-			lblStatus.setText(activity.getStats().getDescription().toUpperCase());
-			pgiProgress.setProgress(progress);
-			lblLastModified.setText(activity.getLastModification()
-					.format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm", new Locale("pt", "BR"))));
+			loadActivity();
+			if (activity.getStats().equals(StatusEnum.BROKEN_IN_PROGRESS)
+					|| activity.getStats().equals(StatusEnum.NORMAL_IN_PROGRESS))
+				timer.start();
 		}
+	}
+
+	private void loadActivity() {
+		lblTitle.setText(activity.getTitle());
+		lblCategory.setText(activity.getCategoryVO().getDescription());
+		lblDescription.setText(activity.getDescription());
+		for (int i = 0; i < tggPriority.getToggles().size(); i++) {
+			boolean isPriorityIndex = i == activity.getPriority();
+			((ToggleButton) tggPriority.getToggles().get(i)).setSelected(isPriorityIndex);
+			((ToggleButton) tggPriority.getToggles().get(i)).setDisable(true);
+		}
+
+		lblEstimatedTime.setText(activity.getEstimatedTimeAsString());
+		lblRealTime.setText(activity.getRealtimeAsString());
+		double estimatedTime = activity.getEstimatedTime().toMillis();
+		double realtime = activity.getRealtime().toMillis();
+		double progress = realtime / estimatedTime;
+		progress = progress > 1 ? 1 : progress;
+		lblStatus.setText(activity.getStats().getDescription().toUpperCase());
+		pgiProgress.setProgress(progress);
+		lblLastModified.setText(activity.getLastModification()
+				.format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm", new Locale("pt", "BR"))));
 	}
 
 	private void blockEdition() {
@@ -210,6 +245,45 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 				}
 			});
 		}
+		if (btnAddCategory != null) {
+			btnAddCategory.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					switchCategoryMode();
+				}
+			});
+		}
+		if (btnConfirmAdd != null) {
+			btnConfirmAdd.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					CategoryVO cat = new CategoryVO();
+					CategoryBO catBO = new CategoryBO();
+					if (txtCategory.getText().trim().length() > 0) {
+						cat.setDescription(txtCategory.getText());
+						cat.setUserVO(user);
+						cat = catBO.save(cat);
+						if (cat.getId() != null) {
+							cboCategory.getItems().add(cat);
+							cboCategory.getSelectionModel().select(cat);
+							switchCategoryMode();
+							switchCategoryErrorLabel(false);
+						}
+					} else {
+						switchCategoryErrorLabel(true);
+					}
+				}
+			});
+			btnCancelAdd.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					switchCategoryMode();
+					switchCategoryErrorLabel(false);
+				}
+			});
+		}
 		if (btnSave != null) {
 			btnSave.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -219,9 +293,7 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 				}
 			});
 		}
-		if (btnEdit != null)
-
-		{
+		if (btnEdit != null) {
 			btnEdit.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
@@ -275,13 +347,23 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 				}
 			});
 		}
+
 		if (pgiProgress != null) {
 			pgiProgress.skinProperty().addListener(new ChangeListener<Skin>() {
 
 				@Override
 				public void changed(ObservableValue<? extends Skin> observable, Skin oldValue, Skin newValue) {
-					StackPane tick = (StackPane) pgiProgress.lookup(".tick");
-					tick.setStyle("-fx-background-image: url(../image/background_sunrise.jpg);");
+					pgiProgress.lookup(".progress")
+							.setStyle("-fx-background-color:" + activity.getStats().getHexColor());
+					Text t = (Text) pgiProgress.lookup(".percentage");
+					String progressStr = String.format("%.2f", (pgiProgress.getProgress() * 100));
+					t.setText(progressStr + "%");
+				}
+			});
+			pgiProgress.progressProperty().addListener(new ChangeListener<Number>() {
+
+				@Override
+				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 					pgiProgress.lookup(".progress")
 							.setStyle("-fx-background-color:" + activity.getStats().getHexColor());
 					Text t = (Text) pgiProgress.lookup(".percentage");
@@ -290,6 +372,7 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 				}
 			});
 		}
+
 	}
 
 	private void btnSaveClicked(ActionEvent event) {
@@ -313,6 +396,25 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 				hmp.put("action", "view");
 				notifyAllListeners(hmp);
 			}
+		}
+	}
+
+	private void switchCategoryMode() {
+		btnConfirmAdd.setVisible(btnAddCategory.isVisible());
+		btnCancelAdd.setVisible(btnAddCategory.isVisible());
+		txtCategory.setVisible(btnAddCategory.isVisible());
+		cboCategory.setVisible(!btnAddCategory.isVisible());
+		btnAddCategory.setVisible(!btnAddCategory.isVisible());
+	}
+
+	private void switchCategoryErrorLabel(boolean show) {
+		Label lbl = (Label) txtCategory.getScene().lookup("#lblCategoryValidation");
+		if (show) {
+			lbl.getStyleClass().removeAll("hide");
+			txtCategory.getStyleClass().add("error");
+		} else {
+			txtCategory.getStyleClass().removeAll("error");
+			lbl.getStyleClass().add("hide");
 		}
 	}
 }

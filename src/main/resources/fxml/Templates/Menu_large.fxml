@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -9,7 +10,6 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -26,24 +26,22 @@
 						</ImageView>
 					</children>
 				</AnchorPane>
-				<ToggleButton fx:id="btnActivity" alignment="BOTTOM_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="42.0" prefWidth="232.0" styleClass="btnWindows">
+				<ToggleButton fx:id="btnActivity" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="42.0" prefWidth="232.0" styleClass="btnWindows">
 					<VBox.margin>
 						<Insets />
 					</VBox.margin>
 					<graphic>
-						<AnchorPane prefHeight="44.0" prefWidth="232.0">
+						<AnchorPane prefHeight="45.0" prefWidth="214.0">
 							<children>
-                        <StackPane cache="true" layoutX="8.0" prefHeight="32.0" prefWidth="35.0" AnchorPane.leftAnchor="8.0">
-                           <styleClass>
-                              <String fx:value="IconActivities" />
-                              <String fx:value="dark" />
-                           </styleClass>
-                        </StackPane>
 								<Label layoutX="128.0" layoutY="10.0" prefHeight="25.0" prefWidth="96.0" text="ATIVIDADES" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0">
 									<font>
 										<Font size="16.0" />
 									</font>
 								</Label>
+                        <FontAwesomeIconView fontSmoothingType="LCD" glyphName="FILE_TEXT_ALT" layoutX="14.0" layoutY="27.0" size="2em" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" styleClass="normal" textAlignment="CENTER" textOrigin="CENTER" AnchorPane.leftAnchor="8.0">
+                           <font>
+                              <Font name="FontAwesome Regular" size="18.0" />
+                           </font></FontAwesomeIconView>
 							</children>
 						</AnchorPane>
 					</graphic>
@@ -55,17 +53,20 @@
 					<graphic>
 						<AnchorPane prefHeight="44.0" prefWidth="230.0">
 							<children>
-                        <StackPane cache="true" layoutY="4.0" prefHeight="32.0" prefWidth="35.0" AnchorPane.leftAnchor="8.0">
-                           <styleClass>
-                              <String fx:value="IconProject" />
-                              <String fx:value="dark" />
-                           </styleClass>
-                        </StackPane>
 								<Label layoutX="144.0" layoutY="10.0" prefHeight="25.0" prefWidth="78.0" text="PROJETOS" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0">
 									<font>
 										<Font size="16.0" />
 									</font>
 								</Label>
+                        <FontAwesomeIconView fontSmoothingType="LCD" glyphName="BOOK" layoutX="14.0" layoutY="20.0" size="2em" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" textAlignment="CENTER" textOrigin="CENTER" AnchorPane.leftAnchor="8.0">
+                           <font>
+                              <Font name="FontAwesome Regular" size="18.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="outline" />
+                              <String fx:value="rainforce" />
+                           </styleClass>
+                        </FontAwesomeIconView>
 							</children>
 						</AnchorPane>
 					</graphic>
@@ -74,32 +75,36 @@
 					<graphic>
 						<AnchorPane prefHeight="44.0" prefWidth="230.0">
 							<children>
-                        <StackPane cache="true" prefHeight="32.0" prefWidth="35.0" AnchorPane.leftAnchor="8.0">
-                           <styleClass>
-                              <String fx:value="IconReport" />
-                              <String fx:value="dark" />
-                           </styleClass>
-                        </StackPane>
 								<Label layoutX="118.0" layoutY="4.0" prefHeight="25.0" prefWidth="96.0" text="RELATÓRIOS" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0">
 									<font>
 										<Font size="16.0" />
 									</font>
 								</Label>
+                        <AnchorPane prefHeight="38.0" prefWidth="48.0" styleClass="outline">
+                           <children>
+                              <FontAwesomeIconView glyphName="BAR_CHART" layoutX="3.0" layoutY="15.650670051574707" size="1.5em" styleClass="normal" AnchorPane.bottomAnchor="19.426339149475098" AnchorPane.leftAnchor="3.0" />
+                              <FontAwesomeIconView glyphName="PIE_CHART" layoutX="29.0" layoutY="26.0" size="1.5em" styleClass="normal" />
+                              <FontAwesomeIconView glyphName="LINE_CHART" layoutX="4.0" layoutY="34.65067005157471" size="1.5em" styleClass="normal" />
+                           </children>
+                        </AnchorPane>
 							</children>
 						</AnchorPane>
 					</graphic>
 				</ToggleButton>
-				<AnchorPane prefHeight="240.0" prefWidth="230.0" VBox.vgrow="ALWAYS" />
+				<AnchorPane prefHeight="240.0" prefWidth="230.0" styleClass="normal" VBox.vgrow="ALWAYS" />
 				<ToggleButton fx:id="btnConfig" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="42.0" prefWidth="232.0" styleClass="btnWindows" text="ToggleButton" toggleGroup="$btnWindows">
 					<graphic>
 						<AnchorPane prefHeight="37.0" prefWidth="216.0">
 							<children>
-                        <StackPane cache="true" prefHeight="32.0" prefWidth="35.0" AnchorPane.leftAnchor="8.0">
+                        <FontAwesomeIconView fontSmoothingType="LCD" glyphName="GEAR" layoutX="14.0" layoutY="19.0" size="2em" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="2.0" textAlignment="CENTER" textOrigin="CENTER" AnchorPane.leftAnchor="8.0">
+                           <font>
+                              <Font name="FontAwesome Regular" size="18.0" />
+                           </font>
                            <styleClass>
-                              <String fx:value="IconConfig" />
-                              <String fx:value="dark" />
+                              <String fx:value="outline" />
+                              <String fx:value="rainforce" />
                            </styleClass>
-                        </StackPane>
+                        </FontAwesomeIconView>
 								<Label layoutX="158.0" layoutY="4.0" prefHeight="25.0" prefWidth="64.0" text="AJUSTES" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0">
 									<font>
 										<Font size="16.0" />
@@ -118,12 +123,15 @@
 										<Font size="16.0" />
 									</font>
 								</Label>
-                        <StackPane cache="true" layoutX="9.0" layoutY="4.0" prefHeight="28.0" prefWidth="34.0" AnchorPane.leftAnchor="9.0">
+                        <FontAwesomeIconView fontSmoothingType="LCD" glyphName="QUESTION" layoutX="24.0" layoutY="20.0" size="2em" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="2.0" textAlignment="CENTER" textOrigin="CENTER" AnchorPane.leftAnchor="8.0">
+                           <font>
+                              <Font name="FontAwesome Regular" size="18.0" />
+                           </font>
                            <styleClass>
-                              <String fx:value="IconInterr" />
-                              <String fx:value="dark" />
+                              <String fx:value="outline" />
+                              <String fx:value="rainforce" />
                            </styleClass>
-                        </StackPane>
+                        </FontAwesomeIconView>
 							</children>
 						</AnchorPane>
 					</graphic>

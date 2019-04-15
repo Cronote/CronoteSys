@@ -28,18 +28,6 @@
 			<artifactId>facebook4j-core</artifactId>
 			<version>[2.4,)</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>5.3.5.Final</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.12</version>
-		</dependency>
 		<dependency>
 			<groupId>com</groupId>
 			<artifactId>Cronotesys.model</artifactId>
@@ -67,6 +55,12 @@
 			<artifactId>eclipselink</artifactId>
 			<version>2.7.0</version>
 		</dependency>
+		<!-- font awesome -->
+		 <dependency>
+        <groupId>de.jensd</groupId>
+        <artifactId>fontawesomefx</artifactId>
+        <version>8.9</version>
+    </dependency>
 
 	</dependencies>
 </project>
