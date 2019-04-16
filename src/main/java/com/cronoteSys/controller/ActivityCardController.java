@@ -2,14 +2,17 @@ package com.cronoteSys.controller;
 
 import java.awt.event.ActionListener;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.ResourceBundle;
 
 import javax.swing.Timer;
+import javax.swing.text.html.CSS;
 
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.ExecutionTimeBO;
+import com.cronoteSys.model.bo.ActivityBO.OnActivityAddedI;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.StatusEnum;
 
@@ -24,12 +27,15 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Skin;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 
 public class ActivityCardController extends Observable implements Initializable {
 
@@ -47,6 +53,8 @@ public class ActivityCardController extends Observable implements Initializable 
 
 	@FXML
 	private Label lblProgress;
+	@FXML
+	private Label lblIndex;
 
 	@FXML
 	private Button btnDelete;
@@ -56,14 +64,15 @@ public class ActivityCardController extends Observable implements Initializable 
 	private Button btnFinalize;
 
 	private ActivityVO activity;
-	Timer timer = new Timer(60000, new ActionListener() {
+	Timer timer = new Timer(30000, new ActionListener() {
 
 		public void actionPerformed(java.awt.event.ActionEvent e) {
 			Platform.runLater(new Runnable() {
 				public void run() {
 					ActivityBO actBo = new ActivityBO();
 					activity = actBo.updateRealTime(activity);
-					loadActivity();
+					loadProgressAndRealtime();
+					notifyAllOnProgressChangedListeners(activity);
 				}
 			});
 
@@ -87,17 +96,11 @@ public class ActivityCardController extends Observable implements Initializable 
 
 	private void loadActivity() {
 		lblTitle.setText(activity.getTitle());
-		lblStatus.setText(activity.getStats().getDescription());
 
-		double estimatedTime = activity.getEstimatedTime().toMillis();
-		double realtime = activity.getRealtime().toMillis();
-		double progress = realtime / estimatedTime;
-		progress = progress > 1 ? 1 : progress;
-		pgbProgress.setProgress(progress);
-		String progressStr = String.format("%.2f", (pgbProgress.getProgress() * 100));
-		lblProgress.setText(progressStr + "%");
+		loadProgressAndRealtime();
 		GlyphIcon icon = null;
 		String btnText = "";
+		System.out.println(activity.getStats());
 		if (activity.getStats() != StatusEnum.NORMAL_FINALIZED && activity.getStats() != StatusEnum.BROKEN_FINALIZED) {
 			if (activity.getStats() == StatusEnum.NOT_STARTED || activity.getStats() == StatusEnum.NORMAL_PAUSED
 					|| activity.getStats() == StatusEnum.BROKEN_PAUSED) {
@@ -123,6 +126,55 @@ public class ActivityCardController extends Observable implements Initializable 
 			sp.setStyle("-fx-background-color:" + activity.getStats().getHexColor());
 	}
 
+	private void loadProgressAndRealtime() {
+		lblStatus.setText(activity.getStats().getDescription());
+		Node bar = pgbProgress.lookup(".bar");
+		if (bar != null)
+			bar.setStyle("-fx-background-color:" + activity.getStats().getHexColor());
+		double estimatedTime = activity.getEstimatedTime().toMillis();
+		double realtime = activity.getRealtime().toMillis();
+		double progress = realtime / estimatedTime;
+		double difference = progress - 1;
+		if (difference != 0) {
+			FontAwesomeIconView icon = new FontAwesomeIconView();
+			Tooltip tp = new Tooltip();
+			if (difference > 0) {
+				if (difference <= 0.75) {
+					icon = new FontAwesomeIconView(FontAwesomeIcon.ANGLE_DOWN);
+				} else {
+					icon = new FontAwesomeIconView(FontAwesomeIcon.ANGLE_DOUBLE_DOWN);
+					icon.setSize("1.5em");
+				}
+				icon.setFill(Color.RED);
+				tp.setText("Percentual de tempo excedido");
+				lblIndex.setStyle("-fx-text-fill:red");
+			} else {
+				if (difference >= -0.35) {
+					icon = new FontAwesomeIconView(FontAwesomeIcon.ANGLE_UP);
+				} else {
+					icon = new FontAwesomeIconView(FontAwesomeIcon.ANGLE_DOUBLE_UP);
+					icon.setSize("1.5em");
+				}
+				icon.setFill(Color.GREEN);
+				tp.setText("Percentual de tempo desnecessário");
+				lblIndex.setStyle("-fx-text-fill:green");
+
+			}
+			lblIndex.getStyleClass().removeAll("hide");
+			lblIndex.setText(String.format("%.2f", Math.abs((difference * 100))) + "%");
+			lblIndex.setGraphic(icon);
+			Tooltip.install(lblIndex, tp);
+
+		}
+		progress = progress > 1 ? 1 : progress;
+		if (activity.getStats() == StatusEnum.BROKEN_FINALIZED || activity.getStats() == StatusEnum.NORMAL_FINALIZED)
+			pgbProgress.setProgress(1);
+		else
+			pgbProgress.setProgress(progress);
+		String progressStr = String.format("%.2f", Math.abs((pgbProgress.getProgress() * 100)));
+		lblProgress.setText(progressStr + "%");
+	}
+
 	private void initEvents() {
 		HashMap<String, Object> hmp = new HashMap<String, Object>();
 		btnDelete.setOnAction(new EventHandler<ActionEvent>() {
@@ -145,16 +197,18 @@ public class ActivityCardController extends Observable implements Initializable 
 				ExecutionTimeBO execBo = new ExecutionTimeBO();
 				ActivityBO actBo = new ActivityBO();
 				if (btnPlayPause.getText().equalsIgnoreCase("play")) {
-					execBo.startExecution(activity);
-					activity = actBo.switchStatus(activity, StatusEnum.NORMAL_IN_PROGRESS);
-					if (btnDelete.isVisible()) {
-						btnDelete.getStyleClass().add("hide");
+					if (execBo.startExecution(activity) != null) {
+						activity = actBo.switchStatus(activity, StatusEnum.NORMAL_IN_PROGRESS);
+						if (btnDelete.isVisible()) {
+							btnDelete.getStyleClass().add("hide");
+						}
+						timer.start();
 					}
-					timer.start();
 				} else {
-					execBo.finishExecution(activity);
-					activity = actBo.switchStatus(activity, StatusEnum.NORMAL_PAUSED);
-					timer.stop();
+					if (execBo.finishExecution(activity) != null) {
+						activity = actBo.switchStatus(activity, StatusEnum.NORMAL_PAUSED);
+						timer.stop();
+					}
 				}
 				loadActivity();
 
@@ -166,9 +220,13 @@ public class ActivityCardController extends Observable implements Initializable 
 				ExecutionTimeBO execBo = new ExecutionTimeBO();
 				ActivityBO actBo = new ActivityBO();
 
-				execBo.finishExecution(activity);
-				activity = actBo.switchStatus(activity, StatusEnum.NORMAL_FINALIZED);
-				loadActivity();
+				if (execBo.finishExecution(activity) != null) {
+					activity = actBo.switchStatus(activity, StatusEnum.NORMAL_FINALIZED);
+					btnPlayPause.getStyleClass().removeAll("show");
+					btnFinalize.getStyleClass().removeAll("show");
+					timer.stop();
+					loadActivity();
+				}
 
 			}
 		});
@@ -221,6 +279,22 @@ public class ActivityCardController extends Observable implements Initializable 
 			}
 		});
 
+	}
+
+	private static ArrayList<OnProgressChangedI> activityAddedListeners = new ArrayList<OnProgressChangedI>();
+
+	public interface OnProgressChangedI {
+		void onProgressChangedI(ActivityVO act);
+	}
+
+	public static void addOnActivityAddedIListener(OnProgressChangedI newListener) {
+		activityAddedListeners.add(newListener);
+	}
+
+	private void notifyAllOnProgressChangedListeners(ActivityVO act) {
+		for (OnProgressChangedI l : activityAddedListeners) {
+			l.onProgressChangedI(act);
+		}
 	}
 
 }

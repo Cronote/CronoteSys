@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
@@ -95,15 +96,23 @@
 				<Font name="System Bold" size="17.0" />
 			</font>
 		</Label>
-		<Button fx:id="btnEdit" contentDisplay="GRAPHIC_ONLY" layoutX="370.0" layoutY="652.0" mnemonicParsing="false" styleClass="btnTransparent" text="Save" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="55.0">
+		<Button fx:id="btnEdit" contentDisplay="GRAPHIC_ONLY" layoutX="370.0" layoutY="652.0" mnemonicParsing="false" text="Save" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="55.0">
          <graphic>
             <FontAwesomeIconView glyphName="EDIT" size="2em" textAlignment="CENTER" />
          </graphic>
+         <styleClass>
+            <String fx:value="btnTransparent" />
+            <String fx:value="hide" />
+         </styleClass>
 		</Button>
-		<Button fx:id="btnDelete" contentDisplay="GRAPHIC_ONLY" layoutX="396.0" layoutY="657.0" mnemonicParsing="false" prefWidth="40.0" styleClass="btnTransparent" text="Save" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="10.0">
+		<Button fx:id="btnDelete" contentDisplay="GRAPHIC_ONLY" layoutX="396.0" layoutY="657.0" mnemonicParsing="false" prefWidth="40.0" text="Save" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="10.0">
          <graphic>
             <FontAwesomeIconView glyphName="TRASH_ALT" size="2em" />
          </graphic>
+         <styleClass>
+            <String fx:value="btnTransparent" />
+            <String fx:value="hide" />
+         </styleClass>
 		</Button>
 	</children>
 </AnchorPane>

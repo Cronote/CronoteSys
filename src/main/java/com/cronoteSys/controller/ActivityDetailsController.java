@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 
 import javax.swing.Timer;
 
+import com.cronoteSys.controller.ActivityCardController.OnProgressChangedI;
 import com.cronoteSys.converter.CategoryConverter;
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.CategoryBO;
@@ -103,19 +104,6 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	HashMap<String, Object> hmp = new HashMap<String, Object>();
 	private ActivityVO activity;
 	private UserVO user;
-	Timer timer = new Timer(60000, new ActionListener() {
-
-		public void actionPerformed(java.awt.event.ActionEvent e) {
-			Platform.runLater(new Runnable() {
-				public void run() {
-					ActivityBO actBo = new ActivityBO();
-					activity = actBo.updateRealTime(activity);
-					loadActivity();
-				}
-			});
-
-		}
-	});
 
 	public ActivityDetailsController(UserVO user) {
 		this.user = user;
@@ -132,7 +120,6 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	public void initialize(URL location, ResourceBundle resources) {
 		initForm();
 		initEvents();
-		timer.setInitialDelay(0);
 	}
 
 	private void initForm() {
@@ -163,9 +150,16 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 			}
 		} else {
 			loadActivity();
-			if (activity.getStats().equals(StatusEnum.BROKEN_IN_PROGRESS)
-					|| activity.getStats().equals(StatusEnum.NORMAL_IN_PROGRESS))
-				timer.start();
+
+			ActivityCardController.addOnActivityAddedIListener(new OnProgressChangedI() {
+
+				@Override
+				public void onProgressChangedI(ActivityVO act) {
+					if (act.getId() == activity.getId())
+						activity = act;
+					loadProgressAndRealtime();
+				}
+			});
 		}
 	}
 
@@ -180,15 +174,29 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 		}
 
 		lblEstimatedTime.setText(activity.getEstimatedTimeAsString());
+		loadProgressAndRealtime();
+		lblLastModified.setText(activity.getLastModification()
+				.format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm", new Locale("pt", "BR"))));
+		if (activity.getStats() == StatusEnum.NOT_STARTED) {
+			btnEdit.getStyleClass().add("show");
+			btnDelete.getStyleClass().add("show");
+		} else if (activity.getStats() != StatusEnum.NORMAL_FINALIZED
+				&& activity.getStats() != StatusEnum.BROKEN_FINALIZED) {
+			btnEdit.getStyleClass().add("show");
+		}
+	}
+
+	private void loadProgressAndRealtime() {
 		lblRealTime.setText(activity.getRealtimeAsString());
 		double estimatedTime = activity.getEstimatedTime().toMillis();
 		double realtime = activity.getRealtime().toMillis();
 		double progress = realtime / estimatedTime;
 		progress = progress > 1 ? 1 : progress;
 		lblStatus.setText(activity.getStats().getDescription().toUpperCase());
-		pgiProgress.setProgress(progress);
-		lblLastModified.setText(activity.getLastModification()
-				.format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm", new Locale("pt", "BR"))));
+		if (activity.getStats() == StatusEnum.BROKEN_FINALIZED || activity.getStats() == StatusEnum.NORMAL_FINALIZED)
+			pgiProgress.setProgress(1);
+		else
+			pgiProgress.setProgress(progress);
 	}
 
 	private void blockEdition() {
@@ -253,7 +261,9 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 				}
 			});
 		}
-		if (btnConfirmAdd != null) {
+		if (btnConfirmAdd != null)
+
+		{
 			btnConfirmAdd.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
