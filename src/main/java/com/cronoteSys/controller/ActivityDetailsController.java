@@ -1,6 +1,5 @@
 package com.cronoteSys.controller;
 
-import java.awt.event.ActionListener;
 import java.net.URL;
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
@@ -9,8 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
-import javax.swing.Timer;
 
 import com.cronoteSys.controller.ActivityCardController.OnProgressChangedI;
 import com.cronoteSys.converter.CategoryConverter;
@@ -21,10 +18,11 @@ import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.CategoryVO;
 import com.cronoteSys.model.vo.StatusEnum;
 import com.cronoteSys.model.vo.UserVO;
+import com.cronoteSys.util.ActivityMonitor;
+import com.cronoteSys.util.ActivityMonitor.OnMonitorTick;
 import com.cronoteSys.util.ScreenUtil;
-import com.sun.mail.imap.protocol.Status;
+import com.cronoteSys.util.SessionUtil;
 
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -47,6 +45,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -103,16 +102,16 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	private String mode;
 	HashMap<String, Object> hmp = new HashMap<String, Object>();
 	private ActivityVO activity;
-	private UserVO user;
+	private UserVO loggedUser;
 
-	public ActivityDetailsController(UserVO user) {
-		this.user = user;
+	public ActivityDetailsController() {
 		mode = "edit";
+		loggedUser = (UserVO) SessionUtil.getSESSION().get("loggedUser");
 	}
 
 	public ActivityDetailsController(ActivityVO act, String mode) {
 		this.activity = act;
-		this.user = act.getUserVO();
+		this.loggedUser = act.getUserVO();
 		this.mode = mode;
 	}
 
@@ -123,11 +122,20 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	}
 
 	private void initForm() {
+		ActivityCardController.addOnActivityAddedIListener(new OnProgressChangedI() {
+
+			@Override
+			public void onProgressChangedI(ActivityVO act) {
+				if (act.getId() == activity.getId())
+					activity = act;
+				loadProgressAndRealtime();
+			}
+		});
 		if (mode.equals("edit")) {
 			defaultData();
 			if (activity == null) {
 				activity = new ActivityVO();
-				activity.setUserVO(user);
+				activity.setUserVO(loggedUser);
 			} else {
 				txtTitle.setText(activity.getTitle());
 				cboCategory.getSelectionModel().select(activity.getCategoryVO());
@@ -151,15 +159,6 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 		} else {
 			loadActivity();
 
-			ActivityCardController.addOnActivityAddedIListener(new OnProgressChangedI() {
-
-				@Override
-				public void onProgressChangedI(ActivityVO act) {
-					if (act.getId() == activity.getId())
-						activity = act;
-					loadProgressAndRealtime();
-				}
-			});
 		}
 	}
 
@@ -197,6 +196,13 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 			pgiProgress.setProgress(1);
 		else
 			pgiProgress.setProgress(progress);
+		StackPane stackProgress = (StackPane) pgiProgress.lookup(".progress");
+		Text textPercentage = (Text) pgiProgress.lookup(".percentage");
+		String progressStr = String.format("%.2f", (pgiProgress.getProgress() * 100));
+		if (textPercentage != null)
+			textPercentage.setText(progressStr + "%");
+		if (stackProgress != null)
+			stackProgress.setStyle("-fx-background-color:" + activity.getStats().getHexColor());
 	}
 
 	private void blockEdition() {
@@ -210,9 +216,9 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	}
 
 	private void defaultData() {
-		List<CategoryVO> lstCategory = new CategoryDAO().getList(user);
+		List<CategoryVO> lstCategory = new CategoryDAO().getList(loggedUser);
 		ObservableList<CategoryVO> obsLstCategory = FXCollections.observableList(lstCategory);
-		cboCategory.setConverter(new CategoryConverter(user));
+		cboCategory.setConverter(new CategoryConverter(loggedUser));
 		cboCategory.setItems(obsLstCategory);
 		spnEstimatedTimeHour.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99999, 0, 1));
 		spnEstimatedTimeMinute.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 60, 1, 1));
@@ -272,7 +278,7 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 					CategoryBO catBO = new CategoryBO();
 					if (txtCategory.getText().trim().length() > 0) {
 						cat.setDescription(txtCategory.getText());
-						cat.setUserVO(user);
+						cat.setUserVO(loggedUser);
 						cat = catBO.save(cat);
 						if (cat.getId() != null) {
 							cboCategory.getItems().add(cat);
@@ -363,22 +369,24 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 
 				@Override
 				public void changed(ObservableValue<? extends Skin> observable, Skin oldValue, Skin newValue) {
-					pgiProgress.lookup(".progress")
-							.setStyle("-fx-background-color:" + activity.getStats().getHexColor());
-					Text t = (Text) pgiProgress.lookup(".percentage");
+					StackPane stackProgress = (StackPane) pgiProgress.lookup(".progress");
+					Text textPercentage = (Text) pgiProgress.lookup(".percentage");
 					String progressStr = String.format("%.2f", (pgiProgress.getProgress() * 100));
-					t.setText(progressStr + "%");
+					if (textPercentage != null)
+						textPercentage.setText(progressStr + "%");
+					if (stackProgress != null)
+						stackProgress.setStyle("-fx-background-color:" + activity.getStats().getHexColor());
 				}
 			});
-			pgiProgress.progressProperty().addListener(new ChangeListener<Number>() {
+
+			ActivityMonitor.addOnMonitorTickListener(new OnMonitorTick() {
 
 				@Override
-				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-					pgiProgress.lookup(".progress")
-							.setStyle("-fx-background-color:" + activity.getStats().getHexColor());
-					Text t = (Text) pgiProgress.lookup(".percentage");
-					String progressStr = String.format("%.2f", (pgiProgress.getProgress() * 100));
-					t.setText(progressStr + "%");
+				public void onMonitorTicked(ActivityVO act) {
+					if (act.getId() == activity.getId())
+						activity = act;
+					loadProgressAndRealtime();
+
 				}
 			});
 		}

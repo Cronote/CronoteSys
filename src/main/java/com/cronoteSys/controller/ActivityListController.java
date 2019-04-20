@@ -14,6 +14,7 @@ import com.cronoteSys.model.bo.ActivityBO.OnActivityAddedI;
 import com.cronoteSys.model.bo.ActivityBO.OnActivityDeletedI;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.UserVO;
+import com.cronoteSys.util.SessionUtil;
 
 import de.jensd.fx.glyphs.GlyphIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -27,7 +28,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 
 public class ActivityListController extends ShowEditViewActivityObservable implements Initializable, Observer {
@@ -40,13 +40,10 @@ public class ActivityListController extends ShowEditViewActivityObservable imple
 
 	private UserVO loggedUser;
 
-	public ActivityListController(UserVO loggedUser) {
-		this.loggedUser = loggedUser;
-	}
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		
+		loggedUser = (UserVO) SessionUtil.getSESSION().get("loggedUser");
 		ActivityBO actBO = new ActivityBO();
 //
 		activityList = actBO.listAllByUser(loggedUser);

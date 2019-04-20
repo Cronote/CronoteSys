@@ -15,6 +15,8 @@ import com.cronoteSys.model.bo.ExecutionTimeBO;
 import com.cronoteSys.model.bo.ActivityBO.OnActivityAddedI;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.StatusEnum;
+import com.cronoteSys.util.ActivityMonitor;
+import com.cronoteSys.util.ActivityMonitor.OnMonitorTick;
 
 import de.jensd.fx.glyphs.GlyphIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -64,20 +66,6 @@ public class ActivityCardController extends Observable implements Initializable 
 	private Button btnFinalize;
 
 	private ActivityVO activity;
-	Timer timer = new Timer(30000, new ActionListener() {
-
-		public void actionPerformed(java.awt.event.ActionEvent e) {
-			Platform.runLater(new Runnable() {
-				public void run() {
-					ActivityBO actBo = new ActivityBO();
-					activity = actBo.updateRealTime(activity);
-					loadProgressAndRealtime();
-					notifyAllOnProgressChangedListeners(activity);
-				}
-			});
-
-		}
-	});
 
 	public ActivityCardController() {
 
@@ -91,7 +79,6 @@ public class ActivityCardController extends Observable implements Initializable 
 	public void initialize(URL location, ResourceBundle resources) {
 		loadActivity();
 		initEvents();
-		timer.setInitialDelay(0);
 	}
 
 	private void loadActivity() {
@@ -200,14 +187,14 @@ public class ActivityCardController extends Observable implements Initializable 
 					if (execBo.startExecution(activity) != null) {
 						activity = actBo.switchStatus(activity, StatusEnum.NORMAL_IN_PROGRESS);
 						if (btnDelete.isVisible()) {
-							btnDelete.getStyleClass().add("hide");
+							btnDelete.getStyleClass().remove("show");
 						}
-						timer.start();
+						ActivityMonitor.addActivity(activity);
 					}
 				} else {
 					if (execBo.finishExecution(activity) != null) {
 						activity = actBo.switchStatus(activity, StatusEnum.NORMAL_PAUSED);
-						timer.stop();
+						ActivityMonitor.removeActivity(activity);
 					}
 				}
 				loadActivity();
@@ -224,8 +211,9 @@ public class ActivityCardController extends Observable implements Initializable 
 					activity = actBo.switchStatus(activity, StatusEnum.NORMAL_FINALIZED);
 					btnPlayPause.getStyleClass().removeAll("show");
 					btnFinalize.getStyleClass().removeAll("show");
-					timer.stop();
 					loadActivity();
+
+					ActivityMonitor.removeActivity(activity);
 				}
 
 			}
@@ -275,6 +263,16 @@ public class ActivityCardController extends Observable implements Initializable 
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				pgbProgress.lookup(".bar").setStyle("-fx-background-color:" + activity.getStats().getHexColor());
+
+			}
+		});
+		ActivityMonitor.addOnMonitorTickListener(new OnMonitorTick() {
+
+			@Override
+			public void onMonitorTicked(ActivityVO act) {
+				if (act.getId() == activity.getId())
+					activity = act;
+				loadProgressAndRealtime();
 
 			}
 		});

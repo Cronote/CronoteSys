@@ -209,6 +209,7 @@ ComboBox{
 }
 .btnConfirm:hover, .btnConfirm .glyph-icon{
 	-fx-fill:white;
+	-fx-text-fill:white;
 	-fx-background-color:green;
 }
 
@@ -223,6 +224,7 @@ ComboBox{
 
 .btnCancel:hover, .btnCancel .glyph-icon{
 	-fx-fill:white;
+	-fx-text-fill:white;
 	-fx-background-color:red;
 }
 .btnCancel .gliph-icon{

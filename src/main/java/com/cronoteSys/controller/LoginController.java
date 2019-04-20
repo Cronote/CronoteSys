@@ -16,6 +16,7 @@ import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.GenHash;
 import com.cronoteSys.util.ScreenUtil;
+import com.cronoteSys.util.SessionUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 
 import javafx.event.ActionEvent;
@@ -102,8 +103,9 @@ public class LoginController extends MasterController {
 					e.printStackTrace();
 				}
 			}
-			hmp.put("user", user);
-			new ScreenUtil().openNewWindow(getThisStage(), "Home", false, hmp);
+			System.out.println(user);
+			SessionUtil.getSESSION().put("loggedUser", user);
+			ScreenUtil.openNewWindow(getThisStage(), "Home", false, hmp);
 		} else {
 			List<Node> lst = new ArrayList<Node>();
 			lst.add(txtEmail);
@@ -119,17 +121,17 @@ public class LoginController extends MasterController {
 
 	@FXML
 	private void linkRecoverClicked() {
-		new ScreenUtil().openNewWindow(getThisStage(), "SForgotPwd", false, hmp);
+		ScreenUtil.openNewWindow(getThisStage(), "SForgotPwd", false, hmp);
 	}
 
 	@FXML
 	private void linkSignUpClicked() {
-		new ScreenUtil().openNewWindow(getThisStage(), "SSignUp", false, hmp);
+		ScreenUtil.openNewWindow(getThisStage(), "SSignUp", false, hmp);
 	}
 
 	@FXML
 	private void btnLoginClicked(ActionEvent event) {
-		if (new ScreenUtil().isFilledFields(getThisStage(), pnlLogin,false)) {
+		if (new ScreenUtil().isFilledFields(getThisStage(), pnlLogin, false)) {
 			String sUsername = txtEmail.getText().trim(), sPasswd = txtPassword.getText().trim();
 			login(new LoginVO(null, sUsername, new GenHash().hashIt(sPasswd)));
 		}

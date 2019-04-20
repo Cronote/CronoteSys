@@ -33,7 +33,7 @@
 					<graphic>
 						<AnchorPane prefHeight="45.0" prefWidth="214.0">
 							<children>
-								<Label layoutX="128.0" layoutY="10.0" prefHeight="25.0" prefWidth="96.0" text="ATIVIDADES" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0">
+								<Label layoutX="128.0" layoutY="10.0" prefHeight="25.0" text="ATIVIDADES" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0">
 									<font>
 										<Font size="16.0" />
 									</font>
@@ -53,7 +53,7 @@
 					<graphic>
 						<AnchorPane prefHeight="44.0" prefWidth="230.0">
 							<children>
-								<Label layoutX="144.0" layoutY="10.0" prefHeight="25.0" prefWidth="78.0" text="PROJETOS" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0">
+								<Label layoutX="144.0" layoutY="10.0" prefHeight="25.0" text="PROJETOS" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0">
 									<font>
 										<Font size="16.0" />
 									</font>
@@ -75,12 +75,12 @@
 					<graphic>
 						<AnchorPane prefHeight="44.0" prefWidth="230.0">
 							<children>
-								<Label layoutX="118.0" layoutY="4.0" prefHeight="25.0" prefWidth="96.0" text="RELATÓRIOS" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0">
+								<Label layoutX="118.0" layoutY="4.0" prefHeight="25.0" text="RELATÓRIOS" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0">
 									<font>
 										<Font size="16.0" />
 									</font>
 								</Label>
-                        <AnchorPane prefHeight="38.0" prefWidth="48.0" styleClass="outline">
+                        <AnchorPane prefHeight="38.0" prefWidth="48.0" style="-fx-border-radius: 10;" styleClass="outline">
                            <children>
                               <FontAwesomeIconView glyphName="BAR_CHART" layoutX="3.0" layoutY="15.650670051574707" size="1.5em" styleClass="normal" AnchorPane.bottomAnchor="19.426339149475098" AnchorPane.leftAnchor="3.0" />
                               <FontAwesomeIconView glyphName="PIE_CHART" layoutX="29.0" layoutY="26.0" size="1.5em" styleClass="normal" />
@@ -96,7 +96,7 @@
 					<graphic>
 						<AnchorPane prefHeight="37.0" prefWidth="216.0">
 							<children>
-                        <FontAwesomeIconView fontSmoothingType="LCD" glyphName="GEAR" layoutX="14.0" layoutY="19.0" size="2em" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="2.0" textAlignment="CENTER" textOrigin="CENTER" AnchorPane.leftAnchor="8.0">
+                        <FontAwesomeIconView fontSmoothingType="LCD" glyphName="GEAR" layoutX="14.0" layoutY="19.0" size="2em" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="2.0" textAlignment="CENTER" textOrigin="CENTER" AnchorPane.leftAnchor="5.0">
                            <font>
                               <Font name="FontAwesome Regular" size="18.0" />
                            </font>
@@ -105,7 +105,7 @@
                               <String fx:value="rainforce" />
                            </styleClass>
                         </FontAwesomeIconView>
-								<Label layoutX="158.0" layoutY="4.0" prefHeight="25.0" prefWidth="64.0" text="AJUSTES" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0">
+								<Label layoutX="158.0" layoutY="4.0" prefHeight="25.0" text="AJUSTES" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="4.0">
 									<font>
 										<Font size="16.0" />
 									</font>
@@ -118,7 +118,7 @@
 					<graphic>
 						<AnchorPane prefHeight="42.0" prefWidth="230.0">
 							<children>
-								<Label layoutX="171.0" layoutY="6.0" prefHeight="25.0" prefWidth="51.0" text="AJUDA" textAlignment="RIGHT" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
+								<Label layoutX="171.0" layoutY="6.0" prefHeight="25.0" text="AJUDA" textAlignment="RIGHT" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
 									<font>
 										<Font size="16.0" />
 									</font>

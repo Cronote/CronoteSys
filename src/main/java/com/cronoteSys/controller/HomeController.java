@@ -43,7 +43,7 @@ public class HomeController implements Initializable {
 				removeIndexFromRoot(2);
 				FXMLLoader detailsFxml = loadTemplate("DetailsInserting");
 				if (hmap == null) {
-					detailsFxml.setController(new ActivityDetailsController((UserVO) hmp.get("user")));
+					detailsFxml.setController(new ActivityDetailsController());
 				} else {
 					String action = (String) hmap.get("action");
 					ActivityVO activity = (ActivityVO) hmap.get("activity");
@@ -91,7 +91,6 @@ public class HomeController implements Initializable {
 			clearRoot(false, (Node) e.getSource());
 			if (btnActivity.isSelected()) {
 				FXMLLoader p = loadTemplate("ActivityList");
-				p.setController(new ActivityListController((UserVO) hmp.get("user")));
 				try {
 					root.getChildren().addAll((Node) p.load());
 				} catch (IOException e1) {
