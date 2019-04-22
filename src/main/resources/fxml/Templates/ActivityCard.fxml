@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="cardRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="126.0" prefWidth="313.0" styleClass="activityCard" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane  fx:id="cardRoot" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="126.0" prefWidth="313.0" styleClass="activityCard" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<Label fx:id="lblTitle" alignment="TOP_LEFT" layoutX="14.0" layoutY="14.0" prefHeight="42.0" prefWidth="216.0" styleClass="info" text="ESTUDAR LÓGICA DE PROGRAMAÇÃO E ALGEBRA LINEAR" textFill="#ff0101" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="111.0" AnchorPane.topAnchor="14.0">
 			<font>

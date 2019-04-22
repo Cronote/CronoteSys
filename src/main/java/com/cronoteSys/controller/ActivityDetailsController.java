@@ -1,5 +1,8 @@
 package com.cronoteSys.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
@@ -7,10 +10,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.cronoteSys.controller.ActivityCardController.OnProgressChangedI;
 import com.cronoteSys.converter.CategoryConverter;
+import com.cronoteSys.dialogs.CategoryManagerDialog;
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.CategoryBO;
 import com.cronoteSys.model.dao.CategoryDAO;
@@ -30,9 +35,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Skin;
@@ -47,6 +55,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class ActivityDetailsController extends ShowEditViewActivityObservable implements Initializable {
@@ -75,6 +84,8 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	private Button btnConfirmAdd;
 	@FXML
 	private Button btnCancelAdd;
+	@FXML
+	private Button btnManageCategory;
 	// Visualização
 	@FXML
 	private Label lblTitle;
@@ -103,6 +114,7 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	HashMap<String, Object> hmp = new HashMap<String, Object>();
 	private ActivityVO activity;
 	private UserVO loggedUser;
+	ObservableList<CategoryVO> obsLstCategory = FXCollections.emptyObservableList();
 
 	public ActivityDetailsController() {
 		mode = "edit";
@@ -216,8 +228,7 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	}
 
 	private void defaultData() {
-		List<CategoryVO> lstCategory = new CategoryDAO().getList(loggedUser);
-		ObservableList<CategoryVO> obsLstCategory = FXCollections.observableList(lstCategory);
+		obsLstCategory = FXCollections.observableList(new CategoryDAO().getList(loggedUser));
 		cboCategory.setConverter(new CategoryConverter(loggedUser));
 		cboCategory.setItems(obsLstCategory);
 		spnEstimatedTimeHour.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99999, 0, 1));
@@ -267,11 +278,22 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 				}
 			});
 		}
-		if (btnConfirmAdd != null)
+		if (btnManageCategory != null) {
+			btnManageCategory.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					CategoryManagerDialog categoryManagerDialog = new CategoryManagerDialog(cboCategory.getItems());
+					categoryManagerDialog.showCategoryManagerDialog();
+					CategoryVO selectedCategory = categoryManagerDialog.getSelectedCategory();
+					obsLstCategory = FXCollections.observableList(new CategoryDAO().getList(loggedUser));
+					cboCategory.setItems(obsLstCategory);
+					cboCategory.getSelectionModel().select(selectedCategory);
 
-		{
+				}
+			});
+		}
+		if (btnConfirmAdd != null) {
 			btnConfirmAdd.setOnAction(new EventHandler<ActionEvent>() {
-
 				@Override
 				public void handle(ActionEvent event) {
 					CategoryVO cat = new CategoryVO();
@@ -292,7 +314,6 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 				}
 			});
 			btnCancelAdd.setOnAction(new EventHandler<ActionEvent>() {
-
 				@Override
 				public void handle(ActionEvent event) {
 					switchCategoryMode();
@@ -422,6 +443,7 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 		btnCancelAdd.setVisible(btnAddCategory.isVisible());
 		txtCategory.setVisible(btnAddCategory.isVisible());
 		cboCategory.setVisible(!btnAddCategory.isVisible());
+		btnManageCategory.setVisible(!btnAddCategory.isVisible());
 		btnAddCategory.setVisible(!btnAddCategory.isVisible());
 	}
 
@@ -434,5 +456,12 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 			txtCategory.getStyleClass().removeAll("error");
 			lbl.getStyleClass().add("hide");
 		}
+	}
+
+	private FXMLLoader loadDialog(String template) throws MalformedURLException {
+		FXMLLoader root = SessionUtil.getInjector().getInstance(FXMLLoader.class);
+		root.setLocation(new File(getClass().getResource("/fxml/Templates/dialogs/" + template + ".fxml").getPath())
+				.toURI().toURL());
+		return root;
 	}
 }

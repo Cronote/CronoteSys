@@ -113,8 +113,8 @@ public class ActivityListController extends ShowEditViewActivityObservable imple
 	}
 
 	private FXMLLoader loadTemplate(String template) {
-		FXMLLoader root = null;
-
+		FXMLLoader root = SessionUtil.getInjector().getInstance(FXMLLoader.class);
+		
 		root = new FXMLLoader(getClass().getResource("/fxml/Templates/" + template + ".fxml"));
 		return root;
 	}

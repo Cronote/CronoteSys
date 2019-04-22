@@ -90,11 +90,11 @@
 	-fx-text-fill:#000000;
 }
 .progress-bar:determinate .track{
-	-fx-background-insets: 0px;
+	-fx-background-insets: 0.0px;
 }
 
 .progress-bar>*.bar {
-	-fx-background-insets: 0px;
+	-fx-background-insets: 0.0px;
 }
 
 /*===============Fim Cartoes de atividade================*/
@@ -188,13 +188,22 @@
 	-fx-alignment:center; 
 }
 
-
+.list-view .scroll-bar:horizontal .increment-arrow,
+.list-view .scroll-bar:horizontal .decrement-arrow,
+.list-view .scroll-bar:horizontal .increment-button,
+.list-view .scroll-bar:horizontal .decrement-button {
+    -fx-padding:0.0;
+}
+.list-view .scroll-bar:vertical .increment-arrow,
+.list-view .scroll-bar:vertical .decrement-arrow,
+.list-view .scroll-bar:vertical .increment-button,
+.list-view .scroll-bar:vertical .decrement-button {
+    -fx-padding:0.0;
+}
 
 ComboBox{
 	-fx-background-color:white;
 }
-
-
 
 
 /*Icons*/

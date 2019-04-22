@@ -1,18 +1,13 @@
 package com.cronoteSys.controller;
 
-import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.ResourceBundle;
 
-import javax.swing.Timer;
-import javax.swing.text.html.CSS;
-
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.ExecutionTimeBO;
-import com.cronoteSys.model.bo.ActivityBO.OnActivityAddedI;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.StatusEnum;
 import com.cronoteSys.util.ActivityMonitor;
@@ -21,7 +16,6 @@ import com.cronoteSys.util.ActivityMonitor.OnMonitorTick;
 import de.jensd.fx.glyphs.GlyphIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -87,7 +81,6 @@ public class ActivityCardController extends Observable implements Initializable 
 		loadProgressAndRealtime();
 		GlyphIcon icon = null;
 		String btnText = "";
-		System.out.println(activity.getStats());
 		if (activity.getStats() != StatusEnum.NORMAL_FINALIZED && activity.getStats() != StatusEnum.BROKEN_FINALIZED) {
 			if (activity.getStats() == StatusEnum.NOT_STARTED || activity.getStats() == StatusEnum.NORMAL_PAUSED
 					|| activity.getStats() == StatusEnum.BROKEN_PAUSED) {
@@ -255,14 +248,15 @@ public class ActivityCardController extends Observable implements Initializable 
 
 			@Override
 			public void changed(ObservableValue<? extends Skin> observable, Skin oldValue, Skin newValue) {
-				pgbProgress.lookup(".bar").setStyle("-fx-background-color:" + activity.getStats().getHexColor());
+				paintBar(pgbProgress.lookup(".bar"));
+
 			}
 		});
 		pgbProgress.progressProperty().addListener(new ChangeListener<Number>() {
 
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				pgbProgress.lookup(".bar").setStyle("-fx-background-color:" + activity.getStats().getHexColor());
+				paintBar(pgbProgress.lookup(".bar"));
 
 			}
 		});
@@ -277,6 +271,11 @@ public class ActivityCardController extends Observable implements Initializable 
 			}
 		});
 
+	}
+
+	private void paintBar(Node node) {
+		if (node != null)
+			node.setStyle("-fx-background-color:" + activity.getStats().getHexColor());
 	}
 
 	private static ArrayList<OnProgressChangedI> activityAddedListeners = new ArrayList<OnProgressChangedI>();

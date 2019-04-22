@@ -60,7 +60,7 @@ public class ScreenUtil {
 	 */
 	public static void openNewWindow(Stage oldStage, String sSceneName, boolean isModal) {
 
-		Stage newStage = new Stage();
+		Stage newStage = oldStage;
 
 		newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
@@ -75,14 +75,9 @@ public class ScreenUtil {
 		scene.getStylesheets().add("/styles/Styles.css");
 		newStage.setTitle("Cronote");
 		newStage.setScene(scene);
-		if (isModal) {
-			newStage.initOwner(oldStage);
-			newStage.initModality(Modality.APPLICATION_MODAL);
-		}
 		newStage.show();
-		if (!isModal) {
-			closeOldStage(oldStage, newStage);
-		}
+	
+
 	}
 
 	/**
