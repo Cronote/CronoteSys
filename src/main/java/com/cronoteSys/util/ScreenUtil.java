@@ -109,7 +109,18 @@ public class ScreenUtil {
 		}
 		return root;
 	}
+	public static FXMLLoader loadTemplate(String template) {
+		try {
+			FXMLLoader fxmlLoader = SessionUtil.getInjector().getInstance(FXMLLoader.class);
+			URL url = new File(ScreenUtil.class.getResource("/fxml/Templates/" + template + ".fxml").getPath()).toURI().toURL();
+			fxmlLoader.setLocation(url);
+			return fxmlLoader;
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		return null;
 
+	}
 	private static void closeOldStage(Stage oldStage, Stage newStage) {
 		if (oldStage != null) {
 			oldStage.close();

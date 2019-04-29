@@ -40,15 +40,35 @@
 		</Label>
 		<HBox layoutX="14.0" layoutY="297.0" prefHeight="28.0" prefWidth="220.0" spacing="10.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
 			<children>
-				<ToggleButton fx:id="tgbVeryLow" mnemonicParsing="false" styleClass="btnWindows" text="MUITO BAIXA">
+				<ToggleButton fx:id="tgbVeryLow" mnemonicParsing="false" text="MUITO BAIXA">
 					<toggleGroup>
 						<ToggleGroup fx:id="tggPriority" />
 					</toggleGroup>
+               <styleClass>
+                  <String fx:value="btnWindows" />
+                  <String fx:value="btnActivity" />
+               </styleClass>
 				</ToggleButton>
-				<ToggleButton fx:id="tgbLow" mnemonicParsing="false" styleClass="btnWindows" text="BAIXA" toggleGroup="$tggPriority" />
-				<ToggleButton fx:id="tgbMedium" mnemonicParsing="false" selected="true" styleClass="btnWindows" text="REGULAR" toggleGroup="$tggPriority" />
-				<ToggleButton fx:id="tgbHigh" mnemonicParsing="false" styleClass="btnWindows" text="ALTA" toggleGroup="$tggPriority" />
-				<ToggleButton fx:id="tgbVeryHigh" contentDisplay="TEXT_ONLY" mnemonicParsing="false" styleClass="btnWindows" text="MUITO ALTA" toggleGroup="$tggPriority" />
+				<ToggleButton fx:id="tgbLow" mnemonicParsing="false" text="BAIXA" toggleGroup="$tggPriority">
+               <styleClass>
+                  <String fx:value="btnWindows" />
+                  <String fx:value="btnActivity" />
+               </styleClass></ToggleButton>
+				<ToggleButton fx:id="tgbMedium" mnemonicParsing="false" selected="true" text="REGULAR" toggleGroup="$tggPriority">
+               <styleClass>
+                  <String fx:value="btnWindows" />
+                  <String fx:value="btnActivity" />
+               </styleClass></ToggleButton>
+				<ToggleButton fx:id="tgbHigh" mnemonicParsing="false" text="ALTA" toggleGroup="$tggPriority">
+               <styleClass>
+                  <String fx:value="btnWindows" />
+                  <String fx:value="btnActivity" />
+               </styleClass></ToggleButton>
+				<ToggleButton fx:id="tgbVeryHigh" contentDisplay="TEXT_ONLY" mnemonicParsing="false" text="MUITO ALTA" toggleGroup="$tggPriority">
+               <styleClass>
+                  <String fx:value="btnWindows" />
+                  <String fx:value="btnActivity" />
+               </styleClass></ToggleButton>
 			</children>
 		</HBox>
 		<Label layoutX="14.0" layoutY="351.0" text="TEMPO ESTIMADO" AnchorPane.leftAnchor="14.0">

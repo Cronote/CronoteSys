@@ -21,6 +21,7 @@ import com.cronoteSys.model.bo.CategoryBO;
 import com.cronoteSys.model.dao.CategoryDAO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.CategoryVO;
+import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.model.vo.StatusEnum;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.ActivityMonitor;
@@ -58,7 +59,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class ActivityDetailsController extends ShowEditViewActivityObservable implements Initializable {
+public class ActivityDetailsController implements Initializable, ShowEditViewActivityObservableI {
 	// Edição
 	@FXML
 	private TextField txtTitle;
@@ -112,13 +113,19 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 
 	private String mode;
 	HashMap<String, Object> hmp = new HashMap<String, Object>();
-	private ActivityVO activity;
+	private ActivityVO activity = new ActivityVO();
 	private UserVO loggedUser;
 	ObservableList<CategoryVO> obsLstCategory = FXCollections.emptyObservableList();
 
-	public ActivityDetailsController() {
-		mode = "edit";
+	public ActivityDetailsController(ProjectVO project) {
+		System.out.println(project);
 		loggedUser = (UserVO) SessionUtil.getSESSION().get("loggedUser");
+		mode = "edit";
+		activity.setUserVO(loggedUser);
+		if (project != null)
+			activity.setProjectVO(project);
+
+
 	}
 
 	public ActivityDetailsController(ActivityVO act, String mode) {
@@ -145,10 +152,7 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 		});
 		if (mode.equals("edit")) {
 			defaultData();
-			if (activity == null) {
-				activity = new ActivityVO();
-				activity.setUserVO(loggedUser);
-			} else {
+			if (activity.getId() != null) {
 				txtTitle.setText(activity.getTitle());
 				cboCategory.getSelectionModel().select(activity.getCategoryVO());
 				txtDescription.setText(activity.getDescription());
@@ -225,6 +229,8 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 		for (int i = 0; i < tggPriority.getToggles().size(); i++) {
 			((ToggleButton) tggPriority.getToggles().get(i)).setDisable(true);
 		}
+		btnManageCategory.setDisable(true);
+		btnAddCategory.setDisable(true);
 	}
 
 	private void defaultData() {
@@ -278,7 +284,9 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 				}
 			});
 		}
-		if (btnManageCategory != null) {
+		if (btnManageCategory != null)
+
+		{
 			btnManageCategory.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
@@ -335,6 +343,7 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 				@Override
 				public void handle(ActionEvent event) {
 					hmp.put("activity", activity);
+					hmp.put("project", activity.getProjectVO());
 					hmp.put("action", "edit");
 					notifyAllListeners(hmp);
 				}
@@ -463,5 +472,13 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 		root.setLocation(new File(getClass().getResource("/fxml/Templates/dialogs/" + template + ".fxml").getPath())
 				.toURI().toURL());
 		return root;
+	}
+
+	@Override
+	public void notifyAllListeners(HashMap<String, Object> hmp) {
+		for (ShowEditViewActivityObserverI l : listeners) {
+			l.showEditViewActivity(hmp);
+		}
+
 	}
 }

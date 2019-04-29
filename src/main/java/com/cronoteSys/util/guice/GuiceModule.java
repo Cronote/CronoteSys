@@ -16,6 +16,8 @@
  */
 package com.cronoteSys.util.guice;
 
+import com.cronoteSys.controller.HomeController;
+import com.cronoteSys.model.dao.CategoryDAO;
 import com.cronoteSys.util.guice.provider.FXMLLoaderProvider;
 import com.google.inject.AbstractModule;
 
@@ -30,6 +32,7 @@ public class GuiceModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(FXMLLoader.class).toProvider(FXMLLoaderProvider.class);
+        bind(CategoryDAO.class);
     }
 
 }

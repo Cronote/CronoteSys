@@ -1,5 +1,6 @@
 .btn{
-	-fx-background-color: #333333;-fx-background-radius: 10.0; 
+	-fx-background-color: #333333;
+	-fx-background-radius: 10.0; 
 }
 
 .btnsize {
@@ -89,6 +90,24 @@
 .activityCard:hover>*>.info,.activityCard:hover>*.info  {
 	-fx-text-fill:#000000;
 }
+
+/*===============Fim Cartoes de atividade================*/
+
+
+.projectCard>*>.info, .projectCard>*.info {
+	-fx-text-fill:#FFF;
+}
+.projectCard {
+	-fx-background-radius: 15.0; 
+	-fx-border-radius: 15.0;
+	-fx-border-color:#020202; 
+	-fx-border-width:2.0px; 
+}
+.projectCard:hover, .projectCardSelected {
+	-fx-cursor: HAND;
+	-fx-background-color: #e59311;
+}
+
 .progress-bar:determinate .track{
 	-fx-background-insets: 0.0px;
 }
@@ -96,35 +115,34 @@
 .progress-bar>*.bar {
 	-fx-background-insets: 0.0px;
 }
-
-/*===============Fim Cartoes de atividade================*/
 .progress-indicator:determinate .determinate-indicator .tick{ 
   -fx-region-background:none;   
    
 } 
-.homeRootPane>*.title {
-	-fx-background-color:  #e5d694;
-}
 
 .activityList>*.title {
 	-fx-background-color:  #e59311;
 }
+
 .activityList .title .text{
 	-fx-fill: #fff;
 }
 .activityDetails>*.title {
 	-fx-background-color:   #bdc3c7;
 }
-.btnWindows{
-	-fx-background-color:transparent;
-} 
-.btnWindows:hover{
-	-fx-background-color:#f39c12;
-	-fx-cursor: HAND;
+.projectList>*.title {
+	-fx-background-color:  #000000;
 }
-.btnWindows:hover *{
+
+.homeRootPane>*.title { 
+	-fx-padding:0.0px;
+	-fx-pref-height:26.0;
+	-fx-background-color:  #e5d694;
+}
+ 
+.btnWindows:hover{
 	-fx-text-fill:white;
-	
+	-fx-cursor: HAND;
 }
 .btnWindows:hover .normal{
 	-fx-fill:white;
@@ -135,24 +153,26 @@
 	-fx-border-color:white;
 	-fx-border-width:1.0;
 	
-	
 }
-.btnWindows:selected{
-	-fx-background-color:#f39c12;
-}
-.btnWindows:selected *{
-	-fx-text-fill:white;
-	
+.tab-pane>.tab-header-area>.headers-region *{
+	-fx-border-radius:50 1 1 1;
+	-fx-background-radius:50 1 1 1;
 }
 .btnWindows:selected .normal{
-	-fx-fill:white;
-	
+	-fx-fill:white;	
 }
 .btnWindows:selected .outline{
 	-fx-stroke:white;
 	-fx-border-color:white;
 	-fx-border-width:1.0;
-	
+}
+.btnActivity:hover, .btnActivity:selected{
+	-fx-background-color:#f39c12;
+	-fx-text-fill:white;
+}
+.btnProject:hover, .btnProject:selected{
+	-fx-background-color:#000;
+	-fx-text-fill:white;
 }
 
 .titled-pane>*.content>VBox {
@@ -204,6 +224,16 @@
 ComboBox{
 	-fx-background-color:white;
 }
+.titled-pane>*.content>FlowPane { /* FX theme stylesheet */
+-fx-padding: 0.0;
+}
+.titled-pane>*.content>FlowPane>* { /* FX theme stylesheet */
+-fx-pref-width:240.0;
+}
+.check-box:determinate .glyph-icon{
+	-glyph-size:3.0em;
+}
+
 
 
 /*Icons*/
