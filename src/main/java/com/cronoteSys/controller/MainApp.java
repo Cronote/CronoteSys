@@ -1,5 +1,5 @@
 
-package com.cronoteSys;
+package com.cronoteSys.controller;
 
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;

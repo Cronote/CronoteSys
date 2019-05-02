@@ -22,30 +22,16 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.facebook4j</groupId>
 			<artifactId>facebook4j-core</artifactId>
 			<version>[2.4,)</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>5.3.5.Final</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.12</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.controlsfx/controlsfx -->
-		<dependency>
-			<groupId>org.controlsfx</groupId>
-			<artifactId>controlsfx</artifactId>
-			<version>9.0.0</version>
+			<groupId>com</groupId>
+			<artifactId>Cronotesys.model</artifactId>
+			<version>0.0.1</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-email -->
 		<dependency>
@@ -63,6 +49,24 @@
 			<artifactId>eclipselink</artifactId>
 			<version>2.7.0</version>
 		</dependency>
+		<!-- font awesome -->
+		<dependency>
+			<groupId>de.jensd</groupId>
+			<artifactId>fontawesomefx</artifactId>
+			<version>8.9</version>
+		</dependency>
+		<!-- Injeção de dependencia da gluon em parceria com guice -->
+		<!-- https://mvnrepository.com/artifact/com.google.inject/guice -->
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>4.0</version>
+		</dependency>
 
+		<dependency>
+			<groupId>com.gluonhq</groupId>
+			<artifactId>ignite-guice</artifactId>
+			<version>1.0.2</version>
+		</dependency>
 	</dependencies>
 </project>

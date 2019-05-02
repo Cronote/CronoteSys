@@ -65,6 +65,9 @@
 	-fx-pref-width: 100.0%;	
 }
 /*===============Cartoes de atividade================*/
+.activityCard>*>.info, .activityCard>*.info {
+	-fx-text-fill:#FFF;
+}
 .activityCard {
 	-fx-background-radius: 15.0; 
 	-fx-border-radius: 15.0;
@@ -75,11 +78,8 @@
 	-fx-cursor: HAND;
 	-fx-background-color: #ecf0f1;
 }
-.activityCardSelected>*.label {
+.activityCardSelected>*>.info, .activityCardSelected>*.info {
 	-fx-text-fill:#000000;
-}
-.activityCard>*.button {
-	visibility:hidden;
 }
 
 .activityCard:hover {
@@ -87,39 +87,92 @@
 	-fx-background-color: #ecf0f1;
 }
 
-.activityCard:hover>*.button {
-	visibility:visible;
-}
-
-.activityCard:hover>*.label {
+.activityCard:hover>*>.info,.activityCard:hover>*.info  {
 	-fx-text-fill:#000000;
 }
 
-
 /*===============Fim Cartoes de atividade================*/
-.homeRootPane>*.title {
-	-fx-background-color:  #e5d694;
+
+
+.projectCard>*>.info, .projectCard>*.info {
+	-fx-text-fill:#FFF;
 }
+.projectCard {
+	-fx-background-radius: 15.0; 
+	-fx-border-radius: 15.0;
+	-fx-border-color:#020202; 
+	-fx-border-width:2.0px; 
+}
+.projectCard:hover, .projectCardSelected {
+	-fx-cursor: HAND;
+	-fx-background-color: #e59311;
+}
+
+.progress-bar:determinate .track{
+	-fx-background-insets: 0.0px;
+}
+
+.progress-bar>*.bar {
+	-fx-background-insets: 0.0px;
+}
+.progress-indicator:determinate .determinate-indicator .tick{ 
+  -fx-region-background:none;   
+   
+} 
 
 .activityList>*.title {
 	-fx-background-color:  #e59311;
 }
+
 .activityList .title .text{
 	-fx-fill: #fff;
 }
 .activityDetails>*.title {
 	-fx-background-color:   #bdc3c7;
 }
-.btnWindows{
-	-fx-background-color:transparent;
-} 
-.btnWindows:hover{
-	-fx-background-color:#f39c12;
-	-fx-cursor: HAND;
+.projectList>*.title {
+	-fx-background-color:  #000000;
 }
 
-.btnWindows:selected{
+.homeRootPane>*.title { 
+	-fx-padding:0.0px;
+	-fx-pref-height:26.0;
+	-fx-background-color:  #e5d694;
+}
+ 
+.btnWindows:hover{
+	-fx-text-fill:white;
+	-fx-cursor: HAND;
+}
+.btnWindows:hover .normal{
+	-fx-fill:white;
+	
+}
+.btnWindows:hover .outline{
+	-fx-stroke:white;
+	-fx-border-color:white;
+	-fx-border-width:1.0;
+	
+}
+.tab-pane>.tab-header-area>.headers-region *{
+	-fx-border-radius:50 1 1 1;
+	-fx-background-radius:50 1 1 1;
+}
+.btnWindows:selected .normal{
+	-fx-fill:white;	
+}
+.btnWindows:selected .outline{
+	-fx-stroke:white;
+	-fx-border-color:white;
+	-fx-border-width:1.0;
+}
+.btnActivity:hover, .btnActivity:selected{
 	-fx-background-color:#f39c12;
+	-fx-text-fill:white;
+}
+.btnProject:hover, .btnProject:selected{
+	-fx-background-color:#000;
+	-fx-text-fill:white;
 }
 
 .titled-pane>*.content>VBox {
@@ -151,6 +204,86 @@
 .spinner .text-field:readonly{
 	-fx-background-color:white;
 }
+.split-arrows-vertical .text-field:readonly{
+	-fx-alignment:center; 
+}
+
+.list-view .scroll-bar:horizontal .increment-arrow,
+.list-view .scroll-bar:horizontal .decrement-arrow,
+.list-view .scroll-bar:horizontal .increment-button,
+.list-view .scroll-bar:horizontal .decrement-button {
+    -fx-padding:0.0;
+}
+.list-view .scroll-bar:vertical .increment-arrow,
+.list-view .scroll-bar:vertical .decrement-arrow,
+.list-view .scroll-bar:vertical .increment-button,
+.list-view .scroll-bar:vertical .decrement-button {
+    -fx-padding:0.0;
+}
+
 ComboBox{
 	-fx-background-color:white;
+}
+.titled-pane>*.content>FlowPane { /* FX theme stylesheet */
+-fx-padding: 0.0;
+}
+.titled-pane>*.content>FlowPane>* { /* FX theme stylesheet */
+-fx-pref-width:240.0;
+}
+.check-box:determinate .glyph-icon{
+	-glyph-size:3.0em;
+}
+
+
+
+/*Icons*/
+.btnConfirm, .btnConfirm .glyph-icon{
+	cor:green;
+	-fx-fill:transparent;
+	-fx-stroke:cor;
+	-fx-border-color:cor;
+	-fx-border-radius: 15.0;
+	-fx-background-radius: 15.0;
+	
+}
+.btnConfirm:hover, .btnConfirm .glyph-icon{
+	-fx-fill:white;
+	-fx-text-fill:white;
+	-fx-background-color:green;
+}
+
+.btnCancel, .btnCancel .glyph-icon{
+	cor:red;
+	-fx-fill:transparent;
+	-fx-stroke:cor;
+	-fx-border-color:cor;
+	-fx-border-radius: 15.0;
+	-fx-background-radius: 15.0;
+}
+
+.btnCancel:hover, .btnCancel .glyph-icon{
+	-fx-fill:white;
+	-fx-text-fill:white;
+	-fx-background-color:red;
+}
+.btnCancel .gliph-icon{
+	-fx-stroke:red;
+}
+.normal-white{
+	-fx-fill:white;
+}
+.outline{
+	-fx-fill:transparent;
+	-fx-stroke:black;
+	-fx-border-color:black;
+	-fx-border-width:1.0;
+}
+.outline-white{
+	-fx-fill:transparent;
+	-fx-stroke:white;
+	-fx-border-color:white;
+	-fx-border-width:1.0;
+}
+.rainforce{
+	-fx-stroke-width:2.0;
 }

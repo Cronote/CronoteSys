@@ -62,16 +62,18 @@
                   <Font size="14.0" />
                </font>
             </Hyperlink>
-            <Label layoutX="96.0" layoutY="436.0" text="Ainda não é membro?" textFill="#333333">
+            <Label contentDisplay="RIGHT" graphicTextGap="0.0" layoutX="96.0" layoutY="436.0" text="Ainda não é membro?" textFill="#333333">
                <font>
                   <Font size="14.0" />
                </font>
+               <graphic>
+                  <Hyperlink fx:id="linkSignUp" graphicTextGap="1.0" onAction="#linkSignUpClicked" text="Cadastre-se" textFill="#b03a07">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Hyperlink>
+               </graphic>
             </Label>
-            <Hyperlink fx:id="linkSignUp" layoutX="239.0" layoutY="432.0" onAction="#linkSignUpClicked" text="Cadastre-se" textFill="#b03a07">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Hyperlink>
          </children>
       </AnchorPane>
    </children>

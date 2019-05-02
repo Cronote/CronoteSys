@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane fx:id="detailsRoot" prefHeight="700.0" prefWidth="400.0" style="-fx-background-color: #ecf0f1;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<Label fx:id="lblTitle" alignment="TOP_LEFT" layoutX="14.0" layoutY="15.0" text="TÍTULO" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+			<font>
+				<Font name="System Bold" size="23.0" />
+			</font>
+		</Label>
+		<Label layoutX="14.0" layoutY="86.0" prefHeight="21.0" text="DATA DE INÍCIO" textAlignment="JUSTIFY" AnchorPane.leftAnchor="14.0">
+			<font>
+				<Font name="System Bold" size="17.0" />
+			</font>
+		</Label>
+      <Label layoutX="14.0" layoutY="115.0" prefHeight="21.0" text="21/04/2018 13H54" textAlignment="JUSTIFY" textFill="#fc0000" AnchorPane.leftAnchor="20.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="235.0" layoutY="86.0" prefHeight="21.0" text="DATA DE TÉRMINO" textAlignment="JUSTIFY" AnchorPane.leftAnchor="202.0" AnchorPane.rightAnchor="20.0">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER_RIGHT" layoutX="235.0" layoutY="115.0" prefHeight="21.0" text="20/11/2019 13H54" textFill="#fc0000" AnchorPane.leftAnchor="202.0" AnchorPane.rightAnchor="20.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label contentDisplay="RIGHT" layoutX="14.0" layoutY="163.0" prefHeight="21.0" text="DESCRIÇÃO" textAlignment="JUSTIFY" AnchorPane.leftAnchor="14.0">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+         <graphic>
+      		<Button fx:id="btnEdit" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="31.0" prefWidth="40.0" styleClass="btnTransparent" text="Save">
+               <graphic>
+                  <FontAwesomeIconView glyphName="EDIT" size="2em" textAlignment="CENTER" />
+               </graphic>
+      		</Button>
+         </graphic>
+      </Label>
+      <TextFlow layoutX="14.0" layoutY="192.0" prefHeight="72.0" prefWidth="929.0" textAlignment="JUSTIFY" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="dniaosdnioasniodniaosniodansiodnioasniodasniodnasndioasnidnasiodnioasn" textAlignment="CENTER" wrappingWidth="438.6611328125">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Text>
+         </children>
+      </TextFlow>
+		<Label layoutX="14.0" layoutY="269.0" text="TEMPO TOTAL" AnchorPane.leftAnchor="14.0">
+			<font>
+				<Font name="System Bold" size="17.0" />
+			</font>
+		</Label>
+		<Label layoutX="14.0" layoutY="294.0" text="1 ANO(S), 6 MES(ES) E 28 DIA(S)" AnchorPane.leftAnchor="20.0">
+			<font>
+				<Font size="20.0" />
+			</font>
+		</Label>
+      <Label layoutX="12.0" layoutY="331.0" text="TEMPO RESTANTE" AnchorPane.leftAnchor="12.0">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblEstimatedTime1" layoutX="12.0" layoutY="356.0" text="6 MES(ES) E 29 DIA(S)" AnchorPane.leftAnchor="20.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+		<Label layoutX="12.0" layoutY="391.0" text="TEMPO PERCORRIDO" AnchorPane.leftAnchor="12.0">
+			<font>
+				<Font name="System Bold" size="17.0" />
+			</font>
+		</Label>
+		<Label layoutX="12.0" layoutY="416.0" text="1 ANO(S)" AnchorPane.leftAnchor="20.0">
+			<font>
+				<Font size="20.0" />
+			</font>
+		</Label>
+		<Label layoutX="14.0" layoutY="638.0" text="ULTIMA ATUALIZAÇÃO" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="14.0">
+			<font>
+				<Font name="System Bold" size="17.0" />
+			</font>
+		</Label>
+		<Label layoutX="14.0" layoutY="670.0" text="23/07/2019 11:11" textFill="RED" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="14.0">
+			<font>
+				<Font name="System Bold" size="17.0" />
+			</font>
+		</Label>
+      <Label layoutX="14.0" layoutY="454.0" text="PROGRESSO REAL" AnchorPane.leftAnchor="14.0">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Label>
+      <GridPane layoutX="30.0" layoutY="479.0" prefHeight="16.0" prefWidth="373.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+            <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+         </rowConstraints>
+         <children>
+            <ProgressBar prefHeight="20.0" prefWidth="332.0" progress="0.82" GridPane.hgrow="ALWAYS" />
+            <Label text="100.00%" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+         </children>
+      </GridPane>
+      <Label layoutX="14.0" layoutY="509.0" text="PROGRESSO ESTIMADO" AnchorPane.leftAnchor="14.0">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Label>
+      <GridPane layoutX="11.0" layoutY="534.0" prefHeight="16.0" prefWidth="373.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+            <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="NEVER" />
+         </rowConstraints>
+         <children>
+            <ProgressBar prefHeight="20.0" prefWidth="332.0" progress="0.82" GridPane.hgrow="ALWAYS" />
+            <Label text="100.00%" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+         </children>
+      </GridPane>
+	</children>
+</AnchorPane>

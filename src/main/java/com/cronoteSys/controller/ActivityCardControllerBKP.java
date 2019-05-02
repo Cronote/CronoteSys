@@ -1,9 +1,10 @@
 package com.cronoteSys.controller;
 
-import java.io.File;
-import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.ResourceBundle;
 
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.ExecutionTimeBO;
@@ -11,7 +12,6 @@ import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.StatusEnum;
 import com.cronoteSys.util.ActivityMonitor;
 import com.cronoteSys.util.ActivityMonitor.OnMonitorTick;
-import com.cronoteSys.util.SessionUtil;
 
 import de.jensd.fx.glyphs.GlyphIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -22,92 +22,57 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Skin;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tooltip;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
-public class ActivityCardController extends ListCell<ActivityVO> implements ShowEditViewActivityObservableI {
+public class ActivityCardControllerBKP extends Observable implements Initializable {
+
 	@FXML
 	private AnchorPane cardRoot;
+
 	@FXML
 	private Label lblTitle;
+
 	@FXML
 	private Label lblStatus;
+
 	@FXML
 	private ProgressBar pgbProgress;
+
 	@FXML
 	private Label lblProgress;
 	@FXML
 	private Label lblIndex;
+
 	@FXML
 	private Button btnDelete;
 	@FXML
 	private Button btnPlayPause;
 	@FXML
 	private Button btnFinalize;
+
 	private ActivityVO activity;
 
-
-	{
-		FXMLLoader loader = SessionUtil.getInjector().getInstance(FXMLLoader.class);
-		try {
-			loader.setLocation(new File(getClass().getResource("/fxml/Templates/ActivityCard.fxml").getPath())
-					.toURI().toURL());
-			loader.setController(this);
-			loader.load();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	@Override
-	public void updateSelected(boolean selected) {
-		super.updateSelected(selected);
-		HashMap<String, Object> hmp = new HashMap<String, Object>();
-		if (activity.getId() == getListView().getSelectionModel().getSelectedItem().getId()) {
-			System.out.println("aaa");
-			cardRoot.getStyleClass().add("activityCardSelected");
-			hmp.put("action", "view");
-
-			hmp.put("activity", activity);
-			hmp.put("project", activity.getProjectVO());
-			System.out.println(true);
-		} else {
-			cardRoot.getStyleClass().removeAll("activityCardSelected");
-			hmp.put("action", "close");
-			System.out.println(false);
-		}
-		notifyAllListeners(hmp);
+	public ActivityCardControllerBKP() {
 
 	}
 
+	public ActivityCardControllerBKP(ActivityVO activity) {
+		this.activity = activity;
+	}
+
 	@Override
-	public void updateItem(ActivityVO item, boolean empty) {
-		super.updateItem(item, empty);
-
-		if (item != null || !empty) {
-			initEvents();	
-			setGraphic(cardRoot);
-			activity = item;
-			loadActivity();
-			loadProgressAndRealtime();
-		
-
-		} else {
-			setText(null);
-			setGraphic(null);
-		}
-		setStyle("-fx-background-color:transparent;-fx-prefwidth:100%;");
+	public void initialize(URL location, ResourceBundle resources) {
+		loadActivity();
+		initEvents();
 	}
 
 	private void loadActivity() {
@@ -188,16 +153,20 @@ public class ActivityCardController extends ListCell<ActivityVO> implements Show
 			pgbProgress.setProgress(progress);
 		String progressStr = String.format("%.2f", Math.abs((pgbProgress.getProgress() * 100)));
 		lblProgress.setText(progressStr + "%");
-		notifyAllOnProgressChangedListeners(activity);
 	}
 
 	private void initEvents() {
-
+		HashMap<String, Object> hmp = new HashMap<String, Object>();
 		btnDelete.setOnAction(new EventHandler<ActionEvent>() {
+
 			@Override
 			public void handle(ActionEvent event) {
+				cardRoot.getStyleClass().remove("activityCardSelected");
 				new ActivityBO().delete(activity);
-				getListView().getItems().remove(activity);
+				hmp.put("action", "remove");
+				hmp.put("activity", activity);
+				setChanged();
+				notifyObservers(hmp);
 
 			}
 		});
@@ -242,7 +211,7 @@ public class ActivityCardController extends ListCell<ActivityVO> implements Show
 
 			}
 		});
-		setOnMouseEntered(new EventHandler<Event>() {
+		cardRoot.setOnMouseEntered(new EventHandler<Event>() {
 
 			@Override
 			public void handle(Event event) {
@@ -252,12 +221,27 @@ public class ActivityCardController extends ListCell<ActivityVO> implements Show
 
 			}
 		});
-		setOnMouseExited(new EventHandler<Event>() {
+
+		cardRoot.setOnMouseExited(new EventHandler<Event>() {
 
 			@Override
 			public void handle(Event event) {
 				btnDelete.getStyleClass().removeAll("show");
 
+			}
+		});
+
+		cardRoot.setOnMouseClicked(new EventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+				cardRoot.getStyleClass().remove("activityCardSelected");
+				cardRoot.getStyleClass().add("activityCardSelected");
+				hmp.put("action", "view");
+				hmp.put("activity", activity);
+				hmp.put("project", activity.getProjectVO());
+				hmp.put("card", cardRoot);
+				setChanged();
+				notifyObservers(hmp);
 			}
 		});
 
@@ -277,7 +261,6 @@ public class ActivityCardController extends ListCell<ActivityVO> implements Show
 
 			}
 		});
-
 		ActivityMonitor.addOnMonitorTickListener(new OnMonitorTick() {
 
 			@Override
@@ -288,6 +271,7 @@ public class ActivityCardController extends ListCell<ActivityVO> implements Show
 
 			}
 		});
+
 	}
 
 	private void paintBar(Node node) {
@@ -309,14 +293,6 @@ public class ActivityCardController extends ListCell<ActivityVO> implements Show
 		for (OnProgressChangedI l : activityAddedListeners) {
 			l.onProgressChangedI(act);
 		}
-	}
-
-	@Override
-	public void notifyAllListeners(HashMap<String, Object> hmp) {
-		for (ShowEditViewActivityObserverI l : listeners) {
-			l.showEditViewActivity(hmp);
-		}
-
 	}
 
 }
