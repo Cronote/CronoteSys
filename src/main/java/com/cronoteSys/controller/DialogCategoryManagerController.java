@@ -59,16 +59,13 @@ public class DialogCategoryManagerController implements Initializable {
 		categoryList.setItems(lstCategories);
 		categoryList.setCellFactory(new CategoryCellFactory());
 		btnConfirm.setDisable(true);
-
 		btnConfirm.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				((Stage) btnCancel.getScene().getWindow()).close();
 			}
 		});
 		btnCancel.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				((Stage) btnCancel.getScene().getWindow()).close();
@@ -76,23 +73,19 @@ public class DialogCategoryManagerController implements Initializable {
 			}
 		});
 		btnSearch.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				String search = txtSearch.getText().trim();
 				if (!search.isEmpty()) {
 					lstCategories = FXCollections.observableList(catDao.listByDescriptionAndUser(search, loggedUser));
-					
 				}else {
 					lstCategories = FXCollections.observableList(catDao.getList(loggedUser));
 				}
 				categoryList.setItems(lstCategories);
-
 			}
 		});
 
 		categoryList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<CategoryVO>() {
-
 			@Override
 			public void changed(ObservableValue<? extends CategoryVO> observable, CategoryVO oldValue,
 					CategoryVO newValue) {
@@ -102,7 +95,6 @@ public class DialogCategoryManagerController implements Initializable {
 					btnConfirm.setDisable(true);
 			}
 		});
-
 	}
 
 	public ListView<CategoryVO> getCategoryList() {
@@ -147,9 +139,7 @@ public class DialogCategoryManagerController implements Initializable {
 		@Override
 		public void updateItem(CategoryVO item, boolean empty) {
 			super.updateItem(item, empty);
-
 			if (item != null || !empty) {
-
 				FXMLLoader loader = SessionUtil.getInjector().getInstance(FXMLLoader.class);
 				try {
 					loader.setLocation(
@@ -157,16 +147,12 @@ public class DialogCategoryManagerController implements Initializable {
 									.toURL());
 					loader.setController(this);
 					loader.load();
-
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
 				btnEditSave.setOnAction(new EventHandler<ActionEvent>() {
-
 					@Override
 					public void handle(ActionEvent event) {
-
 						if (isEditing.get()) {
 							item.setDescription(txtCategoryName.getText());
 							lblCategoryName.setVisible(isEditing.get());
@@ -184,7 +170,6 @@ public class DialogCategoryManagerController implements Initializable {
 					}
 				});
 				btnDelete.setOnAction(new EventHandler<ActionEvent>() {
-
 					@Override
 					public void handle(ActionEvent event) {
 						new CategoryDAO().delete(item.getId());

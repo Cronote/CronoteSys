@@ -110,14 +110,12 @@ public class SignUpController extends MasterController {
 	@FXML
 	public void btnSignUpClicked() {
 		hiddenAllLabels();
-		System.out.println(dateBirthday.getValue());
 		if (new ScreenUtil().isFilledFields(getThisStage(), pnlInput, false)) {
 			String sEmail = txtEmail.getText().trim();
-			if (!new EmailUtil().validateEmail(sEmail)) {
+			if (!EmailUtil.validateEmail(sEmail)) {
 				lblEmail.setText("Email fora do formato");
 				lblEmail.getStyleClass().remove("hide");
 				lblEmail.getStyleClass().add("show");
-//				JOptionPane.showMessageDialog(null, "Mensagem de falha por formato de email");
 				return;
 			}
 			if (new LoginBO().loginExists(sEmail) != null) {
@@ -125,7 +123,6 @@ public class SignUpController extends MasterController {
 				txtEmail.getStyleClass().add("error");
 				lblEmail.getStyleClass().remove("hide");
 				lblEmail.getStyleClass().add("show");
-//				JOptionPane.showMessageDialog(null, "Mensagem de falha por email já cadastrado");
 			}
 			if (!bPasswordOk) {
 				lblPwd.getStyleClass().remove("hide");
@@ -136,7 +133,6 @@ public class SignUpController extends MasterController {
 				txtPwd.getStyleClass().add("error");
 				lblPwd.setText("Senhas diferentes");
 				lblConfirmPwd.setText("Senhas diferentes");
-//				JOptionPane.showMessageDialog(null, "Mensagem de falha por senhas diferentes");
 				return;
 			}
 			String sPassPureText = txtPwd.getText().trim();

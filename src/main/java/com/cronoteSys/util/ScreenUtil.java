@@ -7,42 +7,29 @@ package com.cronoteSys.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import com.cronoteSys.model.bo.LoginBO;
-import com.google.inject.Injector;
-import com.sun.imageio.plugins.common.InputStreamAdapter;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonBase;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ComboBoxBase;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import sun.awt.X11.Screen;
 
 /**
  * Class that cares about all Screen functions
@@ -109,6 +96,7 @@ public class ScreenUtil {
 		}
 		return root;
 	}
+	
 	public static FXMLLoader loadTemplate(String template) {
 		try {
 			FXMLLoader fxmlLoader = SessionUtil.getInjector().getInstance(FXMLLoader.class);
@@ -120,11 +108,6 @@ public class ScreenUtil {
 		}
 		return null;
 
-	}
-	private static void closeOldStage(Stage oldStage, Stage newStage) {
-		if (oldStage != null) {
-			oldStage.close();
-		}
 	}
 
 	/**
@@ -279,16 +262,11 @@ public class ScreenUtil {
 		if (sPass1.equals("") || sPass2.equals(""))
 			return false;
 		if (!new LoginBO().validatePassword(sPass1)) {
-//			lstLabel.get(0).getStyleClass().remove("hide");
-//			lstLabel.get(0).getStyleClass().add("show");
 			new ScreenUtil().addORRemoveErrorClass(lstTextFields, true);
 			return false;
 		}
 		if (!sPass1.equals(sPass2)) {
 			new ScreenUtil().addORRemoveErrorClass(lstTextFields, true);
-//			lstLabel.get(1).getStyleClass().remove("hide");
-//			lstLabel.get(1).getStyleClass().add("show");
-			System.out.println("Mensagem de falha por senhas diferentes");
 			return false;
 		}
 		new ScreenUtil().addORRemoveErrorClass(lstTextFields, false);
@@ -317,104 +295,6 @@ public class ScreenUtil {
 
 	}
 
-	public static void removeDefaultStyleClass(List<Node> nodes) {
-		for (Node node : nodes) {
-			if (node instanceof TextField) {
-				node.getStyleClass().removeAll(new TextField().getStyleClass());
-			}
-			if (node instanceof TextArea) {
-				node.getStyleClass().removeAll(new TextArea().getStyleClass());
-			}
-			if (node instanceof ComboBox) {
-				node.getStyleClass().removeAll(new ComboBox<Object>().getStyleClass());
-			}
-			if (node instanceof Spinner) {
-				node.getStyleClass().removeAll(new Spinner<Object>().getStyleClass());
-			}
-		}
-	}
-
-	public static void addDefaultStyleClass(Node node) {
-		if (node instanceof TextField) {
-			node.getStyleClass().addAll(new TextField().getStyleClass());
-		}
-		if (node instanceof TextArea) {
-			node.getStyleClass().addAll(new TextArea().getStyleClass());
-		}
-		if (node instanceof ComboBox) {
-			node.getStyleClass().addAll(new ComboBox<Object>().getStyleClass());
-		}
-		if (node instanceof Spinner) {
-			node.getStyleClass().addAll(new Spinner<Object>().getStyleClass());
-		}
-		if (!(node instanceof Label)) {
-			node.getStyleClass().remove("label");
-		}
-	}
-
-	public static void addDefaultStyleClass(List<Node> nodes) {
-		for (Node node : nodes) {
-			if (node instanceof TextField) {
-				node.getStyleClass().addAll(new TextField().getStyleClass());
-			}
-			if (node instanceof TextArea) {
-				node.getStyleClass().addAll(new TextArea().getStyleClass());
-			}
-			if (node instanceof ComboBox) {
-				node.getStyleClass().addAll(new ComboBox<Object>().getStyleClass());
-			}
-			if (node instanceof Spinner) {
-				node.getStyleClass().addAll(new Spinner<Object>().getStyleClass());
-			}
-			if (!(node instanceof Label)) {
-				node.getStyleClass().remove("label");
-			}
-		}
-	}
-
-	public static void removeStyleClass(List<Node> nodes, String styleClass) {
-		for (Node node : nodes) {
-			if (!(node.getClass().getSimpleName().equalsIgnoreCase(styleClass))) {
-				node.getStyleClass().removeAll(styleClass);
-			}
-		}
-	}
-
-	public static void addStyleClass(List<Node> nodes, String styleClass) {
-		for (Node node : nodes) {
-			if (!(node instanceof ButtonBase || node instanceof ToggleButton)) {
-				node.getStyleClass().addAll(styleClass);
-			}
-		}
-	}
-
-	public static void addStyleClass(List<Node> nodes, List<String> styleClass) {
-		for (Node node : nodes) {
-			node.getStyleClass().addAll(styleClass);
-		}
-	}
-
-	public static void addDefaulClassOnFocusIn(List<Node> nodes) {
-		for (Node node : nodes) {
-			node.focusedProperty().addListener(new ChangeListener<Boolean>() {
-				public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-					if (newValue) {
-						List<Node> lst = new ArrayList<Node>();
-						lst.add(node);
-						addDefaultStyleClass(lst);
-						removeStyleClass(lst, "label");
-					} else {
-						List<Node> lst = new ArrayList<Node>();
-						lst.add(node);
-						removeDefaultStyleClass(lst);
-						addStyleClass(lst, "label");
-					}
-
-				}
-			});
-		}
-	}
-
 	private static ArrayList<OnChangeScreen> listeners = new ArrayList<OnChangeScreen>();
 
 	public interface OnChangeScreen {
@@ -431,10 +311,4 @@ public class ScreenUtil {
 		}
 	}
 
-	public static HBox recoverRoot(Node node) {
-		while (node.getParent() != null) {
-			node = node.getParent();
-		}
-		return (HBox) node;
-	}
 }

@@ -16,17 +16,12 @@
  */
 package com.cronoteSys.util.guice;
 
-import com.cronoteSys.controller.HomeController;
 import com.cronoteSys.model.dao.CategoryDAO;
 import com.cronoteSys.util.guice.provider.FXMLLoaderProvider;
 import com.google.inject.AbstractModule;
 
 import javafx.fxml.FXMLLoader;
 
-/**
- *
- * @author Pavel Pscheidl
- */
 public class GuiceModule extends AbstractModule {
 
     @Override

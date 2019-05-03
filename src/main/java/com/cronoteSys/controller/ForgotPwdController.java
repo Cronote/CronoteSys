@@ -98,19 +98,6 @@ public class ForgotPwdController extends MasterController {
 		});
 	}
 
-	public boolean verifyPassFields(String sPass1, String sPass2, List<Node> lst) {
-		if (!sPass1.equals(sPass2)) {
-			new ScreenUtil().addORRemoveErrorClass(lst, true);
-			return false;
-		}
-		new ScreenUtil().addORRemoveErrorClass(lst, false);
-		if (!new LoginBO().validatePassword(sPass1)) {
-			JOptionPane.showMessageDialog(null, "Mensagem de falha por senhas fora de formato ");
-			return false;
-		}
-		return true;
-	}
-
 	@FXML
 	public void btnSendClicked() {
 		txtEmail.getStyleClass().remove("error");
@@ -118,13 +105,12 @@ public class ForgotPwdController extends MasterController {
 			lblEmailSend.getStyleClass().remove("show");
 			lblEmailSend.getStyleClass().add("hide");
 			String email = txtEmail.getText().trim();
-			System.out.println("A baratinha");
-			if (!new EmailUtil().validateEmail(email)) { // Email em formato valido
+			if (!EmailUtil.validateEmail(email)) { // Email em formato valido
 				lblEmailSend.setText("Email inválido");
 				txtEmail.getStyleClass().add("error");
 				lblEmailSend.getStyleClass().remove("hide");
 				lblEmailSend.getStyleClass().add("show");
-//				JOptionPane.showMessageDialog(null, "Mensagem de falha por email inválido");
+				//TODO: exibir mensagem de email invalido
 				return;
 			}
 
@@ -134,7 +120,7 @@ public class ForgotPwdController extends MasterController {
 				txtEmail.getStyleClass().add("error");
 				lblEmailSend.getStyleClass().remove("hide");
 				lblEmailSend.getStyleClass().add("show");
-//				JOptionPane.showMessageDialog(null, "Mensagem de falha por n existir conta com esse email");
+				//TODO: exibir mensagem de email inexistente
 				return;
 			}
 

@@ -1,4 +1,4 @@
-package com.cronoteSys.controller;
+package com.cronoteSys.observer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +13,5 @@ public interface ShowEditViewActivityObservableI {
 	static void removeShowEditViewActivityListener(ShowEditViewActivityObserverI newListener) {
 		listeners.remove(newListener);
 	}
-
 	void notifyAllListeners(HashMap<String, Object> hmp);
 }

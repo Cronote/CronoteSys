@@ -8,18 +8,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import com.cronoteSys.controller.ActivityCardController.OnProgressChangedI;
 import com.cronoteSys.model.bo.ActivityBO;
-import com.cronoteSys.model.bo.ExecutionTimeBO;
 import com.cronoteSys.model.bo.ActivityBO.OnActivityAddedI;
 import com.cronoteSys.model.bo.ActivityBO.OnActivityDeletedI;
+import com.cronoteSys.model.bo.ExecutionTimeBO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.model.vo.StatusEnum;
 import com.cronoteSys.model.vo.UserVO;
+import com.cronoteSys.observer.ShowEditViewActivityObservableI;
+import com.cronoteSys.observer.ShowEditViewActivityObserverI;
 import com.cronoteSys.util.ActivityMonitor;
-import com.cronoteSys.util.SessionUtil;
 import com.cronoteSys.util.ActivityMonitor.OnMonitorTick;
+import com.cronoteSys.util.SessionUtil;
 
 import de.jensd.fx.glyphs.GlyphIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -29,7 +30,6 @@ import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -77,7 +77,7 @@ public class ActivityListController implements Initializable, ShowEditViewActivi
 		cardsList.setCellFactory(new ActivityCellFactory());
 		initEvents();
 		initObservers();
-		GlyphIcon icon = null;
+		GlyphIcon<?> icon = null;
 		if (activityList.size() > 0) {
 			icon = new MaterialDesignIconView(MaterialDesignIcon.PLAYLIST_PLUS);
 			icon.getStyleClass().addAll("normal-white");
@@ -104,55 +104,30 @@ public class ActivityListController implements Initializable, ShowEditViewActivi
 				cardsList.setItems(FXCollections.observableArrayList(activityList));
 			}
 		});
-	
 	}
 
 	private void btnAddActivityClicked(ActionEvent e) {
 		HashMap<String, Object> hmp = new HashMap<String, Object>();
-		
 		hmp.put("project", selectedProject);
 		hmp.put("action", "cadastro");
-
 		notifyAllListeners(hmp);
-
 	}
 
 	private void initEvents() {
 		btnAddActivity.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				cardsList.getSelectionModel().clearSelection();
 				btnAddActivityClicked(event);
-
 			}
 		});
 	}
-
 	@Override
 	public void notifyAllListeners(HashMap<String, Object> hmp) {
 		for (ShowEditViewActivityObserverI l : listeners) {
 			l.showEditViewActivity(hmp);
 		}
-
 	}
-
-//	@Override
-//	public void update(Observable o, Object arg) {
-//		if (arg instanceof HashMap<?, ?>) {
-//			String action = ((HashMap<?, ?>) arg).get("action").toString();
-//			ActivityVO act = (ActivityVO) ((HashMap<?, ?>) arg).get("activity");
-//			if (action.equalsIgnoreCase("remove")) {
-//				activityList.remove(act);
-//				cardsList.setItems(FXCollections.observableArrayList(activityList));
-//				
-//			} else {
-//				notifyAllListeners((HashMap<String, Object>) arg);
-//
-//			}
-//		}
-//	}
-
 }
 
 class ActivityCellFactory implements Callback<ListView<ActivityVO>, ListCell<ActivityVO>> {
@@ -185,7 +160,6 @@ class CardCell extends ListCell<ActivityVO> implements ShowEditViewActivityObser
 	private ActivityVO activity;
 
 	{
-
 		FXMLLoader loader = SessionUtil.getInjector().getInstance(FXMLLoader.class);
 		try {
 			loader.setLocation(new File(getClass().getResource("/fxml/Templates/cell/ActivityCell.fxml").getPath())
@@ -195,7 +169,6 @@ class CardCell extends ListCell<ActivityVO> implements ShowEditViewActivityObser
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override
@@ -221,8 +194,6 @@ class CardCell extends ListCell<ActivityVO> implements ShowEditViewActivityObser
 			activity = item;
 			loadActivity();
 			setGraphic(activityCardRoot);
-			
-			
 		} else {
 			setGraphic(null);
 			setText(null);
@@ -234,18 +205,16 @@ class CardCell extends ListCell<ActivityVO> implements ShowEditViewActivityObser
 		lblTitle.setText(activity.getTitle());
 
 		loadProgressAndRealtime();
-		GlyphIcon icon = null;
+		GlyphIcon<?> icon = null;
 		String btnText = "";
-		if (activity.getStats() != StatusEnum.NORMAL_FINALIZED && activity.getStats() != StatusEnum.BROKEN_FINALIZED) {
-			if (activity.getStats() == StatusEnum.NOT_STARTED || activity.getStats() == StatusEnum.NORMAL_PAUSED
-					|| activity.getStats() == StatusEnum.BROKEN_PAUSED) {
+		if (!StatusEnum.itsFinalized(activity.getStats())) {
+			if (activity.getStats() == StatusEnum.NOT_STARTED || StatusEnum.itsPaused(activity.getStats())) {
 
 				icon = new FontAwesomeIconView(FontAwesomeIcon.PLAY_CIRCLE_ALT);
 				btnText = "play";
 				btnFinalize.getStyleClass().removeAll("show");
 				icon.setSize("2em");
-			} else if (activity.getStats().equals(StatusEnum.BROKEN_IN_PROGRESS)
-					|| activity.getStats().equals(StatusEnum.NORMAL_IN_PROGRESS)) {
+			} else if (StatusEnum.inProgress( activity.getStats())) {
 
 				icon = new FontAwesomeIconView(FontAwesomeIcon.PAUSE_CIRCLE_ALT);
 				btnText = "pause";
@@ -256,9 +225,8 @@ class CardCell extends ListCell<ActivityVO> implements ShowEditViewActivityObser
 			btnPlayPause.setText(btnText);
 			btnPlayPause.getStyleClass().add("show");
 		}
-		StackPane sp = (StackPane) pgbProgress.lookup(".bar");
-		if (sp != null)
-			sp.setStyle("-fx-background-color:" + activity.getStats().getHexColor());
+		StackPane progressBarPane = (StackPane) pgbProgress.lookup(".bar");
+		paintBar(progressBarPane);
 	}
 
 	private void loadProgressAndRealtime() {
@@ -293,13 +261,11 @@ class CardCell extends ListCell<ActivityVO> implements ShowEditViewActivityObser
 				icon.setFill(Color.GREEN);
 				tp.setText("Percentual de tempo desnecessário");
 				lblIndex.setStyle("-fx-text-fill:green");
-
 			}
 			lblIndex.getStyleClass().removeAll("hide");
 			lblIndex.setText(String.format("%.2f", Math.abs((difference * 100))) + "%");
 			lblIndex.setGraphic(icon);
 			Tooltip.install(lblIndex, tp);
-
 		}
 		progress = progress > 1 ? 1 : progress;
 		if (activity.getStats() == StatusEnum.BROKEN_FINALIZED || activity.getStats() == StatusEnum.NORMAL_FINALIZED)
@@ -312,15 +278,12 @@ class CardCell extends ListCell<ActivityVO> implements ShowEditViewActivityObser
 	}
 
 	private void initEvents() {
-
 		btnDelete.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				new ActivityBO().delete(activity);
-
 			}
 		});
-
 		btnPlayPause.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -341,7 +304,6 @@ class CardCell extends ListCell<ActivityVO> implements ShowEditViewActivityObser
 					}
 				}
 				loadActivity();
-
 			}
 		});
 		btnFinalize.setOnAction(new EventHandler<ActionEvent>() {
@@ -349,7 +311,6 @@ class CardCell extends ListCell<ActivityVO> implements ShowEditViewActivityObser
 			public void handle(ActionEvent event) {
 				ExecutionTimeBO execBo = new ExecutionTimeBO();
 				ActivityBO actBo = new ActivityBO();
-
 				if (execBo.finishExecution(activity) != null) {
 					activity = actBo.switchStatus(activity, StatusEnum.NORMAL_FINALIZED);
 					btnPlayPause.getStyleClass().removeAll("show");
@@ -362,7 +323,6 @@ class CardCell extends ListCell<ActivityVO> implements ShowEditViewActivityObser
 			}
 		});
 		setOnMouseEntered(new EventHandler<Event>() {
-
 			@Override
 			public void handle(Event event) {
 				if (activity.getStats().equals(StatusEnum.NOT_STARTED)) {
@@ -372,33 +332,21 @@ class CardCell extends ListCell<ActivityVO> implements ShowEditViewActivityObser
 			}
 		});
 		setOnMouseExited(new EventHandler<Event>() {
-
 			@Override
 			public void handle(Event event) {
 				btnDelete.getStyleClass().removeAll("show");
 
 			}
 		});
-
-		pgbProgress.skinProperty().addListener(new ChangeListener<Skin>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Skin> observable, Skin oldValue, Skin newValue) {
-				paintBar(pgbProgress.lookup(".bar"));
-
-			}
-		});
+		pgbProgress.skinProperty().addListener((ChangeListener<Skin<?>>) (observable, oldValue, newValue) -> paintBar(pgbProgress.lookup(".bar")));
 		pgbProgress.progressProperty().addListener(new ChangeListener<Number>() {
-
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				paintBar(pgbProgress.lookup(".bar"));
 
 			}
 		});
-
 		ActivityMonitor.addOnMonitorTickListener(new OnMonitorTick() {
-
 			@Override
 			public void onMonitorTicked(ActivityVO act) {
 				if (act.getId() == activity.getId())

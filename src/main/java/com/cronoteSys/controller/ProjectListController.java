@@ -35,7 +35,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 
 public class ProjectListController implements Initializable {
-
 	@FXML
 	private Button btnAddProject;
 	@FXML
@@ -50,7 +49,6 @@ public class ProjectListController implements Initializable {
 	@FXML
 	Button btnSearch;
 
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		initEvents();
@@ -60,7 +58,7 @@ public class ProjectListController implements Initializable {
 		projectLst = projectBO.listAll(loggedUser);
 		cardsList.setItems(FXCollections.observableArrayList(projectLst));
 		cardsList.setCellFactory(new ProjectCellFactory());
-		GlyphIcon icon = null;
+		GlyphIcon<?> icon = null;
 		if (projectLst.size() > 0) {
 			icon = new MaterialDesignIconView(MaterialDesignIcon.PLAYLIST_PLUS);
 			icon.getStyleClass().addAll("normal-white");
@@ -74,7 +72,6 @@ public class ProjectListController implements Initializable {
 
 	private void initObservers() {
 		ProjectCell.addOnProjectSelectedListener(new ProjectSelectedI() {
-			
 			@Override
 			public void onProjectSelect(ProjectVO project) {
 				
@@ -84,15 +81,12 @@ public class ProjectListController implements Initializable {
 
 	private void initEvents() {
 		btnAddProject.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				cardsList.getSelectionModel().clearSelection();
 				notifyAllProjectAddedListeners();
-
 			}
 		});
-
 	}
 
 	private static ArrayList<BtnProjectClickedI> projectAddedListeners = new ArrayList<BtnProjectClickedI>();
@@ -137,26 +131,19 @@ class ProjectCell extends ListCell<ProjectVO> {
 		if (selected) {
 			projectCardRoot.getStyleClass().add("projectCardSelected");
 			notifyAllProjectSelectedListeners(project);
-
 		} else
 			projectCardRoot.getStyleClass().removeAll("projectCardSelected");
-
 	}
-
-
 	@Override
 	public void updateItem(ProjectVO item, boolean empty) {
 		super.updateItem(item, empty);
-
 		if (item != null || !empty) {
-
 			FXMLLoader loader = SessionUtil.getInjector().getInstance(FXMLLoader.class);
 			try {
 				loader.setLocation(new File(getClass().getResource("/fxml/Templates/cell/ProjectCard.fxml").getPath())
 						.toURI().toURL());
 				loader.setController(this);
 				loader.load();
-
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

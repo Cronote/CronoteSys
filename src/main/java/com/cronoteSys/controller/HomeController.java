@@ -11,10 +11,10 @@ import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.ActivityBO.OnActivityDeletedI;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.ProjectVO;
+import com.cronoteSys.observer.ShowEditViewActivityObservableI;
+import com.cronoteSys.observer.ShowEditViewActivityObserverI;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
-import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
-import com.mysql.cj.Session;
 
 import de.jensd.fx.glyphs.GlyphIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -22,7 +22,6 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -48,24 +47,17 @@ public class HomeController implements Initializable {
 
 	@FXML
 	protected HBox root;
-	private HashMap<String, Object> hmp;
 	private MenuController menuControl;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loadMenu();
 
-		ScreenUtil.addOnChangeScreenListener(new OnChangeScreen() {
-			public void onScreenChanged(String newScreen, HashMap<String, Object> hmap) {
-				hmp = hmap;
-			}
-		});
 
 		ProjectListController.addOnBtnProjectClickedListener(new BtnProjectClickedI() {
 			@Override
 			public void onBtnProjectClicked() {
 				removeIndexFromRoot(2);
-				// TODO:Carregar conteudo do titlePane ProjectFirstInfo
 				FXMLLoader projectFXML = ScreenUtil.loadTemplate("ProjectManager");
 				ProjectManagerController control = SessionUtil.getInjector()
 						.getInstance(ProjectManagerController.class);
@@ -73,7 +65,6 @@ public class HomeController implements Initializable {
 				projectFXML.setController(control);
 				BorderPane projectManager = (BorderPane) FXMLLoaderToNode(projectFXML);
 
-//					detailsFxml.setController(new ActivityDetailsController());
 				TitledPane titledPane = new TitledPane("CADASTRAR PROJETO", projectManager);
 				titledPane.setCollapsible(false);
 				titledPane.setAlignment(Pos.CENTER);
@@ -81,7 +72,6 @@ public class HomeController implements Initializable {
 				titledPane.setMaxHeight(Double.POSITIVE_INFINITY);
 				addNode(titledPane);
 				HBox.setHgrow(titledPane, Priority.ALWAYS);
-
 			}
 		});
 		ProjectCell.addOnProjectSelectedListener(new ProjectSelectedI() {
@@ -90,7 +80,6 @@ public class HomeController implements Initializable {
 				removeIndexFromRoot(2);
 
 				if (project != null) {
-					// TODO:Carregar conteudo do titlePane ProjectFirstInfo
 					FXMLLoader projectFXML = ScreenUtil.loadTemplate("ProjectManager");
 					ProjectManagerController control = SessionUtil.getInjector()
 							.getInstance(ProjectManagerController.class);
@@ -231,7 +220,6 @@ class MenuController implements Initializable {
 	}
 
 	public void btnProjectClicked(ActionEvent e) {
-		// TODO: implementar
 		homeControl.clearRoot(false, (Node) e.getSource());
 		if (btnProject.isSelected()) {
 			ShowEditViewActivityObservableI.removeShowEditViewActivityListener(homeControl.getShowListener());
@@ -272,38 +260,30 @@ class MenuController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				btnProjectClicked(event);
-
 			}
 		});
 		btnReport.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				btnReportClicked(event);
-
 			}
 		});
 
-		menu.skinProperty().addListener(new ChangeListener<Skin>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Skin> observable, Skin oldValue, Skin newValue) {
-				AnchorPane ap = new AnchorPane();
-				ap.getStyleClass().add("title");
-				Label label = new Label("HOME");
-				ap.getChildren().addAll(label, btnSizeToggle);
-				ap.setPrefWidth(Double.POSITIVE_INFINITY);
-				AnchorPane.setLeftAnchor(label, 5.0);
-				AnchorPane.setBottomAnchor(label, 5.0);
-				AnchorPane.setTopAnchor(label, 5.0);
-				AnchorPane.setRightAnchor(btnSizeToggle, 0.0);
-				menu.setGraphic(ap);
-				menu.getGraphic().prefWidth(Double.POSITIVE_INFINITY);
-				menu.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-
-				System.out.println("teste");
-				adjustMenu(shortLarge.get());
-				;
-			}
+		menu.skinProperty().addListener((ChangeListener<Skin<?>>) (observable, oldValue, newValue) -> {
+			AnchorPane ap = new AnchorPane();
+			ap.getStyleClass().add("title");
+			Label label = new Label("HOME");
+			ap.getChildren().addAll(label, btnSizeToggle);
+			ap.setPrefWidth(Double.POSITIVE_INFINITY);
+			AnchorPane.setLeftAnchor(label, 5.0);
+			AnchorPane.setBottomAnchor(label, 5.0);
+			AnchorPane.setTopAnchor(label, 5.0);
+			AnchorPane.setRightAnchor(btnSizeToggle, 0.0);
+			menu.setGraphic(ap);
+			menu.getGraphic().prefWidth(Double.POSITIVE_INFINITY);
+			menu.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+			adjustMenu(shortLarge.get());
+			;
 		});
 	}
 
@@ -327,24 +307,20 @@ class MenuController implements Initializable {
 				ToggleButton btn = ((ToggleButton) node);
 				btn.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 			}
-
 		} else {
-
 			menu.setPrefWidth(LARGE_WIDTH);
 			imgLogo.setImage(new Image(getClass().getResourceAsStream("/image/cronote_logo_dark.png")));
 			imgLogo.maxWidth(LARGE_WIDTH);
 			for (Toggle node : btnWindows.getToggles()) {
 				ToggleButton btn = ((ToggleButton) node);
-
 				btn.setContentDisplay(ContentDisplay.LEFT);
 			}
-
 		}
 		adjustBtnIcon(makeItShort);
 	}
 
 	private void adjustBtnIcon(boolean isShort) {
-		GlyphIcon icon = null;
+		GlyphIcon<?> icon = null;
 		if (isShort) {
 			icon = new FontAwesomeIconView(FontAwesomeIcon.ANGLE_RIGHT);
 		} else {

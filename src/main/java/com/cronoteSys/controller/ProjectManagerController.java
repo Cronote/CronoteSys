@@ -14,6 +14,8 @@ import com.cronoteSys.model.bo.ProjectBO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.model.vo.UserVO;
+import com.cronoteSys.observer.ShowEditViewActivityObservableI;
+import com.cronoteSys.observer.ShowEditViewActivityObserverI;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
 
@@ -28,7 +30,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
@@ -42,7 +43,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
@@ -212,7 +212,7 @@ public class ProjectManagerController implements Initializable {
 		@Override
 		public void handle(Event event) {
 			Button btn = (Button) event.getTarget();
-			GlyphIcon icon = (GlyphIcon) btn.getGraphic();
+			GlyphIcon<?> icon = (GlyphIcon<?>) btn.getGraphic();
 
 			fade.setDuration(Duration.seconds(1));
 			fade.setFromValue(5);

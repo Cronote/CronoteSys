@@ -1,9 +1,7 @@
-package com.cronoteSys.controller;
+package com.cronoteSys.observer;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface ShowEditViewActivityObserverI {
 	void showEditViewActivity(HashMap<String, Object> hmp);
-
 }

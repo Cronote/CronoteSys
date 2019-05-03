@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.cronoteSys.controller;
 
 import java.io.IOException;
@@ -12,14 +7,12 @@ import java.util.List;
 import java.util.Properties;
 
 import com.cronoteSys.model.bo.LoginBO;
-import com.cronoteSys.model.dao.CategoryDAO;
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.GenHash;
 import com.cronoteSys.util.ScreenUtil;
-import com.cronoteSys.util.SessionUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
-import com.google.inject.Inject;
+import com.cronoteSys.util.SessionUtil;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -92,7 +85,6 @@ public class LoginController extends MasterController {
 	}
 
 	public void login(LoginVO login) {
-
 		UserVO user = new LoginBO().login(login);
 		if (user != null) {
 			if (rememberMe) {
@@ -116,7 +108,6 @@ public class LoginController extends MasterController {
 			new ScreenUtil().addORRemoveErrorClass(lst, true);
 			HashMap<String, Object> hmapValues = new HashMap<String, Object>();
 			hmapValues.put("msg", "Usuário ou senha incorretos!");
-			System.out.println("deu errado");
 		}
 	}
 
