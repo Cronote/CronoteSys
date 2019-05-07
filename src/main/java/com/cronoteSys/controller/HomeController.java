@@ -22,6 +22,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -52,7 +53,6 @@ public class HomeController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loadMenu();
-
 
 		ProjectListController.addOnBtnProjectClickedListener(new BtnProjectClickedI() {
 			@Override
@@ -95,6 +95,13 @@ public class HomeController implements Initializable {
 					addNode(titledPane);
 					HBox.setHgrow(titledPane, Priority.ALWAYS);
 				}
+			}
+		});
+		
+		root.getChildren().addListener(new ListChangeListener<Node>() {
+			@Override
+			public void onChanged(Change<? extends Node> c) {
+				ScreenUtil.paintScreen(root);
 			}
 		});
 	}
@@ -156,7 +163,7 @@ public class HomeController implements Initializable {
 			String action = (String) hmap.get("action");
 			ProjectVO project = (ProjectVO) hmap.get("project");
 			if (action.equalsIgnoreCase("cadastro")) {
-				if(project!=null) {
+				if (project != null) {
 					detailsFxml.setController(new ActivityDetailsController(project));
 				}
 				detailsFxml.setController(new ActivityDetailsController(null));
@@ -167,13 +174,12 @@ public class HomeController implements Initializable {
 				}
 				detailsFxml.setController(new ActivityDetailsController(activity, action));
 			}
-			TitledPane titledPane = new TitledPane("DETALHES", addNode(detailsFxml));
-			titledPane.setCollapsible(false);
-			titledPane.setAlignment(Pos.CENTER);
-			titledPane.getStyleClass().add("activityDetails");
-			titledPane.setMaxHeight(Double.POSITIVE_INFINITY);
-			addNode(titledPane);
-			HBox.setHgrow(titledPane, Priority.ALWAYS);
+			AnchorPane ap =(AnchorPane) addNode(detailsFxml);
+//			titledPane.setAlignment(Pos.CENTER);
+//			titledPane.getStyleClass().add("activityDetails");
+			ap.setMaxHeight(Double.POSITIVE_INFINITY);
+//			addNode(titledPane);
+			HBox.setHgrow(ap, Priority.ALWAYS);
 		}
 	};
 
@@ -217,6 +223,7 @@ class MenuController implements Initializable {
 			ShowEditViewActivityObservableI.addShowEditViewActivityListener(homeControl.getShowListener());
 			ActivityBO.addOnActivityDeletedListener(homeControl.listenerActivityDelete);
 		}
+		
 	}
 
 	public void btnProjectClicked(ActionEvent e) {
@@ -283,7 +290,6 @@ class MenuController implements Initializable {
 			menu.getGraphic().prefWidth(Double.POSITIVE_INFINITY);
 			menu.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 			adjustMenu(shortLarge.get());
-			;
 		});
 	}
 
@@ -309,7 +315,7 @@ class MenuController implements Initializable {
 			}
 		} else {
 			menu.setPrefWidth(LARGE_WIDTH);
-			imgLogo.setImage(new Image(getClass().getResourceAsStream("/image/cronote_logo_dark.png")));
+			imgLogo.setImage(new Image(getClass().getResourceAsStream("/image/cronote_logo_white.png")));
 			imgLogo.maxWidth(LARGE_WIDTH);
 			for (Toggle node : btnWindows.getToggles()) {
 				ToggleButton btn = ((ToggleButton) node);

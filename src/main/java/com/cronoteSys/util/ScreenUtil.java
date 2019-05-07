@@ -27,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -63,7 +64,6 @@ public class ScreenUtil {
 		newStage.setTitle("Cronote");
 		newStage.setScene(scene);
 		newStage.show();
-	
 
 	}
 
@@ -96,11 +96,12 @@ public class ScreenUtil {
 		}
 		return root;
 	}
-	
+
 	public static FXMLLoader loadTemplate(String template) {
 		try {
 			FXMLLoader fxmlLoader = SessionUtil.getInjector().getInstance(FXMLLoader.class);
-			URL url = new File(ScreenUtil.class.getResource("/fxml/Templates/" + template + ".fxml").getPath()).toURI().toURL();
+			URL url = new File(ScreenUtil.class.getResource("/fxml/Templates/" + template + ".fxml").getPath()).toURI()
+					.toURL();
 			fxmlLoader.setLocation(url);
 			return fxmlLoader;
 		} catch (IOException ex) {
@@ -291,6 +292,21 @@ public class ScreenUtil {
 					}
 				}
 			}
+		}
+
+	}
+
+	public static void paintScreen(HBox root) {
+		int nodeIndex = 0;
+		for (Node node : root.getChildren()) {
+			if (nodeIndex > 0) {
+				node.getStyleClass().removeAll("tone1-background", "tone2-background");
+				if (nodeIndex % 2 == 0)
+					node.getStyleClass().addAll("tone1-background");
+				else
+					node.getStyleClass().addAll("tone2-background");
+			}
+			nodeIndex++;
 		}
 
 	}

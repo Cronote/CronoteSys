@@ -129,10 +129,10 @@ class ProjectCell extends ListCell<ProjectVO> {
 	public void updateSelected(boolean selected) {
 		super.updateSelected(selected);
 		if (selected) {
-			projectCardRoot.getStyleClass().add("projectCardSelected");
+			projectCardRoot.getStyleClass().add("cardSelected");
 			notifyAllProjectSelectedListeners(project);
 		} else
-			projectCardRoot.getStyleClass().removeAll("projectCardSelected");
+			projectCardRoot.getStyleClass().removeAll("cardSelected");
 	}
 	@Override
 	public void updateItem(ProjectVO item, boolean empty) {

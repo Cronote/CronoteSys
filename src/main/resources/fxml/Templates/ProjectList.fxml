@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<TitledPane fx:id="title" alignment="CENTER" animated="false" collapsible="false" maxHeight="Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="238.0" styleClass="projectList" text="PROJETOS" textFill="#fffbfb" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.ProjectListController">
+<TitledPane fx:id="title" alignment="CENTER" animated="false" collapsible="false" maxHeight="Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="238.0"  textFill="#fffbfb" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.ProjectListController">
 	<content>
-		<AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #333333">
+		<AnchorPane prefHeight="200.0" prefWidth="200.0">
 			<children>
 				<HBox alignment="CENTER" layoutX="33.0" layoutY="22.0" maxWidth="200.0" prefHeight="26.0" prefWidth="204.0" style="-fx-border-color: white;" styleClass="textfild" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
 					<children>

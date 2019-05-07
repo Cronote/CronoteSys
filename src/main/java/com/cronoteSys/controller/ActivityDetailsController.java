@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import org.controlsfx.control.Rating;
+
 import com.cronoteSys.converter.CategoryConverter;
 import com.cronoteSys.dialogs.CategoryManagerDialog;
 import com.cronoteSys.model.bo.ActivityBO;
@@ -52,6 +54,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class ActivityDetailsController implements Initializable, ShowEditViewActivityObservableI {
+	@FXML
+	private Label lblPaneTitle;
 	// Edição
 	@FXML
 	private TextField txtTitle;
@@ -63,8 +67,6 @@ public class ActivityDetailsController implements Initializable, ShowEditViewAct
 	private TextField txtCategory;
 	@FXML
 	private TextArea txtDescription;
-	@FXML
-	private ToggleGroup tggPriority;
 	@FXML
 	private Spinner<Integer> spnEstimatedTimeHour;
 	@FXML
@@ -102,6 +104,8 @@ public class ActivityDetailsController implements Initializable, ShowEditViewAct
 	private Button btnEdit;
 	@FXML
 	private Button btnDelete;
+	@FXML
+	private Rating ratePriority;
 
 	private String mode;
 	HashMap<String, Object> hmp = new HashMap<String, Object>();
@@ -137,9 +141,9 @@ public class ActivityDetailsController implements Initializable, ShowEditViewAct
 				txtTitle.setText(activity.getTitle());
 				cboCategory.getSelectionModel().select(activity.getCategoryVO());
 				txtDescription.setText(activity.getDescription());
-				for (int i = 0; i < tggPriority.getToggles().size(); i++) {
-					boolean isPriorityIndex = i == activity.getPriority();
-					((ToggleButton) tggPriority.getToggles().get(i)).setSelected(isPriorityIndex);
+				if (ratePriority != null) {
+					System.out.println("nelson" + activity.getPriority());
+					ratePriority.setRating(activity.getPriority());
 				}
 				if (!activity.getStats().equals(StatusEnum.NOT_STARTED)) {
 					blockEdition();
@@ -162,12 +166,7 @@ public class ActivityDetailsController implements Initializable, ShowEditViewAct
 		lblTitle.setText(activity.getTitle());
 		lblCategory.setText(activity.getCategoryVO().getDescription());
 		lblDescription.setText(activity.getDescription());
-		for (int i = 0; i < tggPriority.getToggles().size(); i++) {
-			boolean isPriorityIndex = i == activity.getPriority();
-			((ToggleButton) tggPriority.getToggles().get(i)).setSelected(isPriorityIndex);
-			((ToggleButton) tggPriority.getToggles().get(i)).setDisable(true);
-		}
-
+		ratePriority.setRating(activity.getPriority());
 		lblEstimatedTime.setText(activity.getEstimatedTimeAsString());
 		loadProgressAndRealtime();
 		lblLastModified.setText(activity.getLastModification()
@@ -178,6 +177,7 @@ public class ActivityDetailsController implements Initializable, ShowEditViewAct
 		} else if (!StatusEnum.itsFinalized(activity.getStats())) {
 			btnEdit.getStyleClass().add("show");
 		}
+		ratePriority.setDisable(true);
 	}
 
 	private void loadProgressAndRealtime() {
@@ -205,11 +205,10 @@ public class ActivityDetailsController implements Initializable, ShowEditViewAct
 		cboCategory.setDisable(true);
 		spnEstimatedTimeHour.setDisable(true);
 		spnEstimatedTimeMinute.setDisable(true);
-		for (int i = 0; i < tggPriority.getToggles().size(); i++) {
-			((ToggleButton) tggPriority.getToggles().get(i)).setDisable(true);
-		}
 		btnManageCategory.setDisable(true);
 		btnAddCategory.setDisable(true);
+		ratePriority.setDisable(true);
+		System.out.println("aeae");
 	}
 
 	private void defaultData() {
@@ -218,9 +217,6 @@ public class ActivityDetailsController implements Initializable, ShowEditViewAct
 		cboCategory.setItems(obsLstCategory);
 		spnEstimatedTimeHour.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99999, 0, 1));
 		spnEstimatedTimeMinute.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 60, 1, 1));
-		for (int i = 0; i < tggPriority.getToggles().size(); i++) {
-			tggPriority.getToggles().get(i).setUserData(i);
-		}
 	}
 
 	private void initEvents() {
@@ -396,7 +392,7 @@ public class ActivityDetailsController implements Initializable, ShowEditViewAct
 			d = d.plusMinutes(spnEstimatedTimeMinute.getValue());
 			d = d.plusHours(spnEstimatedTimeHour.getValue());
 			activity.setEstimatedTime(d);
-			activity.setPriority(Integer.parseInt(tggPriority.getSelectedToggle().getUserData().toString()));
+			activity.setPriority((int) ratePriority.getRating());
 			if (activity.getId() == null) {
 				activity = new ActivityBO().save(activity);
 			} else {

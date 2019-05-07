@@ -36,8 +36,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -58,7 +60,7 @@ public class ActivityListController implements Initializable, ShowEditViewActivi
 	private ListView<ActivityVO> cardsList;
 	private List<ActivityVO> activityList = new ArrayList<ActivityVO>();
 	@FXML
-	TitledPane title;
+	AnchorPane pane;
 	ActivityBO actBO = new ActivityBO();
 	private UserVO loggedUser;
 	private ProjectVO selectedProject;
@@ -122,6 +124,7 @@ public class ActivityListController implements Initializable, ShowEditViewActivi
 			}
 		});
 	}
+
 	@Override
 	public void notifyAllListeners(HashMap<String, Object> hmp) {
 		for (ShowEditViewActivityObserverI l : listeners) {
@@ -176,13 +179,13 @@ class CardCell extends ListCell<ActivityVO> implements ShowEditViewActivityObser
 		super.updateSelected(selected);
 		HashMap<String, Object> hmp = new HashMap<String, Object>();
 		if (selected) {
-			activityCardRoot.getStyleClass().add("activityCardSelected");
+			activityCardRoot.getStyleClass().add("cardSelected");
 			hmp.put("action", "view");
 			hmp.put("activity", activity);
 			hmp.put("project", activity.getProjectVO());
 			notifyAllListeners(hmp);
 		} else
-			activityCardRoot.getStyleClass().removeAll("activityCardSelected");
+			activityCardRoot.getStyleClass().removeAll("cardSelected");
 
 	}
 
@@ -194,11 +197,13 @@ class CardCell extends ListCell<ActivityVO> implements ShowEditViewActivityObser
 			activity = item;
 			loadActivity();
 			setGraphic(activityCardRoot);
+			setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+			setAlignment(Pos.CENTER);
 		} else {
 			setGraphic(null);
 			setText(null);
 		}
-		setStyle("-fx-background-color:transparent;");
+		setStyle("-fx-background-color:transparent");
 	}
 
 	private void loadActivity() {
@@ -214,7 +219,7 @@ class CardCell extends ListCell<ActivityVO> implements ShowEditViewActivityObser
 				btnText = "play";
 				btnFinalize.getStyleClass().removeAll("show");
 				icon.setSize("2em");
-			} else if (StatusEnum.inProgress( activity.getStats())) {
+			} else if (StatusEnum.inProgress(activity.getStats())) {
 
 				icon = new FontAwesomeIconView(FontAwesomeIcon.PAUSE_CIRCLE_ALT);
 				btnText = "pause";
@@ -250,7 +255,7 @@ class CardCell extends ListCell<ActivityVO> implements ShowEditViewActivityObser
 				}
 				icon.setFill(Color.RED);
 				tp.setText("Percentual de tempo excedido");
-				lblIndex.setStyle("-fx-text-fill:red");
+				lblIndex.setStyle("-fx-text-fill:" + StatusEnum.BROKEN_FINALIZED.getHexColor());
 			} else {
 				if (difference >= -0.35) {
 					icon = new FontAwesomeIconView(FontAwesomeIcon.ANGLE_UP);
@@ -260,7 +265,7 @@ class CardCell extends ListCell<ActivityVO> implements ShowEditViewActivityObser
 				}
 				icon.setFill(Color.GREEN);
 				tp.setText("Percentual de tempo desnecessário");
-				lblIndex.setStyle("-fx-text-fill:green");
+				lblIndex.setStyle("-fx-text-fill:" + StatusEnum.NORMAL_FINALIZED.getHexColor());
 			}
 			lblIndex.getStyleClass().removeAll("hide");
 			lblIndex.setText(String.format("%.2f", Math.abs((difference * 100))) + "%");
@@ -338,7 +343,8 @@ class CardCell extends ListCell<ActivityVO> implements ShowEditViewActivityObser
 
 			}
 		});
-		pgbProgress.skinProperty().addListener((ChangeListener<Skin<?>>) (observable, oldValue, newValue) -> paintBar(pgbProgress.lookup(".bar")));
+		pgbProgress.skinProperty().addListener(
+				(ChangeListener<Skin<?>>) (observable, oldValue, newValue) -> paintBar(pgbProgress.lookup(".bar")));
 		pgbProgress.progressProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
