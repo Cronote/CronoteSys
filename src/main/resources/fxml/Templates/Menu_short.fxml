@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -7,67 +10,87 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<TitledPane alignment="CENTER" animated="false" collapsible="false" maxHeight="Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="80.0" styleClass="homeRootPane" text="Home" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<TitledPane  fx:id="menu" alignment="CENTER" animated="false" collapsible="false" maxHeight="Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="66.0" styleClass="homeRootPane" text="Home" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+	
 	<content>
-		<VBox prefHeight="664.0" prefWidth="257.0" style="-fx-background-color: #f6e59f;">
+		<VBox prefHeight="700.0" prefWidth="66.0" style="-fx-background-color: #f6e59f;">
 			<children>
-				<AnchorPane prefHeight="82.0" prefWidth="139.0">
+				<AnchorPane prefHeight="82.0" prefWidth="174.0" VBox.vgrow="NEVER">
                <children>
-                  <ImageView fitHeight="69.0" fitWidth="64.0" layoutX="16.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/cronote_logo_dark_short.png" />
-                     </image>
-                  </ImageView>
-               </children></AnchorPane>
-				<ToggleButton fx:id="btnActivity" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="53.0" prefWidth="110.0" styleClass="btnWindows">
-					<graphic>
-      						<ImageView fitHeight="43.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+      						<ImageView fitHeight="51.0" fitWidth="66.0" layoutX="4.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
       							<image>
-      								<Image url="@../../image/icon/IconActivitiesDark.png" />
+      								<Image url="@../../image/cronote_logo_dark_short.png" />
       							</image>
       						</ImageView>
-					</graphic>
+               </children>
+				</AnchorPane>
+				<ToggleButton fx:id="btnActivity" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="56.0" prefWidth="66.0" styleClass="btnWindows">
+					<VBox.margin>
+						<Insets />
+					</VBox.margin>
 					<toggleGroup>
 						<ToggleGroup fx:id="btnWindows" />
 					</toggleGroup>
+               <graphic>
+                  <FontAwesomeIconView fontSmoothingType="LCD" glyphName="FILE_TEXT_ALT" size="2em" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" styleClass="normal" textAlignment="CENTER" textOrigin="CENTER">
+                     <font>
+                        <Font name="FontAwesome Regular" size="18.0" />
+                     </font>
+                  </FontAwesomeIconView>
+               </graphic>
 				</ToggleButton>
-				<ToggleButton fx:id="btnProject" contentDisplay="GRAPHIC_ONLY" layoutX="20.0" layoutY="102.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="80.0" styleClass="btnWindows" toggleGroup="$btnWindows">
-					<graphic>
-						<ImageView fitHeight="43.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
-							<image>
-								<Image url="@../../image/icon/IconProjectDark.png" />
-							</image>
-						</ImageView>
-					</graphic>
+				<ToggleButton fx:id="btnProject" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="50.0" prefWidth="66.0" styleClass="btnWindows" toggleGroup="$btnWindows">
+               <graphic>
+                  <FontAwesomeIconView fontSmoothingType="LCD" glyphName="BOOK" size="2em" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" textOrigin="CENTER">
+                     <font>
+                        <Font name="FontAwesome Regular" size="18.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="outline" />
+                        <String fx:value="rainforce" />
+                     </styleClass>
+                  </FontAwesomeIconView>
+               </graphic>
 				</ToggleButton>
-				<ToggleButton fx:id="btnReport" contentDisplay="GRAPHIC_ONLY" layoutX="20.0" layoutY="149.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="80.0" styleClass="btnWindows" toggleGroup="$btnWindows">
-					<graphic>
-						<ImageView fitHeight="43.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
-							<image>
-								<Image url="@../../image/icon/IconReportDark.png" />
-							</image>
-						</ImageView>
-					</graphic>
+				<ToggleButton fx:id="btnReport" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="49.0" prefWidth="48.0" styleClass="btnWindows" toggleGroup="$btnWindows">
+               <graphic>
+                  <AnchorPane prefHeight="38.0" prefWidth="48.0" style="-fx-border-radius: 10;" styleClass="outline">
+                     <children>
+                        <FontAwesomeIconView glyphName="BAR_CHART" layoutX="3.0" layoutY="15.650670051574707" size="1.5em" styleClass="normal" AnchorPane.bottomAnchor="19.426339149475098" AnchorPane.leftAnchor="3.0" />
+                        <FontAwesomeIconView glyphName="PIE_CHART" layoutX="29.0" layoutY="26.0" size="1.5em" styleClass="normal" />
+                        <FontAwesomeIconView glyphName="LINE_CHART" layoutX="4.0" layoutY="34.65067005157471" size="1.5em" styleClass="normal" />
+                     </children>
+                  </AnchorPane>
+               </graphic>
 				</ToggleButton>
-				<AnchorPane prefHeight="475.0" prefWidth="57.0" VBox.vgrow="ALWAYS" />
-				<ToggleButton contentDisplay="GRAPHIC_ONLY" layoutX="20.0" layoutY="176.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="80.0" styleClass="btnWindows" toggleGroup="$btnWindows">
-					<graphic>
-						<ImageView fitHeight="43.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
-							<image>
-								<Image url="@../../image/icon/IconConfigDark.png" />
-							</image>
-						</ImageView>
-					</graphic>
+				<AnchorPane prefHeight="306.0" prefWidth="66.0" styleClass="normal" VBox.vgrow="ALWAYS" />
+				<ToggleButton fx:id="btnConfig" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="47.0" prefWidth="66.0" styleClass="btnWindows" text="ToggleButton" toggleGroup="$btnWindows">
+               <graphic>
+                  <FontAwesomeIconView fontSmoothingType="LCD" glyphName="GEAR" size="2em" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="2.0" textAlignment="CENTER" textOrigin="CENTER">
+                     <font>
+                        <Font name="FontAwesome Regular" size="18.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="outline" />
+                        <String fx:value="rainforce" />
+                     </styleClass>
+                  </FontAwesomeIconView>
+               </graphic>
 				</ToggleButton>
-				<ToggleButton contentDisplay="GRAPHIC_ONLY" layoutX="20.0" layoutY="618.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="80.0" styleClass="btnWindows" toggleGroup="$btnWindows">
-					<graphic>
-						<ImageView fitHeight="43.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
-							<image>
-								<Image url="@../../image/icon/IconInterrDark.png" />
-							</image>
-						</ImageView>
-					</graphic>
+				<ToggleButton fx:id="btnHelp" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="42.0" prefWidth="66.0" styleClass="btnWindows" toggleGroup="$btnWindows">
+               <graphic>
+                  <FontAwesomeIconView fontSmoothingType="LCD" glyphName="QUESTION" size="2em" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="2.0" textAlignment="CENTER" textOrigin="CENTER">
+                     <font>
+                        <Font name="FontAwesome Regular" size="18.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="outline" />
+                        <String fx:value="rainforce" />
+                     </styleClass>
+                  </FontAwesomeIconView>
+               </graphic>
 				</ToggleButton>
 			</children>
 		</VBox>

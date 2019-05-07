@@ -7,6 +7,7 @@ package com.cronoteSys.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.cronoteSys.model.bo.LoginBO;
+import com.google.inject.Injector;
+import com.sun.imageio.plugins.common.InputStreamAdapter;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -39,6 +42,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import sun.awt.X11.Screen;
 
 /**
  * Class that cares about all Screen functions
@@ -54,9 +58,9 @@ public class ScreenUtil {
 	 * @param sSceneName is the scene's name, that will be loaded
 	 * @param isModal    True or false about the modal property
 	 */
-	public void openNewWindow(Stage oldStage, String sSceneName, boolean isModal) {
+	public static void openNewWindow(Stage oldStage, String sSceneName, boolean isModal) {
 
-		Stage newStage = new Stage();
+		Stage newStage = oldStage;
 
 		newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
@@ -71,14 +75,9 @@ public class ScreenUtil {
 		scene.getStylesheets().add("/styles/Styles.css");
 		newStage.setTitle("Cronote");
 		newStage.setScene(scene);
-		if (isModal) {
-			newStage.initOwner(oldStage);
-			newStage.initModality(Modality.APPLICATION_MODAL);
-		}
 		newStage.show();
-		if (!isModal) {
-			closeOldStage(oldStage, newStage);
-		}
+	
+
 	}
 
 	/**
@@ -91,47 +90,38 @@ public class ScreenUtil {
 	 * @param hashMapValues Its filled with the objects that we need to pass to the
 	 *                      new window
 	 */
-	public void openNewWindow(Stage oldStage, String sSceneName, boolean isModal,
+	public static void openNewWindow(Stage oldStage, String sSceneName, boolean isModal,
 			HashMap<String, Object> hashMapValues) {
-		Stage newStage = new Stage();
-		newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			@Override
-			public void handle(WindowEvent event) {
-				System.out.println("asd");
-				Platform.exit();
-			}
-		});
+		openNewWindow(oldStage, sSceneName, isModal);
+		new ScreenUtil().notifyAllListeners(sSceneName, hashMapValues);
 
-		Parent root = loadScene(sSceneName);
-		Scene scene = new Scene(root);
-		scene.getStylesheets().add("/styles/Styles.css");
-		newStage.setTitle("Cronote");
-		newStage.setScene(scene);
-		if (isModal) {
-			newStage.initOwner(oldStage);
-			newStage.initModality(Modality.APPLICATION_MODAL);
-		}
-		notifyAllListeners(sSceneName, hashMapValues);
-		newStage.show();
-		if (!isModal) {
-			closeOldStage(oldStage, newStage);
-
-		}
 	}
 
-	private Parent loadScene(String sSceneName) {
+	private static Parent loadScene(String sSceneName) {
 		Parent root = null;
 		try {
-			System.out.println("Scene>>>> " + sSceneName);
-			URL url = new File(getClass().getResource("/fxml/" + sSceneName + ".fxml").getPath()).toURI().toURL();
-			root = FXMLLoader.load(url);
+			FXMLLoader fxmlLoader = SessionUtil.getInjector().getInstance(FXMLLoader.class);
+			URL url = new File(ScreenUtil.class.getResource("/fxml/" + sSceneName + ".fxml").getPath()).toURI().toURL();
+			fxmlLoader.setLocation(url);
+			root = fxmlLoader.load();
 		} catch (IOException ex) {
-			System.out.println(ex.getMessage());
+			ex.printStackTrace();
 		}
 		return root;
 	}
+	public static FXMLLoader loadTemplate(String template) {
+		try {
+			FXMLLoader fxmlLoader = SessionUtil.getInjector().getInstance(FXMLLoader.class);
+			URL url = new File(ScreenUtil.class.getResource("/fxml/Templates/" + template + ".fxml").getPath()).toURI().toURL();
+			fxmlLoader.setLocation(url);
+			return fxmlLoader;
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		return null;
 
-	private void closeOldStage(Stage oldStage, Stage newStage) {
+	}
+	private static void closeOldStage(Stage oldStage, Stage newStage) {
 		if (oldStage != null) {
 			oldStage.close();
 		}

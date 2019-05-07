@@ -12,11 +12,14 @@ import java.util.List;
 import java.util.Properties;
 
 import com.cronoteSys.model.bo.LoginBO;
+import com.cronoteSys.model.dao.CategoryDAO;
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.GenHash;
 import com.cronoteSys.util.ScreenUtil;
+import com.cronoteSys.util.SessionUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
+import com.google.inject.Inject;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -53,8 +56,8 @@ public class LoginController extends MasterController {
 	private HashMap<String, Object> hmp;
 	private boolean rememberMe = true;
 	@FXML
-	AnchorPane pnlLogin;
-
+	private AnchorPane pnlLogin;
+	
 	@FXML
 	public void initialize() {
 		try {
@@ -102,8 +105,8 @@ public class LoginController extends MasterController {
 					e.printStackTrace();
 				}
 			}
-			hmp.put("user", user);
-			new ScreenUtil().openNewWindow(getThisStage(), "Home", false, hmp);
+			SessionUtil.getSESSION().put("loggedUser", user);
+			ScreenUtil.openNewWindow(getThisStage(), "Home", true, hmp);
 		} else {
 			List<Node> lst = new ArrayList<Node>();
 			lst.add(txtEmail);
@@ -119,17 +122,17 @@ public class LoginController extends MasterController {
 
 	@FXML
 	private void linkRecoverClicked() {
-		new ScreenUtil().openNewWindow(getThisStage(), "SForgotPwd", false, hmp);
+		ScreenUtil.openNewWindow(getThisStage(), "SForgotPwd", false, hmp);
 	}
 
 	@FXML
 	private void linkSignUpClicked() {
-		new ScreenUtil().openNewWindow(getThisStage(), "SSignUp", false, hmp);
+		ScreenUtil.openNewWindow(getThisStage(), "SSignUp", false, hmp);
 	}
 
 	@FXML
 	private void btnLoginClicked(ActionEvent event) {
-		if (new ScreenUtil().isFilledFields(getThisStage(), pnlLogin,false)) {
+		if (new ScreenUtil().isFilledFields(getThisStage(), pnlLogin, false)) {
 			String sUsername = txtEmail.getText().trim(), sPasswd = txtPassword.getText().trim();
 			login(new LoginVO(null, sUsername, new GenHash().hashIt(sPasswd)));
 		}

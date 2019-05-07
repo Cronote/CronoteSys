@@ -1,6 +1,8 @@
 package com.cronoteSys.controller;
 
-import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
@@ -8,22 +10,25 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
-import javax.swing.Timer;
-
+import com.cronoteSys.controller.ActivityCardController.OnProgressChangedI;
 import com.cronoteSys.converter.CategoryConverter;
+import com.cronoteSys.dialogs.CategoryManagerDialog;
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.CategoryBO;
 import com.cronoteSys.model.dao.CategoryDAO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.CategoryVO;
+import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.model.vo.StatusEnum;
 import com.cronoteSys.model.vo.UserVO;
+import com.cronoteSys.util.ActivityMonitor;
+import com.cronoteSys.util.ActivityMonitor.OnMonitorTick;
 import com.cronoteSys.util.ScreenUtil;
-import com.sun.mail.imap.protocol.Status;
+import com.cronoteSys.util.SessionUtil;
 
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -31,9 +36,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Skin;
@@ -46,10 +54,12 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class ActivityDetailsController extends ShowEditViewActivityObservable implements Initializable {
+public class ActivityDetailsController implements Initializable, ShowEditViewActivityObservableI {
 	// Edição
 	@FXML
 	private TextField txtTitle;
@@ -75,6 +85,8 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	private Button btnConfirmAdd;
 	@FXML
 	private Button btnCancelAdd;
+	@FXML
+	private Button btnManageCategory;
 	// Visualização
 	@FXML
 	private Label lblTitle;
@@ -101,30 +113,24 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 
 	private String mode;
 	HashMap<String, Object> hmp = new HashMap<String, Object>();
-	private ActivityVO activity;
-	private UserVO user;
-	Timer timer = new Timer(60000, new ActionListener() {
+	private ActivityVO activity = new ActivityVO();
+	private UserVO loggedUser;
+	ObservableList<CategoryVO> obsLstCategory = FXCollections.emptyObservableList();
 
-		public void actionPerformed(java.awt.event.ActionEvent e) {
-			Platform.runLater(new Runnable() {
-				public void run() {
-					ActivityBO actBo = new ActivityBO();
-					activity = actBo.updateRealTime(activity);
-					loadActivity();
-				}
-			});
-
-		}
-	});
-
-	public ActivityDetailsController(UserVO user) {
-		this.user = user;
+	public ActivityDetailsController(ProjectVO project) {
+		System.out.println(project);
+		loggedUser = (UserVO) SessionUtil.getSESSION().get("loggedUser");
 		mode = "edit";
+		activity.setUserVO(loggedUser);
+		if (project != null)
+			activity.setProjectVO(project);
+
+
 	}
 
 	public ActivityDetailsController(ActivityVO act, String mode) {
 		this.activity = act;
-		this.user = act.getUserVO();
+		this.loggedUser = act.getUserVO();
 		this.mode = mode;
 	}
 
@@ -132,16 +138,21 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 	public void initialize(URL location, ResourceBundle resources) {
 		initForm();
 		initEvents();
-		timer.setInitialDelay(0);
 	}
 
 	private void initForm() {
+		ActivityCardController.addOnActivityAddedIListener(new OnProgressChangedI() {
+
+			@Override
+			public void onProgressChangedI(ActivityVO act) {
+				if (act.getId() == activity.getId())
+					activity = act;
+				loadProgressAndRealtime();
+			}
+		});
 		if (mode.equals("edit")) {
 			defaultData();
-			if (activity == null) {
-				activity = new ActivityVO();
-				activity.setUserVO(user);
-			} else {
+			if (activity.getId() != null) {
 				txtTitle.setText(activity.getTitle());
 				cboCategory.getSelectionModel().select(activity.getCategoryVO());
 				txtDescription.setText(activity.getDescription());
@@ -163,9 +174,7 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 			}
 		} else {
 			loadActivity();
-			if (activity.getStats().equals(StatusEnum.BROKEN_IN_PROGRESS)
-					|| activity.getStats().equals(StatusEnum.NORMAL_IN_PROGRESS))
-				timer.start();
+
 		}
 	}
 
@@ -180,15 +189,36 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 		}
 
 		lblEstimatedTime.setText(activity.getEstimatedTimeAsString());
+		loadProgressAndRealtime();
+		lblLastModified.setText(activity.getLastModification()
+				.format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm", new Locale("pt", "BR"))));
+		if (activity.getStats() == StatusEnum.NOT_STARTED) {
+			btnEdit.getStyleClass().add("show");
+			btnDelete.getStyleClass().add("show");
+		} else if (activity.getStats() != StatusEnum.NORMAL_FINALIZED
+				&& activity.getStats() != StatusEnum.BROKEN_FINALIZED) {
+			btnEdit.getStyleClass().add("show");
+		}
+	}
+
+	private void loadProgressAndRealtime() {
 		lblRealTime.setText(activity.getRealtimeAsString());
 		double estimatedTime = activity.getEstimatedTime().toMillis();
 		double realtime = activity.getRealtime().toMillis();
 		double progress = realtime / estimatedTime;
 		progress = progress > 1 ? 1 : progress;
 		lblStatus.setText(activity.getStats().getDescription().toUpperCase());
-		pgiProgress.setProgress(progress);
-		lblLastModified.setText(activity.getLastModification()
-				.format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm", new Locale("pt", "BR"))));
+		if (activity.getStats() == StatusEnum.BROKEN_FINALIZED || activity.getStats() == StatusEnum.NORMAL_FINALIZED)
+			pgiProgress.setProgress(1);
+		else
+			pgiProgress.setProgress(progress);
+		StackPane stackProgress = (StackPane) pgiProgress.lookup(".progress");
+		Text textPercentage = (Text) pgiProgress.lookup(".percentage");
+		String progressStr = String.format("%.2f", (pgiProgress.getProgress() * 100));
+		if (textPercentage != null)
+			textPercentage.setText(progressStr + "%");
+		if (stackProgress != null)
+			stackProgress.setStyle("-fx-background-color:" + activity.getStats().getHexColor());
 	}
 
 	private void blockEdition() {
@@ -199,12 +229,13 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 		for (int i = 0; i < tggPriority.getToggles().size(); i++) {
 			((ToggleButton) tggPriority.getToggles().get(i)).setDisable(true);
 		}
+		btnManageCategory.setDisable(true);
+		btnAddCategory.setDisable(true);
 	}
 
 	private void defaultData() {
-		List<CategoryVO> lstCategory = new CategoryDAO().getList(user);
-		ObservableList<CategoryVO> obsLstCategory = FXCollections.observableList(lstCategory);
-		cboCategory.setConverter(new CategoryConverter(user));
+		obsLstCategory = FXCollections.observableList(new CategoryDAO().getList(loggedUser));
+		cboCategory.setConverter(new CategoryConverter(loggedUser));
 		cboCategory.setItems(obsLstCategory);
 		spnEstimatedTimeHour.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99999, 0, 1));
 		spnEstimatedTimeMinute.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 60, 1, 1));
@@ -253,16 +284,31 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 				}
 			});
 		}
+		if (btnManageCategory != null)
+
+		{
+			btnManageCategory.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					CategoryManagerDialog categoryManagerDialog = new CategoryManagerDialog(cboCategory.getItems());
+					categoryManagerDialog.showCategoryManagerDialog();
+					CategoryVO selectedCategory = categoryManagerDialog.getSelectedCategory();
+					obsLstCategory = FXCollections.observableList(new CategoryDAO().getList(loggedUser));
+					cboCategory.setItems(obsLstCategory);
+					cboCategory.getSelectionModel().select(selectedCategory);
+
+				}
+			});
+		}
 		if (btnConfirmAdd != null) {
 			btnConfirmAdd.setOnAction(new EventHandler<ActionEvent>() {
-
 				@Override
 				public void handle(ActionEvent event) {
 					CategoryVO cat = new CategoryVO();
 					CategoryBO catBO = new CategoryBO();
 					if (txtCategory.getText().trim().length() > 0) {
 						cat.setDescription(txtCategory.getText());
-						cat.setUserVO(user);
+						cat.setUserVO(loggedUser);
 						cat = catBO.save(cat);
 						if (cat.getId() != null) {
 							cboCategory.getItems().add(cat);
@@ -276,7 +322,6 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 				}
 			});
 			btnCancelAdd.setOnAction(new EventHandler<ActionEvent>() {
-
 				@Override
 				public void handle(ActionEvent event) {
 					switchCategoryMode();
@@ -298,6 +343,7 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 				@Override
 				public void handle(ActionEvent event) {
 					hmp.put("activity", activity);
+					hmp.put("project", activity.getProjectVO());
 					hmp.put("action", "edit");
 					notifyAllListeners(hmp);
 				}
@@ -353,22 +399,24 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 
 				@Override
 				public void changed(ObservableValue<? extends Skin> observable, Skin oldValue, Skin newValue) {
-					pgiProgress.lookup(".progress")
-							.setStyle("-fx-background-color:" + activity.getStats().getHexColor());
-					Text t = (Text) pgiProgress.lookup(".percentage");
+					StackPane stackProgress = (StackPane) pgiProgress.lookup(".progress");
+					Text textPercentage = (Text) pgiProgress.lookup(".percentage");
 					String progressStr = String.format("%.2f", (pgiProgress.getProgress() * 100));
-					t.setText(progressStr + "%");
+					if (textPercentage != null)
+						textPercentage.setText(progressStr + "%");
+					if (stackProgress != null)
+						stackProgress.setStyle("-fx-background-color:" + activity.getStats().getHexColor());
 				}
 			});
-			pgiProgress.progressProperty().addListener(new ChangeListener<Number>() {
+
+			ActivityMonitor.addOnMonitorTickListener(new OnMonitorTick() {
 
 				@Override
-				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-					pgiProgress.lookup(".progress")
-							.setStyle("-fx-background-color:" + activity.getStats().getHexColor());
-					Text t = (Text) pgiProgress.lookup(".percentage");
-					String progressStr = String.format("%.2f", (pgiProgress.getProgress() * 100));
-					t.setText(progressStr + "%");
+				public void onMonitorTicked(ActivityVO act) {
+					if (act.getId() == activity.getId())
+						activity = act;
+					loadProgressAndRealtime();
+
 				}
 			});
 		}
@@ -404,6 +452,7 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 		btnCancelAdd.setVisible(btnAddCategory.isVisible());
 		txtCategory.setVisible(btnAddCategory.isVisible());
 		cboCategory.setVisible(!btnAddCategory.isVisible());
+		btnManageCategory.setVisible(!btnAddCategory.isVisible());
 		btnAddCategory.setVisible(!btnAddCategory.isVisible());
 	}
 
@@ -416,5 +465,20 @@ public class ActivityDetailsController extends ShowEditViewActivityObservable im
 			txtCategory.getStyleClass().removeAll("error");
 			lbl.getStyleClass().add("hide");
 		}
+	}
+
+	private FXMLLoader loadDialog(String template) throws MalformedURLException {
+		FXMLLoader root = SessionUtil.getInjector().getInstance(FXMLLoader.class);
+		root.setLocation(new File(getClass().getResource("/fxml/Templates/dialogs/" + template + ".fxml").getPath())
+				.toURI().toURL());
+		return root;
+	}
+
+	@Override
+	public void notifyAllListeners(HashMap<String, Object> hmp) {
+		for (ShowEditViewActivityObserverI l : listeners) {
+			l.showEditViewActivity(hmp);
+		}
+
 	}
 }
