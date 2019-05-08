@@ -11,6 +11,7 @@ import com.cronoteSys.model.vo.CategoryVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.SessionUtil;
 import com.google.inject.Inject;
+import com.jfoenix.controls.JFXTextField;
 
 import de.jensd.fx.glyphs.GlyphIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -38,7 +39,7 @@ import javafx.util.Callback;
 public class DialogCategoryManagerController implements Initializable {
 
 	@FXML
-	private TextField txtSearch;
+	private JFXTextField txtSearch;
 	@FXML
 	private Button btnSearch;
 	@FXML
@@ -179,11 +180,15 @@ public class DialogCategoryManagerController implements Initializable {
 				lblCategoryName.setText(item.getDescription());
 				txtCategoryName.setText(item.getDescription());
 				category = item;
+				
 				setGraphic(cell);
+				getStyleClass().addAll("themed-list-cell");
+				
 			} else {
 				setText(null);
 				setGraphic(null);
 			}
+			setStyle("-fx-background-color:transparent;");
 		}
 
 		private void loadIcon() {
@@ -196,5 +201,8 @@ public class DialogCategoryManagerController implements Initializable {
 			icon.setSize("2em");
 			btnEditSave.setGraphic(icon);
 		}
+		
+		
+		
 	}
 }

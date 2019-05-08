@@ -67,6 +67,13 @@
 			<artifactId>ignite-guice</artifactId>
 			<version>1.0.2</version>
 		</dependency>
+		<!-- JFoenix
+		 https://mvnrepository.com/artifact/org.controlsfx/controlsfx -->
+		<dependency>
+			<groupId>com.jfoenix</groupId>
+			<artifactId>jfoenix</artifactId>
+			<version>8.0.8</version>
+		</dependency>
 		<!-- Controls fx Java 8
 		 https://mvnrepository.com/artifact/org.controlsfx/controlsfx -->
 		<dependency>

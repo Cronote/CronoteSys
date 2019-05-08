@@ -12,6 +12,7 @@ import org.controlsfx.control.Rating;
 
 import com.cronoteSys.converter.CategoryConverter;
 import com.cronoteSys.dialogs.CategoryManagerDialog;
+import com.cronoteSys.dialogs.ThemedStringCell;
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.CategoryBO;
 import com.cronoteSys.model.dao.CategoryDAO;
@@ -26,6 +27,9 @@ import com.cronoteSys.util.ActivityMonitor;
 import com.cronoteSys.util.ActivityMonitor.OnMonitorTick;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -38,6 +42,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Skin;
 import javafx.scene.control.Spinner;
@@ -52,21 +58,22 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class ActivityDetailsController implements Initializable, ShowEditViewActivityObservableI {
 	@FXML
 	private Label lblPaneTitle;
 	// Edição
 	@FXML
-	private TextField txtTitle;
+	private JFXTextField txtTitle;
 	@FXML
 	private AnchorPane detailsRoot;
 	@FXML
-	private ComboBox<CategoryVO> cboCategory;
+	private JFXComboBox<CategoryVO> cboCategory;
 	@FXML
 	private TextField txtCategory;
 	@FXML
-	private TextArea txtDescription;
+	private JFXTextArea txtDescription;
 	@FXML
 	private Spinner<Integer> spnEstimatedTimeHour;
 	@FXML
@@ -136,15 +143,13 @@ public class ActivityDetailsController implements Initializable, ShowEditViewAct
 
 	private void initForm() {
 		if (mode.equals("edit")) {
+			
 			defaultData();
 			if (activity.getId() != null) {
 				txtTitle.setText(activity.getTitle());
 				cboCategory.getSelectionModel().select(activity.getCategoryVO());
 				txtDescription.setText(activity.getDescription());
-				if (ratePriority != null) {
-					System.out.println("nelson" + activity.getPriority());
-					ratePriority.setRating(activity.getPriority());
-				}
+				ratePriority.setRating(activity.getPriority());
 				if (!activity.getStats().equals(StatusEnum.NOT_STARTED)) {
 					blockEdition();
 				}
@@ -208,7 +213,6 @@ public class ActivityDetailsController implements Initializable, ShowEditViewAct
 		btnManageCategory.setDisable(true);
 		btnAddCategory.setDisable(true);
 		ratePriority.setDisable(true);
-		System.out.println("aeae");
 	}
 
 	private void defaultData() {
@@ -217,6 +221,7 @@ public class ActivityDetailsController implements Initializable, ShowEditViewAct
 		cboCategory.setItems(obsLstCategory);
 		spnEstimatedTimeHour.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99999, 0, 1));
 		spnEstimatedTimeMinute.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 60, 1, 1));
+		
 	}
 
 	private void initEvents() {

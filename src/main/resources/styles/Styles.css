@@ -295,6 +295,69 @@ ComboBox{
 	-fx-fill:-color;
 	-fx-text-fill:-color;
 }
+.split-arrows-vertical .text-field:readonly{
+	-fx-background-color:#35393F;
+	-color:#A6A6A6;
+	-fx-fill:-color;
+	-fx-text-fill:-color;
+}
+.jfx-text-field,.jfx-combo-box,.jfx-password-field,.jfx-text-area{
+	-color:#A6A6A6;
+    -fx-prompt-text-fill: -color;
+    -fx-text-fill: -color;
+    -fx-fill: -color;
+}
+.jfx-combo-box .list-cell:filled:selected, .jfx-combo-box .text {
+		-color:#A6A6A6;
+    -fx-prompt-text-fill: -color;
+    -fx-text-fill: -color;
+    -fx-fill: -color;
+}
+.jfx-combo-box .list-view .list-cell:hover {
+	-fx-background-color:#7C4DB8;
+	
+}
+
+.themed-list-cell .text{
+		-color:#A6A6A6;
+    -fx-prompt-text-fill: -color;
+    -fx-text-fill: -color;
+    -fx-fill: -color;
+}
+.themed-list-cell:hover>*.pane , .themed-list-cell:selected>*.pane,
+.themed-list-cell:hover>*.pane .text, .themed-list-cell:selected>*.pane .text {
+	-fx-background-color:#7C4DB8;
+	-fx-fill:white;
+	-fx-prompt-text-fill: white;
+    -fx-text-fill: white;
+}
+.jfx-combo-box .list-view .list-cell:hover>.text{
+	-fx-fill:white;
+	-fx-prompt-text-fill: white;
+    -fx-text-fill: white;
+}
+.inputField{
+	-fx-focus-color:#7c4db8;
+	-fx-unfocus-color:#a6a6a6;
+}
+.jfx-combo-box .list-view{
+	
+	-highlight-color:#7C4DB8;
+    -fx-border-color:-highlight-color;
+}
+.jfx-combo-box .list-view .list-cell{
+	-letter-color:#A6A6A6;
+	-fx-fill:-letter-color;
+	 -fx-prompt-text-fill: -letter-color;
+    -fx-text-fill: -letter-color;
+}
+.jfx-combo-box .arrow-button .arrow{
+	-fx-background-color:#7C4DB8;
+}
+.jfx-combo-box .list-view .list-cell {
+	
+	-fx-background-color:#35393F;
+}
 .highLightsDetails:hover{
 	-color:#7C4DB8;
 	-fx-fill:-color;
