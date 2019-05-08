@@ -14,6 +14,7 @@ import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.observer.ShowEditViewActivityObservableI;
 import com.cronoteSys.observer.ShowEditViewActivityObserverI;
 import com.cronoteSys.util.ScreenUtil;
+import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 import com.cronoteSys.util.SessionUtil;
 
 import de.jensd.fx.glyphs.GlyphIcon;
