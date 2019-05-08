@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.mail.EmailException;
 
@@ -13,6 +18,7 @@ import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.util.EmailUtil;
 import com.cronoteSys.util.GenCode;
 import com.cronoteSys.util.GenHash;
+import com.cronoteSys.util.RestUtil;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 
@@ -127,8 +133,8 @@ public class ForgotPwdController extends MasterController {
 //				JOptionPane.showMessageDialog(null, "Mensagem de falha por email inválido");
 				return;
 			}
-
-			objLogin = new LoginBO().loginExists(email);
+			objLogin = new RestUtil().response("http://localhost:8081/Test/webapi/myresource/email_exists?email="+email).readEntity(LoginVO.class);
+//			objLogin = new LoginBO().loginExists(email);
 			if (objLogin == null) {// Conta com este email n existe
 				lblEmailSend.setText("Email não existente");
 				txtEmail.getStyleClass().add("error");

@@ -5,6 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+
+import org.eclipse.persistence.sessions.Login;
 
 import com.cronoteSys.model.bo.LoginBO;
 import com.cronoteSys.model.bo.UserBO;
@@ -12,6 +19,7 @@ import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.EmailUtil;
 import com.cronoteSys.util.GenHash;
+import com.cronoteSys.util.RestUtil;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 
@@ -120,7 +128,9 @@ public class SignUpController extends MasterController {
 //				JOptionPane.showMessageDialog(null, "Mensagem de falha por formato de email");
 				return;
 			}
-			if (new LoginBO().loginExists(sEmail) != null) {
+			
+			LoginVO loginVO = new RestUtil().response("http://localhost:8081/Test/webapi/myresource/email_exists?email="+sEmail).readEntity(LoginVO.class);
+			if (loginVO != null) {
 				lblEmail.setText("Email já cadastrado");
 				txtEmail.getStyleClass().add("error");
 				lblEmail.getStyleClass().remove("hide");
@@ -147,11 +157,16 @@ public class SignUpController extends MasterController {
 			objUser.setEmailRecover(txtSecondEmail.getText().trim());
 			objUser.setBirthDate(dateBirthday.getValue());
 			objUser.setStats(Byte.parseByte("1"));
-			objUser = new UserBO().save(objUser);
+			Client client = ClientBuilder.newClient();
+			WebTarget target = client.target("http://localhost:8081/Test/webapi/myresource/saveUser");
+			objUser = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(objUser, MediaType.APPLICATION_JSON), UserVO.class);
+//			objUser = new UserBO().save(objUser);
 			objLogin.setTbUser(objUser);
 			objLogin.setEmail(sEmail);
 			objLogin.setPasswd(sPassEncrypted);
-			objLogin = new LoginBO().save(objLogin);
+			target = client.target("http://localhost:8081/Test/webapi/myresource/saveLogin");
+			objLogin = target.request().post(Entity.entity(objLogin, MediaType.APPLICATION_JSON), LoginVO.class);
+//			objLogin = new LoginBO().save(objLogin);
 			if (objUser != null && objLogin != null) {
 				JOptionPane.showMessageDialog(null, "Mensagem de sucesso");
 				new ScreenUtil().clearFields(getThisStage(), pnlInput);

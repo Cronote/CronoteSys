@@ -12,9 +12,8 @@ import com.cronoteSys.model.bo.ActivityBO.OnActivityDeletedI;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.util.ScreenUtil;
-import com.cronoteSys.util.SessionUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
-import com.mysql.cj.Session;
+import com.cronoteSys.util.SessionUtil;
 
 import de.jensd.fx.glyphs.GlyphIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;

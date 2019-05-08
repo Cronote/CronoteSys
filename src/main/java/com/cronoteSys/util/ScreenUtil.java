@@ -7,16 +7,12 @@ package com.cronoteSys.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import com.cronoteSys.model.bo.LoginBO;
-import com.google.inject.Injector;
-import com.sun.imageio.plugins.common.InputStreamAdapter;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -29,7 +25,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ComboBoxBase;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
@@ -39,10 +34,8 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import sun.awt.X11.Screen;
 
 /**
  * Class that cares about all Screen functions
