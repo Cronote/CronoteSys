@@ -7,19 +7,9 @@ import java.util.List;
 import java.util.Properties;
 
 import com.cronoteSys.model.bo.LoginBO;
-import com.cronoteSys.model.bo.UserBO;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.GenHash;
-import com.cronoteSys.util.RestUtil;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 import com.cronoteSys.util.SessionUtil;
@@ -89,18 +79,16 @@ public class LoginController extends MasterController {
 	}
 
 	public void login(LoginVO login) {
-		if(RestUtil.isConnectedToTheServer()) {
-			UserVO user = new LoginBO().login(login);
-			if (user != null) {
-				if (rememberMe) {
-					try {
-						Properties prop = getProp();
-						prop.setProperty("LoginScreen.username", login.getEmail());
-						saveProp(prop);
+		UserVO user = new LoginBO().login(login);
+		if (user != null) {
+			if (rememberMe) {
+				try {
+					Properties prop = getProp();
+					prop.setProperty("LoginScreen.username", login.getEmail());
+					saveProp(prop);
 
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 				SessionUtil.getSession().put("loggedUser", user);
 				if ((Boolean) SessionUtil.getSession().getOrDefault("addingAccount",false))
@@ -115,6 +103,18 @@ public class LoginController extends MasterController {
 				hmapValues.put("msg", "Usuário ou senha incorretos!");
 				System.out.println("deu errado");
 			}
+			SessionUtil.getSESSION().put("loggedUser", user);
+			ScreenUtil.openNewWindow(getThisStage(), "Home", true, hmp);
+		} else {
+			List<Node> lst = new ArrayList<Node>();
+			lst.add(txtEmail);
+			lst.add(txtPassword);
+			lst.add(lblEmail);
+			lst.add(lblPassword);
+			new ScreenUtil().addORRemoveErrorClass(lst, true);
+			HashMap<String, Object> hmapValues = new HashMap<String, Object>();
+			hmapValues.put("msg", "Usuário ou senha incorretos!");
+			System.out.println("deu errado");
 		}
 	}
 
