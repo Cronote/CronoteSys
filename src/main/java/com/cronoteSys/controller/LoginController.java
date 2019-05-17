@@ -78,11 +78,12 @@ public class LoginController extends MasterController {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				SessionUtil.getSession().put("loggedUser", user);
-				if ((Boolean) SessionUtil.getSession().getOrDefault("addingAccount",false))
-					registerNewLogin(user.getIdUser());
-				ScreenUtil.openNewWindow(getThisStage(), "Home", true, hmp);
 			}
+			SessionUtil.getSession().put("loggedUser", user);
+			if ((Boolean) SessionUtil.getSession().getOrDefault("addingAccount", false))
+				registerNewLogin(user.getIdUser());
+			ScreenUtil.openNewWindow(getThisStage(), "Home", true, hmp);
+
 		} else {
 			List<Node> lst = new ArrayList<Node>();
 			lst.add(txtEmail);

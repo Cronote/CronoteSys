@@ -83,7 +83,7 @@ public class LogoutLoggedAccountsController implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		ids = props.getProperty("savedAccounts");
+		ids = props.getProperty("savedAccounts","0");
 
 		lblUserInitial.setText(loggedUser.getCompleteName().substring(0, 1).toUpperCase());
 		String[] userNames = loggedUser.getCompleteName().split(" ");
