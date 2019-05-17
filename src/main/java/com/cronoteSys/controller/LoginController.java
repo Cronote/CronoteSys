@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Properties;
 
 import com.cronoteSys.model.bo.LoginBO;
+import com.cronoteSys.model.bo.UserBO;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -87,10 +89,8 @@ public class LoginController extends MasterController {
 	}
 
 	public void login(LoginVO login) {
-		if (new RestUtil().isConnectedToTheServer()) {
-			Client client = ClientBuilder.newClient();
-			WebTarget target = client.target("http://localhost:8081/Test/webapi/myresource/login");
-			UserVO user = target.request().post(Entity.entity(login, MediaType.APPLICATION_JSON), UserVO.class);
+		if(RestUtil.isConnectedToTheServer()) {
+			UserVO user = new LoginBO().login(login);
 			if (user != null) {
 				if (rememberMe) {
 					try {
