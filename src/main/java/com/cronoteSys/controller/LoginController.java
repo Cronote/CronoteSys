@@ -7,13 +7,32 @@ import java.util.List;
 import java.util.Properties;
 
 import com.cronoteSys.model.bo.LoginBO;
+import com.cronoteSys.model.bo.UserBO;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.GenHash;
+import com.cronoteSys.util.RestUtil;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 import com.cronoteSys.util.SessionUtil;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RegexValidator;
+import com.jfoenix.validation.RequiredFieldValidator;
 
+import de.jensd.fx.glyphs.GlyphsBuilder;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -33,24 +52,20 @@ import javafx.scene.layout.AnchorPane;
 public class LoginController extends MasterController {
 
 	@FXML
-	private Label lblEmail;
-	@FXML
-	private Label lblPassword;
-	@FXML
 	private Button btnLogin;
 	@FXML
 	private Hyperlink linkSignUp;
 	@FXML
-	private TextField txtEmail;
+	private JFXTextField txtEmail;
 	@FXML
-	private PasswordField txtPassword;
+	private JFXPasswordField txtPassword;
 	@FXML
 	private Hyperlink linkRecover;
 	private HashMap<String, Object> hmp;
 	private boolean rememberMe = true;
 	@FXML
 	private AnchorPane pnlLogin;
-	
+
 	@FXML
 	public void initialize() {
 		try {
@@ -67,47 +82,39 @@ public class LoginController extends MasterController {
 				// por enquanto nada
 			}
 		});
-		txtEmail.setOnKeyPressed(new javafx.event.EventHandler<KeyEvent>() {
-			public void handle(KeyEvent event) {
-				if (event.getCode() == KeyCode.ENTER) {
-					btnLoginClicked(null);
-				}
-			}
-		});
-		txtPassword.setOnKeyPressed(new javafx.event.EventHandler<KeyEvent>() {
-			public void handle(KeyEvent event) {
-				if (event.getCode() == KeyCode.ENTER) {
-					btnLoginClicked(null);
-				}
-			}
-		});
-
+		Node[] lstFieldsToValidation = { txtEmail, txtPassword };
+		Boolean[] areNotNullFields = { true, true };
+		Boolean[] areEmailFields = { true, false };
+		ScreenUtil.addInlineValidation(lstFieldsToValidation, areNotNullFields, areEmailFields);
 	}
 
 	public void login(LoginVO login) {
-		UserVO user = new LoginBO().login(login);
-		if (user != null) {
-			if (rememberMe) {
-				try {
-					Properties prop = getProp();
-					prop.setProperty("LoginScreen.username", login.getEmail());
-					saveProp(prop);
+		if(RestUtil.isConnectedToTheServer()) {
+			UserVO user = new LoginBO().login(login);
+			if (user != null) {
+				if (rememberMe) {
+					try {
+						Properties prop = getProp();
+						prop.setProperty("LoginScreen.username", login.getEmail());
+						saveProp(prop);
 
-				} catch (IOException e) {
-					e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
+				SessionUtil.getSession().put("loggedUser", user);
+				if ((Boolean) SessionUtil.getSession().getOrDefault("addingAccount",false))
+					registerNewLogin(user.getIdUser());
+				ScreenUtil.openNewWindow(getThisStage(), "Home", true, hmp);
+			} else {
+				List<Node> lst = new ArrayList<Node>();
+				lst.add(txtEmail);
+				lst.add(txtPassword);
+				new ScreenUtil().addORRemoveErrorClass(lst, true);
+				HashMap<String, Object> hmapValues = new HashMap<String, Object>();
+				hmapValues.put("msg", "Usuário ou senha incorretos!");
+				System.out.println("deu errado");
 			}
-			SessionUtil.getSESSION().put("loggedUser", user);
-			ScreenUtil.openNewWindow(getThisStage(), "Home", true, hmp);
-		} else {
-			List<Node> lst = new ArrayList<Node>();
-			lst.add(txtEmail);
-			lst.add(txtPassword);
-			lst.add(lblEmail);
-			lst.add(lblPassword);
-			new ScreenUtil().addORRemoveErrorClass(lst, true);
-			HashMap<String, Object> hmapValues = new HashMap<String, Object>();
-			hmapValues.put("msg", "Usuário ou senha incorretos!");
 		}
 	}
 
@@ -123,10 +130,24 @@ public class LoginController extends MasterController {
 
 	@FXML
 	private void btnLoginClicked(ActionEvent event) {
-		if (new ScreenUtil().isFilledFields(getThisStage(), pnlLogin, false)) {
+		if (txtEmail.validate() && txtPassword.validate()) {
 			String sUsername = txtEmail.getText().trim(), sPasswd = txtPassword.getText().trim();
 			login(new LoginVO(null, sUsername, new GenHash().hashIt(sPasswd)));
 		}
 
+	}
+
+	private void registerNewLogin(Integer idUser) {
+		try {
+			Properties prop = getProp();
+			String savedAccounts = prop.getProperty("savedAccounts");
+			if (!savedAccounts.contains(idUser.toString()))
+				savedAccounts += "," + idUser.toString();
+			prop.setProperty("savedAccounts", savedAccounts);
+			saveProp(prop);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

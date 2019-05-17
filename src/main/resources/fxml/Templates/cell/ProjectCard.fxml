@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -7,8 +8,7 @@
 
 <AnchorPane fx:id="projectCardRoot" maxHeight="-Infinity"
 	minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0"
-	prefWidth="-Infinity" styleClass="projectCard"
-	xmlns="http://javafx.com/javafx/8.0.171"
+	prefWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171"
 	xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<Label fx:id="lblTitle" alignment="TOP_LEFT" layoutX="14.0"
@@ -33,4 +33,9 @@
 			</children>
 		</AnchorPane>
 	</children>
+	<styleClass>
+		<String fx:value="card" />
+		<String fx:value="borders" />
+	</styleClass>
+
 </AnchorPane>

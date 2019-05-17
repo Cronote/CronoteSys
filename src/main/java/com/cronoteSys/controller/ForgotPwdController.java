@@ -13,8 +13,11 @@ import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.util.EmailUtil;
 import com.cronoteSys.util.GenCode;
 import com.cronoteSys.util.GenHash;
+import com.cronoteSys.util.RestUtil;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -22,32 +25,28 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
 public class ForgotPwdController extends MasterController {
 
 	@FXML
-	private TextField txtEmail;
+	private JFXTextField txtEmail;
 	@FXML
 	private Button btnSend;
 	@FXML
 	private Button btnConfirm;
 	@FXML
-	private TextField txtCode;
+	private JFXTextField txtCode;
 	@FXML
 	private Button btnCancel;
 	@FXML
-	private PasswordField txtPwd;
+	private JFXPasswordField txtPwd;
 	@FXML
-	private PasswordField txtConfirmPwd;
+	private JFXPasswordField txtConfirmPwd;
 	@FXML
 	private Label lblErrorsIndex;
 	@FXML
 	private Pane pnlVerification;
-	@FXML
-	private Label lblEmailSend;
 	@FXML
 	private Label lblCode;
 	@FXML
@@ -96,30 +95,16 @@ public class ForgotPwdController extends MasterController {
 				}
 			}
 		});
+
 	}
 
 	@FXML
 	public void btnSendClicked() {
-		txtEmail.getStyleClass().remove("error");
-		if (new ScreenUtil().isFilledFields(getThisStage(), pnlSendEmail,false)) {
-			lblEmailSend.getStyleClass().remove("show");
-			lblEmailSend.getStyleClass().add("hide");
+		if (txtEmail.validate()) {
 			String email = txtEmail.getText().trim();
-			if (!EmailUtil.validateEmail(email)) { // Email em formato valido
-				lblEmailSend.setText("Email inválido");
-				txtEmail.getStyleClass().add("error");
-				lblEmailSend.getStyleClass().remove("hide");
-				lblEmailSend.getStyleClass().add("show");
-				//TODO: exibir mensagem de email invalido
-				return;
-			}
-
+			objLogin = new RestUtil().response("http://localhost:8081/Test/webapi/myresource/email_exists?email="+email).readEntity(LoginVO.class);
 			objLogin = new LoginBO().loginExists(email);
 			if (objLogin == null) {// Conta com este email n existe
-				lblEmailSend.setText("Email não existente");
-				txtEmail.getStyleClass().add("error");
-				lblEmailSend.getStyleClass().remove("hide");
-				lblEmailSend.getStyleClass().add("show");
 				//TODO: exibir mensagem de email inexistente
 				return;
 			}
@@ -127,8 +112,8 @@ public class ForgotPwdController extends MasterController {
 			boolean bEmailSent = false;
 			sVerificationCode = new GenCode().genCode();
 			try {
-				bEmailSent = new EmailUtil().sendEmail(email, "Olá,\n Aqui está seu código de confirmação: "
-						+ sVerificationCode + "\nUse-o no sistema para trocar sua senha.", "Alteração de senha");
+				bEmailSent = new EmailUtil().sendEmail(email, "Olá,\n Aqui está seu código de confirmação: <a href='http://localhost:8081/Test/webapi/myresource/passwordChange?code='"
+						+ sVerificationCode+"'>"+sVerificationCode+"</a>" + "\nUse-o no sistema para trocar sua senha.", "Alteração de senha");
 			} catch (EmailException e) {
 				e.printStackTrace();
 			}

@@ -5,6 +5,7 @@ import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
 import com.cronoteSys.util.guice.GuiceModule;
 import com.google.inject.Guice;
+import com.jfoenix.controls.JFXAutoCompletePopup;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
