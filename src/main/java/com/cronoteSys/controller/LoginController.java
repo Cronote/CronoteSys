@@ -90,27 +90,16 @@ public class LoginController extends MasterController {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				SessionUtil.getSession().put("loggedUser", user);
-				if ((Boolean) SessionUtil.getSession().getOrDefault("addingAccount",false))
-					registerNewLogin(user.getIdUser());
-				ScreenUtil.openNewWindow(getThisStage(), "Home", true, hmp);
-			} else {
-				List<Node> lst = new ArrayList<Node>();
-				lst.add(txtEmail);
-				lst.add(txtPassword);
-				new ScreenUtil().addORRemoveErrorClass(lst, true);
-				HashMap<String, Object> hmapValues = new HashMap<String, Object>();
-				hmapValues.put("msg", "Usuário ou senha incorretos!");
-				System.out.println("deu errado");
 			}
-			SessionUtil.getSESSION().put("loggedUser", user);
+			SessionUtil.getSession().put("loggedUser", user);
+			if ((Boolean) SessionUtil.getSession().getOrDefault("addingAccount", false))
+				registerNewLogin(user.getIdUser());
 			ScreenUtil.openNewWindow(getThisStage(), "Home", true, hmp);
+
 		} else {
 			List<Node> lst = new ArrayList<Node>();
 			lst.add(txtEmail);
 			lst.add(txtPassword);
-			lst.add(lblEmail);
-			lst.add(lblPassword);
 			new ScreenUtil().addORRemoveErrorClass(lst, true);
 			HashMap<String, Object> hmapValues = new HashMap<String, Object>();
 			hmapValues.put("msg", "Usuário ou senha incorretos!");

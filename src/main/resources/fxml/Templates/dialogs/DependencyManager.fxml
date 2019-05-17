@@ -10,13 +10,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="dialogroot"
-	fx:controller="com.cronoteSys.controller.components.dialogs.DialogDependencyManagerController"
-	maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-	minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0"
-	styleClass="tone1-background" xmlns="http://javafx.com/javafx/8.0.171"
+<BorderPane fx:id="dialogroot" maxHeight="-Infinity"
+	maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+	prefHeight="600.0" prefWidth="900.0" styleClass="tone1-background"
 	stylesheets="@../../../styles/Styles.css"
-	xmlns:fx="http://javafx.com/fxml/1">
+	xmlns="http://javafx.com/javafx/8.0.171"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="com.cronoteSys.controller.components.dialogs.DialogDependencyManagerController">
 	<bottom>
 		<AnchorPane prefHeight="33.0" prefWidth="800.0"
 			BorderPane.alignment="CENTER">
@@ -108,8 +108,20 @@
 						<String fx:value="letters_box_icons" />
 					</styleClass>
 					<content>
-						<ListView fx:id="selectedActivitiesLst"
-							prefHeight="200.0" prefWidth="200.0" />
+						<AnchorPane styleClass="list-view">
+							<children>
+								<ListView fx:id="selectedActivitiesLst" layoutX="14.0"
+									layoutY="14.0" prefHeight="337.0" prefWidth="336.0"
+									style="-fx-background-color: transparent;"
+									AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+									AnchorPane.topAnchor="0.0" />
+								<Label alignment="TOP_LEFT" contentDisplay="TEXT_ONLY"
+									layoutX="1.0" layoutY="339.0" prefWidth="336.0"
+									text="As atividades listadas acima precisam ser concluidas antes dessa"
+									textFill="WHITE" wrapText="true" AnchorPane.bottomAnchor="0.0"
+									AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+							</children>
+						</AnchorPane>
 					</content>
 				</TitledPane>
 				<Button fx:id="btnSelect" contentDisplay="GRAPHIC_ONLY"

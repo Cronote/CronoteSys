@@ -275,6 +275,7 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 		btnDependencies.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				activity.setTitle(txtTitle.getText());
 				DialogDependencyManager categoryManagerDialog = new DialogDependencyManager(activity);
 
 				categoryManagerDialog.showDependencyManagerDialog();

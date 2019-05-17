@@ -33,11 +33,6 @@
 			<artifactId>Cronotesys.model</artifactId>
 			<version>0.0.1</version>
 		</dependency>
-		<dependency>
-			<groupId>CronoteRest</groupId>
-			<artifactId>Test</artifactId>
-			<version>0.0.1</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-email -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>

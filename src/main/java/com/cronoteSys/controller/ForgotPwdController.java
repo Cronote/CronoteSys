@@ -102,10 +102,6 @@ public class ForgotPwdController extends MasterController {
 		if (txtEmail.validate()) {
 			String email = txtEmail.getText().trim();
 			if (!EmailUtil.validateEmail(email)) { // Email em formato valido
-				lblEmailSend.setText("Email inválido");
-				txtEmail.getStyleClass().add("error");
-				lblEmailSend.getStyleClass().remove("hide");
-				lblEmailSend.getStyleClass().add("show");
 				//TODO: exibir mensagem de email invalido
 				return;
 			}

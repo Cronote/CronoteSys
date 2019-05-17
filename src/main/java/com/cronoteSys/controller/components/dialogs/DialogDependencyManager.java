@@ -39,17 +39,12 @@ public class DialogDependencyManager {
 			alert.setContent(root);
 			alert.initStyle(StageStyle.UNDECORATED);
 			alert.showAndWait();
-			lstActivities = controller.getSelectedActivitiesLst().getItems();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private ObservableList<ActivityVO> lstActivities;
 
 	private ActivityVO selected;
 
-	public ObservableList<ActivityVO> getLstActivities() {
-		return lstActivities;
-	}
 }

@@ -173,8 +173,8 @@
 		</Button>
 		<Rating fx:id="ratePriority" layoutX="16.0" layoutY="349.0"
 			rating="3.0" AnchorPane.leftAnchor="16.0" />
-		<JFXButton fx:id="btnDependencies" layoutX="15.0"
-			layoutY="524.0" ripplerFill="BLACK" styleClass="btn"
-			text="GERÊNCIAR DEPENDÊNCIAS" textFill="WHITE" />
+		<JFXButton fx:id="btnDependencies" layoutX="16.0"
+			layoutY="490" ripplerFill="BLACK" styleClass="btn"
+			text="GERÊNCIAR DEPENDÊNCIAS" textFill="WHITE" AnchorPane.leftAnchor="16.0" />
 	</children>
 </AnchorPane>
