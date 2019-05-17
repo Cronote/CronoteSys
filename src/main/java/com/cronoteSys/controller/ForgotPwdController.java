@@ -13,7 +13,6 @@ import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.util.EmailUtil;
 import com.cronoteSys.util.GenCode;
 import com.cronoteSys.util.GenHash;
-import com.cronoteSys.util.RestUtil;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 import com.jfoenix.controls.JFXPasswordField;
@@ -102,7 +101,11 @@ public class ForgotPwdController extends MasterController {
 	public void btnSendClicked() {
 		if (txtEmail.validate()) {
 			String email = txtEmail.getText().trim();
-			objLogin = new RestUtil().response("http://localhost:8081/Test/webapi/myresource/email_exists?email="+email).readEntity(LoginVO.class);
+			if (!EmailUtil.validateEmail(email)) { // Email em formato valido
+				//TODO: exibir mensagem de email invalido
+				return;
+			}
+//			objLogin = new RestUtil().response("http://localhost:8081/Test/webapi/myresource/email_exists?email="+email).readEntity(LoginVO.class);
 			objLogin = new LoginBO().loginExists(email);
 			if (objLogin == null) {// Conta com este email n existe
 				//TODO: exibir mensagem de email inexistente

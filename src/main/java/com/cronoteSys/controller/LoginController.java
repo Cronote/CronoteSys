@@ -7,42 +7,20 @@ import java.util.List;
 import java.util.Properties;
 
 import com.cronoteSys.model.bo.LoginBO;
-import com.cronoteSys.model.bo.UserBO;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.GenHash;
-import com.cronoteSys.util.RestUtil;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 import com.cronoteSys.util.SessionUtil;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.validation.RegexValidator;
-import com.jfoenix.validation.RequiredFieldValidator;
 
-import de.jensd.fx.glyphs.GlyphsBuilder;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -89,32 +67,30 @@ public class LoginController extends MasterController {
 	}
 
 	public void login(LoginVO login) {
-		if(RestUtil.isConnectedToTheServer()) {
-			UserVO user = new LoginBO().login(login);
-			if (user != null) {
-				if (rememberMe) {
-					try {
-						Properties prop = getProp();
-						prop.setProperty("LoginScreen.username", login.getEmail());
-						saveProp(prop);
+		UserVO user = new LoginBO().login(login);
+		if (user != null) {
+			if (rememberMe) {
+				try {
+					Properties prop = getProp();
+					prop.setProperty("LoginScreen.username", login.getEmail());
+					saveProp(prop);
 
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 				SessionUtil.getSession().put("loggedUser", user);
 				if ((Boolean) SessionUtil.getSession().getOrDefault("addingAccount",false))
 					registerNewLogin(user.getIdUser());
 				ScreenUtil.openNewWindow(getThisStage(), "Home", true, hmp);
-			} else {
-				List<Node> lst = new ArrayList<Node>();
-				lst.add(txtEmail);
-				lst.add(txtPassword);
-				new ScreenUtil().addORRemoveErrorClass(lst, true);
-				HashMap<String, Object> hmapValues = new HashMap<String, Object>();
-				hmapValues.put("msg", "Usuário ou senha incorretos!");
-				System.out.println("deu errado");
 			}
+		} else {
+			List<Node> lst = new ArrayList<Node>();
+			lst.add(txtEmail);
+			lst.add(txtPassword);
+			new ScreenUtil().addORRemoveErrorClass(lst, true);
+			HashMap<String, Object> hmapValues = new HashMap<String, Object>();
+			hmapValues.put("msg", "Usuário ou senha incorretos!");
+			System.out.println("deu errado");
 		}
 	}
 
