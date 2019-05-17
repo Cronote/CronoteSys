@@ -1,43 +1,70 @@
 package com.cronoteSys.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+
+import org.eclipse.persistence.sessions.Login;
 
 import com.cronoteSys.model.bo.LoginBO;
 import com.cronoteSys.model.bo.UserBO;
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.UserVO;
+import com.cronoteSys.test.PasswordMatchValidator;
 import com.cronoteSys.util.EmailUtil;
 import com.cronoteSys.util.GenHash;
+import com.cronoteSys.util.RestUtil;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXPopup;
+import com.jfoenix.controls.JFXSnackbar;
+import com.jfoenix.controls.JFXSnackbar.SnackbarEvent;
+import com.jfoenix.controls.JFXSnackbarLayout;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RequiredFieldValidator;
 
+import javafx.animation.Animation;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.stage.PopupWindow.AnchorLocation;
+import javafx.util.Duration;
 
 public class SignUpController extends MasterController {
 
 	@FXML
-	private TextField txtName;
+	private JFXTextField txtName;
 	@FXML
-	private DatePicker dateBirthday;
+	private JFXDatePicker dateBirthday;
 	@FXML
-	private TextField txtEmail;
+	private JFXTextField txtEmail;
 	@FXML
-	private TextField txtSecondEmail;
+	private JFXTextField txtSecondEmail;
 	@FXML
 	private Button btnProfile;
 	@FXML
@@ -47,36 +74,39 @@ public class SignUpController extends MasterController {
 	@FXML
 	private Button btnSignUp;
 	@FXML
-	private PasswordField txtPwd;
+	private JFXPasswordField txtPwd;
 	@FXML
-	private PasswordField txtConfirmPwd;
+	private JFXPasswordField txtConfirmPwd;
 	@FXML
 	private AnchorPane pnlInput;
 	@FXML
-	private Label lblName;
-	@FXML
-	private Label lblBirthDate;
-	@FXML
-	private Label lblEmail;
-	@FXML
-	private Label lblSecondEmail;
-	@FXML
-	private Label lblPwd;
-	@FXML
-	private Label lblConfirmPwd;
-
+	private StackPane popupPoint;
+	JFXPopup popupPass = new JFXPopup();
 	private List<Node> allLabels;
 	private boolean bPasswordOk;
 	private LoginVO objLogin;
-
+	final StackPane passwordExplanationPane = new StackPane();
+	PasswordMatchValidator ps = new PasswordMatchValidator();
+	
 	@FXML
 	protected void initialize() {
+		ps.setMessage("SENHAS NÃO COMBINAM");
+		try {
+			Parent lp = ScreenUtil.loadTemplate("/popups/PasswordExplanation").load();
+			passwordExplanationPane.getChildren().add(lp);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		popupPass.setPopupContent(passwordExplanationPane);
+
+		Node[] lstFieldsToValidation = { txtName, txtEmail, txtPwd, txtConfirmPwd };
+		Boolean[] areNotNullFields = { true, true, true, true };
+		Boolean[] areEmailFields = { false, true, false, false };
+		ScreenUtil.addInlineValidation(lstFieldsToValidation, areNotNullFields, areEmailFields);
 		final List<Node> lstPasswordNodes = new ArrayList<Node>();
-		final List<Node> lstPasswordLabelNodes = new ArrayList<Node>();
 		lstPasswordNodes.add(txtPwd);
 		lstPasswordNodes.add(txtConfirmPwd);
-		lstPasswordLabelNodes.add(lblPwd);
-		lstPasswordLabelNodes.add(lblConfirmPwd);
 		objLogin = new LoginVO();
 		ScreenUtil.addOnChangeScreenListener(new OnChangeScreen() {
 			public void onScreenChanged(String newScreen, HashMap<String, Object> hmap) {
@@ -85,24 +115,37 @@ public class SignUpController extends MasterController {
 				}
 			}
 		});
-
+		ScreenUtil.addPasswordFormatValidator(txtPwd);
 		txtPwd.focusedProperty().addListener(new ChangeListener<Boolean>() {
+
+			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				if (newValue) {
+					popupPass.setX(txtPwd.getLayoutX());
+					popupPass.setY(txtPwd.getLayoutY() + 200);
+					popupPass.show(popupPoint);
+				}
 				if (!newValue) {
-					bPasswordOk = ScreenUtil.verifyPassFields(txtPwd.getText().trim(), txtConfirmPwd.getText().trim(),
-							lstPasswordNodes, lstPasswordLabelNodes);
+					popupPass.hide();
+					
 				}
 
 			}
+
 		});
 		txtConfirmPwd.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				ps.setRegexPattern(txtPwd.getText());
 				if (!newValue) {
-					bPasswordOk = ScreenUtil.verifyPassFields(txtConfirmPwd.getText().trim(), txtPwd.getText().trim(),
-							lstPasswordNodes, lstPasswordLabelNodes);
+//					bPasswordOk = ScreenUtil.verifyPassFields(txtConfirmPwd.getText().trim(), txtPwd.getText().trim(),
+//							lstPasswordNodes, lstPasswordLabelNodes);
+					if(txtConfirmPwd.validate()) {
+						txtConfirmPwd.getValidators().remove(ps);
+						txtConfirmPwd.getValidators().add(ps);
+						bPasswordOk = txtConfirmPwd.validate();
+						System.out.println(bPasswordOk);
+					}
 				}
-				lblConfirmPwd.getStyleClass().remove("show");
-				lblConfirmPwd.getStyleClass().add("hide");
 			}
 		});
 	}
@@ -110,33 +153,21 @@ public class SignUpController extends MasterController {
 	@FXML
 	public void btnSignUpClicked() {
 		hiddenAllLabels();
-		System.out.println(dateBirthday.getValue());
-		if (new ScreenUtil().isFilledFields(getThisStage(), pnlInput, false)) {
+		//if (new ScreenUtil().isFilledFields(getThisStage(), pnlInput, false)) {
 			String sEmail = txtEmail.getText().trim();
-			if (!new EmailUtil().validateEmail(sEmail)) {
-				lblEmail.setText("Email fora do formato");
-				lblEmail.getStyleClass().remove("hide");
-				lblEmail.getStyleClass().add("show");
-//				JOptionPane.showMessageDialog(null, "Mensagem de falha por formato de email");
+			if (!EmailUtil.validateEmail(sEmail)) {
 				return;
 			}
-			if (new LoginBO().loginExists(sEmail) != null) {
-				lblEmail.setText("Email já cadastrado");
+
+			LoginVO loginVO = new RestUtil()
+					.response("http://localhost:8081/Test/webapi/myresource/email_exists?email=" + sEmail)
+					.readEntity(LoginVO.class);
+			if (loginVO != null) {
 				txtEmail.getStyleClass().add("error");
-				lblEmail.getStyleClass().remove("hide");
-				lblEmail.getStyleClass().add("show");
-//				JOptionPane.showMessageDialog(null, "Mensagem de falha por email já cadastrado");
 			}
 			if (!bPasswordOk) {
-				lblPwd.getStyleClass().remove("hide");
-				lblConfirmPwd.getStyleClass().remove("hide");
-				lblPwd.getStyleClass().add("show");
-				lblConfirmPwd.getStyleClass().add("show");
 				txtConfirmPwd.getStyleClass().add("error");
 				txtPwd.getStyleClass().add("error");
-				lblPwd.setText("Senhas diferentes");
-				lblConfirmPwd.setText("Senhas diferentes");
-//				JOptionPane.showMessageDialog(null, "Mensagem de falha por senhas diferentes");
 				return;
 			}
 			String sPassPureText = txtPwd.getText().trim();
@@ -147,11 +178,17 @@ public class SignUpController extends MasterController {
 			objUser.setEmailRecover(txtSecondEmail.getText().trim());
 			objUser.setBirthDate(dateBirthday.getValue());
 			objUser.setStats(Byte.parseByte("1"));
-			objUser = new UserBO().save(objUser);
+			Client client = ClientBuilder.newClient();
+			WebTarget target = client.target("http://localhost:8081/Test/webapi/myresource/saveUser");
+			objUser = target.request(MediaType.APPLICATION_JSON)
+					.post(Entity.entity(objUser, MediaType.APPLICATION_JSON), UserVO.class);
+//			objUser = new UserBO().save(objUser);
 			objLogin.setTbUser(objUser);
 			objLogin.setEmail(sEmail);
 			objLogin.setPasswd(sPassEncrypted);
-			objLogin = new LoginBO().save(objLogin);
+			target = client.target("http://localhost:8081/Test/webapi/myresource/saveLogin");
+			objLogin = target.request().post(Entity.entity(objLogin, MediaType.APPLICATION_JSON), LoginVO.class);
+//			objLogin = new LoginBO().save(objLogin);
 			if (objUser != null && objLogin != null) {
 				JOptionPane.showMessageDialog(null, "Mensagem de sucesso");
 				new ScreenUtil().clearFields(getThisStage(), pnlInput);
@@ -159,16 +196,11 @@ public class SignUpController extends MasterController {
 			} else {
 				JOptionPane.showMessageDialog(null, "Mensagem de falha");
 			}
-		}
+		//}
 	}
 
 	private void hiddenAllLabels() {
 		allLabels = new ArrayList<Node>();
-		allLabels.add(lblName);
-		allLabels.add(lblEmail);
-		allLabels.add(lblSecondEmail);
-		allLabels.add(lblPwd);
-		allLabels.add(lblConfirmPwd);
 
 		for (Node n : allLabels) {
 			if (n.getStyleClass().contains("show")) {

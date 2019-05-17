@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import java.lang.String?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="939.0" styleClass="NotRequired" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.ForgotPwdController">
+<GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="939.0" styleClass="NotRequired" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.ForgotPwdController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="127.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="707.0" minWidth="10.0" prefWidth="693.0" />
@@ -29,7 +29,7 @@
    <children>
       <AnchorPane id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="526.0" prefWidth="689.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <Pane id="pane" fx:id="pnlSendEmail" layoutX="73.0" layoutY="49.0" prefHeight="137.0" prefWidth="566.0" styleClass="imputpanel">
+            <Pane id="pane" fx:id="pnlSendEmail" layoutX="73.0" layoutY="49.0" prefHeight="137.0" prefWidth="566.0">
                <children>
                   <Button fx:id="btnSend" layoutX="390.0" layoutY="68.0" mnemonicParsing="false" onAction="#btnSendClicked" opacity="0.88" prefHeight="30.0" prefWidth="91.0" text="Enviar" textFill="WHITE">
                      <cursor>
@@ -43,38 +43,47 @@
                         <String fx:value="btnsize" />
                      </styleClass>
                   </Button>
-                  <Label layoutX="21.0" layoutY="26.0" text="Digite seu email para receber o código">
+                  <Label layoutX="21.0" layoutY="26.0" styleClass="letters_box_icons" text="Digite seu email para receber o código">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <TextField id="txt_email" fx:id="txtEmail" alignment="TOP_LEFT" layoutX="21.0" layoutY="67.0" prefHeight="17.0" prefWidth="351.0" promptText="E-mail*" styleClass="textfild" stylesheets="@../styles/Styles.css">
+                  <JFXTextField id="txt_email" fx:id="txtEmail" alignment="TOP_LEFT" labelFloat="true" layoutX="21.0" layoutY="67.0" prefHeight="17.0" prefWidth="351.0" promptText="E-mail" styleClass="inputField" stylesheets="@../styles/Styles.css">
                      <font>
                         <Font size="14.0" />
                      </font>
-                  </TextField>
-                  <Label fx:id="lblEmailSend" layoutX="21.0" layoutY="98.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="*Campo obrigatório" textFill="RED" />
+                  </JFXTextField>
                </children>
+               <styleClass>
+                  <String fx:value="imputpanel" />
+                  <String fx:value="tone1-background" />
+               </styleClass>
             </Pane>
 
             <Pane fx:id="pnlVerification" layoutX="73.0" layoutY="197.0" prefHeight="264.0" prefWidth="566.0" stylesheets="@../styles/Styles.css">
                <children>
-                  <Label layoutX="393.0" layoutY="56.0" text="Erros de confirmação" textFill="#333333">
+                  <Label contentDisplay="RIGHT" layoutX="393.0" layoutY="56.0" styleClass="letters_box_icons" text="Erros de confirmação" textFill="#333333">
                      <font>
                         <Font size="14.0" />
                      </font>
+                     <graphic>
+                        <Label fx:id="lblErrorsIndex" prefHeight="20.0" prefWidth="12.0" text="0" textFill="#dd0000">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </graphic>
                   </Label>
-                  <Label fx:id="lblErrorsIndex" layoutX="537.0" layoutY="56.0" prefHeight="20.0" prefWidth="12.0" text="0" textFill="#dd0000">
+                  <Label layoutX="393.0" layoutY="77.0" prefHeight="90.0" prefWidth="141.0" text="Ao errar 3x o código de confirmação será necessário o reenvio do mesmo." textFill="#333333" wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
+                     <styleClass>
+                        <String fx:value="letters_box_icons" />
+                        <String fx:value="hide" />
+                     </styleClass>
                   </Label>
-                  <Label layoutX="393.0" layoutY="77.0" prefHeight="90.0" prefWidth="141.0" styleClass="hide" text="Ao errar 3x o código de confirmação será necessário o reenvio do mesmo." textFill="#333333" wrapText="true">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="btnConfirm" layoutX="210.0" layoutY="193.0" mnemonicParsing="false" onAction="#btnConfirmClicked" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Confirmar" textFill="WHITE">
+                  <Button fx:id="btnConfirm" layoutX="23.0" layoutY="193.0" mnemonicParsing="false" onAction="#btnConfirmClicked" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Confirmar" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -82,7 +91,7 @@
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnCancel" layoutX="33.0" layoutY="193.0" mnemonicParsing="false" onAction="#btnCancelClicked" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Cancelar" textFill="WHITE">
+                  <Button fx:id="btnCancel" layoutX="232.0" layoutY="193.0" mnemonicParsing="false" onAction="#btnCancelClicked" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Cancelar" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -90,27 +99,28 @@
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <TextField fx:id="txtCode" alignment="TOP_LEFT" layoutX="23.0" layoutY="28.0" prefHeight="17.0" prefWidth="351.0" promptText="Digite o código de confirmação*" styleClass="textfild">
+                  <JFXTextField fx:id="txtCode" alignment="TOP_LEFT" labelFloat="true" layoutX="23.0" layoutY="28.0" prefHeight="17.0" prefWidth="351.0" promptText="Digite o código de confirmação" styleClass="inputField">
                      <font>
                         <Font size="14.0" />
                      </font>
-                  </TextField>
+                  </JFXTextField>
                   <Label fx:id="lblCode" layoutX="23.0" layoutY="58.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Código incorreto" textFill="RED" />
-                  <PasswordField id="txt_password" fx:id="txtPwd" alignment="TOP_LEFT" layoutX="23.0" layoutY="77.0" prefHeight="17.0" prefWidth="351.0" promptText="Nova senha*" styleClass="textfild">
+                  <JFXPasswordField id="txt_password" fx:id="txtPwd" alignment="TOP_LEFT" labelFloat="true" layoutX="23.0" layoutY="77.0" prefHeight="17.0" prefWidth="351.0" promptText="Nova senha" styleClass="inputField">
                      <font>
                         <Font size="14.0" />
                      </font>
-                  </PasswordField>
+                  </JFXPasswordField>
                   <Label fx:id="lblNewPwd" layoutX="23.0" layoutY="107.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Senha inválida" textFill="RED" />
-                  <PasswordField id="txt_password" fx:id="txtConfirmPwd" alignment="TOP_LEFT" layoutX="23.0" layoutY="129.0" prefHeight="17.0" prefWidth="351.0" promptText="Confirme a nova senha*" styleClass="textfild">
+                  <JFXPasswordField id="txt_password" fx:id="txtConfirmPwd" alignment="TOP_LEFT" labelFloat="true" layoutX="23.0" layoutY="129.0" prefHeight="17.0" prefWidth="351.0" promptText="Confirme a nova senha" styleClass="inputField">
                      <font>
                         <Font size="14.0" />
                      </font>
-                  </PasswordField>
+                  </JFXPasswordField>
                   <Label fx:id="lblConfirmPwd" layoutX="23.0" layoutY="159.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Senha inválida" textFill="RED" />
                </children>
                <styleClass>
                   <String fx:value="imputpanel" />
+                  <String fx:value="tone1-background" />
                   <String fx:value="hide" />
                </styleClass>
             </Pane>
@@ -140,7 +150,7 @@
                   <Cursor fx:constant="DEFAULT" />
                </cursor>
                <image>
-                  <Image url="@../image/cronote_logo_dark.png" />
+                  <Image url="@../image/cronote_logo_white.png" />
                </image>
             </ImageView>
          </children>

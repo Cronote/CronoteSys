@@ -23,7 +23,7 @@ public class MasterController {
 	private String sPreviewsScene;
 
 	public void btnBackClicked() {
-		new ScreenUtil().openNewWindow(getThisStage(), sPreviewsScene, false);
+		ScreenUtil.openNewWindow(getThisStage(), sPreviewsScene, false);
 	}
 
 	protected Stage getThisStage() {
