@@ -1,4 +1,4 @@
-package com.cronoteSys.controller;
+package com.cronoteSys.controller.components.dialogs;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +11,7 @@ import com.cronoteSys.model.vo.CategoryVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.SessionUtil;
 import com.google.inject.Inject;
+import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXTextField;
 
 import de.jensd.fx.glyphs.GlyphIcon;
@@ -51,7 +52,7 @@ public class DialogCategoryManagerController implements Initializable {
 	@Inject
 	private CategoryDAO catDao;
 	private ObservableList<CategoryVO> lstCategories = FXCollections.emptyObservableList();
-	private UserVO loggedUser = (UserVO) SessionUtil.getSESSION().get("loggedUser");
+	private UserVO loggedUser = (UserVO) SessionUtil.getSession().get("loggedUser");
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

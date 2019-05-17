@@ -3,19 +3,24 @@ package com.cronoteSys.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 
-import com.cronoteSys.controller.ProjectCell.ProjectSelectedI;
 import com.cronoteSys.controller.ProjectListController.BtnProjectClickedI;
+import com.cronoteSys.controller.ProjectListController.ProjectSelectedI;
 import com.cronoteSys.model.bo.ActivityBO;
+import com.cronoteSys.model.bo.LoginBO;
 import com.cronoteSys.model.bo.ActivityBO.OnActivityDeletedI;
 import com.cronoteSys.model.vo.ActivityVO;
+import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.ProjectVO;
+import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.observer.ShowEditViewActivityObservableI;
 import com.cronoteSys.observer.ShowEditViewActivityObserverI;
 import com.cronoteSys.util.ScreenUtil;
-import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 import com.cronoteSys.util.SessionUtil;
+import com.jfoenix.controls.JFXPopup;
+import com.jfoenix.controls.JFXTabPane;
 
 import de.jensd.fx.glyphs.GlyphIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -25,11 +30,11 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
@@ -38,18 +43,36 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 
 public class HomeController implements Initializable {
 
 	@FXML
 	protected HBox root;
 	private MenuController menuControl;
+
+	private void loadProjectManager(ProjectVO project) {
+		removeIndexFromRoot(2);
+		FXMLLoader projectFXML = ScreenUtil.loadTemplate("ProjectManager");
+		ProjectManagerController control = SessionUtil.getInjector().getInstance(ProjectManagerController.class);
+		control.setState(ProjectManagerState.FIRST_INFO);
+		projectFXML.setController(control);
+		JFXTabPane projectManager = (JFXTabPane) FXMLLoaderToNode(projectFXML);
+		if (project != null)
+			control.setSelectedProject(project);
+		projectManager.setMaxHeight(Double.POSITIVE_INFINITY);
+		projectManager.setMaxWidth(Double.POSITIVE_INFINITY);
+		HBox.setHgrow(projectManager, Priority.ALWAYS);
+		addNode(projectManager);
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -58,47 +81,18 @@ public class HomeController implements Initializable {
 		ProjectListController.addOnBtnProjectClickedListener(new BtnProjectClickedI() {
 			@Override
 			public void onBtnProjectClicked() {
-				removeIndexFromRoot(2);
-				FXMLLoader projectFXML = ScreenUtil.loadTemplate("ProjectManager");
-				ProjectManagerController control = SessionUtil.getInjector()
-						.getInstance(ProjectManagerController.class);
-				control.setState(ProjectManagerState.FIRST_INFO);
-				projectFXML.setController(control);
-				BorderPane projectManager = (BorderPane) FXMLLoaderToNode(projectFXML);
-
-				TitledPane titledPane = new TitledPane("CADASTRAR PROJETO", projectManager);
-				titledPane.setCollapsible(false);
-				titledPane.setAlignment(Pos.CENTER);
-				titledPane.getStyleClass().add("activityDetails");
-				titledPane.setMaxHeight(Double.POSITIVE_INFINITY);
-				addNode(titledPane);
-				HBox.setHgrow(titledPane, Priority.ALWAYS);
+				loadProjectManager(null);
 			}
+
 		});
-		ProjectCell.addOnProjectSelectedListener(new ProjectSelectedI() {
+
+		ProjectListController.addOnProjectSelectedListener(new ProjectSelectedI() {
 			@Override
 			public void onProjectSelect(ProjectVO project) {
-				removeIndexFromRoot(2);
-
-				if (project != null) {
-					FXMLLoader projectFXML = ScreenUtil.loadTemplate("ProjectManager");
-					ProjectManagerController control = SessionUtil.getInjector()
-							.getInstance(ProjectManagerController.class);
-					control.setState(ProjectManagerState.FIRST_INFO);
-					projectFXML.setController(control);
-					control.setSelectedProject(project);
-					BorderPane projectManager = (BorderPane) FXMLLoaderToNode(projectFXML);
-					TitledPane titledPane = new TitledPane("INFORMAÇÕES DO PROJETO", projectManager);
-					titledPane.setCollapsible(false);
-					titledPane.setAlignment(Pos.CENTER);
-					titledPane.getStyleClass().add("activityDetails");
-					titledPane.setMaxHeight(Double.POSITIVE_INFINITY);
-					addNode(titledPane);
-					HBox.setHgrow(titledPane, Priority.ALWAYS);
-				}
+				loadProjectManager(project);
 			}
 		});
-		
+
 		root.getChildren().addListener(new ListChangeListener<Node>() {
 			@Override
 			public void onChanged(Change<? extends Node> c) {
@@ -155,31 +149,32 @@ public class HomeController implements Initializable {
 	protected ShowEditViewActivityObserverI showListener = new ShowEditViewActivityObserverI() {
 		@Override
 		public void showEditViewActivity(HashMap<String, Object> hmap) {
+			AnchorPane ap = null;
+			FXMLLoader detailsFxml = ScreenUtil.loadTemplate("ActivityDetailsInserting");
 			if (hmap.get("project") != null)
 				removeIndexFromRoot(3);
 			else
 				removeIndexFromRoot(2);
-			FXMLLoader detailsFxml = ScreenUtil.loadTemplate("DetailsInserting");
-
 			String action = (String) hmap.get("action");
 			ProjectVO project = (ProjectVO) hmap.get("project");
+			ActivityVO activity = (ActivityVO) hmap.get("activity");
 			if (action.equalsIgnoreCase("cadastro")) {
+				ap = (AnchorPane) addNode(detailsFxml);
 				if (project != null) {
-					detailsFxml.setController(new ActivityDetailsController(project));
+					System.out.println(project);
+					((ActivityDetailsInsertingController) detailsFxml.getController()).setProject(project);
+				} else {
+					if (activity != null)
+						((ActivityDetailsInsertingController) detailsFxml.getController()).loadActivity(activity);
 				}
-				detailsFxml.setController(new ActivityDetailsController(null));
 			} else {
-				ActivityVO activity = (ActivityVO) hmap.get("activity");
-				if (action.equalsIgnoreCase("view")) {
-					detailsFxml = ScreenUtil.loadTemplate("ActivityDetailsView");
-				}
-				detailsFxml.setController(new ActivityDetailsController(activity, action));
+				detailsFxml = ScreenUtil.loadTemplate("ActivityDetailsView");
+				ap = (AnchorPane) addNode(detailsFxml);
+				((ActivityDetailsViewController) detailsFxml.getController()).loadActivity(activity);
 			}
-			AnchorPane ap =(AnchorPane) addNode(detailsFxml);
-//			titledPane.setAlignment(Pos.CENTER);
-//			titledPane.getStyleClass().add("activityDetails");
+
+			ap.setMaxWidth(Double.POSITIVE_INFINITY);
 			ap.setMaxHeight(Double.POSITIVE_INFINITY);
-//			addNode(titledPane);
 			HBox.setHgrow(ap, Priority.ALWAYS);
 		}
 	};
@@ -187,6 +182,7 @@ public class HomeController implements Initializable {
 	public ShowEditViewActivityObserverI getShowListener() {
 		return showListener;
 	}
+
 }
 
 class MenuController implements Initializable {
@@ -204,16 +200,28 @@ class MenuController implements Initializable {
 	private ToggleButton btnProject;
 	@FXML
 	private ToggleGroup btnWindows;
-
+	@FXML
+	private Tooltip ttpUserEmail;
+	@FXML
+	private AnchorPane loggedCard;
+	@FXML
+	private StackPane initialPnl;
+	@FXML
+	private Label lblUserInitial;
+	@FXML
+	private Label lblUsername;
+	@FXML
+	private Label lblUserEmail;
 	private ToggleButton btnSizeToggle = new ToggleButton();
 	private HomeController homeControl;
 	BooleanProperty shortLarge = new SimpleBooleanProperty(false);
 
 	public MenuController(HomeController homeController) {
 		homeControl = homeController;
+
 	}
 
-	public void btnActivityClicked(ActionEvent e) {
+	public void btnActivityClicked(ActionEvent e) throws IOException {
 		homeControl.clearRoot(false, (Node) e.getSource());
 		ShowEditViewActivityObservableI.removeShowEditViewActivityListener(homeControl.getShowListener());
 		ActivityBO.removeOnActivityDeletedListener(homeControl.listenerActivityDelete);
@@ -224,7 +232,6 @@ class MenuController implements Initializable {
 			ShowEditViewActivityObservableI.addShowEditViewActivityListener(homeControl.getShowListener());
 			ActivityBO.addOnActivityDeletedListener(homeControl.listenerActivityDelete);
 		}
-		
 	}
 
 	public void btnProjectClicked(ActionEvent e) {
@@ -260,7 +267,12 @@ class MenuController implements Initializable {
 		btnActivity.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				btnActivityClicked(event);
+				try {
+					btnActivityClicked(event);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 			}
 		});
@@ -292,9 +304,28 @@ class MenuController implements Initializable {
 			menu.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 			adjustMenu(shortLarge.get());
 		});
+
+		loggedCard.setOnMouseClicked(new EventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+				JFXPopup popup = new JFXPopup();
+				Pane p = new Pane();
+				p.setPrefSize(300, 200);
+				FXMLLoader fxml = SessionUtil.getInjector().getInstance(FXMLLoader.class);
+				fxml.setLocation(HomeController.class.getResource("/fxml/Templates/popups/Logout-LoggedAccounts.fxml"));
+				try {
+					popup.setPopupContent((Region) fxml.load());
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				popup.setAutoFix(true);
+				popup.show(loggedCard);
+			}
+		});
 	}
 
 	private void initDesign() {
+		ttpUserEmail.textProperty().bind(lblUserEmail.textProperty());
 		for (Toggle node : btnWindows.getToggles()) {
 			ToggleButton btn = ((ToggleButton) node);
 			node.setUserData(btn.getGraphicTextGap());
@@ -302,14 +333,27 @@ class MenuController implements Initializable {
 		btnSizeToggle.getStyleClass().addAll("btnTransparent");
 		adjustBtnIcon(false);
 		btnSizeToggle.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+
+		UserVO loggedUser = (UserVO) SessionUtil.getSession().get("loggedUser");
+		lblUserInitial.setText(loggedUser.getCompleteName().substring(0, 1).toUpperCase());
+		String[] userNames = loggedUser.getCompleteName().split(" ");
+		String name = userNames.length > 1 ? userNames[0] + " " + userNames[(userNames.length - 1)] : userNames[0];
+		lblUsername.setText(name);
+		LoginVO login = new LoginBO().getLogin(loggedUser);
+		lblUserEmail.setText(login.getEmail());
+		
 	}
 
 	protected void adjustMenu(boolean makeItShort) {
 		if (makeItShort) {
 			menu.setPrefWidth(SHORT_WIDTH);
-			imgLogo.setImage(new Image(getClass().getResourceAsStream("/image/cronote_logo_dark_short.png")));
+			imgLogo.setImage(null);
 			imgLogo.setTranslateX(0);
 			imgLogo.maxWidth(SHORT_WIDTH);
+			lblUserEmail.setVisible(false);
+			lblUsername.setVisible(false);
+			loggedCard.maxWidth(SHORT_WIDTH);
+			initialPnl.setTranslateX(72);
 			for (Toggle node : btnWindows.getToggles()) {
 				ToggleButton btn = ((ToggleButton) node);
 				btn.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
@@ -318,6 +362,11 @@ class MenuController implements Initializable {
 			menu.setPrefWidth(LARGE_WIDTH);
 			imgLogo.setImage(new Image(getClass().getResourceAsStream("/image/cronote_logo_white.png")));
 			imgLogo.maxWidth(LARGE_WIDTH);
+			loggedCard.maxWidth(LARGE_WIDTH);
+			lblUserEmail.setVisible(true);
+			lblUsername.setVisible(true);
+			loggedCard.maxWidth(LARGE_WIDTH);
+			initialPnl.setTranslateX(-10);
 			for (Toggle node : btnWindows.getToggles()) {
 				ToggleButton btn = ((ToggleButton) node);
 				btn.setContentDisplay(ContentDisplay.LEFT);

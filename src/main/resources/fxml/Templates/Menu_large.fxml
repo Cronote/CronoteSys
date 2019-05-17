@@ -2,156 +2,216 @@
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import java.lang.String?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<TitledPane id="menu" fx:id="menu" alignment="CENTER" animated="false" collapsible="false" maxHeight="Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="232.0" styleClass="menu-background" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<TitledPane id="menu" fx:id="menu" alignment="CENTER"
+	animated="false" collapsible="false" maxHeight="Infinity"
+	maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+	prefWidth="232.0" styleClass="menu-background"
+	xmlns="http://javafx.com/javafx/8.0.171"
+	xmlns:fx="http://javafx.com/fxml/1">
 	<content>
-      <VBox prefHeight="700.0">
-         <children>
-            <FlowPane fx:id="topMenu" alignment="TOP_CENTER" prefWidth="232.0" VBox.vgrow="NEVER">
-               <children>
-      				<ImageView fx:id="imgLogo" fitHeight="66.0" fitWidth="243.0" pickOnBounds="true" preserveRatio="true" style="-fx-min-width: 100%;">
-      					<image>
-      						<Image url="@../../image/cronote_logo_white.png" />
-      					</image>
-      				</ImageView>
-      				<ToggleButton fx:id="btnActivity" cacheShape="false" ellipsisString="" graphicTextGap="80.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="240.0" text="ATIVIDADES" textAlignment="CENTER">
-      					<graphic>
-      						<FontAwesomeIconView fontSmoothingType="LCD" glyphName="FILE_TEXT_ALT" size="2em" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" textAlignment="CENTER" textOrigin="CENTER">
-      							<font>
-      								<Font name="FontAwesome Regular" size="18.0" />
-      							</font>
-                           <styleClass>
-                              <String fx:value="icon" />
-                              <String fx:value="letters_box_icons" />
-                           </styleClass>
-      						</FontAwesomeIconView>
-      					</graphic>
-      					<font>
-      						<Font size="15.0" />
-      					</font>
-                     <toggleGroup>
-      						<ToggleGroup fx:id="btnWindows" />
-                     </toggleGroup>
-                     <styleClass>
-                        <String fx:value="btnTransparent" />
-                        <String fx:value="btnWindows" />
-                        <String fx:value="letters_box_icons" />
-                     </styleClass>
-      				</ToggleButton>
-      				<ToggleButton fx:id="btnProject" cacheShape="false" ellipsisString="" graphicTextGap="80.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" text="  PROJETOS" textAlignment="CENTER" toggleGroup="$btnWindows">
-      					<graphic>
-      						<FontAwesomeIconView fontSmoothingType="LCD" glyphName="BOOK" size="2em" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" textAlignment="CENTER" textOrigin="CENTER" translateX="-2.0">
-      							<font>
-      								<Font name="FontAwesome Regular" size="18.0" />
-      							</font>
-                           <styleClass>
-                              <String fx:value="icon-outline" />
-                              <String fx:value="normal" />
-                              <String fx:value="rainforce" />
-                           </styleClass>
-      						</FontAwesomeIconView>
-      					</graphic>
-      					<font>
-      						<Font size="15.0" />
-      					</font>
-                     <styleClass>
-                        <String fx:value="btnTransparent" />
-                        <String fx:value="btnWindows" />
-                        <String fx:value="letters_box_icons" />
-                     </styleClass>
-      				</ToggleButton>
-      				<ToggleButton fx:id="btnReport" cacheShape="false" disable="true" ellipsisString="" graphicTextGap="65.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="51.0" prefWidth="239.0" text="RELATÓRIOS" textAlignment="CENTER" toggleGroup="$btnWindows">
-      					<graphic>
-      						<AnchorPane maxHeight="38.0" maxWidth="48.0" prefHeight="38.0" prefWidth="48.0" style="-fx-border-radius: 10; -fx-border-color: #A6A6A6;">
-      							<children>
-      								<FontAwesomeIconView glyphName="BAR_CHART" layoutX="3.0" layoutY="15.650670051574707" size="1.5em" AnchorPane.bottomAnchor="19.426339149475098" AnchorPane.leftAnchor="3.0">
-                                 <styleClass>
-                                    <String fx:value="normal" />
-                                    <String fx:value="letters_box_icons" />
-                                 </styleClass></FontAwesomeIconView>
-      								<FontAwesomeIconView glyphName="PIE_CHART" layoutX="29.0" layoutY="26.0" size="1.5em">
-                                 <styleClass>
-                                    <String fx:value="normal" />
-                                    <String fx:value="letters_box_icons" />
-                                 </styleClass></FontAwesomeIconView>
-      								<FontAwesomeIconView glyphName="LINE_CHART" layoutX="4.0" layoutY="34.65067005157471" size="1.5em">
-                                 <styleClass>
-                                    <String fx:value="normal" />
-                                    <String fx:value="letters_box_icons" />
-                                 </styleClass></FontAwesomeIconView>
-      							</children>
-                           <styleClass>
-                              <String fx:value="outline" />
-                              <String fx:value="letters_box_icons" />
-                           </styleClass>
-      						</AnchorPane>
-      					</graphic>
-      					<font>
-      						<Font size="15.0" />
-      					</font>
-                     <styleClass>
-                        <String fx:value="btnTransparent" />
-                        <String fx:value="btnWindows" />
-                        <String fx:value="letters_box_icons" />
-                     </styleClass>
-      				</ToggleButton>
-               </children>
-            </FlowPane>
-				<AnchorPane prefHeight="346.0" prefWidth="166.0" VBox.vgrow="ALWAYS" />
-            <FlowPane fx:id="BottomMenu" VBox.vgrow="NEVER">
-               <children>
-      				<ToggleButton fx:id="btnConfig" cacheShape="false" disable="true" ellipsisString="" graphicTextGap="90.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="232.0" text="     AJUSTES" textAlignment="CENTER" toggleGroup="$btnWindows">
-      					<graphic>
-      						<FontAwesomeIconView fontSmoothingType="LCD" glyphName="GEAR" size="2em" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="2.0" textAlignment="CENTER" textOrigin="CENTER">
-      							<font>
-      								<Font name="FontAwesome Regular" size="18.0" />
-      							</font>
-      							<styleClass>
-      								<String fx:value="outline" />
-      								<String fx:value="rainforce" />
-      							</styleClass>
-      						</FontAwesomeIconView>
-      					</graphic>
-      					<font>
-      						<Font size="15.0" />
-      					</font>
-                     <styleClass>
-                        <String fx:value="btnTransparent" />
-                        <String fx:value="btnWindows" />
-                     </styleClass>
-      				</ToggleButton>
-      				<ToggleButton fx:id="btnHelp" cacheShape="false" disable="true" ellipsisString="" graphicTextGap="80.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="232.0" text="           AJUDA" textAlignment="CENTER" toggleGroup="$btnWindows">
-      					<graphic>
-      						<FontAwesomeIconView fontSmoothingType="LCD" glyphName="QUESTION" size="2em" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="2.0" textAlignment="RIGHT" textOrigin="CENTER">
-      							<font>
-      								<Font name="FontAwesome Regular" size="18.0" />
-      							</font>
-      							<styleClass>
-      								<String fx:value="outline" />
-      								<String fx:value="rainforce" />
-      							</styleClass>
-      						</FontAwesomeIconView>
-      					</graphic>
-      					<font>
-      						<Font size="15.0" />
-      					</font>
-                     <styleClass>
-                        <String fx:value="btnTransparent" />
-                        <String fx:value="btnWindows" />
-                     </styleClass>
-      				</ToggleButton>
-               </children>
-            </FlowPane>
-         </children>
-      </VBox>
+		<VBox prefHeight="700.0">
+			<children>
+				<FlowPane fx:id="topMenu" alignment="TOP_CENTER"
+					prefWidth="232.0" VBox.vgrow="NEVER">
+					<children>
+						<ImageView fx:id="imgLogo" fitHeight="66.0"
+							fitWidth="243.0" pickOnBounds="true" preserveRatio="true"
+							style="-fx-min-width: 100%;">
+							<image>
+								<Image url="@../../image/cronote_logo_white.png" />
+							</image>
+						</ImageView>
+						<AnchorPane fx:id="loggedCard" prefHeight="84.0"
+							prefWidth="199.0">
+							<children>
+								<StackPane fx:id="initialPnl" layoutY="18.0"
+									prefHeight="49.0" prefWidth="53.0"
+									style="-fx-background-radius: 30; -fx-background-color: grey;"
+									AnchorPane.bottomAnchor="17.0" AnchorPane.topAnchor="18.0">
+									<children>
+										<Label fx:id="lblUserInitial" prefHeight="32.0" text="N"
+											textFill="#f5f5f5">
+											<font>
+												<Font name="System Bold" size="31.0" />
+											</font>
+										</Label>
+									</children>
+								</StackPane>
+								<Label fx:id="lblUsername" layoutX="55.0" layoutY="18.0"
+									prefHeight="21.0" text="Bruno" textFill="#f5f5f5"
+									AnchorPane.leftAnchor="55.0">
+									<font>
+										<Font size="16.0" />
+									</font>
+								</Label>
+								<Label fx:id="lblUserEmail" layoutX="56.0" layoutY="44.0"
+									prefWidth="143.0" text="bruno.car.ambrosio@gmail.com"
+									textFill="#f5f5f5" AnchorPane.rightAnchor="0.0">
+									<font>
+										<Font size="13.0" />
+									</font>
+									<tooltip>
+										<Tooltip fx:id="ttpUserEmail">
+											<font>
+												<Font size="17.0" />
+											</font>
+										</Tooltip>
+									</tooltip>
+								</Label>
+							</children>
+						</AnchorPane>
+						<ToggleButton fx:id="btnActivity" cacheShape="false"
+							ellipsisString="" graphicTextGap="80.0" mnemonicParsing="false"
+							prefHeight="47.0" prefWidth="240.0" text="ATIVIDADES"
+							textAlignment="CENTER">
+							<graphic>
+								<FontAwesomeIconView fontSmoothingType="LCD"
+									glyphName="FILE_TEXT_ALT" size="2em" stroke="TRANSPARENT"
+									strokeLineCap="ROUND" strokeLineJoin="ROUND"
+									textAlignment="CENTER" textOrigin="CENTER">
+									<font>
+										<Font name="FontAwesome Regular" size="18.0" />
+									</font>
+									<styleClass>
+										<String fx:value="icon" />
+										<String fx:value="letters_box_icons" />
+									</styleClass>
+								</FontAwesomeIconView>
+							</graphic>
+							<font>
+								<Font size="15.0" />
+							</font>
+							<styleClass>
+								<String fx:value="btnTransparent" />
+								<String fx:value="btnWindows" />
+								<String fx:value="letters_box_icons" />
+							</styleClass>
+							<toggleGroup>
+								<ToggleGroup fx:id="btnWindows" />
+							</toggleGroup>
+						</ToggleButton>
+						<ToggleButton fx:id="btnProject" cacheShape="false"
+							ellipsisString="" graphicTextGap="80.0" mnemonicParsing="false"
+							prefHeight="50.0" prefWidth="240.0" text="  PROJETOS"
+							textAlignment="CENTER" toggleGroup="$btnWindows">
+							<graphic>
+								<FontAwesomeIconView fontSmoothingType="LCD"
+									glyphName="BOOK" size="2em" stroke="TRANSPARENT"
+									strokeLineCap="ROUND" strokeLineJoin="ROUND"
+									textAlignment="CENTER" textOrigin="CENTER" translateX="-2.0">
+									<font>
+										<Font name="FontAwesome Regular" size="18.0" />
+									</font>
+									<styleClass>
+										<String fx:value="icon-outline" />
+										<String fx:value="normal" />
+										<String fx:value="rainforce" />
+									</styleClass>
+								</FontAwesomeIconView>
+							</graphic>
+							<font>
+								<Font size="15.0" />
+							</font>
+							<styleClass>
+								<String fx:value="btnTransparent" />
+								<String fx:value="btnWindows" />
+								<String fx:value="letters_box_icons" />
+							</styleClass>
+						</ToggleButton>
+						<ToggleButton fx:id="btnReport" cacheShape="false"
+							disable="true" ellipsisString="" graphicTextGap="65.0"
+							mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT"
+							prefHeight="51.0" prefWidth="239.0" text="RELATÓRIOS"
+							textAlignment="CENTER" toggleGroup="$btnWindows">
+							<graphic>
+								<AnchorPane maxHeight="38.0" maxWidth="48.0"
+									prefHeight="38.0" prefWidth="48.0"
+									style="-fx-border-radius: 10; -fx-border-color: #A6A6A6;">
+									<children>
+										<FontAwesomeIconView glyphName="BAR_CHART"
+											layoutX="3.0" layoutY="15.650670051574707" size="1.5em"
+											AnchorPane.bottomAnchor="19.426339149475098"
+											AnchorPane.leftAnchor="3.0">
+											<styleClass>
+												<String fx:value="normal" />
+												<String fx:value="letters_box_icons" />
+											</styleClass>
+										</FontAwesomeIconView>
+										<FontAwesomeIconView glyphName="PIE_CHART"
+											layoutX="29.0" layoutY="26.0" size="1.5em">
+											<styleClass>
+												<String fx:value="normal" />
+												<String fx:value="letters_box_icons" />
+											</styleClass>
+										</FontAwesomeIconView>
+										<FontAwesomeIconView
+											glyphName="LINE_CHART" layoutX="4.0"
+											layoutY="34.65067005157471" size="1.5em">
+											<styleClass>
+												<String fx:value="normal" />
+												<String fx:value="letters_box_icons" />
+											</styleClass>
+										</FontAwesomeIconView>
+									</children>
+									<styleClass>
+										<String fx:value="outline" />
+										<String fx:value="letters_box_icons" />
+									</styleClass>
+								</AnchorPane>
+							</graphic>
+							<font>
+								<Font size="15.0" />
+							</font>
+							<styleClass>
+								<String fx:value="btnTransparent" />
+								<String fx:value="btnWindows" />
+								<String fx:value="letters_box_icons" />
+							</styleClass>
+						</ToggleButton>
+						<ToggleButton cacheShape="false" disable="true"
+							ellipsisString="" graphicTextGap="110.0" mnemonicParsing="false"
+							nodeOrientation="LEFT_TO_RIGHT" prefHeight="51.0"
+							prefWidth="239.0" text="TIMES" textAlignment="CENTER">
+							<toggleGroup>
+								<ToggleGroup fx:id="btnWindows1" />
+							</toggleGroup>
+							<font>
+								<Font size="15.0" />
+							</font>
+							<styleClass>
+								<String fx:value="btnTransparent" />
+								<String fx:value="btnWindows" />
+								<String fx:value="letters_box_icons" />
+							</styleClass>
+							<graphic>
+								<FontAwesomeIconView glyphName="USERS"
+									size="3em">
+									<styleClass>
+										<String fx:value="icon-outline" />
+										<String fx:value="rainforce" />
+									</styleClass>
+								</FontAwesomeIconView>
+							</graphic>
+						</ToggleButton>
+						<AnchorPane prefHeight="37.0" prefWidth="166.0" />
+						<Separator prefWidth="200.0" />
+					</children>
+				</FlowPane>
+			</children>
+		</VBox>
 	</content>
 </TitledPane>

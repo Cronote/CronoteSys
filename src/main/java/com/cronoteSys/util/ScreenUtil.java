@@ -13,7 +13,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.cronoteSys.model.bo.LoginBO;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.skins.JFXDatePickerSkin;
+import com.jfoenix.validation.RegexValidator;
+import com.jfoenix.validation.RequiredFieldValidator;
 
+import de.jensd.fx.glyphs.GlyphsBuilder;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -48,7 +56,7 @@ public class ScreenUtil {
 	 */
 	public static void openNewWindow(Stage oldStage, String sSceneName, boolean isModal) {
 
-		Stage newStage = oldStage;
+		Stage newStage = oldStage != null ? oldStage : new Stage();
 
 		newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
@@ -299,7 +307,9 @@ public class ScreenUtil {
 	public static void paintScreen(HBox root) {
 		int nodeIndex = 0;
 		for (Node node : root.getChildren()) {
+//			System.out.print(node);
 			if (nodeIndex > 0) {
+//				System.out.println(" " +nodeIndex );
 				node.getStyleClass().removeAll("tone1-background", "tone2-background");
 				if (nodeIndex % 2 == 0)
 					node.getStyleClass().addAll("tone1-background");
@@ -309,6 +319,63 @@ public class ScreenUtil {
 			nodeIndex++;
 		}
 
+	}
+
+	public static void addInlineValidation(Node[] fields, Boolean[] isNotnull, Boolean[] isEmail) {
+		//required
+		RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
+		requiredValidator.setMessage("CAMPO OBRIGATÓRIO!");
+		requiredValidator.setIcon(GlyphsBuilder.create(FontAwesomeIconView.class).glyph(FontAwesomeIcon.WARNING)
+				.size("1em").styleClass("error").build());
+		//email
+		RegexValidator emailValidator = new RegexValidator();
+		emailValidator.setRegexPattern("^([A-z]+)([A-z0-9-_.]*)@([A-z.]+)\\.[A-z]{2,}$");
+		emailValidator.setMessage("EMAIL EM FORMATO INVÁLIDO!");
+		/* Password
+		 * /^ Inicio de string 
+		 * (?=.*\d) deve conter ao menos um dígito 
+		 * (?=.*[a-z]) deve conter ao menos uma letra minúscula 
+		 * (?=.*[A-Z]) deve conter ao menos uma letra maiúscula 
+		 * (?=.*[$*&@#_!\\/()-]]) deve conter ao menos um caractere especial 
+		 * [0-9a-zA-Z$*&@#_!\\/()-]]{8,} deve conter ao menos 8 dos caracteres mencionados 
+		 * $/ Fim de string
+		 */
+		
+
+		for (int i = 0; i < fields.length; i++) {
+			Node node = fields[i];
+			if (node instanceof JFXTextField) {
+				JFXTextField jfxTextField = (JFXTextField) node;
+				if (isNotnull[i])
+					jfxTextField.getValidators().add(requiredValidator);
+				if (isEmail[i])
+					jfxTextField.getValidators().add(emailValidator);
+				jfxTextField.focusedProperty().addListener((o, oldVal, newVal) -> {
+					if (!newVal) {
+						jfxTextField.validate();
+					}
+				});
+			}
+			if (node instanceof JFXPasswordField) {
+				JFXPasswordField jfxPasswordField = (JFXPasswordField) node;
+				if (isNotnull[i])
+					jfxPasswordField.getValidators().add(requiredValidator);
+			}
+		}
+	}
+
+	public static void addPasswordFormatValidator(
+			JFXPasswordField jfxPasswordField) {
+		RegexValidator passwordValidator = new RegexValidator();
+		passwordValidator
+				.setRegexPattern("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#_!\\/()-])[0-9a-zA-Z$*&@#_!\\/()-]{8,}$");
+		passwordValidator.setMessage("SENHA EM FORMATO INVÁLIDO!");
+		jfxPasswordField.getValidators().add(passwordValidator);
+		jfxPasswordField.focusedProperty().addListener((o, oldVal, newVal) -> {
+			if (!newVal) {
+				jfxPasswordField.validate();
+			}
+		});
 	}
 
 	private static ArrayList<OnChangeScreen> listeners = new ArrayList<OnChangeScreen>();
