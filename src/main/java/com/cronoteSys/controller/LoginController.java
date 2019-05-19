@@ -117,8 +117,11 @@ public class LoginController extends MasterController {
 	private void registerNewLogin(Integer idUser) {
 		try {
 			Properties prop = getProp();
-			String savedAccounts = prop.getProperty("savedAccounts");
-			if (!savedAccounts.contains(idUser.toString()))
+			String savedAccounts = prop.getProperty("savedAccounts","");
+			System.out.println(savedAccounts.split(",").length);
+			if (savedAccounts.equals(""))
+				savedAccounts+=idUser.toString();
+			else 
 				savedAccounts += "," + idUser.toString();
 			prop.setProperty("savedAccounts", savedAccounts);
 			saveProp(prop);

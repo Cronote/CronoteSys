@@ -109,7 +109,6 @@ public class LogoutLoggedAccountsController implements Initializable {
 
 		loggedAccounts.getSelectionModel().selectedItemProperty()
 				.addListener((ChangeListener<SimpleUser>) (observable, oldValue, newValue) -> {
-					System.out.println("here we are bitches!!");
 					SessionUtil.clearSession();
 					JFXPopup popup = (JFXPopup) btnLogout.getScene().getWindow();
 					SessionUtil.getSession().put("loggedUser", new UserDAO().find(newValue.getIdUser()));

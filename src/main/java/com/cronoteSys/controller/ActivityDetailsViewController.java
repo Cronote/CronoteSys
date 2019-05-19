@@ -8,8 +8,10 @@ import java.util.ResourceBundle;
 
 import org.controlsfx.control.Rating;
 
+import com.cronoteSys.controller.components.cellfactory.SimpleActivityCellFactory;
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.vo.ActivityVO;
+import com.cronoteSys.model.vo.SimpleActivity;
 import com.cronoteSys.model.vo.StatusEnum;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.observer.ShowEditViewActivityObservableI;
@@ -19,6 +21,8 @@ import com.cronoteSys.util.ActivityMonitor.OnMonitorTick;
 import com.cronoteSys.util.SessionUtil;
 
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -29,7 +33,11 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Skin;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.control.TitledPane;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXButton;
 
 public class ActivityDetailsViewController implements Initializable, ShowEditViewActivityObservableI {
 	@FXML
@@ -65,6 +73,12 @@ public class ActivityDetailsViewController implements Initializable, ShowEditVie
 	HashMap<String, Object> hmp = new HashMap<String, Object>();
 	private ActivityVO activity = new ActivityVO();
 	private UserVO loggedUser;
+	@FXML
+	VBox pnlDependenciesBox;
+	@FXML
+	JFXListView<SimpleActivity> lstDependencies;
+	@FXML JFXButton btnBackward;
+	@FXML JFXButton btnForward;
 
 	private void initActivity() {
 		loggedUser = (UserVO) SessionUtil.getSession().get("loggedUser");
@@ -95,6 +109,34 @@ public class ActivityDetailsViewController implements Initializable, ShowEditVie
 			btnEdit.getStyleClass().add("show");
 		}
 		ratePriority.setDisable(true);
+		if (activity.getProjectVO() != null) {
+			pnlDependenciesBox.setVisible(true);
+			lstDependencies.setCellFactory(new SimpleActivityCellFactory());
+			lstDependencies
+					.setItems(FXCollections.observableArrayList(SimpleActivity.fromList(activity.getDependencies())));
+			lstDependencies.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+				@Override
+				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+					// TODO Auto-generated method stub
+					lstDependencies.scrollTo(newValue.intValue());
+					
+				}
+			});
+			btnBackward.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					int selectedIndex = lstDependencies.getSelectionModel().getSelectedIndex();
+					lstDependencies.getSelectionModel().select(--selectedIndex);
+				}
+			});
+			btnForward.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					int selectedIndex = lstDependencies.getSelectionModel().getSelectedIndex();
+					lstDependencies.getSelectionModel().select(++selectedIndex);
+				}
+			});
+		}
 	}
 
 	private void loadProgressAndRealtime() {

@@ -2,138 +2,111 @@ package com.cronoteSys.controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import com.cronoteSys.model.bo.ActivityBO;
-import com.cronoteSys.model.bo.ActivityBO.OnActivityDeletedI;
 import com.cronoteSys.model.bo.ProjectBO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.ProjectVO;
-import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.observer.ShowEditViewActivityObservableI;
 import com.cronoteSys.observer.ShowEditViewActivityObserverI;
 import com.cronoteSys.util.ScreenUtil;
-import com.cronoteSys.util.SessionUtil;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXTextArea;
-import com.jfoenix.controls.JFXTextField;
+import com.google.inject.Inject;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
 
 public class ProjectManagerController implements Initializable {
 
+	@Inject
+	private ProjectBO projectBO;
 	@FXML
 	private TabPane tabPane;
-	HBox hboxContent = new HBox();
-	ProjectManagerState state;
-	ProjectFirstInfoController firstInfoController = new ProjectFirstInfoController(this);
-	ActivityListController activityListController;
-	ProjectBO projectBO = new ProjectBO();
-	ProjectVO selectedProject;
-	Tab tbActivities = new Tab("ATIVIDADES", hboxContent);
+	private HBox hboxContent = new HBox();;
+
+	private ProjectFirstInfoController firstInfoController;
+	private ProjectFirstInfoViewController firstInfoViewController;
+	private ActivityListController activityListController;
+	private ProjectVO selectedProject;
+	private Tab tbActivities = new Tab("ATIVIDADES", hboxContent);
 
 	public ProjectVO getSelectedProject() {
 		return selectedProject != null ? selectedProject : new ProjectVO();
 	}
+	
+	public void setSelectedProject(ProjectVO project, String mode) {
+		this.selectedProject = project;
+		initFirstInfo(mode);
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		initFirstInfo();
-		initActivities();
+//		initActivities();
 	}
 
 	private void initEvents() {
 	}
 
-	private void initFirstInfo() {
+	public void initFirstInfo(String mode) {
+		FXMLLoader firstInfoLoader = null;
+		AnchorPane firstInfoPane = null;
+		while (tabPane.getTabs().size() > 0)
+			tabPane.getTabs().remove(0);
+		while (hboxContent.getChildren().size() > 0)
+			hboxContent.getChildren().remove(0);
 		try {
-			FXMLLoader firstInfoLoader = ScreenUtil.loadTemplate("ProjectFirstInfo");
-			firstInfoLoader.setController(firstInfoController);
-			AnchorPane firstInfoPane = firstInfoLoader.load();
-			tabPane.getTabs().add(new Tab("INFORMAÇÕES", firstInfoPane));
-		} catch (IOException e) {
+			if (mode.equals("cadastro")) {
+				System.out.println(mode);
+				firstInfoLoader = ScreenUtil.loadTemplate("ProjectFirstInfo");
+				firstInfoController = new ProjectFirstInfoController(this);
+				firstInfoLoader.setController(firstInfoController);
+				firstInfoPane = firstInfoLoader.load();
+				firstInfoController.setProject(selectedProject);
+			} else {
+				System.out.println(mode);
+				firstInfoLoader = ScreenUtil.loadTemplate("ProjectFirstInfoView");
+				firstInfoViewController = new ProjectFirstInfoViewController(this);
+				firstInfoLoader.setController(firstInfoViewController);
+				firstInfoPane = firstInfoLoader.load();
+				firstInfoViewController.setProject(selectedProject);
+			}
+			tabPane.getTabs().add(0, new Tab("INFORMAÇÕES", firstInfoPane));
+
+			initActivities();
+
+		} catch (
+
+		IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	private void initActivities() {
-		try {
-			FXMLLoader actlivityListLoader = ScreenUtil.loadTemplate("ActivityList");
-			hboxContent.getChildren().add(actlivityListLoader.load());
-			activityListController = ((ActivityListController) actlivityListLoader.getController());
-			ShowEditViewActivityObservableI.addShowEditViewActivityListener(new ShowEditViewActivityObserverI() {
-				@Override
-				public void showEditViewActivity(HashMap<String, Object> hmap) {
-					removeEditViewPane();
-					try {
-						AnchorPane ap = null;
-						FXMLLoader detailsFxml = ScreenUtil.loadTemplate("ActivityDetailsInserting");
-						String action = (String) hmap.get("action");
-						ActivityVO activity = (ActivityVO) hmap.get("activity");
-						if (action.equalsIgnoreCase("cadastro")) {
-							ap = detailsFxml.load();
-							if(activity!=null)
-								((ActivityDetailsInsertingController) detailsFxml.getController()).loadActivity(activity);
-							if(selectedProject!=null)
-								((ActivityDetailsInsertingController) detailsFxml.getController()).setProject(selectedProject);
-						}else {
-							detailsFxml = ScreenUtil.loadTemplate("ActivityDetailsView");
-							ap = (AnchorPane) detailsFxml.load();
-							((ActivityDetailsViewController) detailsFxml.getController()).loadActivity(activity);
-						}
-						
-						ap.setMaxWidth(Double.POSITIVE_INFINITY);
-						ap.setMaxHeight(Double.POSITIVE_INFINITY);
-						hboxContent.getChildren().add(ap);
-						HBox.setHgrow(ap, Priority.ALWAYS);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+		if (selectedProject != null) {
+			try {
+				FXMLLoader actlivityListLoader = ScreenUtil.loadTemplate("ActivityList");
+				hboxContent.getChildren().add(actlivityListLoader.load());
+				activityListController = ((ActivityListController) actlivityListLoader.getController());
+				ShowEditViewActivityObservableI.addShowEditViewActivityListener(observer);
+				tabPane.getTabs().add(tbActivities);
+				activityListController.listByProject(selectedProject);
+				try {
+					int total = activityListController.getActivityTotal();
+					firstInfoViewController.setRealDoneTodo(activityListController.getDoneActivitiesTotal()+"/"+total);
+				}catch (Exception e) {
+					// TODO: handle exception
 				}
-				private void removeEditViewPane() {
-					while (hboxContent.getChildren().size() > 1) {
-						hboxContent.getChildren().remove(1);
-					}
-				}
-			});
-			tabPane.getTabs().add(tbActivities);
-		} catch (IOException e) {
-			e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-	}
-
-	public void setState(ProjectManagerState state) {
-		this.state = state;
-	}
-
-	public void setSelectedProject(ProjectVO project) {
-		this.selectedProject = project;
-		firstInfoController.setProject(selectedProject);
-		activityListController.listByProject(selectedProject);
-
 	}
 
 	protected void saveProject(ProjectVO project) {
@@ -141,119 +114,54 @@ public class ProjectManagerController implements Initializable {
 			selectedProject = projectBO.update(project);
 		else
 			selectedProject = projectBO.save(project);
-	}
-}
-
-class ProjectFirstInfoController implements Initializable {
-	@FXML
-	private AnchorPane firstInfoRoot;
-	@FXML
-	private JFXTextField txtTitle;
-	@FXML
-	private JFXTextArea txtDescription;
-	@FXML
-	private TabPane tabDeadline;
-	@FXML
-	private JFXDatePicker dtpByDateStart;
-	@FXML
-	private JFXDatePicker dtpByDateEnd;
-	@FXML
-	private JFXDatePicker dtpByTimeStart;
-	@FXML
-	private Spinner<Integer> spnTotalTimeHour;
-	@FXML
-	private Spinner<Integer> spnTotalTimeMinute;
-	@FXML
-	private Spinner<Integer> spnHourADay;
-	@FXML
-	private Spinner<Integer> spnMinuteADay;
-	@FXML
-	private CheckBox chbConsiderHolidays;
-	@FXML
-	private JFXButton btnSave;
-
-	ProjectManagerController projectManagerController;
-
-	public ProjectFirstInfoController(ProjectManagerController control) {
-		projectManagerController = control;
+		setSelectedProject(selectedProject, "view");
 	}
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		initDefaults();
-		initEvents();
+	ShowEditViewActivityObserverI observer = new ShowEditViewActivityObserverI() {
+		@Override
+		public void showEditViewActivity(HashMap<String, Object> hmap) {
+			removeEditViewPane();
+			try {
+				AnchorPane ap = null;
+				FXMLLoader detailsFxml = ScreenUtil.loadTemplate("ActivityDetailsInserting");
+				String action = (String) hmap.get("action");
+				ActivityVO activity = (ActivityVO) hmap.get("activity");
+				if (action.equalsIgnoreCase("cadastro")) {
+					ap = detailsFxml.load();
+					if (activity != null)
+						((ActivityDetailsInsertingController) detailsFxml.getController()).loadActivity(activity);
+					if (selectedProject != null)
+						((ActivityDetailsInsertingController) detailsFxml.getController()).setProject(selectedProject);
+				} else {
+					detailsFxml = ScreenUtil.loadTemplate("ActivityDetailsView");
+					ap = (AnchorPane) detailsFxml.load();
+					((ActivityDetailsViewController) detailsFxml.getController()).loadActivity(activity);
+				}
 
-	}
-
-	private void initDefaults() {
-		spnTotalTimeHour.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99999, 0, 1));
-		spnTotalTimeMinute.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 60, 1, 1));
-		spnHourADay.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99999, 0, 1));
-		spnMinuteADay.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 60, 1, 1));
-		dtpByDateStart.setValue(LocalDate.now());
-		dtpByTimeStart.setValue(LocalDate.now());
-	}
-
-	private void initEvents() {
-		btnSave.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				getProject();
+				ap.setMaxWidth(Double.POSITIVE_INFINITY);
+				ap.setMaxHeight(Double.POSITIVE_INFINITY);
+				hboxContent.getChildren().add(ap);
+				HBox.setHgrow(ap, Priority.ALWAYS);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		});
-	}
-
-	protected boolean fielsFilleds() {
-		if (txtTitle.getText().trim().isEmpty()) {
-			txtTitle.requestFocus();
-			return false;
 		}
-		if (tabDeadline.getSelectionModel().getSelectedIndex() == 0) {
-			if (dtpByDateStart.getValue() == null) {
-				dtpByDateStart.requestFocus();
-				return false;
+
+		private void removeEditViewPane() {
+			while (hboxContent.getChildren().size() > 1) {
+				hboxContent.getChildren().remove(1);
 			}
-			boolean dateEndOk = true;
-			if (dtpByDateEnd.getValue() == null) {
-				dateEndOk = false;
-			}
-			if (dateEndOk && dtpByDateEnd.getValue().isBefore(dtpByDateStart.getValue())) {
-				dateEndOk = false;
-			}
-			if (!dateEndOk) {
-				dtpByDateEnd.requestFocus();
-				return false;
-			}
-		} else if (tabDeadline.getSelectionModel().getSelectedIndex() == 1) {
-			// TODO: fazer o metodo de coleta de prazo por tempo
 		}
-		return true;
+	};
+
+	public ShowEditViewActivityObserverI getObserver() {
+		return observer;
 	}
 
-	protected ProjectVO getProject() {
-		ProjectVO proj = projectManagerController.getSelectedProject();
-		proj.setTitle(txtTitle.getText());
-		proj.setDescription(txtDescription.getText());
-		if (tabDeadline.getSelectionModel().getSelectedIndex() == 0) {
-			proj.setStartDate(LocalDateTime.of(dtpByDateStart.getValue(), LocalTime.MIN));
-			proj.setFinishDate(LocalDateTime.of(dtpByDateEnd.getValue(), LocalTime.MAX));
-		}
-		proj.setUserVO((UserVO) SessionUtil.getSession().get("loggedUser"));
-		projectManagerController.saveProject(proj);
-		return proj;
+	public void delete(ProjectVO viewingProject) {
+		projectBO.delete(viewingProject);
+
 	}
 
-	protected void setProject(ProjectVO project) {
-
-		if (project != null) {
-			txtTitle.setText(project.getTitle());
-			txtDescription.setText(project.getDescription());
-			dtpByDateStart.setValue(project.getStartDate().toLocalDate());
-			dtpByDateEnd.setValue(project.getFinishDate().toLocalDate());
-		}
-	}
-}
-
-enum ProjectManagerState {
-	FIRST_INFO, ACTIVITIES, DEPENDENCIES;
 }

@@ -137,7 +137,7 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 
 	public void setProject(ProjectVO proj) {
 		activity.setProjectVO(proj);
-		btnDependencies.setVisible(true);
+		btnDependencies.setVisible(proj!=null);
 	}
 
 	private void blockEdition() {
