@@ -3,14 +3,13 @@ package com.cronoteSys.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import com.cronoteSys.controller.ProjectListController.BtnProjectClickedI;
 import com.cronoteSys.controller.ProjectListController.ProjectSelectedI;
 import com.cronoteSys.model.bo.ActivityBO;
-import com.cronoteSys.model.bo.LoginBO;
 import com.cronoteSys.model.bo.ActivityBO.OnActivityDeletedI;
+import com.cronoteSys.model.bo.LoginBO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.ProjectVO;
@@ -59,15 +58,13 @@ public class HomeController implements Initializable {
 	protected HBox root;
 	private MenuController menuControl;
 
-	private void loadProjectManager(ProjectVO project) {
+	private void loadProjectManager(ProjectVO project,String mode) {
 		removeIndexFromRoot(2);
 		FXMLLoader projectFXML = ScreenUtil.loadTemplate("ProjectManager");
 		ProjectManagerController control = SessionUtil.getInjector().getInstance(ProjectManagerController.class);
-		control.setState(ProjectManagerState.FIRST_INFO);
 		projectFXML.setController(control);
 		JFXTabPane projectManager = (JFXTabPane) FXMLLoaderToNode(projectFXML);
-		if (project != null)
-			control.setSelectedProject(project);
+			control.setSelectedProject(project,mode);
 		projectManager.setMaxHeight(Double.POSITIVE_INFINITY);
 		projectManager.setMaxWidth(Double.POSITIVE_INFINITY);
 		HBox.setHgrow(projectManager, Priority.ALWAYS);
@@ -81,7 +78,7 @@ public class HomeController implements Initializable {
 		ProjectListController.addOnBtnProjectClickedListener(new BtnProjectClickedI() {
 			@Override
 			public void onBtnProjectClicked() {
-				loadProjectManager(null);
+				loadProjectManager(null,"cadastro");
 			}
 
 		});
@@ -89,7 +86,8 @@ public class HomeController implements Initializable {
 		ProjectListController.addOnProjectSelectedListener(new ProjectSelectedI() {
 			@Override
 			public void onProjectSelect(ProjectVO project) {
-				loadProjectManager(project);
+				if(project!=null)
+				loadProjectManager(project,"View");
 			}
 		});
 
@@ -150,29 +148,23 @@ public class HomeController implements Initializable {
 		@Override
 		public void showEditViewActivity(HashMap<String, Object> hmap) {
 			AnchorPane ap = null;
-			FXMLLoader detailsFxml = ScreenUtil.loadTemplate("ActivityDetailsInserting");
-			if (hmap.get("project") != null)
-				removeIndexFromRoot(3);
-			else
-				removeIndexFromRoot(2);
+			FXMLLoader detailsFxml = null;
+			removeIndexFromRoot(2);
 			String action = (String) hmap.get("action");
-			ProjectVO project = (ProjectVO) hmap.get("project");
 			ActivityVO activity = (ActivityVO) hmap.get("activity");
 			if (action.equalsIgnoreCase("cadastro")) {
-				ap = (AnchorPane) addNode(detailsFxml);
-				if (project != null) {
-					System.out.println(project);
-					((ActivityDetailsInsertingController) detailsFxml.getController()).setProject(project);
-				} else {
-					if (activity != null)
-						((ActivityDetailsInsertingController) detailsFxml.getController()).loadActivity(activity);
-				}
+				detailsFxml = ScreenUtil.loadTemplate("ActivityDetailsInserting");
 			} else {
 				detailsFxml = ScreenUtil.loadTemplate("ActivityDetailsView");
+			}
+			try {
 				ap = (AnchorPane) addNode(detailsFxml);
+				if (activity != null) {
+					((ActivityDetailsInsertingController) detailsFxml.getController()).loadActivity(activity);
+				}
+			} catch (Exception e) {
 				((ActivityDetailsViewController) detailsFxml.getController()).loadActivity(activity);
 			}
-
 			ap.setMaxWidth(Double.POSITIVE_INFINITY);
 			ap.setMaxHeight(Double.POSITIVE_INFINITY);
 			HBox.setHgrow(ap, Priority.ALWAYS);
@@ -223,12 +215,12 @@ class MenuController implements Initializable {
 
 	public void btnActivityClicked(ActionEvent e) throws IOException {
 		homeControl.clearRoot(false, (Node) e.getSource());
-		ShowEditViewActivityObservableI.removeShowEditViewActivityListener(homeControl.getShowListener());
 		ActivityBO.removeOnActivityDeletedListener(homeControl.listenerActivityDelete);
 		if (btnActivity.isSelected()) {
 			adjustMenu(false);
 			FXMLLoader p = ScreenUtil.loadTemplate("ActivityList");
 			homeControl.addNode(p);
+			((ActivityListController)p.getController()).setList(null);
 			ShowEditViewActivityObservableI.addShowEditViewActivityListener(homeControl.getShowListener());
 			ActivityBO.addOnActivityDeletedListener(homeControl.listenerActivityDelete);
 		}
@@ -237,7 +229,6 @@ class MenuController implements Initializable {
 	public void btnProjectClicked(ActionEvent e) {
 		homeControl.clearRoot(false, (Node) e.getSource());
 		if (btnProject.isSelected()) {
-			ShowEditViewActivityObservableI.removeShowEditViewActivityListener(homeControl.getShowListener());
 			ActivityBO.removeOnActivityDeletedListener(homeControl.listenerActivityDelete);
 			adjustMenu(true);
 			FXMLLoader p = ScreenUtil.loadTemplate("ProjectList");
@@ -341,7 +332,7 @@ class MenuController implements Initializable {
 		lblUsername.setText(name);
 		LoginVO login = new LoginBO().getLogin(loggedUser);
 		lblUserEmail.setText(login.getEmail());
-		
+
 	}
 
 	protected void adjustMenu(boolean makeItShort) {

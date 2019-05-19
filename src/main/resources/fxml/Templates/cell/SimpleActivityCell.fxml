@@ -5,24 +5,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="activityCardRoot" maxHeight="-Infinity"
-	maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-	prefWidth="249.0" xmlns="http://javafx.com/javafx/8.0.171"
-	xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="activityCardRoot" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="249.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-		<Label fx:id="lblTitle" alignment="TOP_LEFT"
-			contentDisplay="TEXT_ONLY" layoutX="14.0" layoutY="14.0"
-			prefHeight="38.0" prefWidth="228.0" styleClass="info"
-			text="Desenvolver o dialog de gerenciar dependências"
-			textFill="#ff0101" wrapText="true" AnchorPane.leftAnchor="14.0"
-			AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="5.0">
+		<Label fx:id="lblTitle" alignment="TOP_LEFT" contentDisplay="TEXT_ONLY" layoutX="14.0" layoutY="14.0" prefHeight="38.0" prefWidth="228.0" styleClass="info" text="Desenvolver o dialog de gerenciar dependências" textFill="#ff0101" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="5.0">
 			<font>
 				<Font name="System Bold" size="13.0" />
 			</font>
 		</Label>
-		<Label fx:id="lblCategory" layoutX="14.0" layoutY="48.0"
-			prefHeight="17.0" styleClass="info" text="CATEGORIA" textFill="WHITE"
-			AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+		<Label fx:id="lblCategory" layoutX="14.0" layoutY="48.0" prefHeight="17.0" styleClass="info" text="CATEGORIA" textFill="WHITE" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
 	</children>
 	<styleClass>
 		<String fx:value="card" />

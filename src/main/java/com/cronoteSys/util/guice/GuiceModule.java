@@ -17,6 +17,7 @@
 package com.cronoteSys.util.guice;
 
 import com.cronoteSys.controller.HomeController;
+import com.cronoteSys.model.bo.ProjectBO;
 import com.cronoteSys.model.dao.ActivityDAO;
 import com.cronoteSys.model.dao.CategoryDAO;
 import com.cronoteSys.util.guice.provider.FXMLLoaderProvider;
@@ -31,6 +32,7 @@ public class GuiceModule extends AbstractModule {
         bind(FXMLLoader.class).toProvider(FXMLLoaderProvider.class);
         bind(CategoryDAO.class);
         bind(ActivityDAO.class);
+        bind(ProjectBO.class);
         bind(HomeController.class);
     }
 

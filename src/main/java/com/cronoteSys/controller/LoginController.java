@@ -15,24 +15,12 @@ import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 import com.cronoteSys.util.SessionUtil;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.validation.RegexValidator;
-import com.jfoenix.validation.RequiredFieldValidator;
 
-import de.jensd.fx.glyphs.GlyphsBuilder;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -129,8 +117,11 @@ public class LoginController extends MasterController {
 	private void registerNewLogin(Integer idUser) {
 		try {
 			Properties prop = getProp();
-			String savedAccounts = prop.getProperty("savedAccounts");
-			if (!savedAccounts.contains(idUser.toString()))
+			String savedAccounts = prop.getProperty("savedAccounts","");
+			System.out.println(savedAccounts.split(",").length);
+			if (savedAccounts.equals(""))
+				savedAccounts+=idUser.toString();
+			else 
 				savedAccounts += "," + idUser.toString();
 			prop.setProperty("savedAccounts", savedAccounts);
 			saveProp(prop);

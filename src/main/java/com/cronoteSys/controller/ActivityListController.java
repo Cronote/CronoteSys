@@ -7,15 +7,18 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import com.cronoteSys.controller.components.cellfactory.ActivityCellFactory;
+import com.cronoteSys.filter.ActivityFilter;
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.ActivityBO.OnActivityAddedI;
 import com.cronoteSys.model.bo.ActivityBO.OnActivityDeletedI;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.ProjectVO;
+import com.cronoteSys.model.vo.StatusEnum;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.observer.ShowEditViewActivityObservableI;
 import com.cronoteSys.observer.ShowEditViewActivityObserverI;
 import com.cronoteSys.util.SessionUtil;
+import com.sun.org.apache.bcel.internal.generic.LSTORE;
 
 import de.jensd.fx.glyphs.GlyphIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -35,6 +38,7 @@ import javafx.scene.layout.HBox;
 
 public class ActivityListController implements Initializable, ShowEditViewActivityObservableI {
 
+	ActivityBO actBO = new ActivityBO();
 	@FXML
 	private Button btnAddActivity;
 	@FXML
@@ -42,32 +46,44 @@ public class ActivityListController implements Initializable, ShowEditViewActivi
 	private List<ActivityVO> activityList = new ArrayList<ActivityVO>();
 	@FXML
 	AnchorPane pane;
-	ActivityBO actBO = new ActivityBO();
 	private UserVO loggedUser;
 	private ProjectVO selectedProject;
-	@FXML Label titleLabel;
-	@FXML HBox SearchGroup;
+	@FXML
+	Label titleLabel;
+	@FXML
+	HBox SearchGroup;
+	ActivityFilter filter;
 
 	public void listByProject(ProjectVO project) {
-		activityList = actBO.listAllByUserAndProject(loggedUser, project);
 		selectedProject = project;
-		cardsList.setItems(FXCollections.observableArrayList(activityList));
-		if(project!=null) {
-			System.out.println("test");
+		setList(project);
+
+		if (project != null) {
 			titleLabel.setVisible(false);
-			AnchorPane.setTopAnchor(SearchGroup,15.0);
-			AnchorPane.setTopAnchor(cardsList,61.0);
+			AnchorPane.setTopAnchor(SearchGroup, 15.0);
+			AnchorPane.setTopAnchor(cardsList, 61.0);
 		}
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
 		loggedUser = (UserVO) SessionUtil.getSession().get("loggedUser");
-		activityList = actBO.listAllByUserAndProject(loggedUser, null);
-		cardsList.setItems(FXCollections.observableArrayList(activityList));
+
 		cardsList.setCellFactory(new ActivityCellFactory());
 		initEvents();
 		initObservers();
+
+	}
+
+	public void setList(ProjectVO project) {
+		filter = new ActivityFilter(project, loggedUser);
+		activityList = actBO.listAll(filter);
+		cardsList.setItems(FXCollections.observableArrayList(activityList));
+		setBtnAddIcon();
+	}
+
+	private void setBtnAddIcon() {
 		GlyphIcon<?> icon = null;
 		if (activityList.size() > 0) {
 			icon = new MaterialDesignIconView(MaterialDesignIcon.PLAYLIST_PLUS);
@@ -120,5 +136,17 @@ public class ActivityListController implements Initializable, ShowEditViewActivi
 			l.showEditViewActivity(hmp);
 		}
 	}
-}
 
+	public int getActivityTotal() {
+		return activityList.size();
+	}
+
+	public int getDoneActivitiesTotal() {
+		int doneCount = 0;
+		for (ActivityVO act : activityList) {
+			if (StatusEnum.itsFinalized(act.getStats()))
+				doneCount++;
+		}
+		return doneCount;
+	}
+}

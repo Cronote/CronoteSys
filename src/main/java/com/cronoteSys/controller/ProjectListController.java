@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 
 import com.cronoteSys.controller.components.cellfactory.ProjectCellFactory;
 import com.cronoteSys.model.bo.ProjectBO;
-import com.cronoteSys.model.bo.ProjectBO.OnProjectAddedI;
 import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.SessionUtil;
@@ -82,16 +81,19 @@ public class ProjectListController implements Initializable {
 			public void handle(ActionEvent event) {
 				cardsList.getSelectionModel().clearSelection();
 				notifyAllBtnProjectClickedListeners();
+//				notifyAllProjectSelectedListeners(null);
+				//here
 			}
 		});
 
-		ProjectBO.addOnProjectAddedIListener(new OnProjectAddedI() {
-			@Override
-			public void onProjectAddedI(ProjectVO proj) {
-				projectLst.add(proj);
-				cardsList.setItems(FXCollections.observableArrayList(projectLst));
-				cardsList.getSelectionModel().select(proj);
-			}
+		ProjectBO.addOnProjectAddedIListener(proj -> {
+			projectLst.add(0,proj);
+			cardsList.setItems(FXCollections.observableArrayList(projectLst));
+			cardsList.getSelectionModel().select(proj);
+		});
+		ProjectBO.addOnProjectDeletedListener(proj -> {
+			projectLst.remove(proj);
+			cardsList.setItems(FXCollections.observableArrayList(projectLst));			
 		});
 	}
 
