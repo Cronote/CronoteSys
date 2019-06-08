@@ -35,9 +35,9 @@
 			<version>[2.4,)</version>
 		</dependency>
 		<dependency>
-			<groupId>com.github.Cronote</groupId>
-			<artifactId>cronotesys.model</artifactId>
-			<version>1315ccdf3c</version>
+			<groupId>com</groupId>
+			<artifactId>Cronotesys.model</artifactId>
+			<version>0.0.1</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-email -->
 		<dependency>
