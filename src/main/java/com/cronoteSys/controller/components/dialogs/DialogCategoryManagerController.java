@@ -57,7 +57,7 @@ public class DialogCategoryManagerController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		lstCategories = FXCollections.observableList(catDao.getList(loggedUser));
+		lstCategories = FXCollections.observableList(catDao.getList(loggedUser.getIdUser()));
 		categoryList.setItems(lstCategories);
 		categoryList.setCellFactory(new CategoryCellFactory());
 		btnConfirm.setDisable(true);
@@ -81,7 +81,7 @@ public class DialogCategoryManagerController implements Initializable {
 				if (!search.isEmpty()) {
 					lstCategories = FXCollections.observableList(catDao.listByDescriptionAndUser(search, loggedUser));
 				}else {
-					lstCategories = FXCollections.observableList(catDao.getList(loggedUser));
+					lstCategories = FXCollections.observableList(catDao.getList(loggedUser.getIdUser()));
 				}
 				categoryList.setItems(lstCategories);
 			}

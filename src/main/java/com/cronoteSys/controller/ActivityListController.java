@@ -77,7 +77,7 @@ public class ActivityListController implements Initializable, ShowEditViewActivi
 	}
 
 	public void setList(ProjectVO project) {
-		filter = new ActivityFilter(project, loggedUser);
+		filter = new ActivityFilter(project != null ? project.getId() : null, loggedUser.getIdUser());
 		activityList = actBO.listAll(filter);
 		cardsList.setItems(FXCollections.observableArrayList(activityList));
 		setBtnAddIcon();

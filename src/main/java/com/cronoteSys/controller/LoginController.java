@@ -68,6 +68,7 @@ public class LoginController extends MasterController {
 
 	public void login(LoginVO login) {
 		UserVO user = new LoginBO().login(login);
+		System.out.println(user != null);
 		if (user != null) {
 			if (rememberMe) {
 				try {
