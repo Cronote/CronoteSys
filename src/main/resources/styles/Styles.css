@@ -488,17 +488,17 @@ ComboBox{
     -fx-text-fill: white;
 }
 .inputField .error-label .text{
-	-fx-translate-y:-5px;
+	-fx-translate-y:-5.0px;
 }
 
 
 .jfx-alert-overlay, .depth-container{
-    -fx-background-color: rgba(0,0,0,0.6);
+    -fx-background-color: rgba(0.0,0.0,0.0,0.6);
 }
 
 .jfx-alert-overlay > .depth-container > .jfx-alert-content-container,
 .jfx-alert-overlay > .jfx-alert-content-container{
-    -fx-background-color: rgba(0,0,0,0.6);
+    -fx-background-color: rgba(0.0,0.0,0.0,0.6);
 }
 
 
@@ -523,5 +523,5 @@ ComboBox{
 }
 .jfx-tab-pane:top .depth-container .tab-header-area .headers-region .tab-selected-line{
 	    -fx-background-color: #7c4db8;
-	    -fx-pref-height:5px;
+	    -fx-pref-height:5.0px;
 }
