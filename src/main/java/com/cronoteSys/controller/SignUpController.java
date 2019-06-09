@@ -151,8 +151,7 @@ public class SignUpController extends MasterController {
 				return;
 			}
 			
-			LoginVO loginVO = new LoginBO().loginExists(sEmail);
-			if (loginVO != null) {
+			if (new LoginBO().loginExists(sEmail)>0) {
 				txtEmail.getStyleClass().add("error");
 			}
 			if (!bPasswordOk) {
@@ -164,11 +163,13 @@ public class SignUpController extends MasterController {
 			String sPassEncrypted = new GenHash().hashIt(sPassPureText);
 
 			UserVO objUser = new UserVO();
+//			objUser.setIdUser(5);
 			objUser.setCompleteName(txtName.getText().trim());
 			objUser.setEmailRecover(txtSecondEmail.getText().trim());
 			objUser.setBirthDate(dateBirthday.getValue());
 			objUser.setStats(Byte.parseByte("1"));
 			objUser = new UserBO().save(objUser);
+//			objLogin.setIdLogin(0);
 			objLogin.setTbUser(objUser);
 			objLogin.setEmail(sEmail);
 			objLogin.setPasswd(sPassEncrypted);

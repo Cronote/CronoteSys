@@ -137,7 +137,7 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 
 	public void setProject(ProjectVO proj) {
 		activity.setProjectVO(proj);
-		btnDependencies.setVisible(proj!=null);
+		btnDependencies.setVisible(proj != null);
 	}
 
 	private void blockEdition() {
@@ -151,9 +151,9 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 	}
 
 	private void defaultData() {
-		
+
 		btnDependencies.setVisible(false);
-		obsLstCategory = FXCollections.observableList(new CategoryDAO().getList(loggedUser));
+		obsLstCategory = FXCollections.observableList(new CategoryBO().listByUser(loggedUser));
 		cboCategory.setConverter(new CategoryConverter(loggedUser));
 		cboCategory.setItems(obsLstCategory);
 		spnEstimatedTimeHour.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99999, 0, 1));
@@ -200,7 +200,7 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 
 				categoryManagerDialog.showCategoryManagerDialog();
 				CategoryVO selectedCategory = categoryManagerDialog.getSelectedCategory();
-				obsLstCategory = FXCollections.observableList(new CategoryDAO().getList(loggedUser));
+				obsLstCategory = FXCollections.observableList(new CategoryBO().listByUser(loggedUser));
 				cboCategory.setItems(obsLstCategory);
 				cboCategory.getSelectionModel().select(selectedCategory);
 
@@ -244,7 +244,8 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				final int LIMIT = 255;
-				int i = LIMIT - newValue.length();
+
+				int i = LIMIT - (newValue != null ? newValue.length() : 0);
 				if (i > 5) {
 					lblDescriptionLimit.setStyle("-fx-text-fill:black;");
 				} else {
@@ -271,7 +272,7 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 				}
 			}
 		});
-		
+
 		btnDependencies.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {

@@ -51,7 +51,7 @@ public class DialogDependencyManagerController implements Initializable {
 
 	public void setSelectedActivity(ActivityVO selectedActivity) {
 		this.selectedActivity = selectedActivity;
-		filter.setProject(selectedActivity.getProjectVO());
+		filter.setProject(selectedActivity.getProjectVO().getId());
 		activityLst.setItems(FXCollections
 				.observableArrayList(actDAO.getSimpleActivitiesView(filter)));
 		activityLst.getItems().remove(SimpleActivity.fromActivity(selectedActivity));

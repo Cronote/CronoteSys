@@ -106,8 +106,7 @@ public class ForgotPwdController extends MasterController {
 				return;
 			}
 //			objLogin = new RestUtil().response("http://localhost:8081/Test/webapi/myresource/email_exists?email="+email).readEntity(LoginVO.class);
-			objLogin = new LoginBO().loginExists(email);
-			if (objLogin == null) {// Conta com este email n existe
+			if (new LoginBO().loginExists(email)==0) {// Conta com este email n existe
 				//TODO: exibir mensagem de email inexistente
 				return;
 			}
