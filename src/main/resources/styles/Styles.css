@@ -525,3 +525,23 @@ ComboBox{
 	    -fx-background-color: #7c4db8;
 	    -fx-pref-height:5.0px;
 }
+
+.jfx-snackbar-content {
+	-fx-background-radius:25.0 25.0 0.0 0.0;
+    -fx-background-color: #35393F;
+    -fx-padding: 5.0;
+    -fx-spacing: 5.0;
+}
+
+.jfx-snackbar-toast {
+	-fx-font-size: 24.0;
+    -fx-text-fill: #FF5757;
+}
+
+.jfx-snackbar-action {
+	-fx-background-color: #7c4db8;
+    -fx-text-fill: WHITE;
+}
+.jfx-snackbar-action >.jfx-rippler{
+    -jfx-rippler-fill: purple;
+}
