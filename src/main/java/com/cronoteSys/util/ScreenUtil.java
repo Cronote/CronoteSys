@@ -329,7 +329,7 @@ public class ScreenUtil {
 				.size("1em").styleClass("error").build());
 		//email
 		RegexValidator emailValidator = new RegexValidator();
-		emailValidator.setRegexPattern("^([A-z]+)([A-z0-9-_.]*)@([A-z.]+)\\.[A-z]{2,}$");
+		emailValidator.setRegexPattern("(^([A-z]+)([A-z0-9-_.]*)@([A-z.]+)\\.[A-z]{2,}$)|");
 		emailValidator.setMessage("EMAIL EM FORMATO INVÁLIDO!");
 		/* Password
 		 * /^ Inicio de string 

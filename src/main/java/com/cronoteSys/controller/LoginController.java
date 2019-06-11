@@ -20,6 +20,7 @@ import com.jfoenix.controls.JFXSnackbar.SnackbarEvent;
 import com.jfoenix.controls.JFXSnackbarLayout;
 import com.jfoenix.controls.JFXTextField;
 
+import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -51,7 +52,7 @@ public class LoginController extends MasterController {
 	private AnchorPane pnlLogin;
 	@FXML
 	private Pane pnlMidBottomArea;
-	JFXSnackbar snackbar;
+	private JFXSnackbar snackbar;
 
 	@FXML
 	public void initialize() {
@@ -96,10 +97,12 @@ public class LoginController extends MasterController {
 			ScreenUtil.openNewWindow(getThisStage(), "Home", true, hmp);
 
 		} else {
-
-			snackbar.fireEvent(new SnackbarEvent(
-					new JFXSnackbarLayout("E-mail e/ou senha incorretos!", "Fechar", action -> snackbar.close()),
-					Duration.INDEFINITE, null));
+			snackbar.getStyleClass().add("error-snackbar");
+			JFXSnackbarLayout layout = new JFXSnackbarLayout("Credenciais de login incorretas!", "Fechar",
+					action -> snackbar.close());
+			SnackbarEvent event = new SnackbarEvent(layout, Duration.INDEFINITE,
+					PseudoClass.getPseudoClass("error-snackbar"));
+			snackbar.fireEvent(event);
 		}
 	}
 

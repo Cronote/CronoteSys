@@ -533,9 +533,13 @@ ComboBox{
     -fx-spacing: 5.0;
 }
 
-.jfx-snackbar-toast {
+.error-snackbar .jfx-snackbar-toast {
 	-fx-font-size: 24.0;
     -fx-text-fill: #FF5757;
+}
+.success-snackbar .jfx-snackbar-toast {
+	-fx-font-size: 24.0;
+    -fx-text-fill: #7ED957;
 }
 
 .jfx-snackbar-action {
