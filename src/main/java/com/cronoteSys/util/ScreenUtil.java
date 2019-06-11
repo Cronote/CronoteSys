@@ -266,21 +266,6 @@ public class ScreenUtil {
 		}
 	}
 
-	public static boolean verifyPassFields(String sPass1, String sPass2, List<Node> lstTextFields,
-			List<Node> lstLabel) {
-		if (sPass1.equals("") || sPass2.equals(""))
-			return false;
-		if (!new LoginBO().validatePassword(sPass1)) {
-			new ScreenUtil().addORRemoveErrorClass(lstTextFields, true);
-			return false;
-		}
-		if (!sPass1.equals(sPass2)) {
-			new ScreenUtil().addORRemoveErrorClass(lstTextFields, true);
-			return false;
-		}
-		new ScreenUtil().addORRemoveErrorClass(lstTextFields, false);
-		return true;
-	}
 
 	public void addORRemoveErrorClass(java.util.List<Node> node, boolean isAdd) {
 		for (Node n : node) {

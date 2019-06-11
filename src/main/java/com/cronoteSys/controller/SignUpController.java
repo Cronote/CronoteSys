@@ -106,6 +106,8 @@ public class SignUpController extends MasterController {
 				}
 				if (!newValue) {
 					popupPass.hide();
+					ps.setRegexPattern(txtPwd.getText());
+					txtConfirmPwd.getValidators().add(ps);
 				}
 			}
 		});
