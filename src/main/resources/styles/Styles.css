@@ -313,8 +313,8 @@ ComboBox{
     -fx-text-fill: -color;
     -fx-fill: -color;
 }
-.jfx-combo-box .list-cell:filled:selected, .jfx-combo-box .text {
-		-color:#A6A6A6;
+.jfx-combo-box .list-cell:filled:selected, .jfx-combo-box .list-cell .text {
+	-color:#A6A6A6;
     -fx-prompt-text-fill: -color;
     -fx-text-fill: -color;
     -fx-fill: -color;
@@ -487,8 +487,11 @@ ComboBox{
     -fx-font-weight: BOLD;
     -fx-text-fill: white;
 }
-.inputField .error-label .text{
+.inputField .error-label {
 	-fx-translate-y:-5.0px;
+	-fx-fill:#FF5757 !important;
+	-fx-prompt-text-fill: #FF5757 !important;
+    -fx-text-fill: #FF5757 !important;
 }
 
 

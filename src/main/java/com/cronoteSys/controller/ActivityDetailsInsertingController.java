@@ -40,6 +40,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
@@ -66,7 +67,7 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 	@FXML
 	private JFXComboBox<CategoryVO> cboCategory;
 	@FXML
-	private TextField txtCategory;
+	private JFXTextField txtCategory;
 	@FXML
 	private JFXTextArea txtDescription;
 	@FXML
@@ -100,6 +101,10 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 		activity = new ActivityVO();
 		loggedUser = (UserVO) SessionUtil.getSession().get("loggedUser");
 		activity.setUserVO(loggedUser);
+		Node[] fields = { txtTitle, cboCategory };
+		Boolean[] isNotnull = { true, true };
+		Boolean[] isEmail = { false, false };
+		ScreenUtil.addInlineValidation(fields, isNotnull, isEmail);
 	}
 
 	@Override
@@ -190,6 +195,10 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 			@Override
 			public void handle(ActionEvent event) {
 				switchCategoryMode();
+				Node[] field = { txtCategory };
+				Boolean[] isNotnull = { true };
+				Boolean[] isEmail = { false };
+				ScreenUtil.addInlineValidation(field, isNotnull, isEmail);
 			}
 		});
 		btnManageCategory.setOnAction(new EventHandler<ActionEvent>() {
@@ -209,9 +218,9 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 		btnConfirmAdd.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				CategoryVO cat = new CategoryVO();
-				CategoryBO catBO = new CategoryBO();
-				if (txtCategory.getText().trim().length() > 0) {
+				if (txtCategory.validate()) {
+					CategoryVO cat = new CategoryVO();
+					CategoryBO catBO = new CategoryBO();
 					cat.setDescription(txtCategory.getText());
 					cat.setUserVO(loggedUser);
 					cat = catBO.save(cat);
@@ -219,18 +228,16 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 						cboCategory.getItems().add(cat);
 						cboCategory.getSelectionModel().select(cat);
 						switchCategoryMode();
-						switchCategoryErrorLabel(false);
 					}
-				} else {
-					switchCategoryErrorLabel(true);
 				}
 			}
 		});
 		btnCancelAdd.setOnAction(new EventHandler<ActionEvent>() {
+
 			@Override
 			public void handle(ActionEvent event) {
 				switchCategoryMode();
-				switchCategoryErrorLabel(false);
+				txtCategory.getValidators().clear();
 			}
 		});
 		btnSave.setOnAction(new EventHandler<ActionEvent>() {
@@ -286,7 +293,7 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 	}
 
 	private void btnSaveClicked(ActionEvent event) {
-		if (new ScreenUtil().isFilledFields((Stage) btnSave.getScene().getWindow(), detailsRoot, false)) {
+		if (txtTitle.validate() && cboCategory.validate()) {
 			activity.setTitle(txtTitle.getText());
 			activity.setCategoryVO(cboCategory.getValue());
 			activity.setDescription(txtDescription.getText());
