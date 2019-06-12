@@ -40,6 +40,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
@@ -100,6 +101,10 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 		activity = new ActivityVO();
 		loggedUser = (UserVO) SessionUtil.getSession().get("loggedUser");
 		activity.setUserVO(loggedUser);
+		Node[] fields = { txtTitle, cboCategory };
+		Boolean[] isNotnull = { true, true };
+		Boolean[] isEmail = { false, false };
+		ScreenUtil.addInlineValidation(fields, isNotnull, isEmail);
 	}
 
 	@Override
@@ -286,7 +291,7 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 	}
 
 	private void btnSaveClicked(ActionEvent event) {
-		if (new ScreenUtil().isFilledFields((Stage) btnSave.getScene().getWindow(), detailsRoot, false)) {
+		if (txtTitle.validate() && cboCategory.validate()) {
 			activity.setTitle(txtTitle.getText());
 			activity.setCategoryVO(cboCategory.getValue());
 			activity.setDescription(txtDescription.getText());

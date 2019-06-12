@@ -99,9 +99,18 @@ public class ActivityListController implements Initializable, ShowEditViewActivi
 	private void initObservers() {
 		ActivityBO.addOnActivityAddedIListener(new OnActivityAddedI() {
 			@Override
-			public void onActivityAddedI(ActivityVO act) {
-				activityList.add(0, act);
-				cardsList.setItems(FXCollections.observableArrayList(activityList));
+			public void onActivityAddedI(ActivityVO act, String action) {
+				if (action.equalsIgnoreCase("save")) {
+					activityList.add(0, act);
+					cardsList.setItems(FXCollections.observableArrayList(activityList));
+				} else {
+					int selected = cardsList.getSelectionModel().getSelectedIndex();
+					activityList.remove(selected);
+					cardsList.setItems(FXCollections.observableArrayList(activityList));
+					activityList.add(selected,act);
+					cardsList.setItems(FXCollections.observableArrayList(activityList));
+					cardsList.getSelectionModel().select(selected);
+				}
 			}
 		});
 		ActivityBO.addOnActivityDeletedListener(new OnActivityDeletedI() {
