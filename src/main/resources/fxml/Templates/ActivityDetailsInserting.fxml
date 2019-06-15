@@ -83,7 +83,7 @@
 				<FontAwesomeIconView glyphName="PLUS" size="2em" styleClass="letters_box_icons" />
 			</graphic>
 		</Button>
-		<TextField fx:id="txtCategory" layoutX="14.0" layoutY="148.0" prefHeight="28.0" prefWidth="343.0" visible="false" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="108.0" />
+		<JFXTextField fx:id="txtCategory" labelFloat="true" layoutX="14.0" layoutY="148.0" prefHeight="28.0" prefWidth="343.0" visible="false" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="108.0" styleClass="inputField" promptText="Nome da categoria" />
 		<Button fx:id="btnCancelAdd" contentDisplay="GRAPHIC_ONLY" layoutX="451.0" layoutY="144.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="39.0" text="Button" visible="false" AnchorPane.rightAnchor="14.0">
 			<graphic>
 				<FontAwesomeIconView glyphName="CLOSE" size="2em" />
