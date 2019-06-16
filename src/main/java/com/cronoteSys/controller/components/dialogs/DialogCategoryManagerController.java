@@ -173,7 +173,7 @@ public class DialogCategoryManagerController implements Initializable {
 						}
 						lblCategoryName.setText(item.getDescription());
 						txtCategoryName.setText(item.getDescription());
-						new CategoryDAO().saveOrUpdate(item);
+						category = new CategoryBO().save(item);
 						loadIcon();
 					}
 				});

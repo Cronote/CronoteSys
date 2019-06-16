@@ -209,7 +209,7 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 
 				categoryManagerDialog.showCategoryManagerDialog();
 				CategoryVO selectedCategory = categoryManagerDialog.getSelectedCategory();
-				obsLstCategory = FXCollections.observableList(new CategoryBO().listByUser(loggedUser));
+				obsLstCategory = FXCollections.observableList(categoryManagerDialog.getLstCategories());
 				cboCategory.setItems(obsLstCategory);
 				cboCategory.getSelectionModel().select(selectedCategory);
 
