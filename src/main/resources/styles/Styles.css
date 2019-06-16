@@ -323,15 +323,27 @@ ComboBox{
 	-fx-background-color:#7C4DB8;
 	
 }
-
-.themed-list-cell .text{
-		-color:#A6A6A6;
+.themed-list-cell:hover>*.error-label,
+ .themed-list-cell:selected>*.error-label,
+  .themed-list-cell>*.error-label{
+	-fx-fill:red !important;
+	-fx-prompt-text-fill: red !important;
+    -fx-text-fill: red !important;
+}
+.themed-list-cell .letters_box_icons{
+	-color:#A6A6A6;
+    -fx-prompt-text-fill: -color;
+    -fx-text-fill: -color;
+    -fx-fill: -color;
+}
+.themed-list-cell .error-label{
+	-color:red;
     -fx-prompt-text-fill: -color;
     -fx-text-fill: -color;
     -fx-fill: -color;
 }
 .themed-list-cell:hover>*.pane , .themed-list-cell:selected>*.pane,
-.themed-list-cell:hover>*.pane .text, .themed-list-cell:selected>*.pane .text {
+.themed-list-cell:hover>*.pane .letters_box_icons, .themed-list-cell:selected>*.pane .letters_box_icons {
 	-fx-background-color:#7C4DB8;
 	-fx-fill:white;
 	-fx-prompt-text-fill: white;
@@ -354,7 +366,7 @@ ComboBox{
 .jfx-combo-box .list-view .list-cell{
 	-letter-color:#A6A6A6;
 	-fx-fill:-letter-color;
-	 -fx-prompt-text-fill: -letter-color;
+	-fx-prompt-text-fill: -letter-color;
     -fx-text-fill: -letter-color;
 }
 .jfx-combo-box .arrow-button .arrow{
@@ -416,7 +428,6 @@ ComboBox{
 }
 .split-arrows-vertical>*>.increment-arrow,.split-arrows-vertical>*>.decrement-arrow{
 	-fx-background-color:white;
-	
 }
 
 .jfx-date-picker:editable .date-picker-display-node{
@@ -434,7 +445,6 @@ ComboBox{
 .right-button > .jfx-svg-glyph, .left-button >.jfx-svg-glyph{
 	-fx-background-color:#A6A6A6;
 }
-
 
 .calendar-grid > .day-name-cell{
 	 -fx-font-size: 16.0;
@@ -487,7 +497,7 @@ ComboBox{
     -fx-font-weight: BOLD;
     -fx-text-fill: white;
 }
-.inputField .error-label {
+.inputField .error-label, .test *.error-label  {
 	-fx-translate-y:-5.0px;
 	-fx-fill:#FF5757 !important;
 	-fx-prompt-text-fill: #FF5757 !important;
@@ -551,4 +561,8 @@ ComboBox{
 }
 .jfx-snackbar-action >.jfx-rippler{
     -jfx-rippler-fill: purple;
+}
+
+.stack-error{
+	-fx-background-color: #FF5757;
 }

@@ -14,9 +14,13 @@ import java.util.List;
 
 import com.cronoteSys.model.bo.LoginBO;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.base.IFXValidatableControl;
 import com.jfoenix.skins.JFXDatePickerSkin;
+import com.jfoenix.utils.JFXNodeUtils;
+import com.jfoenix.utils.JFXUtilities;
 import com.jfoenix.validation.RegexValidator;
 import com.jfoenix.validation.RequiredFieldValidator;
 
@@ -306,6 +310,17 @@ public class ScreenUtil {
 
 	}
 
+	public static void removeInlineValidation(Node[] fields) {
+		for (int i = 0; i < fields.length; i++) {
+			Node node = fields[i];
+			if (node instanceof IFXValidatableControl) {
+				IFXValidatableControl jfxValidatableField = (IFXValidatableControl) node;
+				jfxValidatableField.getValidators().clear();
+
+			}
+		}
+	}
+
 	public static void addInlineValidation(Node[] fields, Boolean[] isNotnull, Boolean[] isEmail) {
 		// required
 		RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
@@ -326,32 +341,30 @@ public class ScreenUtil {
 
 		for (int i = 0; i < fields.length; i++) {
 			Node node = fields[i];
-			if (node instanceof JFXTextField) {
-				JFXTextField jfxTextField = (JFXTextField) node;
+			if (node instanceof IFXValidatableControl) {
+				IFXValidatableControl jfxValidatableField = (IFXValidatableControl) node;
 				if (isNotnull[i])
-					jfxTextField.getValidators().add(requiredValidator);
-				if (isEmail[i])
-					jfxTextField.getValidators().add(emailValidator);
-				jfxTextField.focusedProperty().addListener((o, oldVal, newVal) -> {
+					jfxValidatableField.getValidators().add(requiredValidator);
+				((Node) jfxValidatableField).focusedProperty().addListener((o, oldVal, newVal) -> {
 					if (!newVal) {
-						jfxTextField.validate();
+						jfxValidatableField.validate();
 					}
 				});
 			}
-			if (node instanceof JFXComboBox<?>) {
-				JFXComboBox<?> jfxComboBox = (JFXComboBox<?>) node;
-				if (isNotnull[i])
-					jfxComboBox.getValidators().add(requiredValidator);
-				jfxComboBox.focusedProperty().addListener((o, oldVal, newVal) -> {
-					if (!newVal) {
-						jfxComboBox.validate();
-					}
-				});
+			if (node instanceof JFXTextField) {
+				JFXTextField jfxTextField = (JFXTextField) node;
+				if (isEmail[i]) {
+					jfxTextField.getValidators().clear();
+					jfxTextField.getValidators().add(emailValidator);
+				}
 			}
 			if (node instanceof JFXPasswordField) {
 				JFXPasswordField jfxPasswordField = (JFXPasswordField) node;
-				if (isNotnull[i])
+				if (isNotnull[i]) {
+					jfxPasswordField.getValidators().clear();
 					jfxPasswordField.getValidators().add(requiredValidator);
+
+				}
 			}
 		}
 	}

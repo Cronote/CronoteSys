@@ -8,21 +8,29 @@ import java.util.ResourceBundle;
 
 import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.model.vo.UserVO;
+import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 public class ProjectFirstInfoController implements Initializable {
 	@FXML
@@ -51,7 +59,6 @@ public class ProjectFirstInfoController implements Initializable {
 	private CheckBox chbConsiderHolidays;
 	@FXML
 	private JFXButton btnSave;
-
 	ProjectManagerController projectManagerController;
 
 	public ProjectFirstInfoController(ProjectManagerController control) {
@@ -72,42 +79,80 @@ public class ProjectFirstInfoController implements Initializable {
 		spnMinuteADay.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 60, 1, 1));
 		dtpByDateStart.setValue(LocalDate.now());
 		dtpByTimeStart.setValue(LocalDate.now());
+
+		Node[] field = { txtTitle, dtpByDateStart, dtpByDateEnd };
+		Boolean[] isNotnull = { true, true, true };
+		Boolean[] isEmail = { false, false, false };
+		ScreenUtil.addInlineValidation(field, isNotnull, isEmail);
 	}
 
 	private void initEvents() {
 		btnSave.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				txtTitle.validate();
+				if (tabDeadline.getSelectionModel().getSelectedIndex() == 0) {
+					if (!dtpByDateStart.validate() || !dtpByDateEnd.validate())
+						return;
+					if (!dtpByDateEnd.getValue().isAfter(dtpByDateStart.getValue()))
+						return;
+				} else {
+
+				}
 				getProject();
 			}
 		});
-	}
 
-	protected boolean fielsFilleds() {
-		if (txtTitle.getText().trim().isEmpty()) {
-			txtTitle.requestFocus();
-			return false;
-		}
-		if (tabDeadline.getSelectionModel().getSelectedIndex() == 0) {
-			if (dtpByDateStart.getValue() == null) {
-				dtpByDateStart.requestFocus();
-				return false;
+		tabDeadline.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				Node[] fieldsToRemove = { dtpByDateStart, dtpByDateEnd, dtpByTimeStart };
+				ScreenUtil.removeInlineValidation(fieldsToRemove);
+				if (newValue.intValue() == 0) {
+					Node[] field = { dtpByDateStart, dtpByDateEnd };
+					Boolean[] isNotnull = { true, true };
+					Boolean[] isEmail = { false, false };
+					ScreenUtil.addInlineValidation(field, isNotnull, isEmail);
+				} else if (newValue.intValue() == 1) {
+					// TODO: Adicionar validações para a aba 'por tempo'
+				}
+
 			}
-			boolean dateEndOk = true;
-			if (dtpByDateEnd.getValue() == null) {
-				dateEndOk = false;
+		});
+
+		dtpByDateEnd.valueProperty().addListener(new ChangeListener<LocalDate>() {
+			@Override
+			public void changed(ObservableValue<? extends LocalDate> observable, LocalDate oldValue,
+					LocalDate newValue) {
+				Pane parentPane = (Pane) dtpByDateEnd.getParent();
+				StackPane inputLine = (StackPane) dtpByDateEnd.lookup(".jfx-text-field>*.input-line");
+				Label errorlabel;
+				if ((Label) parentPane.lookup("#endDateErrorLabel") != null)
+					errorlabel = (Label) parentPane.lookup("#endDateErrorLabel");
+				else
+					errorlabel = new Label("A DATA DEVE SER DEPOIS DA DE INICIO!");
+				parentPane.getChildren().removeAll(errorlabel);
+				if (inputLine != null)
+					inputLine.getStyleClass().removeAll("stack-error");
+				if (!dtpByDateEnd.validate() || newValue == null)
+					return;
+				if (!newValue.isAfter(dtpByDateStart.getValue())) {
+					errorlabel.setId("endDateErrorLabel");
+					errorlabel.setStyle("-fx-text-fill:#FF5757;");
+					errorlabel.setWrapText(true);
+					errorlabel.setPrefWidth(205);
+					errorlabel.setLayoutY(dtpByDateEnd.getLayoutY() + 35);
+					parentPane.getChildren().add(errorlabel);
+					AnchorPane.setRightAnchor(errorlabel, 24.0);
+					if (inputLine != null) {
+						inputLine.getStyleClass().add("stack-error");
+					}
+					return;
+				}
 			}
-			if (dateEndOk && dtpByDateEnd.getValue().isBefore(dtpByDateStart.getValue())) {
-				dateEndOk = false;
-			}
-			if (!dateEndOk) {
-				dtpByDateEnd.requestFocus();
-				return false;
-			}
-		} else if (tabDeadline.getSelectionModel().getSelectedIndex() == 1) {
-			// TODO: fazer o metodo de coleta de prazo por tempo
-		}
-		return true;
+		});
+
 	}
 
 	protected ProjectVO getProject() {

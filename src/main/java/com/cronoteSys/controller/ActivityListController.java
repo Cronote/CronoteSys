@@ -103,6 +103,7 @@ public class ActivityListController implements Initializable, ShowEditViewActivi
 				if (action.equalsIgnoreCase("save")) {
 					activityList.add(0, act);
 					cardsList.setItems(FXCollections.observableArrayList(activityList));
+					cardsList.getSelectionModel().select(0);
 				} else {
 					int selected = cardsList.getSelectionModel().getSelectedIndex();
 					activityList.remove(selected);

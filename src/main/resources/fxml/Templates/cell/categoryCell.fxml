@@ -41,7 +41,8 @@
 		</Button>
 		<JFXTextField fx:id="txtCategoryName" layoutX="14.0"
 			layoutY="5.0" prefHeight="25.0" prefWidth="465.0"
-			styleClass="inputField" visible="false" AnchorPane.bottomAnchor="5.0"
+			promptText="Nome da categoria" styleClass="inputField"
+			visible="false" AnchorPane.bottomAnchor="5.0"
 			AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="5.0" />
 		<Label fx:id="lblCategoryName" layoutX="14.0" layoutY="10.0"
 			prefHeight="16.0" prefWidth="465.0" styleClass="letters_box_icons"
