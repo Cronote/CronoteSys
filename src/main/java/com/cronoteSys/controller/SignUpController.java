@@ -1,5 +1,6 @@
 package com.cronoteSys.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,34 +11,43 @@ import com.cronoteSys.model.bo.LoginBO;
 import com.cronoteSys.model.bo.UserBO;
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.UserVO;
-import com.cronoteSys.util.EmailUtil;
 import com.cronoteSys.util.GenHash;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
+import com.cronoteSys.util.validator.LoginExistValidator;
+import com.cronoteSys.util.validator.PasswordMatchValidator;
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXPopup;
+import com.jfoenix.controls.JFXSnackbar;
+import com.jfoenix.controls.JFXSnackbarLayout;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXSnackbar.SnackbarEvent;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 
 public class SignUpController extends MasterController {
 
 	@FXML
-	private TextField txtName;
+	private JFXTextField txtName;
 	@FXML
-	private DatePicker dateBirthday;
+	private JFXDatePicker dateBirthday;
 	@FXML
-	private TextField txtEmail;
+	private JFXTextField txtEmail;
 	@FXML
-	private TextField txtSecondEmail;
+	private JFXTextField txtSecondEmail;
 	@FXML
 	private Button btnProfile;
 	@FXML
@@ -47,36 +57,38 @@ public class SignUpController extends MasterController {
 	@FXML
 	private Button btnSignUp;
 	@FXML
-	private PasswordField txtPwd;
+	private JFXPasswordField txtPwd;
 	@FXML
-	private PasswordField txtConfirmPwd;
+	private JFXPasswordField txtConfirmPwd;
 	@FXML
 	private AnchorPane pnlInput;
 	@FXML
-	private Label lblName;
+	private StackPane popupPoint;
 	@FXML
-	private Label lblBirthDate;
-	@FXML
-	private Label lblEmail;
-	@FXML
-	private Label lblSecondEmail;
-	@FXML
-	private Label lblPwd;
-	@FXML
-	private Label lblConfirmPwd;
-
-	private List<Node> allLabels;
-	private boolean bPasswordOk;
+	private Pane pnlMidBottomArea;
+	private JFXPopup popupPass = new JFXPopup();
 	private LoginVO objLogin;
+	private final StackPane passwordExplanationPane = new StackPane();
+	private PasswordMatchValidator ps = new PasswordMatchValidator();
+	private JFXSnackbar snackbar;
 
 	@FXML
 	protected void initialize() {
-		final List<Node> lstPasswordNodes = new ArrayList<Node>();
-		final List<Node> lstPasswordLabelNodes = new ArrayList<Node>();
-		lstPasswordNodes.add(txtPwd);
-		lstPasswordNodes.add(txtConfirmPwd);
-		lstPasswordLabelNodes.add(lblPwd);
-		lstPasswordLabelNodes.add(lblConfirmPwd);
+		snackbar = new JFXSnackbar(pnlMidBottomArea);
+		ps.setMessage("SENHAS NÃO COMBINAM");
+		try {
+			Parent lp = ScreenUtil.loadTemplate("/popups/PasswordExplanation").load();
+			passwordExplanationPane.getChildren().add(lp);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		popupPass.setPopupContent(passwordExplanationPane);
+
+		Node[] lstFieldsToValidation = { txtName, txtEmail, txtSecondEmail, txtPwd, txtConfirmPwd };
+		Boolean[] areNotNullFields = { true, true, false, true, true };
+		Boolean[] areEmailFields = { false, true, true, false, false };
+		ScreenUtil.addInlineValidation(lstFieldsToValidation, areNotNullFields, areEmailFields);
+
 		objLogin = new LoginVO();
 		ScreenUtil.addOnChangeScreenListener(new OnChangeScreen() {
 			public void onScreenChanged(String newScreen, HashMap<String, Object> hmap) {
@@ -85,61 +97,50 @@ public class SignUpController extends MasterController {
 				}
 			}
 		});
-
+		ScreenUtil.addPasswordFormatValidator(txtPwd);
 		txtPwd.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				if (!newValue) {
-					bPasswordOk = ScreenUtil.verifyPassFields(txtPwd.getText().trim(), txtConfirmPwd.getText().trim(),
-							lstPasswordNodes, lstPasswordLabelNodes);
+				if (newValue) {
+					popupPass.show(popupPoint);
 				}
-
+				if (!newValue) {
+					popupPass.hide();
+					ps.setRegexPattern(txtPwd.getText());
+					txtConfirmPwd.getValidators().add(ps);
+				}
 			}
 		});
 		txtConfirmPwd.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				ps.setRegexPattern(txtPwd.getText());
 				if (!newValue) {
-					bPasswordOk = ScreenUtil.verifyPassFields(txtConfirmPwd.getText().trim(), txtPwd.getText().trim(),
-							lstPasswordNodes, lstPasswordLabelNodes);
+					if (txtConfirmPwd.validate()) {
+						txtConfirmPwd.getValidators().remove(ps);
+						txtConfirmPwd.getValidators().add(ps);
+					}
 				}
-				lblConfirmPwd.getStyleClass().remove("show");
-				lblConfirmPwd.getStyleClass().add("hide");
 			}
 		});
 	}
 
 	@FXML
 	public void btnSignUpClicked() {
-		hiddenAllLabels();
-		if (new ScreenUtil().isFilledFields(getThisStage(), pnlInput, false)) {
-			String sEmail = txtEmail.getText().trim();
-			if (!EmailUtil.validateEmail(sEmail)) {
-				lblEmail.setText("Email fora do formato");
-				lblEmail.getStyleClass().remove("hide");
-				lblEmail.getStyleClass().add("show");
+		if (txtName.validate() && txtEmail.validate() && txtPwd.validate() && txtConfirmPwd.validate()
+				&& (txtSecondEmail.validate() || txtSecondEmail.getText().isEmpty())) {
+			LoginExistValidator loginValidtor = new LoginExistValidator();
+			txtEmail.getValidators().add(loginValidtor);
+			if (!txtEmail.validate()) {
 				return;
 			}
-			
-			LoginVO loginVO = new LoginBO().loginExists(sEmail);
-			if (loginVO != null) {
-				lblEmail.setText("Email já cadastrado");
-				txtEmail.getStyleClass().add("error");
-				lblEmail.getStyleClass().remove("hide");
-				lblEmail.getStyleClass().add("show");
-			}
-			if (!bPasswordOk) {
-				lblPwd.getStyleClass().remove("hide");
-				lblConfirmPwd.getStyleClass().remove("hide");
-				lblPwd.getStyleClass().add("show");
-				lblConfirmPwd.getStyleClass().add("show");
-				txtConfirmPwd.getStyleClass().add("error");
-				txtPwd.getStyleClass().add("error");
-				lblPwd.setText("Senhas diferentes");
-				lblConfirmPwd.setText("Senhas diferentes");
-				return;
+			if (!txtSecondEmail.getText().isEmpty()) {
+				txtSecondEmail.getValidators().add(loginValidtor);
+				if (!txtSecondEmail.validate()) {
+					return;
+				}
 			}
 			String sPassPureText = txtPwd.getText().trim();
 			String sPassEncrypted = new GenHash().hashIt(sPassPureText);
-
 			UserVO objUser = new UserVO();
 			objUser.setCompleteName(txtName.getText().trim());
 			objUser.setEmailRecover(txtSecondEmail.getText().trim());
@@ -147,32 +148,24 @@ public class SignUpController extends MasterController {
 			objUser.setStats(Byte.parseByte("1"));
 			objUser = new UserBO().save(objUser);
 			objLogin.setTbUser(objUser);
-			objLogin.setEmail(sEmail);
+			objLogin.setEmail(txtEmail.getText());
 			objLogin.setPasswd(sPassEncrypted);
 			objLogin = new LoginBO().save(objLogin);
 			if (objUser != null && objLogin != null) {
-				JOptionPane.showMessageDialog(null, "Mensagem de sucesso");
+				snackbar.getStyleClass().removeAll("error-snackbar");
+				snackbar.getStyleClass().add("success-snackbar");
+				snackbar.fireEvent(new SnackbarEvent(
+						new JFXSnackbarLayout("Cadastrado com sucesso!", "Fechar", action -> snackbar.close()),
+						Duration.INDEFINITE, null));
 				new ScreenUtil().clearFields(getThisStage(), pnlInput);
-				hiddenAllLabels();
 			} else {
-				JOptionPane.showMessageDialog(null, "Mensagem de falha");
+				snackbar.getStyleClass().removeAll("success-snackbar");
+				snackbar.getStyleClass().add("error-snackbar");
+				snackbar.fireEvent(new SnackbarEvent(
+						new JFXSnackbarLayout("Cadastro incorreto!", "Fechar", action -> snackbar.close()),
+						Duration.INDEFINITE, null));
 			}
 		}
 	}
 
-	private void hiddenAllLabels() {
-		allLabels = new ArrayList<Node>();
-		allLabels.add(lblName);
-		allLabels.add(lblEmail);
-		allLabels.add(lblSecondEmail);
-		allLabels.add(lblPwd);
-		allLabels.add(lblConfirmPwd);
-
-		for (Node n : allLabels) {
-			if (n.getStyleClass().contains("show")) {
-				n.getStyleClass().remove("show");
-				n.getStyleClass().add("hide");
-			}
-		}
-	}
 }

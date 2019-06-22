@@ -1,16 +1,20 @@
-package com.cronoteSys.dialogs;
+package com.cronoteSys.controller.components.dialogs;
 
 import java.io.File;
 import java.io.IOException;
 
-import com.cronoteSys.controller.DialogCategoryManagerController;
 import com.cronoteSys.model.vo.CategoryVO;
 import com.cronoteSys.util.SessionUtil;
+import com.jfoenix.animation.alert.JFXAlertAnimation;
+import com.jfoenix.controls.JFXAlert;
 
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.DialogEvent;
+import javafx.scene.control.DialogPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -23,19 +27,20 @@ public class CategoryManagerDialog {
 
 	public void showCategoryManagerDialog() {
 		try {
-			Stage stage = new Stage();
 			FXMLLoader loader = SessionUtil.getInjector().getInstance(FXMLLoader.class);
 			loader.setLocation(
 					new File(getClass().getResource("/fxml/Templates/dialogs/CategoryManager.fxml").getPath()).toURI()
 							.toURL());
 			Parent root = loader.load();
-			stage.setScene(new Scene(root));
-			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.initStyle(StageStyle.UNDECORATED);
-
 			DialogCategoryManagerController controller = loader.getController();
-			stage.showAndWait();
+			JFXAlert<CategoryVO> alert = new JFXAlert<CategoryVO>();
+			alert.setContent(root);
+			alert.initStyle(StageStyle.UNDECORATED);
+			alert.showAndWait();
 			lstCategories = controller.getCategoryList().getItems();
+			for (CategoryVO categoryVO : lstCategories) {
+				System.out.println(categoryVO.getDescription());
+			}
 			selectedCategory = controller.getCategoryList().getSelectionModel().getSelectedItem();
 		} catch (IOException e) {
 			e.printStackTrace();

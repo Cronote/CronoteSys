@@ -1,7 +1,4 @@
-.btn{
-	-fx-background-color: #333333;
-	-fx-background-radius: 10.0; 
-}
+
 
 .btnsize {
 	
@@ -11,9 +8,7 @@
 
 #Screen {
 	
-	-fx-background-image: url(../image/background_sunrise.jpg);
-	-fx-background-repeat: no-repeat ;
-	-fx-background-size: 100.0% 100.0% ;
+	-fx-background-color:#202225;
 	
 }
 
@@ -265,6 +260,15 @@ ComboBox{
 	-fx-stroke-width:2.0;
 }
 /*=================== NOVOS ============== */
+
+.projectManager > .tab >*.titleLabel{
+	-fx-background-color:red;
+	visibility:hidden;
+}
+.btn{
+	-fx-background-color: #7C4DB8;
+	-fx-background-radius: 10.0; 
+}
 #menu .title{
 	-fx-pref-height:0.0;
 	-fx-min-height:0.0;
@@ -275,6 +279,7 @@ ComboBox{
 	-fx-background-color:#202225;
 }
 .tone1-background{
+	-tone1:#35393F;
 	-fx-background-color:#35393F;
 }
 .tone2-background{
@@ -301,14 +306,15 @@ ComboBox{
 	-fx-fill:-color;
 	-fx-text-fill:-color;
 }
+
 .jfx-text-field,.jfx-combo-box,.jfx-password-field,.jfx-text-area{
 	-color:#A6A6A6;
     -fx-prompt-text-fill: -color;
     -fx-text-fill: -color;
     -fx-fill: -color;
 }
-.jfx-combo-box .list-cell:filled:selected, .jfx-combo-box .text {
-		-color:#A6A6A6;
+.jfx-combo-box .list-cell:filled:selected, .jfx-combo-box .list-cell .text {
+	-color:#A6A6A6;
     -fx-prompt-text-fill: -color;
     -fx-text-fill: -color;
     -fx-fill: -color;
@@ -317,15 +323,27 @@ ComboBox{
 	-fx-background-color:#7C4DB8;
 	
 }
-
-.themed-list-cell .text{
-		-color:#A6A6A6;
+.themed-list-cell:hover>*.error-label,
+ .themed-list-cell:selected>*.error-label,
+  .themed-list-cell>*.error-label{
+	-fx-fill:red !important;
+	-fx-prompt-text-fill: red !important;
+    -fx-text-fill: red !important;
+}
+.themed-list-cell .letters_box_icons{
+	-color:#A6A6A6;
+    -fx-prompt-text-fill: -color;
+    -fx-text-fill: -color;
+    -fx-fill: -color;
+}
+.themed-list-cell .error-label{
+	-color:red;
     -fx-prompt-text-fill: -color;
     -fx-text-fill: -color;
     -fx-fill: -color;
 }
 .themed-list-cell:hover>*.pane , .themed-list-cell:selected>*.pane,
-.themed-list-cell:hover>*.pane .text, .themed-list-cell:selected>*.pane .text {
+.themed-list-cell:hover>*.pane .letters_box_icons, .themed-list-cell:selected>*.pane .letters_box_icons {
 	-fx-background-color:#7C4DB8;
 	-fx-fill:white;
 	-fx-prompt-text-fill: white;
@@ -337,8 +355,8 @@ ComboBox{
     -fx-text-fill: white;
 }
 .inputField{
-	-fx-focus-color:#7c4db8;
-	-fx-unfocus-color:#a6a6a6;
+	-jfx-focus-color:#7c4db8;
+	-jfx-unfocus-color:#a6a6a6;
 }
 .jfx-combo-box .list-view{
 	
@@ -348,7 +366,7 @@ ComboBox{
 .jfx-combo-box .list-view .list-cell{
 	-letter-color:#A6A6A6;
 	-fx-fill:-letter-color;
-	 -fx-prompt-text-fill: -letter-color;
+	-fx-prompt-text-fill: -letter-color;
     -fx-text-fill: -letter-color;
 }
 .jfx-combo-box .arrow-button .arrow{
@@ -358,10 +376,16 @@ ComboBox{
 	
 	-fx-background-color:#35393F;
 }
+.jfx-combo-box .list-view .list-cell >.jfx-rippler { 
+	-jfx-rippler-fill: purple;
+}
+.highLightsDetails{
+	-highlight-color:#7C4DB8;
+}
 .highLightsDetails:hover{
-	-color:#7C4DB8;
-	-fx-fill:-color;
-	-fx-text-fill:-color;
+	
+	-fx-fill:#7C4DB8;
+	-fx-text-fill:#7C4DB8;
 }
 .btnWindows:selected, .btnWindows:hover, .btnWindows:selected .icon, .btnWindows:hover .icon{
 	-fx-text-fill:white;
@@ -400,8 +424,145 @@ ComboBox{
 }
 
 .split-arrows-vertical .increment-arrow-button,.split-arrows-vertical .decrement-arrow-button{
-	-fx-background-color:#7C4DB8;
+	-fx-background-color:#7c4db8;
 }
 .split-arrows-vertical>*>.increment-arrow,.split-arrows-vertical>*>.decrement-arrow{
 	-fx-background-color:white;
+}
+
+.jfx-date-picker:editable .date-picker-display-node{
+	-jfx-focus-color:#7c4db8;
+	-jfx-unfocus-color:#a6a6a6;
+	-jfx-label-float:true;
+}
+.date-picker-popup{
+	-fx-background-color:-tone1;
+} 
+.spinner-label{
+	-fx-text-fill:#A6A6A6;
+	-fx-fill:red;
+} 
+.right-button > .jfx-svg-glyph, .left-button >.jfx-svg-glyph{
+	-fx-background-color:#A6A6A6;
+}
+
+.calendar-grid > .day-name-cell{
+	 -fx-font-size: 16.0;
+    -fx-font-weight: BOLD;
+	-fx-text-fill:#7c4db8;	
+}
+.calendar-grid > .day-cell{
+	-fx-text-fill:#A6A6A6;	
+}
+.calendar-grid > .today{
+	-fx-text-fill:#7c4db8;	
+}
+.calendar-grid > .selected{
+	-fx-text-fill:white;	
+}
+
+.calendar-grid > .today:hover{
+	-fx-text-fill:#A6A6A6;	
+}
+.calendar-grid > .day-cell:hover{
+	-fx-background-color:#7c4db8;
+	-fx-background-radius:50.0;
+}
+
+.date-picker-popup > * > .date-picker-list-view > .virtual-flow > .clipped-container > .sheet > .data-picker-list-cell {
+    -fx-font-size: 16.0;
+    -fx-font-weight: NORMAL;
+    -fx-background-color: -tone1;
+    -fx-alignment: center;
+    -fx-text-fill: #A6A6A6;
+}
+
+.date-picker-popup > * > .date-picker-list-view > .virtual-flow > .clipped-container > .sheet > .data-picker-list-cell > .jfx-rippler {
+    -jfx-rippler-fill: purple;
+}
+
+.date-picker-popup > * > .date-picker-list-view > .virtual-flow > .clipped-container > .sheet > .data-picker-list-cell:hover {
+    -fx-background-color: #7c4db8;
+      -fx-text-fill: white;
+}
+
+.date-picker-popup > * > .date-picker-list-view > .virtual-flow > .clipped-container > .sheet > .data-picker-list-cell:selected-year {
+    -fx-font-size: 24.0;
+    -fx-font-weight: BOLD;
+    -fx-text-fill: #7c4db8;
+}
+
+.date-picker-popup > * > .date-picker-list-view > .virtual-flow > .clipped-container > .sheet > .data-picker-list-cell:selected-year:hover {
+    -fx-font-size: 24.0;
+    -fx-font-weight: BOLD;
+    -fx-text-fill: white;
+}
+.inputField .error-label, .test *.error-label  {
+	-fx-translate-y:-5.0px;
+	-fx-fill:#FF5757 !important;
+	-fx-prompt-text-fill: #FF5757 !important;
+    -fx-text-fill: #FF5757 !important;
+}
+
+
+.jfx-alert-overlay, .depth-container{
+    -fx-background-color: rgba(0.0,0.0,0.0,0.6);
+}
+
+.jfx-alert-overlay > .depth-container > .jfx-alert-content-container,
+.jfx-alert-overlay > .jfx-alert-content-container{
+    -fx-background-color: rgba(0.0,0.0,0.0,0.6);
+}
+
+
+.jfx-tab-pane:top .depth-container .tab-header-area .tab-header-background{
+	-fx-background-color:a6a6a6;
+}
+.jfx-tab-pane:top .depth-container .tab-header-area .headers-region .tab:hover{
+	-fx-background-color:#8000806b;
+}
+.jfx-tab-pane:top .depth-container .tab-header-area .headers-region .tab:selected{
+	-fx-background-color:#35393F;
+}
+
+.jfx-tab-pane:top .depth-container .tab-header-area .headers-region .tab .jfx-rippler .tab-container .tab-label .text{
+	-fx-fill:black;
+}
+.jfx-tab-pane:top .depth-container .tab-header-area .headers-region .tab:selected .jfx-rippler .tab-container .tab-label .text{
+	-fx-fill:white;
+}
+.jfx-tab-pane:top .depth-container .tab-header-area .headers-region .tab .jfx-rippler {
+	-jfx-rippler-fill: purple;
+}
+.jfx-tab-pane:top .depth-container .tab-header-area .headers-region .tab-selected-line{
+	    -fx-background-color: #7c4db8;
+	    -fx-pref-height:5.0px;
+}
+
+.jfx-snackbar-content {
+	-fx-background-radius:25.0 25.0 0.0 0.0;
+    -fx-background-color: #35393F;
+    -fx-padding: 5.0;
+    -fx-spacing: 5.0;
+}
+
+.error-snackbar .jfx-snackbar-toast {
+	-fx-font-size: 24.0;
+    -fx-text-fill: #FF5757;
+}
+.success-snackbar .jfx-snackbar-toast {
+	-fx-font-size: 24.0;
+    -fx-text-fill: #7ED957;
+}
+
+.jfx-snackbar-action {
+	-fx-background-color: #7c4db8;
+    -fx-text-fill: WHITE;
+}
+.jfx-snackbar-action >.jfx-rippler{
+    -jfx-rippler-fill: purple;
+}
+
+.stack-error{
+	-fx-background-color: #FF5757;
 }

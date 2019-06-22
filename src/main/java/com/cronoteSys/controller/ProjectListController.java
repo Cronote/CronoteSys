@@ -1,13 +1,11 @@
 package com.cronoteSys.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import com.cronoteSys.controller.ProjectCell.ProjectSelectedI;
+import com.cronoteSys.controller.components.cellfactory.ProjectCellFactory;
 import com.cronoteSys.model.bo.ProjectBO;
 import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.model.vo.UserVO;
@@ -18,21 +16,17 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.util.Callback;
 
 public class ProjectListController implements Initializable {
 	@FXML
@@ -43,7 +37,7 @@ public class ProjectListController implements Initializable {
 
 	private UserVO loggedUser;
 	@FXML
-	TitledPane title;
+	AnchorPane title;
 	@FXML
 	TextField txtSearch;
 	@FXML
@@ -52,8 +46,8 @@ public class ProjectListController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		initEvents();
-		initObservers();
-		loggedUser = (UserVO) SessionUtil.getSESSION().get("loggedUser");
+		initListeners();
+		loggedUser = (UserVO) SessionUtil.getSession().get("loggedUser");
 		ProjectBO projectBO = new ProjectBO();
 		projectLst = projectBO.listAll(loggedUser);
 		cardsList.setItems(FXCollections.observableArrayList(projectLst));
@@ -68,13 +62,15 @@ public class ProjectListController implements Initializable {
 		}
 		icon.setSize("3em");
 		btnAddProject.setGraphic(icon);
+		
 	}
 
-	private void initObservers() {
-		ProjectCell.addOnProjectSelectedListener(new ProjectSelectedI() {
+	private void initListeners() {
+		cardsList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ProjectVO>() {
 			@Override
-			public void onProjectSelect(ProjectVO project) {
-				
+			public void changed(ObservableValue<? extends ProjectVO> observable, ProjectVO oldValue,
+					ProjectVO newValue) {
+				notifyAllProjectSelectedListeners(newValue);
 			}
 		});
 	}
@@ -84,8 +80,20 @@ public class ProjectListController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				cardsList.getSelectionModel().clearSelection();
-				notifyAllProjectAddedListeners();
+				notifyAllBtnProjectClickedListeners();
+//				notifyAllProjectSelectedListeners(null);
+				//here
 			}
+		});
+
+		ProjectBO.addOnProjectAddedIListener(proj -> {
+			projectLst.add(0,proj);
+			cardsList.setItems(FXCollections.observableArrayList(projectLst));
+			cardsList.getSelectionModel().select(proj);
+		});
+		ProjectBO.addOnProjectDeletedListener(proj -> {
+			projectLst.remove(proj);
+			cardsList.setItems(FXCollections.observableArrayList(projectLst));			
 		});
 	}
 
@@ -99,62 +107,10 @@ public class ProjectListController implements Initializable {
 		projectAddedListeners.add(newListener);
 	}
 
-	private void notifyAllProjectAddedListeners() {
+	private void notifyAllBtnProjectClickedListeners() {
 		for (BtnProjectClickedI l : projectAddedListeners) {
 			l.onBtnProjectClicked();
 		}
-	}
-
-}
-
-class ProjectCellFactory implements Callback<ListView<ProjectVO>, ListCell<ProjectVO>> {
-	@Override
-	public ListCell<ProjectVO> call(ListView<ProjectVO> listview) {
-		return new ProjectCell();
-	}
-}
-
-class ProjectCell extends ListCell<ProjectVO> {
-	@FXML
-	private Label lblTitle;
-	@FXML
-	private Label lblProgress;
-	@FXML
-	private ProgressBar pgbProgress;
-	@FXML
-	private AnchorPane projectCardRoot;
-	private ProjectVO project;
-
-	@Override
-	public void updateSelected(boolean selected) {
-		super.updateSelected(selected);
-		if (selected) {
-			projectCardRoot.getStyleClass().add("cardSelected");
-			notifyAllProjectSelectedListeners(project);
-		} else
-			projectCardRoot.getStyleClass().removeAll("cardSelected");
-	}
-	@Override
-	public void updateItem(ProjectVO item, boolean empty) {
-		super.updateItem(item, empty);
-		if (item != null || !empty) {
-			FXMLLoader loader = SessionUtil.getInjector().getInstance(FXMLLoader.class);
-			try {
-				loader.setLocation(new File(getClass().getResource("/fxml/Templates/cell/ProjectCard.fxml").getPath())
-						.toURI().toURL());
-				loader.setController(this);
-				loader.load();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			lblTitle.setText(item.getTitle());
-			setGraphic(projectCardRoot);
-			project = item;
-		} else {
-			setText(null);
-			setGraphic(null);
-		}
-		setStyle("-fx-background-color:transparent;");
 	}
 
 	private static ArrayList<ProjectSelectedI> projectSelectedListeners = new ArrayList<ProjectSelectedI>();
@@ -173,3 +129,5 @@ class ProjectCell extends ListCell<ProjectVO> {
 		}
 	}
 }
+
+
