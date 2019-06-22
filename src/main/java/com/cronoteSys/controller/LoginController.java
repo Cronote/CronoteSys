@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
-
+import javafx.util.Duration;
 import com.cronoteSys.model.bo.LoginBO;
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.UserVO;
@@ -13,15 +13,22 @@ import com.cronoteSys.util.GenHash;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 import com.cronoteSys.util.SessionUtil;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXSnackbar;
+import com.jfoenix.controls.JFXSnackbar.SnackbarEvent;
+import com.jfoenix.controls.JFXSnackbarLayout;
 import com.jfoenix.controls.JFXTextField;
 
+import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 
 /**
  *
@@ -43,6 +50,9 @@ public class LoginController extends MasterController {
 	private boolean rememberMe = true;
 	@FXML
 	private AnchorPane pnlLogin;
+	@FXML
+	private Pane pnlMidBottomArea;
+	private JFXSnackbar snackbar;
 
 	@FXML
 	public void initialize() {
@@ -64,6 +74,7 @@ public class LoginController extends MasterController {
 		Boolean[] areNotNullFields = { true, true };
 		Boolean[] areEmailFields = { true, false };
 		ScreenUtil.addInlineValidation(lstFieldsToValidation, areNotNullFields, areEmailFields);
+		snackbar = new JFXSnackbar(pnlMidBottomArea);
 	}
 
 	public void login(LoginVO login) {
@@ -86,13 +97,12 @@ public class LoginController extends MasterController {
 			ScreenUtil.openNewWindow(getThisStage(), "Home", true, hmp);
 
 		} else {
-			List<Node> lst = new ArrayList<Node>();
-			lst.add(txtEmail);
-			lst.add(txtPassword);
-			new ScreenUtil().addORRemoveErrorClass(lst, true);
-			HashMap<String, Object> hmapValues = new HashMap<String, Object>();
-			hmapValues.put("msg", "Usuário ou senha incorretos!");
-			System.out.println("deu errado");
+			snackbar.getStyleClass().add("error-snackbar");
+			JFXSnackbarLayout layout = new JFXSnackbarLayout("Credenciais de login incorretas!", "Fechar",
+					action -> snackbar.close());
+			SnackbarEvent event = new SnackbarEvent(layout, Duration.INDEFINITE,
+					PseudoClass.getPseudoClass("error-snackbar"));
+			snackbar.fireEvent(event);
 		}
 	}
 
@@ -118,11 +128,11 @@ public class LoginController extends MasterController {
 	private void registerNewLogin(Integer idUser) {
 		try {
 			Properties prop = getProp();
-			String savedAccounts = prop.getProperty("savedAccounts","");
+			String savedAccounts = prop.getProperty("savedAccounts", "");
 			System.out.println(savedAccounts.split(",").length);
 			if (savedAccounts.equals(""))
-				savedAccounts+=idUser.toString();
-			else 
+				savedAccounts += idUser.toString();
+			else
 				savedAccounts += "," + idUser.toString();
 			prop.setProperty("savedAccounts", savedAccounts);
 			saveProp(prop);

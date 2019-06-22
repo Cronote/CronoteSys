@@ -13,6 +13,7 @@ import com.cronoteSys.util.SessionUtil;
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXAlert;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RequiredFieldValidator;
 
 import de.jensd.fx.glyphs.GlyphIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -80,7 +81,7 @@ public class DialogCategoryManagerController implements Initializable {
 				String search = txtSearch.getText().trim();
 				if (!search.isEmpty()) {
 					lstCategories = FXCollections.observableList(catDao.listByDescriptionAndUser(search, loggedUser));
-				}else {
+				} else {
 					lstCategories = FXCollections.observableList(catDao.getList(loggedUser.getIdUser()));
 				}
 				categoryList.setItems(lstCategories);
@@ -113,7 +114,7 @@ public class DialogCategoryManagerController implements Initializable {
 	private class CategoryCell extends ListCell<CategoryVO> {
 		BooleanProperty isEditing = new SimpleBooleanProperty(false);
 		@FXML
-		private TextField txtCategoryName;
+		private JFXTextField txtCategoryName;
 		@FXML
 		private Label lblCategoryName;
 		@FXML
@@ -149,6 +150,7 @@ public class DialogCategoryManagerController implements Initializable {
 									.toURL());
 					loader.setController(this);
 					loader.load();
+					txtCategoryName.getValidators().add(new RequiredFieldValidator("CAMPO OBRIGATÓRIO!"));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -156,10 +158,14 @@ public class DialogCategoryManagerController implements Initializable {
 					@Override
 					public void handle(ActionEvent event) {
 						if (isEditing.get()) {
-							item.setDescription(txtCategoryName.getText());
-							lblCategoryName.setVisible(isEditing.get());
-							txtCategoryName.setVisible(!isEditing.get());
-							isEditing.set(!isEditing.get());
+							if (txtCategoryName.validate()) {
+								item.setDescription(txtCategoryName.getText());
+								lblCategoryName.setVisible(isEditing.get());
+								txtCategoryName.setVisible(!isEditing.get());
+								isEditing.set(!isEditing.get());
+							} else {
+								return;
+							}
 						} else {
 							lblCategoryName.setVisible(isEditing.get());
 							txtCategoryName.setVisible(!isEditing.get());
@@ -167,7 +173,7 @@ public class DialogCategoryManagerController implements Initializable {
 						}
 						lblCategoryName.setText(item.getDescription());
 						txtCategoryName.setText(item.getDescription());
-						new CategoryDAO().saveOrUpdate(item);
+						category = new CategoryBO().save(item);
 						loadIcon();
 					}
 				});
@@ -181,10 +187,10 @@ public class DialogCategoryManagerController implements Initializable {
 				lblCategoryName.setText(item.getDescription());
 				txtCategoryName.setText(item.getDescription());
 				category = item;
-				
+
 				setGraphic(cell);
 				getStyleClass().addAll("themed-list-cell");
-				
+
 			} else {
 				setText(null);
 				setGraphic(null);
@@ -196,14 +202,14 @@ public class DialogCategoryManagerController implements Initializable {
 			GlyphIcon<?> icon = null;
 			if (isEditing.get()) {
 				icon = new FontAwesomeIconView(FontAwesomeIcon.SAVE);
+				
 			} else {
 				icon = new FontAwesomeIconView(FontAwesomeIcon.EDIT);
 			}
+			icon.getStyleClass().add("letters_box_icons");
 			icon.setSize("2em");
 			btnEditSave.setGraphic(icon);
 		}
-		
-		
-		
+
 	}
 }

@@ -13,9 +13,14 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.cronoteSys.model.bo.LoginBO;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.base.IFXValidatableControl;
 import com.jfoenix.skins.JFXDatePickerSkin;
+import com.jfoenix.utils.JFXNodeUtils;
+import com.jfoenix.utils.JFXUtilities;
 import com.jfoenix.validation.RegexValidator;
 import com.jfoenix.validation.RequiredFieldValidator;
 
@@ -266,22 +271,6 @@ public class ScreenUtil {
 		}
 	}
 
-	public static boolean verifyPassFields(String sPass1, String sPass2, List<Node> lstTextFields,
-			List<Node> lstLabel) {
-		if (sPass1.equals("") || sPass2.equals(""))
-			return false;
-		if (!new LoginBO().validatePassword(sPass1)) {
-			new ScreenUtil().addORRemoveErrorClass(lstTextFields, true);
-			return false;
-		}
-		if (!sPass1.equals(sPass2)) {
-			new ScreenUtil().addORRemoveErrorClass(lstTextFields, true);
-			return false;
-		}
-		new ScreenUtil().addORRemoveErrorClass(lstTextFields, false);
-		return true;
-	}
-
 	public void addORRemoveErrorClass(java.util.List<Node> node, boolean isAdd) {
 		for (Node n : node) {
 			if (n != null) {
@@ -321,51 +310,66 @@ public class ScreenUtil {
 
 	}
 
-	public static void addInlineValidation(Node[] fields, Boolean[] isNotnull, Boolean[] isEmail) {
-		//required
-		RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
-		requiredValidator.setMessage("CAMPO OBRIGATÓRIO!");
-		requiredValidator.setIcon(GlyphsBuilder.create(FontAwesomeIconView.class).glyph(FontAwesomeIcon.WARNING)
-				.size("1em").styleClass("error").build());
-		//email
-		RegexValidator emailValidator = new RegexValidator();
-		emailValidator.setRegexPattern("^([A-z]+)([A-z0-9-_.]*)@([A-z.]+)\\.[A-z]{2,}$");
-		emailValidator.setMessage("EMAIL EM FORMATO INVÁLIDO!");
-		/* Password
-		 * /^ Inicio de string 
-		 * (?=.*\d) deve conter ao menos um dígito 
-		 * (?=.*[a-z]) deve conter ao menos uma letra minúscula 
-		 * (?=.*[A-Z]) deve conter ao menos uma letra maiúscula 
-		 * (?=.*[$*&@#_!\\/()-]]) deve conter ao menos um caractere especial 
-		 * [0-9a-zA-Z$*&@#_!\\/()-]]{8,} deve conter ao menos 8 dos caracteres mencionados 
-		 * $/ Fim de string
-		 */
-		
-
+	public static void removeInlineValidation(Node[] fields) {
 		for (int i = 0; i < fields.length; i++) {
 			Node node = fields[i];
-			if (node instanceof JFXTextField) {
-				JFXTextField jfxTextField = (JFXTextField) node;
-				if (isNotnull[i])
-					jfxTextField.getValidators().add(requiredValidator);
-				if (isEmail[i])
-					jfxTextField.getValidators().add(emailValidator);
-				jfxTextField.focusedProperty().addListener((o, oldVal, newVal) -> {
-					if (!newVal) {
-						jfxTextField.validate();
-					}
-				});
-			}
-			if (node instanceof JFXPasswordField) {
-				JFXPasswordField jfxPasswordField = (JFXPasswordField) node;
-				if (isNotnull[i])
-					jfxPasswordField.getValidators().add(requiredValidator);
+			if (node instanceof IFXValidatableControl) {
+				IFXValidatableControl jfxValidatableField = (IFXValidatableControl) node;
+				jfxValidatableField.getValidators().clear();
+
 			}
 		}
 	}
 
-	public static void addPasswordFormatValidator(
-			JFXPasswordField jfxPasswordField) {
+	public static void addInlineValidation(Node[] fields, Boolean[] isNotnull, Boolean[] isEmail) {
+		// required
+		RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
+		requiredValidator.setMessage("CAMPO OBRIGATÓRIO!");
+		requiredValidator.setIcon(GlyphsBuilder.create(FontAwesomeIconView.class).glyph(FontAwesomeIcon.WARNING)
+				.size("1em").styleClass("error").build());
+		// email
+		RegexValidator emailValidator = new RegexValidator();
+		emailValidator.setRegexPattern("(^([A-z]+)([A-z0-9-_.]*)@([A-z.]+)\\.[A-z]{2,}$)|");
+		emailValidator.setMessage("EMAIL EM FORMATO INVÁLIDO!");
+		/*
+		 * Password /^ Inicio de string (?=.*\d) deve conter ao menos um dígito
+		 * (?=.*[a-z]) deve conter ao menos uma letra minúscula (?=.*[A-Z]) deve conter
+		 * ao menos uma letra maiúscula (?=.*[$*&@#_!\\/()-]]) deve conter ao menos um
+		 * caractere especial [0-9a-zA-Z$*&@#_!\\/()-]]{8,} deve conter ao menos 8 dos
+		 * caracteres mencionados $/ Fim de string
+		 */
+
+		for (int i = 0; i < fields.length; i++) {
+			Node node = fields[i];
+			if (node instanceof IFXValidatableControl) {
+				IFXValidatableControl jfxValidatableField = (IFXValidatableControl) node;
+				if (isNotnull[i])
+					jfxValidatableField.getValidators().add(requiredValidator);
+				((Node) jfxValidatableField).focusedProperty().addListener((o, oldVal, newVal) -> {
+					if (!newVal) {
+						jfxValidatableField.validate();
+					}
+				});
+			}
+			if (node instanceof JFXTextField) {
+				JFXTextField jfxTextField = (JFXTextField) node;
+				if (isEmail[i]) {
+					jfxTextField.getValidators().clear();
+					jfxTextField.getValidators().add(emailValidator);
+				}
+			}
+			if (node instanceof JFXPasswordField) {
+				JFXPasswordField jfxPasswordField = (JFXPasswordField) node;
+				if (isNotnull[i]) {
+					jfxPasswordField.getValidators().clear();
+					jfxPasswordField.getValidators().add(requiredValidator);
+
+				}
+			}
+		}
+	}
+
+	public static void addPasswordFormatValidator(JFXPasswordField jfxPasswordField) {
 		RegexValidator passwordValidator = new RegexValidator();
 		passwordValidator
 				.setRegexPattern("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#_!\\/()-])[0-9a-zA-Z$*&@#_!\\/()-]{8,}$");

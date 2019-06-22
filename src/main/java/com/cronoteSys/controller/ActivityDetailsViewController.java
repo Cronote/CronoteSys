@@ -77,8 +77,10 @@ public class ActivityDetailsViewController implements Initializable, ShowEditVie
 	VBox pnlDependenciesBox;
 	@FXML
 	JFXListView<SimpleActivity> lstDependencies;
-	@FXML JFXButton btnBackward;
-	@FXML JFXButton btnForward;
+	@FXML
+	JFXButton btnBackward;
+	@FXML
+	JFXButton btnForward;
 
 	private void initActivity() {
 		loggedUser = (UserVO) SessionUtil.getSession().get("loggedUser");
@@ -119,7 +121,7 @@ public class ActivityDetailsViewController implements Initializable, ShowEditVie
 				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 					// TODO Auto-generated method stub
 					lstDependencies.scrollTo(newValue.intValue());
-					
+
 				}
 			});
 			btnBackward.setOnAction(new EventHandler<ActionEvent>() {
@@ -181,13 +183,16 @@ public class ActivityDetailsViewController implements Initializable, ShowEditVie
 		}
 		if (pgiProgress != null) {
 			pgiProgress.skinProperty().addListener((ChangeListener<Skin<?>>) (observable, oldValue, newValue) -> {
-				StackPane stackProgress = (StackPane) pgiProgress.lookup(".progress");
-				Text textPercentage = (Text) pgiProgress.lookup(".percentage");
-				String progressStr = String.format("%.2f", (pgiProgress.getProgress() * 100));
-				if (textPercentage != null)
-					textPercentage.setText(progressStr + "%");
-				if (stackProgress != null)
-					stackProgress.setStyle("-fx-background-color:" + activity.getStats().getHexColor());
+				if (activity.getStats() != null) {
+					StackPane stackProgress = (StackPane) pgiProgress.lookup(".progress");
+					Text textPercentage = (Text) pgiProgress.lookup(".percentage");
+					String progressStr = String.format("%.2f", (pgiProgress.getProgress() * 100));
+					if (textPercentage != null)
+						textPercentage.setText(progressStr + "%");
+					if (stackProgress != null)
+						stackProgress.setStyle("-fx-background-color:" + 
+					activity.getStats().getHexColor());
+				}
 			});
 			ActivityMonitor.addOnMonitorTickListener(new OnMonitorTick() {
 				@Override

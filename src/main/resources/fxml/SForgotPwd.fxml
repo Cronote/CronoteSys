@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
 <GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="939.0" styleClass="NotRequired" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.ForgotPwdController">
@@ -83,7 +84,7 @@
                         <String fx:value="hide" />
                      </styleClass>
                   </Label>
-                  <Button fx:id="btnConfirm" layoutX="23.0" layoutY="193.0" mnemonicParsing="false" onAction="#btnConfirmClicked" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Confirmar" textFill="WHITE">
+                  <Button fx:id="btnConfirm" layoutX="233.0" layoutY="210.0" mnemonicParsing="false" onAction="#btnConfirmClicked" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Confirmar" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -91,7 +92,7 @@
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnCancel" layoutX="232.0" layoutY="193.0" mnemonicParsing="false" onAction="#btnCancelClicked" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Cancelar" textFill="WHITE">
+                  <Button fx:id="btnCancel" layoutX="23.0" layoutY="210.0" mnemonicParsing="false" onAction="#btnCancelClicked" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Cancelar" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -104,19 +105,18 @@
                         <Font size="14.0" />
                      </font>
                   </JFXTextField>
-                  <Label fx:id="lblCode" layoutX="23.0" layoutY="58.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Código incorreto" textFill="RED" />
-                  <JFXPasswordField id="txt_password" fx:id="txtPwd" alignment="TOP_LEFT" labelFloat="true" layoutX="23.0" layoutY="77.0" prefHeight="17.0" prefWidth="351.0" promptText="Nova senha" styleClass="inputField">
+                  <Label fx:id="lblCode" layoutX="23.0" layoutY="59.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="CÓDIGO INCORRETO" textFill="RED" />
+                  <JFXPasswordField id="txt_password" fx:id="txtPwd" alignment="TOP_LEFT" labelFloat="true" layoutX="23.0" layoutY="90.0" prefHeight="17.0" prefWidth="351.0" promptText="Nova senha" styleClass="inputField">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </JFXPasswordField>
-                  <Label fx:id="lblNewPwd" layoutX="23.0" layoutY="107.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Senha inválida" textFill="RED" />
-                  <JFXPasswordField id="txt_password" fx:id="txtConfirmPwd" alignment="TOP_LEFT" labelFloat="true" layoutX="23.0" layoutY="129.0" prefHeight="17.0" prefWidth="351.0" promptText="Confirme a nova senha" styleClass="inputField">
+                  <JFXPasswordField id="txt_password" fx:id="txtConfirmPwd" alignment="TOP_LEFT" labelFloat="true" layoutX="23.0" layoutY="152.0" prefHeight="17.0" prefWidth="351.0" promptText="Confirme a nova senha" styleClass="inputField">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </JFXPasswordField>
-                  <Label fx:id="lblConfirmPwd" layoutX="23.0" layoutY="159.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="Senha inválida" textFill="RED" />
+                  <StackPane fx:id="popupPoint" layoutX="25.0" layoutY="125.0" prefHeight="14.0" prefWidth="12.0" />
                </children>
                <styleClass>
                   <String fx:value="imputpanel" />
@@ -155,5 +155,6 @@
             </ImageView>
          </children>
       </AnchorPane>
+      <Pane fx:id="pnlMidBottomArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
    </children>
 </GridPane>

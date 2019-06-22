@@ -38,6 +38,9 @@ public class CategoryManagerDialog {
 			alert.initStyle(StageStyle.UNDECORATED);
 			alert.showAndWait();
 			lstCategories = controller.getCategoryList().getItems();
+			for (CategoryVO categoryVO : lstCategories) {
+				System.out.println(categoryVO.getDescription());
+			}
 			selectedCategory = controller.getCategoryList().getSelectionModel().getSelectedItem();
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -51,6 +51,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 public class HomeController implements Initializable {
 
@@ -58,13 +59,13 @@ public class HomeController implements Initializable {
 	protected HBox root;
 	private MenuController menuControl;
 
-	private void loadProjectManager(ProjectVO project,String mode) {
+	private void loadProjectManager(ProjectVO project, String mode) {
 		removeIndexFromRoot(2);
 		FXMLLoader projectFXML = ScreenUtil.loadTemplate("ProjectManager");
 		ProjectManagerController control = SessionUtil.getInjector().getInstance(ProjectManagerController.class);
 		projectFXML.setController(control);
 		JFXTabPane projectManager = (JFXTabPane) FXMLLoaderToNode(projectFXML);
-			control.setSelectedProject(project,mode);
+		control.setSelectedProject(project, mode);
 		projectManager.setMaxHeight(Double.POSITIVE_INFINITY);
 		projectManager.setMaxWidth(Double.POSITIVE_INFINITY);
 		HBox.setHgrow(projectManager, Priority.ALWAYS);
@@ -78,7 +79,7 @@ public class HomeController implements Initializable {
 		ProjectListController.addOnBtnProjectClickedListener(new BtnProjectClickedI() {
 			@Override
 			public void onBtnProjectClicked() {
-				loadProjectManager(null,"cadastro");
+				loadProjectManager(null, "cadastro");
 			}
 
 		});
@@ -86,8 +87,8 @@ public class HomeController implements Initializable {
 		ProjectListController.addOnProjectSelectedListener(new ProjectSelectedI() {
 			@Override
 			public void onProjectSelect(ProjectVO project) {
-				if(project!=null)
-				loadProjectManager(project,"View");
+				if (project != null)
+					loadProjectManager(project, "View");
 			}
 		});
 
@@ -191,6 +192,8 @@ class MenuController implements Initializable {
 	@FXML
 	private ToggleButton btnProject;
 	@FXML
+	private ToggleButton btnTeam;
+	@FXML
 	private ToggleGroup btnWindows;
 	@FXML
 	private Tooltip ttpUserEmail;
@@ -220,7 +223,7 @@ class MenuController implements Initializable {
 			adjustMenu(false);
 			FXMLLoader p = ScreenUtil.loadTemplate("ActivityList");
 			homeControl.addNode(p);
-			((ActivityListController)p.getController()).setList(null);
+			((ActivityListController) p.getController()).setList(null);
 			ShowEditViewActivityObservableI.addShowEditViewActivityListener(homeControl.getShowListener());
 			ActivityBO.addOnActivityDeletedListener(homeControl.listenerActivityDelete);
 		}
@@ -240,6 +243,17 @@ class MenuController implements Initializable {
 	public void btnReportClicked(ActionEvent e) {
 		// TODO: implementar
 		homeControl.clearRoot(false, (Node) e.getSource());
+	}
+
+	public void btnTeamClicked(ActionEvent e) {
+		// TODO: implementar
+		homeControl.clearRoot(false, (Node) e.getSource());
+		if (btnTeam.isSelected()) {
+			adjustMenu(true);
+			FXMLLoader p = ScreenUtil.loadTemplate("TeamScreen");
+			VBox box = (VBox) homeControl.addNode(p);
+			HBox.setHgrow(box, Priority.ALWAYS);
+		}
 	}
 
 	@Override
@@ -277,6 +291,13 @@ class MenuController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				btnReportClicked(event);
+			}
+		});
+		btnTeam.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				btnTeamClicked(event);
 			}
 		});
 

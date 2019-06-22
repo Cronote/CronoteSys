@@ -1,4 +1,4 @@
-package com.cronoteSys.test;
+package com.cronoteSys.util.validator;
 
 import com.jfoenix.validation.RegexValidator;
 

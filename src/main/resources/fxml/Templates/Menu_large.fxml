@@ -182,13 +182,10 @@
 								<String fx:value="letters_box_icons" />
 							</styleClass>
 						</ToggleButton>
-						<ToggleButton cacheShape="false" disable="true"
+						<ToggleButton fx:id="btnTeam" cacheShape="false"
 							ellipsisString="" graphicTextGap="110.0" mnemonicParsing="false"
-							nodeOrientation="LEFT_TO_RIGHT" prefHeight="51.0"
-							prefWidth="239.0" text="TIMES" textAlignment="CENTER">
-							<toggleGroup>
-								<ToggleGroup fx:id="btnWindows1" />
-							</toggleGroup>
+							prefHeight="51.0" prefWidth="239.0" text="TIMES"
+							textAlignment="CENTER" toggleGroup="$btnWindows">
 							<font>
 								<Font size="15.0" />
 							</font>
