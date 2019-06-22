@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="cell" maxHeight="-Infinity"
+	maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+	prefHeight="35.0" prefWidth="600.0" styleClass="pane"
+	xmlns="http://javafx.com/javafx/8.0.171"
+	xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<Button fx:id="btnEditSave" contentDisplay="GRAPHIC_ONLY"
+			layoutX="500.0" layoutY="5.0" mnemonicParsing="false" text="Button"
+			visible="false" AnchorPane.bottomAnchor="5.0"
+			AnchorPane.rightAnchor="58.0" AnchorPane.topAnchor="5.0">
+			<graphic>
+				<FontAwesomeIconView glyphName="EDIT" size="2em"
+					styleClass="letters_box_icons" />
+			</graphic>
+			<styleClass>
+				<String fx:value="btnTransparent" />
+				<String fx:value="letters_box_icons" />
+			</styleClass>
+		</Button>
+		<Button fx:id="btnDelete" contentDisplay="GRAPHIC_ONLY"
+			layoutX="556.0" layoutY="5.0" mnemonicParsing="false" text="Button"
+			visible="false" AnchorPane.bottomAnchor="5.0"
+			AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="5.0">
+			<graphic>
+				<FontAwesomeIconView glyphName="TRASH_ALT"
+					size="2em" styleClass="letters_box_icons" />
+			</graphic>
+			<styleClass>
+				<String fx:value="btnTransparent" />
+				<String fx:value="letters_box_icons" />
+			</styleClass>
+		</Button>
+		<JFXTextField fx:id="txtCategoryName" layoutX="14.0"
+			layoutY="5.0" prefHeight="25.0" prefWidth="465.0"
+			promptText="Nome da categoria" styleClass="inputField"
+			visible="false" AnchorPane.bottomAnchor="5.0"
+			AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="5.0" />
+		<Label fx:id="lblCategoryName" layoutX="14.0" layoutY="10.0"
+			prefHeight="16.0" prefWidth="465.0" styleClass="letters_box_icons"
+			text="Label" />
+	</children>
+</AnchorPane>

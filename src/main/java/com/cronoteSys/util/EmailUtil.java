@@ -60,7 +60,7 @@ public class EmailUtil {
 		});
 	}
 
-	public boolean validateEmail(String sEmail) {
+	public static boolean validateEmail(String sEmail) {
 		Pattern p = Pattern.compile("^([A-z]+)([A-z0-9-_.]*)@([A-z.]+)\\.[A-z]{2,}$");
 		Matcher m = p.matcher(sEmail);
 		return m.matches();

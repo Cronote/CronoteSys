@@ -1,76 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
 <GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" prefHeight="788.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.LoginController">
-   <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="232.20003662109374" prefWidth="256.60003662109375" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="427.7999633789062" minWidth="351.0" prefWidth="427.7999633789062" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="231.20002441406245" prefWidth="255.20002441406245" />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints maxHeight="257.5999816894531" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="524.8" minHeight="10.0" prefHeight="524.8" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-   </rowConstraints>
-   <children>
-      <AnchorPane prefHeight="503.0" prefWidth="424.0" styleClass="imputpanel" GridPane.columnIndex="1" GridPane.rowIndex="1">
-         <children>
-            <Hyperlink fx:id="linkSignUp" layoutX="239.0" layoutY="432.0" onAction="#linkSignUpClicked" text="Cadastre-se" textFill="#b03a07">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Hyperlink>
-            <Button fx:id="btnLogin" layoutX="37.0" layoutY="310.0" mnemonicParsing="false" onAction="#btnLoginClicked" opacity="0.88" prefHeight="44.0" prefWidth="351.0" style="" styleClass="btn" text="Login" textFill="WHITE">
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <ImageView fx:id="imgCronote" fitHeight="210.0" fitWidth="351.0" layoutX="37.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" smooth="false">
-               <image>
-                  <Image url="@../image/cronote_logo_dark.png" />
-               </image>
-            </ImageView>
-            <TextField fx:id="txtEmail" alignment="TOP_CENTER" layoutX="37.0" layoutY="198.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="351.0" promptText="E-mail" styleClass="textfild" AnchorPane.topAnchor="198.0">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </TextField>
-            <PasswordField fx:id="txtPassword" alignment="CENTER" layoutX="37.0" layoutY="249.0" prefHeight="30.0" prefWidth="351.0" promptText="Senha" styleClass="textfild">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </PasswordField>
-            <Label layoutX="96.0" layoutY="436.0" text="Ainda não é membro?" textFill="#333333">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Hyperlink fx:id="linkRecover" layoutX="137.0" layoutY="388.0" onAction="#linkRecoverClicked" text="Esqueceu a sua senha?" textFill="#333333">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Hyperlink>
-         </children>
-      </AnchorPane>
-   </children>
+	<columnConstraints>
+		<ColumnConstraints hgrow="SOMETIMES" minWidth="232.20003662109374" prefWidth="256.60003662109375" />
+		<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="427.7999633789062" minWidth="351.0" prefWidth="427.7999633789062" />
+		<ColumnConstraints hgrow="SOMETIMES" minWidth="231.20002441406245" prefWidth="255.20002441406245" />
+	</columnConstraints>
+	<rowConstraints>
+		<RowConstraints maxHeight="257.5999816894531" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+		<RowConstraints maxHeight="524.8" minHeight="10.0" prefHeight="524.8" vgrow="SOMETIMES" />
+		<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+	</rowConstraints>
+	<children>
+		<AnchorPane fx:id="pnlLogin" prefHeight="503.0" prefWidth="424.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+			<children>
+				<ImageView fx:id="imgCronote" fitHeight="210.0" fitWidth="351.0" layoutX="37.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+					<image>
+						<Image url="@../image/cronote_logo_white.png" />
+					</image>
+				</ImageView>
+				<JFXTextField fx:id="txtEmail" alignment="BASELINE_CENTER" labelFloat="true" layoutX="37.0" layoutY="198.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="351.0" promptText="E-mail" AnchorPane.topAnchor="198.0">
+					<font>
+						<Font size="14.0" />
+					</font>
+					<styleClass>
+						<String fx:value="inputField" />
+						<String fx:value="letters_box_icons" />
+					</styleClass>
+				</JFXTextField>
+				<JFXPasswordField fx:id="txtPassword" alignment="CENTER" labelFloat="true" layoutX="37.0" layoutY="265.0" prefHeight="30.0" prefWidth="351.0" promptText="Senha" styleClass="inputField">
+					<opaqueInsets>
+						<Insets />
+					</opaqueInsets>
+					<font>
+						<Font size="14.0" />
+					</font>
+				</JFXPasswordField>
+				<Button fx:id="btnLogin" defaultButton="true" layoutX="37.0" layoutY="325.0" mnemonicParsing="false" onAction="#btnLoginClicked" opacity="0.88" prefHeight="44.0" prefWidth="351.0" style="" styleClass="btn" text="LOGIN" textAlignment="CENTER" textFill="WHITE">
+					<font>
+						<Font name="System Bold" size="23.0" />
+					</font>
+					<cursor>
+						<Cursor fx:constant="HAND" />
+					</cursor>
+				</Button>
+				<Hyperlink fx:id="linkRecover" alignment="CENTER" layoutX="134.0" layoutY="389.0" onAction="#linkRecoverClicked" styleClass="letters_box_icons" text="Esqueceu sua senha?" textAlignment="CENTER" textFill="#333333" AnchorPane.leftAnchor="134.0" AnchorPane.rightAnchor="132.0">
+					<font>
+						<Font size="14.0" />
+					</font>
+				</Hyperlink>
+				<Label alignment="CENTER" contentDisplay="RIGHT" graphicTextGap="0.0" layoutX="85.0" layoutY="437.0" prefHeight="28.0" prefWidth="261.0" styleClass="letters_box_icons" text="Não é membro? Então" textFill="#333333" AnchorPane.leftAnchor="85.0" AnchorPane.rightAnchor="82.0">
+					<font>
+						<Font size="14.0" />
+					</font>
+					<graphic>
+						<Hyperlink fx:id="linkSignUp" graphicTextGap="1.0" onAction="#linkSignUpClicked" text="Cadastre-se" textFill="#7c4db8" underline="true">
+							<font>
+								<Font size="14.0" />
+							</font>
+						</Hyperlink>
+					</graphic>
+				</Label>
+			</children>
+			<styleClass>
+				<String fx:value="tone1-background" />
+				<String fx:value="imputpanel" />
+			</styleClass>
+		</AnchorPane>
+      <Pane fx:id="pnlMidBottomArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+	</children>
 </GridPane>

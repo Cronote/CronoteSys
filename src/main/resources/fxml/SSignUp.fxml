@@ -1,107 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import java.lang.String?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane id="Screen" fx:id="pnlRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="788.0" minWidth="940.0" prefHeight="788.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.SignUpController">
-  <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="79.19999389648439" prefWidth="254.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="432.0" prefWidth="432.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="87.20004882812498" prefWidth="254.0" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints maxHeight="256.79999389648435" minHeight="10.0" prefHeight="156.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="582.3999633789062" minHeight="10.0" prefHeight="465.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="192.0" minHeight="10.0" prefHeight="167.0" vgrow="SOMETIMES" />
-  </rowConstraints>
-   <children>
-      <AnchorPane fx:id="pnlInput" prefHeight="453.0" prefWidth="432.0" styleClass="imputpanel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-         <children>
-            <Button fx:id="btnSignUp" layoutX="145.0" layoutY="409.0" mnemonicParsing="false" onAction="#btnSignUpClicked" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Cadastrar" textFill="WHITE">
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <TextField fx:id="txtName" alignment="TOP_LEFT" layoutX="42.0" layoutY="82.0" prefHeight="17.0" prefWidth="351.0" promptText="Nome*" styleClass="textfild">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </TextField>
-            <TextField fx:id="txtEmail" alignment="TOP_LEFT" layoutX="41.0" layoutY="181.0" prefHeight="17.0" prefWidth="351.0" promptText="E-mail*" styleClass="textfild">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </TextField>
-            <PasswordField fx:id="txtPwd" alignment="TOP_LEFT" layoutX="41.0" layoutY="282.0" prefHeight="17.0" prefWidth="351.0" promptText="Senha*" styleClass="textfild">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </PasswordField>
-            <PasswordField fx:id="txtConfirmPwd" alignment="TOP_LEFT" layoutX="42.0" layoutY="332.0" prefHeight="17.0" prefWidth="351.0" promptText="Digite a senha novamente*" styleClass="textfild">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </PasswordField>
-            <TextField fx:id="txtSecondEmail" alignment="TOP_LEFT" layoutX="41.0" layoutY="231.0" prefHeight="31.0" prefWidth="351.0" promptText="E-mail de recuperação">
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <styleClass>
-                  <String fx:value="textfild" />
-                  <String fx:value="NotRequired" />
-               </styleClass>
-            </TextField>
-            <DatePicker fx:id="dateBirthday" layoutX="40.0" layoutY="135.0" prefHeight="25.0" prefWidth="351.0" promptText="Data de Nascimento*" styleClass="textfild" />
-            <Text fill="#333333d6" layoutX="61.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Criar uma nova conta" textAlignment="CENTER" wrappingWidth="309.13671875">
-               <font>
-                  <Font size="22.0" />
-               </font>
-            </Text>
-         </children>
-      </AnchorPane>
-      <AnchorPane prefHeight="132.0" prefWidth="722.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <children>
-            <ImageView id="img_cronote" fx:id="imgCronote" fitHeight="90.0" fitWidth="242.0" layoutX="276.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" smooth="false" AnchorPane.leftAnchor="276.0" AnchorPane.rightAnchor="277.07026367187495">
-               <cursor>
-                  <Cursor fx:constant="DEFAULT" />
-               </cursor>
-               <image>
-                  <Image url="@../image/cronote_logo_dark.png" />
-               </image>
-            </ImageView>
-         </children>
-      </AnchorPane>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
-         <children>
-            <Button fx:id="btnBack" layoutX="22.0" layoutY="45.0" mnemonicParsing="false" onAction="#btnBackClicked" prefHeight="41.0" prefWidth="44.0" AnchorPane.leftAnchor="22.0">
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../image/icon/backWhite.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <styleClass>
-                  <String fx:value="btn" />
-                  <String fx:value="btnDirectional" />
-               </styleClass>
-            </Button>
-         </children>
-      </AnchorPane>
-   </children>
+<GridPane id="Screen" fx:id="pnlRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="788.0" minWidth="940.0" prefHeight="788.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.SignUpController">
+	<columnConstraints>
+		<ColumnConstraints hgrow="SOMETIMES" minWidth="79.19999389648439" prefWidth="254.0" />
+		<ColumnConstraints hgrow="SOMETIMES" maxWidth="432.0" prefWidth="432.0" />
+		<ColumnConstraints hgrow="SOMETIMES" minWidth="87.20004882812498" prefWidth="254.0" />
+	</columnConstraints>
+	<rowConstraints>
+		<RowConstraints maxHeight="256.79999389648435" minHeight="10.0" prefHeight="156.0" vgrow="SOMETIMES" />
+		<RowConstraints maxHeight="582.3999633789062" minHeight="10.0" prefHeight="499.0" vgrow="SOMETIMES" />
+		<RowConstraints maxHeight="192.0" minHeight="10.0" prefHeight="133.0" vgrow="SOMETIMES" />
+	</rowConstraints>
+	<children>
+		<AnchorPane fx:id="pnlInput" prefHeight="453.0" prefWidth="432.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+			<children>
+				<Button fx:id="btnSignUp" layoutX="145.0" layoutY="448.0" mnemonicParsing="false" onAction="#btnSignUpClicked" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Cadastrar" textFill="WHITE">
+					<font>
+						<Font size="17.0" />
+					</font>
+					<cursor>
+						<Cursor fx:constant="HAND" />
+					</cursor>
+				</Button>
+				<JFXTextField fx:id="txtName" alignment="TOP_LEFT" labelFloat="true" layoutX="42.0" layoutY="70.0" prefHeight="17.0" prefWidth="351.0" promptText="Nome" styleClass="inputField">
+					<font>
+						<Font size="14.0" />
+					</font>
+				</JFXTextField>
+				<JFXDatePicker fx:id="dateBirthday" defaultColor="#7c4db8" layoutX="40.0" layoutY="135.0" prefHeight="25.0" prefWidth="351.0" promptText="Data de Nascimento - (opcional)" styleClass="NotRequired" />
+				<JFXTextField fx:id="txtEmail" alignment="TOP_LEFT" labelFloat="true" layoutX="41.0" layoutY="190.0" prefHeight="17.0" prefWidth="351.0" promptText="E-mail" styleClass="inputField">
+					<font>
+						<Font size="14.0" />
+					</font>
+				</JFXTextField>
+				<JFXPasswordField fx:id="txtPwd" alignment="TOP_LEFT" labelFloat="true" layoutX="41.0" layoutY="312.0" prefHeight="17.0" prefWidth="351.0" promptText="Senha" styleClass="inputField">
+					<font>
+						<Font size="14.0" />
+					</font>
+				</JFXPasswordField>
+				<JFXPasswordField fx:id="txtConfirmPwd" alignment="TOP_LEFT" labelFloat="true" layoutX="42.0" layoutY="377.0" prefHeight="17.0" prefWidth="351.0" promptText="Digite a senha novamente" styleClass="inputField">
+					<font>
+						<Font size="14.0" />
+					</font>
+				</JFXPasswordField>
+				<JFXTextField fx:id="txtSecondEmail" alignment="TOP_LEFT" labelFloat="true" layoutX="41.0" layoutY="257.0" prefHeight="31.0" prefWidth="351.0" promptText="E-mail de recuperação - (opcional)">
+					<font>
+						<Font size="14.0" />
+					</font>
+					<styleClass>
+						<String fx:value="inputField" />
+						<String fx:value="NotRequired" />
+					</styleClass>
+				</JFXTextField>
+				<Text fill="#333333d6" layoutX="61.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="letters_box_icons" text="Criar uma nova conta" textAlignment="CENTER" wrappingWidth="309.13671875">
+					<font>
+						<Font size="22.0" />
+					</font>
+				</Text>
+            <StackPane fx:id="popupPoint" layoutX="39.0" layoutY="347.0" prefHeight="21.0" prefWidth="13.0" />
+			</children>
+			<styleClass>
+				<String fx:value="tone1-background" />
+				<String fx:value="imputpanel" />
+			</styleClass>
+		</AnchorPane>
+		<AnchorPane prefHeight="132.0" prefWidth="722.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+			<children>
+				<ImageView id="img_cronote" fx:id="imgCronote" fitHeight="90.0" fitWidth="242.0" layoutX="276.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" smooth="false" AnchorPane.leftAnchor="276.0" AnchorPane.rightAnchor="277.07026367187495">
+					<cursor>
+						<Cursor fx:constant="DEFAULT" />
+					</cursor>
+					<image>
+						<Image url="@../image/cronote_logo_white.png" />
+					</image>
+				</ImageView>
+			</children>
+		</AnchorPane>
+		<AnchorPane prefHeight="200.0" prefWidth="200.0">
+			<children>
+				<Button fx:id="btnBack" layoutX="22.0" layoutY="45.0" mnemonicParsing="false" onAction="#btnBackClicked" prefHeight="41.0" prefWidth="44.0" AnchorPane.leftAnchor="22.0">
+					<graphic>
+						<ImageView fitHeight="30.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+							<image>
+								<Image url="@../image/icon/backWhite.png" />
+							</image>
+						</ImageView>
+					</graphic>
+					<styleClass>
+						<String fx:value="btn" />
+						<String fx:value="btnDirectional" />
+					</styleClass>
+				</Button>
+			</children>
+		</AnchorPane>
+      <Pane fx:id="pnlMidBottomArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+	</children>
 </GridPane>

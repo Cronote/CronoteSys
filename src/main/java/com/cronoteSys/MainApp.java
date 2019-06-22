@@ -1,8 +1,11 @@
 
 package com.cronoteSys;
 
-import com.cronoteSys.test.FacebookLogin;
 import com.cronoteSys.util.ScreenUtil;
+import com.cronoteSys.util.SessionUtil;
+import com.cronoteSys.util.guice.GuiceModule;
+import com.google.inject.Guice;
+import com.jfoenix.controls.JFXAutoCompletePopup;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -10,11 +13,16 @@ import javafx.stage.Stage;
 public class MainApp extends Application {
 
 	@Override
-	public void start(Stage stage) throws Exception {
+	public void stop() throws Exception {
+		super.stop();
+		System.exit(0);
+	}
 
-		System.setProperty("javax.xml.bind.JAXBContextFactory", "org.eclipse.persistence.jaxb.JAXBContextFactory");
-//		new ScreenUtil().openNewWindow(null, "Test", false);
-		new ScreenUtil().openNewWindow(stage, "SLogin", false);
+	@Override
+	public void start(Stage stage) throws Exception {
+		SessionUtil.setInjector(Guice.createInjector(new GuiceModule()));
+		// new ScreenUtil().openNewWindow(null, "Test", false);
+		ScreenUtil.openNewWindow(stage, "SLogin", false);
 		// new ScreenUtil().openNewWindow(null, "SFacebookLogin", true, null);
 
 	}
