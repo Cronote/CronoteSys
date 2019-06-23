@@ -79,7 +79,6 @@ public class LoginController extends MasterController {
 
 	public void login(LoginVO login) {
 		UserVO user = new LoginBO().login(login);
-		System.out.println(user != null);
 		if (user != null) {
 			if (rememberMe) {
 				try {
@@ -129,7 +128,6 @@ public class LoginController extends MasterController {
 		try {
 			Properties prop = getProp();
 			String savedAccounts = prop.getProperty("savedAccounts", "");
-			System.out.println(savedAccounts.split(",").length);
 			if (savedAccounts.equals(""))
 				savedAccounts += idUser.toString();
 			else
