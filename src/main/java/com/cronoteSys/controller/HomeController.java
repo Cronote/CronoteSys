@@ -250,8 +250,21 @@ class MenuController implements Initializable {
 		homeControl.clearRoot(false, (Node) e.getSource());
 		if (btnTeam.isSelected()) {
 			adjustMenu(true);
-			FXMLLoader p = ScreenUtil.loadTemplate("TeamScreen");
-			VBox box = (VBox) homeControl.addNode(p);
+
+			FXMLLoader teamLstLoader = ScreenUtil.loadTemplate("TeamList");
+			FXMLLoader teamEditLoader = ScreenUtil.loadTemplate("TeamEdit");
+			VBox box = new VBox();
+			;
+			try {
+				box.getChildren().add(((HBox) teamLstLoader.load()));
+				AnchorPane ap = (AnchorPane) teamEditLoader.load();
+				box.getChildren().add(ap);
+				VBox.setVgrow(ap, Priority.ALWAYS);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			homeControl.addNode(box);
 			HBox.setHgrow(box, Priority.ALWAYS);
 		}
 	}
