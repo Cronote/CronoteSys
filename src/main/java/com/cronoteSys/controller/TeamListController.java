@@ -44,7 +44,7 @@ public class TeamListController implements Initializable {
 	}
 
 	private void fillList() {
-		teamLst = new TeamDAO().listByUser(loggedUser);
+		teamLst = teambo.listByUserOwnerOrMember(loggedUser.getIdUser());
 		lstTeams.setItems(FXCollections.observableList(teamLst));
 	}
 
