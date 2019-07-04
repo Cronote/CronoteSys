@@ -39,7 +39,7 @@ public class ProjectManagerController implements Initializable {
 	public ProjectVO getSelectedProject() {
 		return selectedProject != null ? selectedProject : new ProjectVO();
 	}
-	
+
 	public void setSelectedProject(ProjectVO project, String mode) {
 		this.selectedProject = project;
 		initFirstInfo(mode);
@@ -54,22 +54,19 @@ public class ProjectManagerController implements Initializable {
 	}
 
 	public void initFirstInfo(String mode) {
+		System.out.println(mode);
 		FXMLLoader firstInfoLoader = null;
 		AnchorPane firstInfoPane = null;
-		while (tabPane.getTabs().size() > 0)
-			tabPane.getTabs().remove(0);
-		while (hboxContent.getChildren().size() > 0)
-			hboxContent.getChildren().remove(0);
+		tabPane.getTabs().clear();
+		hboxContent.getChildren().clear();
 		try {
 			if (mode.equals("cadastro")) {
-				System.out.println(mode);
 				firstInfoLoader = ScreenUtil.loadTemplate("ProjectFirstInfo");
 				firstInfoController = new ProjectFirstInfoController(this);
 				firstInfoLoader.setController(firstInfoController);
 				firstInfoPane = firstInfoLoader.load();
 				firstInfoController.setProject(selectedProject);
 			} else {
-				System.out.println(mode);
 				firstInfoLoader = ScreenUtil.loadTemplate("ProjectFirstInfoView");
 				firstInfoViewController = new ProjectFirstInfoViewController(this);
 				firstInfoLoader.setController(firstInfoViewController);
@@ -83,7 +80,7 @@ public class ProjectManagerController implements Initializable {
 		} catch (
 
 		IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 	}
@@ -99,8 +96,9 @@ public class ProjectManagerController implements Initializable {
 				activityListController.listByProject(selectedProject);
 				try {
 					int total = activityListController.getActivityTotal();
-					firstInfoViewController.setRealDoneTodo(activityListController.getDoneActivitiesTotal()+"/"+total);
-				}catch (Exception e) {
+					firstInfoViewController
+							.setRealDoneTodo(activityListController.getDoneActivitiesTotal() + "/" + total);
+				} catch (Exception e) {
 					// TODO: handle exception
 				}
 			} catch (IOException e) {
@@ -149,6 +147,7 @@ public class ProjectManagerController implements Initializable {
 		}
 
 		private void removeEditViewPane() {
+			System.out.println("brincadeira em");
 			while (hboxContent.getChildren().size() > 1) {
 				hboxContent.getChildren().remove(1);
 			}
