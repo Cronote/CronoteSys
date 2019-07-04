@@ -12,7 +12,9 @@ import com.cronoteSys.model.dao.CategoryDAO;
 import com.cronoteSys.model.dao.UserDAO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.CategoryVO;
+import com.cronoteSys.model.vo.EmailVO;
 import com.cronoteSys.model.vo.StatusEnum;
+import com.cronoteSys.util.RestUtil;
 
 import junit.framework.TestCase;
 
@@ -78,5 +80,11 @@ public class AppTest extends TestCase {
 		// TODO: futuramente o status tem que ser calculado, tem 2 status para paused
 		acBo.switchStatus(activityVO, StatusEnum.NORMAL_PAUSED);
 		
+	}
+	
+	@Test
+	public void testingEmail() {
+		String[] receiver = {"fdmhet@gmail.com","fdm30@hotmail.com"};
+		RestUtil.get("genericEmail?email="+new EmailVO(receiver, "General Kenobi", "Hello there"));
 	}
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import java.lang.String?>
@@ -17,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" prefHeight="788.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.LoginController">
+<GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" prefHeight="788.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.LoginController">
 	<columnConstraints>
 		<ColumnConstraints hgrow="SOMETIMES" minWidth="232.20003662109374" prefWidth="256.60003662109375" />
 		<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="427.7999633789062" minWidth="351.0" prefWidth="427.7999633789062" />
@@ -61,7 +62,7 @@
 						<Cursor fx:constant="HAND" />
 					</cursor>
 				</Button>
-				<Hyperlink fx:id="linkRecover" alignment="CENTER" layoutX="134.0" layoutY="389.0" onAction="#linkRecoverClicked" styleClass="letters_box_icons" text="Esqueceu sua senha?" textAlignment="CENTER" textFill="#333333" AnchorPane.leftAnchor="134.0" AnchorPane.rightAnchor="132.0">
+				<Hyperlink fx:id="linkRecover" alignment="CENTER" layoutX="226.0" layoutY="388.0" onAction="#linkRecoverClicked" styleClass="letters_box_icons" text="Esqueceu sua senha?" textAlignment="CENTER" textFill="#333333" AnchorPane.leftAnchor="226.0" AnchorPane.rightAnchor="40.0">
 					<font>
 						<Font size="14.0" />
 					</font>
@@ -78,6 +79,7 @@
 						</Hyperlink>
 					</graphic>
 				</Label>
+            <JFXCheckBox layoutX="37.0" layoutY="388.0" prefHeight="18.0" prefWidth="162.0" text="Lembrar de mim" />
 			</children>
 			<styleClass>
 				<String fx:value="tone1-background" />
