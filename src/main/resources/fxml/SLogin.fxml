@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" prefHeight="788.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.LoginController">
+<GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" prefHeight="788.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/8.0.212" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.LoginController">
 	<columnConstraints>
 		<ColumnConstraints hgrow="SOMETIMES" minWidth="232.20003662109374" prefWidth="256.60003662109375" />
 		<ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="427.7999633789062" minWidth="351.0" prefWidth="427.7999633789062" />
@@ -67,6 +67,7 @@
 						<Font size="14.0" />
 					</font>
 				</Hyperlink>
+            <JFXCheckBox fx:id="chkRememberMe" checkedColor="#7c4db8" layoutX="37.0" layoutY="388.0" prefHeight="26.0" prefWidth="162.0" styleClass="letters_box_icons" text="Lembrar de mim" textFill="WHITE" unCheckedColor="#a6a6a6" AnchorPane.leftAnchor="40.0" />
 				<Label alignment="CENTER" contentDisplay="RIGHT" graphicTextGap="0.0" layoutX="85.0" layoutY="437.0" prefHeight="28.0" prefWidth="261.0" styleClass="letters_box_icons" text="Não é membro? Então" textFill="#333333" AnchorPane.leftAnchor="85.0" AnchorPane.rightAnchor="82.0">
 					<font>
 						<Font size="14.0" />
@@ -79,7 +80,6 @@
 						</Hyperlink>
 					</graphic>
 				</Label>
-            <JFXCheckBox layoutX="37.0" layoutY="388.0" prefHeight="18.0" prefWidth="162.0" text="Lembrar de mim" textFill="WHITE" unCheckedColor="WHITE" />
 			</children>
 			<styleClass>
 				<String fx:value="tone1-background" />
