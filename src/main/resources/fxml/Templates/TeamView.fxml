@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane fx:id="rootPaneViewTeam" prefHeight="352.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.TeamViewController">
+	<children>
+		<JFXButton fx:id="btnLeaveTeam" contentDisplay="GRAPHIC_ONLY" layoutX="3.0" layoutY="291.0" prefHeight="35.0" prefWidth="51.0" ripplerFill="#7c4db8" visible="false" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0">
+			<graphic>
+				<MaterialDesignIconView glyphName="LOGOUT" rotate="180.0" size="3em" styleClass="letters_box_icons" />
+			</graphic>
+		</JFXButton>
+		<StackPane fx:id="stkColor" layoutX="20.0" prefHeight="35.0" prefWidth="17.0" style="-fx-background-radius: 0 0 20 20;" visible="false" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="0.0" />
+		<JFXButton fx:id="btnEdit" contentDisplay="GRAPHIC_ONLY" layoutX="751.0" layoutY="301.0" prefHeight="35.0" prefWidth="51.0" ripplerFill="#7c4db8" visible="false" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0">
+			<graphic>
+				<FontAwesomeIconView glyphName="EDIT" size="3em" styleClass="letters_box_icons" />
+			</graphic>
+		</JFXButton>
+		<JFXButton fx:id="btnNew" buttonType="RAISED" contentDisplay="RIGHT" layoutX="761.0" layoutY="311.0" prefHeight="35.0" ripplerFill="#7c4db8" styleClass="btn" text="Criar novo time" textFill="WHITE" AnchorPane.bottomAnchor="12.0" AnchorPane.rightAnchor="60.0">
+			<graphic>
+				<FontAwesomeIconView glyphName="PLUS" size="1em" styleClass="normal-white" />
+			</graphic>
+		</JFXButton>
+		<Label fx:id="lblName" layoutX="59.0" layoutY="48.0" styleClass="letters_box_icons" text="Time vermelho" visible="false" AnchorPane.leftAnchor="60.0">
+			<font>
+				<Font size="22.0" />
+			</font>
+		</Label>
+		<ScrollPane layoutX="59.0" layoutY="82.0" prefHeight="203.0" prefWidth="295.0" visible="false" AnchorPane.bottomAnchor="67.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="82.0">
+			<content>
+				<TextFlow prefHeight="797.0" prefWidth="262.0">
+					<children>
+						<Text fx:id="lblDescription" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="letters_box_icons" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pretium mauris nec ipsum fermentum faucibus. Nullam enim risus, tempor a dapibus id, vehicula quis tellus. Vestibulum accumsan ipsum sed ligula vestibulum, quis aliquam leo rutrum. Cras vel augue vel libero condimentum interdum. Curabitur a sagittis augue. Fusce ac lacus efficitur, imperdiet arcu ac, cursus orci. Pellentesque tincidunt magna bibendum diam ornare vulputate. Etiam eleifend velit nibh, id dignissim magna bibendum eleifend. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nulla accumsan lacus id diam ultricies, sed efficitur purus fringilla. Nulla semper tempor pharetra. Vivamus vehicula turpis vel quam finibus fringilla. Suspendisse id auctor erat. Maecenas id massa nulla. Maecenas pellentesque nisi at ante hendrerit hendrerit. Suspendisse a nisl in massa feugiat porta.Ut rhoncus lacus sit amet dolor accumsan, eget maximus leo scelerisque. Morbi libero elit, venenatis vel erat quis, luctus placerat risus. Donec venenatis ex nunc, in sodales tortor interdum vel. Sed in velit tortor. Pellentesque dapibus faucibus commodo. Sed sed ex pulvinar, lobortis ipsum sit amet, tristique odio. Nullam ac semper diam, congue vehicula turpis. Ut metus eros, fermentum ullamcorper accumsan nec, elementum nec dolor. Quisque lacus neque, fermentum feugiat orci vitae, sodales sollicitudin elit. Aliquam suscipit eget risus non hendrerit. Nunc tristique eleifend molestie. Sed euismod, quam quis accumsan facilisis, orci neque tincidunt arcu, in blandit leo ipsum in lacus. Donec id tempus dolor." />
+					</children>
+				</TextFlow>
+			</content>
+		</ScrollPane>
+      <VBox layoutX="558.0" layoutY="48.0" prefHeight="268.0" prefWidth="209.0" visible="false" AnchorPane.bottomAnchor="36.0" AnchorPane.rightAnchor="313.0" AnchorPane.topAnchor="48.0">
+         <children>
+            <Label styleClass="letters_box_icons" text="Membros">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+      				<JFXListView fx:id="membersLst" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
+         </children>
+      </VBox>
+	</children>
+</AnchorPane>

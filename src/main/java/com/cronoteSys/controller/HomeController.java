@@ -7,12 +7,15 @@ import java.util.ResourceBundle;
 
 import com.cronoteSys.controller.ProjectListController.BtnProjectClickedI;
 import com.cronoteSys.controller.ProjectListController.ProjectSelectedI;
+import com.cronoteSys.controller.TeamListController.TeamSelectedI;
+import com.cronoteSys.controller.TeamViewController.BtnNewTeamClickedI;
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.ActivityBO.OnActivityDeletedI;
 import com.cronoteSys.model.bo.LoginBO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.ProjectVO;
+import com.cronoteSys.model.vo.TeamVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.observer.ShowEditViewActivityObservableI;
 import com.cronoteSys.observer.ShowEditViewActivityObserverI;
@@ -92,12 +95,60 @@ public class HomeController implements Initializable {
 			}
 		});
 
+		TeamViewController.addOnBtnNewTeamClickedListener(new BtnNewTeamClickedI() {
+			@Override
+			public void onBtnNewTeamClicked(TeamVO team, String mode) {
+				switchVBoxTeamContent(team, mode);
+			}
+		});
+
+		TeamListController.addOnBtnNewTeamClickedListener(new TeamSelectedI() {
+			@Override
+			public void onTeamSelected(TeamVO team) {
+				switchVBoxTeamContent(team, "view");
+			}
+		});
+
 		root.getChildren().addListener(new ListChangeListener<Node>() {
 			@Override
 			public void onChanged(Change<? extends Node> c) {
 				ScreenUtil.paintScreen(root);
 			}
 		});
+	}
+
+	private void switchVBoxTeamContent(TeamVO team, String mode) {
+		FXMLLoader loader = null;
+
+		VBox box = null;
+		box = (VBox) root.lookup("#team");
+		if (box == null)
+			box = new VBox();
+		while (box.getChildren().size() > 1) {
+			box.getChildren().remove(1);
+		}
+		try {
+			AnchorPane ap = null;
+			if (mode.equals("view")) {
+				loader = ScreenUtil.loadTemplate("TeamView");
+				ap = (AnchorPane) loader.load();
+				TeamViewController controller = (TeamViewController) loader.getController();
+				controller.setViewingTeam(team);
+			} else {
+				loader = ScreenUtil.loadTemplate("TeamEdit");
+				ap = (AnchorPane) loader.load();
+				if (team != null) {
+					TeamEditController controller = (TeamEditController) loader.getController();
+					controller.setEditingTeam(team);
+				}
+			}
+
+			box.getChildren().add(ap);
+			VBox.setVgrow(ap, Priority.ALWAYS);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		HBox.setHgrow(box, Priority.ALWAYS);
 	}
 
 	private void loadMenu() {
@@ -245,19 +296,28 @@ class MenuController implements Initializable {
 		homeControl.clearRoot(false, (Node) e.getSource());
 	}
 
-	public void btnTeamClicked(ActionEvent e) {
+	public void btnTeamClicked(ActionEvent event) {
 		// TODO: implementar
-		homeControl.clearRoot(false, (Node) e.getSource());
+		homeControl.clearRoot(false, (Node) event.getSource());
 		if (btnTeam.isSelected()) {
 			adjustMenu(true);
 
 			FXMLLoader teamLstLoader = ScreenUtil.loadTemplate("TeamList");
-			FXMLLoader teamEditLoader = ScreenUtil.loadTemplate("TeamEdit");
-			VBox box = new VBox();
-			;
+			FXMLLoader teamViewLoader = ScreenUtil.loadTemplate("TeamView");
+
+			VBox box = null;
 			try {
+				box = (VBox) homeControl.root.lookup("#team");
+			} catch (Exception e) {
+				box = new VBox();
+			}
+			try {
+				if (box == null) {
+					box = new VBox();
+					box.setId("team");
+				}
 				box.getChildren().add(((HBox) teamLstLoader.load()));
-				AnchorPane ap = (AnchorPane) teamEditLoader.load();
+				AnchorPane ap = (AnchorPane) teamViewLoader.load();
 				box.getChildren().add(ap);
 				VBox.setVgrow(ap, Priority.ALWAYS);
 			} catch (IOException e1) {

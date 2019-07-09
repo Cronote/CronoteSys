@@ -42,8 +42,10 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import sun.font.CStrike;
 
 /**
  * Class that cares about all Screen functions
@@ -380,6 +382,27 @@ public class ScreenUtil {
 				jfxPasswordField.validate();
 			}
 		});
+	}
+
+	public static String colorToRGBString(String strColor) {
+		// TODO: nao esta convertendo corretamente
+		Color color = stringToColor(strColor);
+		double r = color.getRed();
+		double g = color.getGreen();
+		double b = color.getBlue();
+		double a = color.getOpacity();
+		String rgba = (r * 255) + "," + (g * 255) + "," + (b * 255) + "," + a;
+		return rgba;
+	}
+
+	public static Color stringToColor(String colorString) {
+		try {
+			return Color.valueOf(colorString);
+		} catch (Exception e) {
+			e.printStackTrace(); 
+			return Color.DEEPPINK;
+		}
+
 	}
 
 	private static ArrayList<OnChangeScreen> listeners = new ArrayList<OnChangeScreen>();

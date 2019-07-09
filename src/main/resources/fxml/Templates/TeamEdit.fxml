@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXColorPicker?>
 <?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane fx:id="rootPaneEditTeam" prefWidth="819.0"
-	xmlns="http://javafx.com/javafx/8.0.171"
+	xmlns="http://javafx.com/javafx/8.0.212"
 	xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="com.cronoteSys.controller.TeamEditController">
 	<children>
@@ -94,5 +95,13 @@
 					styleClass="letters_box_icons" />
 			</graphic>
 		</JFXButton>
+		<Label alignment="TOP_LEFT" contentDisplay="BOTTOM"
+			layoutX="14.0" layoutY="161.0" styleClass="letters_box_icons"
+			text="Cor de destaque do time">
+			<graphic>
+				<JFXColorPicker fx:id="cpTeamColor" prefHeight="27.0"
+					prefWidth="142.0" />
+			</graphic>
+		</Label>
 	</children>
 </AnchorPane>
