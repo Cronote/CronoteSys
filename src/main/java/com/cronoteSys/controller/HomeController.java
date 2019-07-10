@@ -5,10 +5,12 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import com.cronoteSys.controller.ActivityListController.ActivitySelectedI;
 import com.cronoteSys.controller.ProjectListController.BtnProjectClickedI;
 import com.cronoteSys.controller.ProjectListController.ProjectSelectedI;
 import com.cronoteSys.controller.TeamListController.TeamSelectedI;
 import com.cronoteSys.controller.TeamViewController.BtnNewTeamClickedI;
+import com.cronoteSys.interfaces.LoadActivityInterface;
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.ActivityBO.OnActivityDeletedI;
 import com.cronoteSys.model.bo.LoginBO;
@@ -78,7 +80,6 @@ public class HomeController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loadMenu();
-
 		ProjectListController.addOnBtnProjectClickedListener(new BtnProjectClickedI() {
 			@Override
 			public void onBtnProjectClicked() {
@@ -86,7 +87,6 @@ public class HomeController implements Initializable {
 			}
 
 		});
-
 		ProjectListController.addOnProjectSelectedListener(new ProjectSelectedI() {
 			@Override
 			public void onProjectSelect(ProjectVO project) {
@@ -94,21 +94,18 @@ public class HomeController implements Initializable {
 					loadProjectManager(project, "View");
 			}
 		});
-
 		TeamViewController.addOnBtnNewTeamClickedListener(new BtnNewTeamClickedI() {
 			@Override
 			public void onBtnNewTeamClicked(TeamVO team, String mode) {
 				switchVBoxTeamContent(team, mode);
 			}
 		});
-
 		TeamListController.addOnBtnNewTeamClickedListener(new TeamSelectedI() {
 			@Override
 			public void onTeamSelected(TeamVO team) {
 				switchVBoxTeamContent(team, "view");
 			}
 		});
-
 		root.getChildren().addListener(new ListChangeListener<Node>() {
 			@Override
 			public void onChanged(Change<? extends Node> c) {
@@ -119,7 +116,6 @@ public class HomeController implements Initializable {
 
 	private void switchVBoxTeamContent(TeamVO team, String mode) {
 		FXMLLoader loader = null;
-
 		VBox box = null;
 		box = (VBox) root.lookup("#team");
 		if (box == null)
@@ -196,36 +192,27 @@ public class HomeController implements Initializable {
 
 		}
 	};
-	protected ShowEditViewActivityObserverI showListener = new ShowEditViewActivityObserverI() {
+	protected ActivitySelectedI actSelectedListener = new ActivitySelectedI() {
 		@Override
-		public void showEditViewActivity(HashMap<String, Object> hmap) {
-			AnchorPane ap = null;
-			FXMLLoader detailsFxml = null;
+		public void onActivitySelected(HashMap<String, Object> hmap) {
+			FXMLLoader loader = null;
 			removeIndexFromRoot(2);
-			String action = (String) hmap.get("action");
+			String mode = (String) hmap.getOrDefault("action", "view");
 			ActivityVO activity = (ActivityVO) hmap.get("activity");
-			if (action.equalsIgnoreCase("cadastro")) {
-				detailsFxml = ScreenUtil.loadTemplate("ActivityDetailsInserting");
+			AnchorPane ap = null;
+			if (mode.equals("view")) {
+				loader = ScreenUtil.loadTemplate("ActivityDetailsView");
+
 			} else {
-				detailsFxml = ScreenUtil.loadTemplate("ActivityDetailsView");
+				loader = ScreenUtil.loadTemplate("ActivityDetailsInserting");
 			}
-			try {
-				ap = (AnchorPane) addNode(detailsFxml);
-				if (activity != null) {
-					((ActivityDetailsInsertingController) detailsFxml.getController()).loadActivity(activity);
-				}
-			} catch (Exception e) {
-				((ActivityDetailsViewController) detailsFxml.getController()).loadActivity(activity);
-			}
-			ap.setMaxWidth(Double.POSITIVE_INFINITY);
-			ap.setMaxHeight(Double.POSITIVE_INFINITY);
+			ap = (AnchorPane) addNode(loader);
+			if (activity != null)
+				((LoadActivityInterface) loader.getController()).loadActivity(activity);
+
 			HBox.setHgrow(ap, Priority.ALWAYS);
 		}
 	};
-
-	public ShowEditViewActivityObserverI getShowListener() {
-		return showListener;
-	}
 
 }
 
@@ -275,7 +262,7 @@ class MenuController implements Initializable {
 			FXMLLoader p = ScreenUtil.loadTemplate("ActivityList");
 			homeControl.addNode(p);
 			((ActivityListController) p.getController()).setList(null);
-			ShowEditViewActivityObservableI.addShowEditViewActivityListener(homeControl.getShowListener());
+			ActivityListController.addOnActivitySelectedListener(homeControl.actSelectedListener);
 			ActivityBO.addOnActivityDeletedListener(homeControl.listenerActivityDelete);
 		}
 	}

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.cronoteSys.controller.TeamListController.TeamSelectedI;
 import com.cronoteSys.controller.components.cellfactory.ActivityCellFactory;
 import com.cronoteSys.filter.ActivityFilter;
 import com.cronoteSys.model.bo.ActivityBO;
@@ -14,6 +15,7 @@ import com.cronoteSys.model.bo.ActivityBO.OnActivityDeletedI;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.model.vo.StatusEnum;
+import com.cronoteSys.model.vo.TeamVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.observer.ShowEditViewActivityObservableI;
 import com.cronoteSys.observer.ShowEditViewActivityObserverI;
@@ -25,6 +27,10 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -35,15 +41,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import jdk.nashorn.internal.runtime.PropertyListeners;
 
-public class ActivityListController implements Initializable, ShowEditViewActivityObservableI {
+public class ActivityListController implements Initializable {
 
 	ActivityBO actBO = new ActivityBO();
 	@FXML
 	private Button btnAddActivity;
 	@FXML
 	private ListView<ActivityVO> cardsList;
-	private List<ActivityVO> activityList = new ArrayList<ActivityVO>();
+	private ListProperty<ActivityVO> activityList = new SimpleListProperty<ActivityVO>();
 	@FXML
 	AnchorPane pane;
 	private UserVO loggedUser;
@@ -78,8 +85,9 @@ public class ActivityListController implements Initializable, ShowEditViewActivi
 
 	public void setList(ProjectVO project) {
 		filter = new ActivityFilter(project != null ? project.getId() : null, loggedUser.getIdUser());
-		activityList = actBO.listAll(filter);
-		cardsList.setItems(FXCollections.observableArrayList(activityList));
+		List<ActivityVO> lst = actBO.listAll(filter);
+		activityList.set(FXCollections.observableArrayList(lst));
+		cardsList.itemsProperty().bind(activityList);
 		setBtnAddIcon();
 	}
 
@@ -102,14 +110,13 @@ public class ActivityListController implements Initializable, ShowEditViewActivi
 			public void onActivityAddedI(ActivityVO act, String action) {
 				if (action.equalsIgnoreCase("save")) {
 					activityList.add(0, act);
-					cardsList.setItems(FXCollections.observableArrayList(activityList));
+					cardsList.refresh();
 					cardsList.getSelectionModel().select(0);
 				} else {
 					int selected = cardsList.getSelectionModel().getSelectedIndex();
 					activityList.remove(selected);
-					cardsList.setItems(FXCollections.observableArrayList(activityList));
-					activityList.add(selected,act);
-					cardsList.setItems(FXCollections.observableArrayList(activityList));
+					activityList.add(selected, act);
+					cardsList.refresh();
 					cardsList.getSelectionModel().select(selected);
 				}
 			}
@@ -118,7 +125,7 @@ public class ActivityListController implements Initializable, ShowEditViewActivi
 			@Override
 			public void onActivityDeleted(ActivityVO act) {
 				activityList.remove(act);
-				cardsList.setItems(FXCollections.observableArrayList(activityList));
+				cardsList.refresh();
 			}
 		});
 	}
@@ -127,7 +134,7 @@ public class ActivityListController implements Initializable, ShowEditViewActivi
 		HashMap<String, Object> hmp = new HashMap<String, Object>();
 		hmp.put("project", selectedProject);
 		hmp.put("action", "cadastro");
-		notifyAllListeners(hmp);
+		notifyAllActivitySelectedListeners(hmp);
 	}
 
 	private void initEvents() {
@@ -138,13 +145,20 @@ public class ActivityListController implements Initializable, ShowEditViewActivi
 				btnAddActivityClicked(event);
 			}
 		});
-	}
+		cardsList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ActivityVO>() {
 
-	@Override
-	public void notifyAllListeners(HashMap<String, Object> hmp) {
-		for (ShowEditViewActivityObserverI l : listeners) {
-			l.showEditViewActivity(hmp);
-		}
+			@Override
+			public void changed(ObservableValue<? extends ActivityVO> observable, ActivityVO oldValue,
+					ActivityVO newValue) {
+				HashMap<String, Object> hmp = new HashMap<String, Object>();
+				if (newValue != null) {
+					hmp.put("activity", newValue);
+					hmp.put("project", newValue.getProjectVO());
+					hmp.put("action", "view");
+					notifyAllActivitySelectedListeners(hmp);
+				}
+			}
+		});
 	}
 
 	public int getActivityTotal() {
@@ -159,4 +173,22 @@ public class ActivityListController implements Initializable, ShowEditViewActivi
 		}
 		return doneCount;
 	}
+
+	private static ArrayList<ActivitySelectedI> activitySelectedListeners = new ArrayList<ActivitySelectedI>();
+
+	public interface ActivitySelectedI {
+		void onActivitySelected(HashMap<String, Object> hmp);
+	}
+
+	public static void addOnActivitySelectedListener(ActivitySelectedI newListener) {
+		activitySelectedListeners.clear();
+		activitySelectedListeners.add(newListener);
+	}
+
+	public static void notifyAllActivitySelectedListeners(HashMap<String, Object> hmp) {
+		for (ActivitySelectedI l : activitySelectedListeners) {
+			l.onActivitySelected(hmp);
+		}
+	}
+
 }

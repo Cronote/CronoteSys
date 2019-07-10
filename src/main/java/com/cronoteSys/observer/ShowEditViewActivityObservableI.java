@@ -11,5 +11,10 @@ public interface ShowEditViewActivityObservableI {
 		listeners.clear();
 		listeners.add(newListener);
 	}
+
+	static void removeShowEditViewActivityListener(ShowEditViewActivityObserverI newListener) {
+		listeners.remove(newListener);
+	}
+
 	void notifyAllListeners(HashMap<String, Object> hmp);
 }

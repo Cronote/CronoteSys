@@ -5,9 +5,13 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import com.cronoteSys.controller.ActivityListController.ActivitySelectedI;
+import com.cronoteSys.interfaces.LoadActivityInterface;
+import com.cronoteSys.interfaces.LoadProjectInterface;
 import com.cronoteSys.model.bo.ProjectBO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.ProjectVO;
+import com.cronoteSys.model.vo.TeamVO;
 import com.cronoteSys.observer.ShowEditViewActivityObservableI;
 import com.cronoteSys.observer.ShowEditViewActivityObserverI;
 import com.cronoteSys.util.ScreenUtil;
@@ -21,6 +25,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 public class ProjectManagerController implements Initializable {
 
@@ -54,7 +59,6 @@ public class ProjectManagerController implements Initializable {
 	}
 
 	public void initFirstInfo(String mode) {
-		System.out.println(mode);
 		FXMLLoader firstInfoLoader = null;
 		AnchorPane firstInfoPane = null;
 		tabPane.getTabs().clear();
@@ -77,21 +81,28 @@ public class ProjectManagerController implements Initializable {
 
 			initActivities();
 
-		} catch (
-
-		IOException e) {
-
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
+	private void initActivitiesObservers() {
+		ActivityListController.addOnActivitySelectedListener(new ActivitySelectedI() {
+			@Override
+			public void onActivitySelected(HashMap<String, Object> hmp) {
+				switchHBoxContent(hmp);
+			}
+		});
+	}
+
 	private void initActivities() {
+		System.out.println(selectedProject);
 		if (selectedProject != null) {
 			try {
+
 				FXMLLoader actlivityListLoader = ScreenUtil.loadTemplate("ActivityList");
 				hboxContent.getChildren().add(actlivityListLoader.load());
 				activityListController = ((ActivityListController) actlivityListLoader.getController());
-				ShowEditViewActivityObservableI.addShowEditViewActivityListener(observer);
 				tabPane.getTabs().add(tbActivities);
 				activityListController.listByProject(selectedProject);
 				try {
@@ -101,10 +112,39 @@ public class ProjectManagerController implements Initializable {
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
+				initActivitiesObservers();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private void switchHBoxContent(HashMap<String, Object> hmap) {
+		FXMLLoader loader = null;
+		while (hboxContent.getChildren().size() > 1) {
+			hboxContent.getChildren().remove(1);
+		}
+		try {
+			String mode = (String) hmap.getOrDefault("action", "view");
+			ActivityVO activity = (ActivityVO) hmap.get("activity");
+			AnchorPane ap = null;
+			if (mode.equals("view")) {
+				loader = ScreenUtil.loadTemplate("ActivityDetailsView");
+				ap = (AnchorPane) loader.load();
+
+			} else {
+				loader = ScreenUtil.loadTemplate("ActivityDetailsInserting");
+				ap = (AnchorPane) loader.load();
+			}
+			if (activity != null)
+				((LoadActivityInterface) loader.getController()).loadActivity(activity);
+			((LoadProjectInterface) loader.getController()).loadProject(selectedProject);
+			hboxContent.getChildren().add(ap);
+			VBox.setVgrow(ap, Priority.ALWAYS);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		HBox.setHgrow(hboxContent, Priority.ALWAYS);
 	}
 
 	protected void saveProject(ProjectVO project) {
@@ -112,50 +152,7 @@ public class ProjectManagerController implements Initializable {
 			selectedProject = projectBO.update(project);
 		else
 			selectedProject = projectBO.save(project);
-		setSelectedProject(selectedProject, "view");
-	}
-
-	ShowEditViewActivityObserverI observer = new ShowEditViewActivityObserverI() {
-		@Override
-		public void showEditViewActivity(HashMap<String, Object> hmap) {
-			removeEditViewPane();
-			try {
-				AnchorPane ap = null;
-				FXMLLoader detailsFxml = ScreenUtil.loadTemplate("ActivityDetailsInserting");
-				String action = (String) hmap.get("action");
-				ActivityVO activity = (ActivityVO) hmap.get("activity");
-				if (action.equalsIgnoreCase("cadastro")) {
-					ap = detailsFxml.load();
-					if (activity != null)
-						((ActivityDetailsInsertingController) detailsFxml.getController()).loadActivity(activity);
-					if (selectedProject != null)
-						((ActivityDetailsInsertingController) detailsFxml.getController()).setProject(selectedProject);
-				} else {
-					detailsFxml = ScreenUtil.loadTemplate("ActivityDetailsView");
-					ap = (AnchorPane) detailsFxml.load();
-					((ActivityDetailsViewController) detailsFxml.getController()).loadActivity(activity);
-				}
-
-				ap.setMaxWidth(Double.POSITIVE_INFINITY);
-				ap.setMaxHeight(Double.POSITIVE_INFINITY);
-				hboxContent.getChildren().add(ap);
-				HBox.setHgrow(ap, Priority.ALWAYS);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		private void removeEditViewPane() {
-			System.out.println("brincadeira em");
-			while (hboxContent.getChildren().size() > 1) {
-				hboxContent.getChildren().remove(1);
-			}
-		}
-	};
-
-	public ShowEditViewActivityObserverI getObserver() {
-		return observer;
+//		setSelectedProject(selectedProject, "view");
 	}
 
 	public void delete(ProjectVO viewingProject) {
