@@ -566,3 +566,7 @@ ComboBox{
 .stack-error{
 	-fx-background-color: #FF5757;
 }
+
+.highLightsDetails:determinate .bar{
+	-fx-background-color: #7c4db8;
+}

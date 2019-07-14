@@ -114,10 +114,12 @@ public class ActivityListController implements Initializable {
 					cardsList.getSelectionModel().select(0);
 				} else {
 					int selected = cardsList.getSelectionModel().getSelectedIndex();
-					activityList.remove(selected);
-					activityList.add(selected, act);
-					cardsList.refresh();
-					cardsList.getSelectionModel().select(selected);
+					if (selected > -1) {
+						activityList.remove(selected);
+						activityList.add(selected, act);
+						cardsList.refresh();
+						cardsList.getSelectionModel().select(selected);
+					}
 				}
 			}
 		});
@@ -172,6 +174,10 @@ public class ActivityListController implements Initializable {
 				doneCount++;
 		}
 		return doneCount;
+	}
+
+	public List<ActivityVO> getList() {
+		return activityList;
 	}
 
 	private static ArrayList<ActivitySelectedI> activitySelectedListeners = new ArrayList<ActivitySelectedI>();

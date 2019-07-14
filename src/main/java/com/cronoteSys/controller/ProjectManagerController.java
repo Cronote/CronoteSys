@@ -106,11 +106,10 @@ public class ProjectManagerController implements Initializable {
 				tabPane.getTabs().add(tbActivities);
 				activityListController.listByProject(selectedProject);
 				try {
-					int total = activityListController.getActivityTotal();
 					firstInfoViewController
-							.setRealDoneTodo(activityListController.getDoneActivitiesTotal() + "/" + total);
+							.setActivities(activityListController.getList());
 				} catch (Exception e) {
-					// TODO: handle exception
+					e.printStackTrace();
 				}
 				initActivitiesObservers();
 			} catch (IOException e) {
