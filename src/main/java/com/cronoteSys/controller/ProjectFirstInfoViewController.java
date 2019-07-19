@@ -108,7 +108,7 @@ public class ProjectFirstInfoViewController implements Initializable {
 
 	private void getRealDoneTodo() {
 		double total = lstAct.size();
-		Duration passedDuration =  Duration.between(viewingProject.getStartDate(), LocalDateTime.now());
+		Duration passedDuration = Duration.between(viewingProject.getStartDate(), LocalDateTime.now());
 		int estimatedCount = 0;
 		int doneCount = 0;
 		for (ActivityVO act : lstAct) {
@@ -200,7 +200,6 @@ public class ProjectFirstInfoViewController implements Initializable {
 
 			lblTotalTime.setText(String.format("%d Ano(s), %d mes(es) e %d dia(s)", years, months, days));
 
-//			System.out.println(viewingProject.getStartDate().until(LocalDateTime.now(), ChronoUnit.YEARS));
 		}
 	}
 }

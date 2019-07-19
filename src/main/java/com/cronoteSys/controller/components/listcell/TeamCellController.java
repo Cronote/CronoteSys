@@ -57,7 +57,7 @@ public class TeamCellController extends ListCell<TeamVO> {
 			}
 			lblTeamName.setText(item.getName());
 			lblProjectsCount.setText("0");
-			lblMembersCount.setText(String.valueOf(item.getMembers().size()+1));
+//			lblMembersCount.setText(String.valueOf(item.getMembers().size()+1));
 			String rgba = item.getTeamColor() != null ? ScreenUtil.colorToRGBString(item.getTeamColor()) : "1,1,1,1";
 			stkTeamColor.setStyle(stkTeamColor.getStyle().concat("-fx-background-color:rgba(" + rgba + ");"));
 			setGraphic(teamCardRoot);

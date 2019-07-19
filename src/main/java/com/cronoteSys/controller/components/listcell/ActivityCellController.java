@@ -75,6 +75,7 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 	private ActivityVO activity;
 
 	private JFXPopup popup;
+	private boolean canExecute = true;
 
 	private JFXPopup initPopup(String text) {
 
@@ -170,8 +171,25 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 			}
 			btnPlayPause.setGraphic(icon);
 			btnPlayPause.setText(btnText);
-			btnPlayPause.getStyleClass().add("show");
+			if (activity.getDependencies().isEmpty())
+				canExecute = true;
+			else {
+				for (ActivityVO dependency : activity.getDependencies()) {
+					if (!StatusEnum.itsFinalized(dependency.getStats())) {
+						canExecute = false;
+						break;
+					}
+					canExecute = true;
+
+				}
+			}
+
+			if (canExecute)
+				btnPlayPause.getStyleClass().addAll("show");
+			else
+				btnPlayPause.getStyleClass().removeAll("show");
 		}
+
 		StackPane progressBarPane = (StackPane) pgbProgress.lookup(".bar");
 		paintBar(progressBarPane);
 	}
@@ -287,6 +305,7 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 		setOnMouseEntered(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
+
 				if (activity.getStats().equals(StatusEnum.NOT_STARTED)) {
 					btnDelete.getStyleClass().add("show");
 				}

@@ -2,16 +2,10 @@ package com.cronoteSys.controller;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
 
-import com.cronoteSys.controller.ProjectListController.ProjectSelectedI;
 import com.cronoteSys.controller.components.cellfactory.SimplifiedAccountCellFactory;
-import com.cronoteSys.model.bo.TeamBO;
 import com.cronoteSys.model.bo.UserBO;
-import com.cronoteSys.model.dao.TeamDAO;
-import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.model.vo.TeamVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.model.vo.view.SimpleUser;
@@ -19,20 +13,16 @@ import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXTextArea;
-import com.jfoenix.controls.JFXTextField;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.paint.Color;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 
 public class TeamViewController implements Initializable {
@@ -112,19 +102,21 @@ public class TeamViewController implements Initializable {
 	}
 
 	private void btnLeaveTeamClicked(ActionEvent event) {
-		if (viewingTeam.getMembers().contains(loggedUser)) {
-			viewingTeam.getMembers().remove(loggedUser);
-			new TeamBO().update(viewingTeam, "leaving");
-		}
-		if (loggedUser.getIdUser().equals(viewingTeam.getOwner().getIdUser())) {
-			if (viewingTeam.getMembers().size() > 0) {
-				UserVO newOnwer = viewingTeam.getMembers().remove(0);
-				viewingTeam.setOwner(newOnwer);
-				new TeamBO().update(viewingTeam, "leaving");
-			} else {
-				new TeamBO().delete(viewingTeam);
-			}
-		}
+//		List<TeamUser> lst = new ArrayList<TeamUser>();
+//		lst.addAll(viewingTeam.getTeamUser());
+//		if (viewingTeam.getMembers().contains(loggedUser)) {
+//			viewingTeam.getMembers().remove(loggedUser);
+//			new TeamBO().update(viewingTeam, "leaving");
+//		}
+//		if (loggedUser.getIdUser().equals(viewingTeam.getOwner().getIdUser())) {
+//			if (viewingTeam.getMembers().size() > 0) {
+//				UserVO newOnwer = viewingTeam.getMembers().remove(0);
+//				viewingTeam.setOwner(newOnwer);
+//				new TeamBO().update(viewingTeam, "leaving");
+//			} else {
+//				new TeamBO().delete(viewingTeam);
+//			}
+//		}
 	}
 
 	private void switchVisibility(Boolean b) {

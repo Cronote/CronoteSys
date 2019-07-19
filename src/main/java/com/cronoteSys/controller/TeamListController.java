@@ -4,20 +4,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
 
-import com.cronoteSys.controller.TeamViewController.BtnNewTeamClickedI;
 import com.cronoteSys.controller.components.cellfactory.TeamCellFactory;
 import com.cronoteSys.model.bo.TeamBO;
 import com.cronoteSys.model.bo.TeamBO.OnTeamAddedI;
 import com.cronoteSys.model.bo.TeamBO.OnTeamDeletedI;
-import com.cronoteSys.model.dao.TeamDAO;
 import com.cronoteSys.model.vo.TeamVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.SessionUtil;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
-import com.sun.xml.internal.bind.v2.runtime.output.ForkXmlOutput;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;

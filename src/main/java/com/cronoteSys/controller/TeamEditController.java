@@ -164,7 +164,7 @@ public class TeamEditController implements Initializable {
 				members.add(u);
 			}
 		}
-		editingTeam.setMembers(members);
+//		editingTeam.setMembers(members);
 		TeamBO teambo = new TeamBO();
 		if (editingTeam.getId() == null)
 			teambo.save(editingTeam);
