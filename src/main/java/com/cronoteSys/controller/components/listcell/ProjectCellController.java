@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import com.cronoteSys.model.vo.ProjectVO;
+import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
 
 import javafx.fxml.FXML;
@@ -50,6 +51,8 @@ public class ProjectCellController extends ListCell<ProjectVO> {
 				e.printStackTrace();
 			}
 			lblTitle.setText(item.getTitle());
+			String color = item.getTeam() != null ? ScreenUtil.colorToRGBString(item.getTeam().getTeamColor()) : "1,1,1,1";
+			stkColorTag.setStyle("-fx-background-radius: 0 0 20 20;" +  "-fx-background-color:" + color + ";");
 			setGraphic(projectCardRoot);
 		} else {
 			setText(null);
