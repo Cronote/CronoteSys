@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 
 public class ProjectCellController extends ListCell<ProjectVO> {
 	@FXML
@@ -22,6 +23,8 @@ public class ProjectCellController extends ListCell<ProjectVO> {
 	private ProgressBar pgbProgress;
 	@FXML
 	private AnchorPane projectCardRoot;
+	@FXML
+	private StackPane stkColorTag;
 
 	@Override
 	public void updateSelected(boolean selected) {
