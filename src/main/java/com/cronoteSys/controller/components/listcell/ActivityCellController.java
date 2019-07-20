@@ -14,11 +14,14 @@ import com.cronoteSys.observer.ShowEditViewActivityObserverI;
 import com.cronoteSys.util.ActivityMonitor;
 import com.cronoteSys.util.ActivityMonitor.OnMonitorTick;
 import com.cronoteSys.util.SessionUtil;
+import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXProgressBar;
 
 import de.jensd.fx.glyphs.GlyphIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -33,11 +36,20 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Skin;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.TextFlow;
+import javafx.util.Duration;
+
+class OwnTootip extends Tooltip {
+
+}
 
 public class ActivityCellController extends ListCell<ActivityVO> implements ShowEditViewActivityObservableI {
 	@FXML
@@ -62,8 +74,33 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 	private Button btnPlayPause;
 	private ActivityVO activity;
 
+	private JFXPopup popup;
+	private boolean canExecute = true;
+
+	private JFXPopup initPopup(String text) {
+
+		Label l = new Label(text);
+		l.setWrapText(true);
+		l.setTextFill(Color.WHITE);
+		l.setMaxWidth(200);
+
+		TextFlow txtflow = new TextFlow(l);
+		txtflow.setMaxWidth(200);
+
+		ScrollPane scpane = new ScrollPane(txtflow);
+		scpane.getStyleClass().add("tone1-background");
+		scpane.setMinSize(200, 200);
+		scpane.setVbarPolicy(ScrollBarPolicy.NEVER);
+		scpane.setHbarPolicy(ScrollBarPolicy.NEVER);
+		popup = new JFXPopup(scpane);
+		popup.setAutoHide(true);
+
+		return popup;
+	}
+
 	{
-		//TODO:refatorar a forma de mostrar o pane de view/edição da atividade selecionada
+		// TODO:refatorar a forma de mostrar o pane de view/edição da atividade
+		// selecionada
 		FXMLLoader loader = SessionUtil.getInjector().getInstance(FXMLLoader.class);
 		try {
 			loader.setLocation(new File(getClass().getResource("/fxml/Templates/cell/ActivityCell.fxml").getPath())
@@ -100,6 +137,11 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 			setGraphic(activityCardRoot);
 			setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 			setAlignment(Pos.CENTER);
+//			popup = initPopup(item.getTitle());
+//			Tooltip t = new Tooltip();
+//			t.setAutoHide(false);
+//			t.setGraphic(popup.getPopupContent());
+//			Tooltip.install(lblTitle, t);
 		} else {
 			setGraphic(null);
 			setText(null);
@@ -129,8 +171,25 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 			}
 			btnPlayPause.setGraphic(icon);
 			btnPlayPause.setText(btnText);
-			btnPlayPause.getStyleClass().add("show");
+			if (activity.getDependencies().isEmpty())
+				canExecute = true;
+			else {
+				for (ActivityVO dependency : activity.getDependencies()) {
+					if (!StatusEnum.itsFinalized(dependency.getStats())) {
+						canExecute = false;
+						break;
+					}
+					canExecute = true;
+
+				}
+			}
+
+			if (canExecute)
+				btnPlayPause.getStyleClass().addAll("show");
+			else
+				btnPlayPause.getStyleClass().removeAll("show");
 		}
+
 		StackPane progressBarPane = (StackPane) pgbProgress.lookup(".bar");
 		paintBar(progressBarPane);
 	}
@@ -184,6 +243,21 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 	}
 
 	private void initEvents() {
+		lblTitle.setOnMouseEntered(new EventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+				popup = initPopup(lblTitle.getText());
+				Timeline activationTimer = new Timeline();
+				activationTimer.getKeyFrames().add(new KeyFrame(Duration.seconds(2)));
+				activationTimer.setOnFinished(e -> {
+					popup.show(lblTitle);
+					popup.setAutoHide(true);
+
+				});
+				activationTimer.playFromStart();
+			}
+		});
+
 		btnDelete.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -231,6 +305,7 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 		setOnMouseEntered(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
+
 				if (activity.getStats().equals(StatusEnum.NOT_STARTED)) {
 					btnDelete.getStyleClass().add("show");
 				}

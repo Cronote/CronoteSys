@@ -2,15 +2,20 @@ package com.cronoteSys.controller;
 
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.controlsfx.control.Rating;
 
+import com.cronoteSys.controller.ActivityListController.ActivitySelectedI;
 import com.cronoteSys.controller.components.cellfactory.SimpleActivityCellFactory;
+import com.cronoteSys.interfaces.LoadActivityInterface;
+import com.cronoteSys.interfaces.LoadProjectInterface;
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.vo.ActivityVO;
+import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.model.vo.SimpleActivity;
 import com.cronoteSys.model.vo.StatusEnum;
 import com.cronoteSys.model.vo.UserVO;
@@ -39,7 +44,7 @@ import javafx.scene.control.TitledPane;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXButton;
 
-public class ActivityDetailsViewController implements Initializable, ShowEditViewActivityObservableI {
+public class ActivityDetailsViewController implements Initializable, LoadActivityInterface, LoadProjectInterface {
 	@FXML
 	private Label lblPaneTitle;
 	// Visualização
@@ -169,7 +174,8 @@ public class ActivityDetailsViewController implements Initializable, ShowEditVie
 					hmp.put("activity", activity);
 					hmp.put("project", activity.getProjectVO());
 					hmp.put("action", "cadastro");
-					notifyAllListeners(hmp);
+					ActivityListController.notifyAllActivitySelectedListeners(hmp);
+
 				}
 			});
 		}
@@ -190,8 +196,7 @@ public class ActivityDetailsViewController implements Initializable, ShowEditVie
 					if (textPercentage != null)
 						textPercentage.setText(progressStr + "%");
 					if (stackProgress != null)
-						stackProgress.setStyle("-fx-background-color:" + 
-					activity.getStats().getHexColor());
+						stackProgress.setStyle("-fx-background-color:" + activity.getStats().getHexColor());
 				}
 			});
 			ActivityMonitor.addOnMonitorTickListener(new OnMonitorTick() {
@@ -205,11 +210,25 @@ public class ActivityDetailsViewController implements Initializable, ShowEditVie
 		}
 	}
 
-	@Override
-	public void notifyAllListeners(HashMap<String, Object> hmp) {
-		for (ShowEditViewActivityObserverI l : listeners) {
-			l.showEditViewActivity(hmp);
-		}
+	// TODO:Fazer um observer pra entrar no modo edicao
+	private static ArrayList<ActivitySelectedI> editingActivityListeners = new ArrayList<ActivitySelectedI>();
 
+	public interface ActivitySelectedI {
+		void onActivitySelected(HashMap<String, Object> hmp);
+	}
+
+	public static void addOnActivitySelectedListener(ActivitySelectedI newListener) {
+		editingActivityListeners.add(newListener);
+	}
+
+	private void notifyAllActivitySelectedListeners(HashMap<String, Object> hmp) {
+		for (ActivitySelectedI l : editingActivityListeners) {
+			l.onActivitySelected(hmp);
+		}
+	}
+
+	@Override
+	public void loadProject(ProjectVO proj) {
+		//Not necessary
 	}
 }

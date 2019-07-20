@@ -13,6 +13,8 @@ import org.controlsfx.control.Rating;
 import com.cronoteSys.controller.components.dialogs.CategoryManagerDialog;
 import com.cronoteSys.controller.components.dialogs.DialogDependencyManager;
 import com.cronoteSys.converter.CategoryConverter;
+import com.cronoteSys.interfaces.LoadActivityInterface;
+import com.cronoteSys.interfaces.LoadProjectInterface;
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.CategoryBO;
 import com.cronoteSys.model.dao.CategoryDAO;
@@ -56,7 +58,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class ActivityDetailsInsertingController implements Initializable, ShowEditViewActivityObservableI {
+public class ActivityDetailsInsertingController implements Initializable, ShowEditViewActivityObservableI, LoadActivityInterface, LoadProjectInterface {
 	@FXML
 	private Label lblPaneTitle;
 	// Edição
@@ -140,10 +142,6 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 		}
 	}
 
-	public void setProject(ProjectVO proj) {
-		activity.setProjectVO(proj);
-		btnDependencies.setVisible(proj != null);
-	}
 
 	private void blockEdition() {
 		txtTitle.setDisable(true);
@@ -341,5 +339,12 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 			l.showEditViewActivity(hmp);
 		}
 
+	}
+
+	@Override
+	public void loadProject(ProjectVO proj) {
+		activity.setProjectVO(proj);
+		btnDependencies.setVisible(proj != null);
+		
 	}
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox prefHeight="214.0" prefWidth="900.0"
+	xmlns="http://javafx.com/javafx/8.0.171"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="com.cronoteSys.controller.TeamListController">
+	<children>
+		<JFXButton fx:id="btnPrevious" contentDisplay="GRAPHIC_ONLY"
+			prefHeight="234.0" prefWidth="80.0" ripplerFill="#7c4db8">
+			<graphic>
+				<FontAwesomeIconView glyphName="ANGLE_LEFT"
+					size="3em" styleClass="letters_box_icons" />
+			</graphic>
+		</JFXButton>
+		<JFXListView fx:id="lstTeams" orientation="HORIZONTAL"
+			prefHeight="214.0" prefWidth="815.0"
+			style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS" />
+		<JFXButton fx:id="btnNext" contentDisplay="GRAPHIC_ONLY"
+			prefHeight="221.0" prefWidth="80.0" ripplerFill="#7c4db8">
+			<graphic>
+				<FontAwesomeIconView glyphName="ANGLE_RIGHT"
+					size="3em" styleClass="letters_box_icons" />
+			</graphic>
+		</JFXButton>
+	</children>
+</HBox>

@@ -14,6 +14,7 @@ import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 import com.cronoteSys.util.SessionUtil;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXSnackbar.SnackbarEvent;
@@ -47,9 +48,10 @@ public class LoginController extends MasterController {
 	@FXML
 	private Hyperlink linkRecover;
 	private HashMap<String, Object> hmp;
-	private boolean rememberMe = true;
 	@FXML
 	private AnchorPane pnlLogin;
+	@FXML
+	private JFXCheckBox chkRememberMe;
 	@FXML
 	private Pane pnlMidBottomArea;
 	private JFXSnackbar snackbar;
@@ -58,6 +60,7 @@ public class LoginController extends MasterController {
 	public void initialize() {
 		try {
 			Properties prop = getProp();
+			chkRememberMe.setSelected(Boolean.valueOf(prop.getProperty("LoginScreen.rememberMe", "false")));
 			txtEmail.setText(prop.getProperty("LoginScreen.username"));
 
 		} catch (IOException e) {
@@ -79,12 +82,24 @@ public class LoginController extends MasterController {
 
 	public void login(LoginVO login) {
 		UserVO user = new LoginBO().login(login);
-		System.out.println(user != null);
+		System.out.println(user);
 		if (user != null) {
-			if (rememberMe) {
+
+			if (chkRememberMe.isSelected()) {
 				try {
 					Properties prop = getProp();
+					prop.setProperty("LoginScreen.rememberMe", String.valueOf(chkRememberMe.isSelected()));
 					prop.setProperty("LoginScreen.username", login.getEmail());
+					saveProp(prop);
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				try {
+					Properties prop = getProp();
+					prop.setProperty("LoginScreen.rememberMe", String.valueOf(chkRememberMe.isSelected()));
+					prop.setProperty("LoginScreen.username", "");
 					saveProp(prop);
 
 				} catch (IOException e) {
@@ -129,7 +144,6 @@ public class LoginController extends MasterController {
 		try {
 			Properties prop = getProp();
 			String savedAccounts = prop.getProperty("savedAccounts", "");
-			System.out.println(savedAccounts.split(",").length);
 			if (savedAccounts.equals(""))
 				savedAccounts += idUser.toString();
 			else

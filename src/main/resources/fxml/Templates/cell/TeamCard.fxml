@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.lang.String?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="teamCardRoot" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="115.0" prefWidth="245.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<Label fx:id="lblTeamName" alignment="TOP_LEFT" layoutX="14.0" layoutY="14.0" prefHeight="42.0" prefWidth="194.0" text="ESTUDAR LÓGICA DE PROGRAMAÇÃO E ALGEBRA LINEAR" textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="37.0" AnchorPane.topAnchor="14.0">
+			<font>
+				<Font name="System Bold" size="13.0" />
+			</font>
+		</Label>
+		<StackPane fx:id="stkTeamColor" layoutX="212.0" layoutY="4.0" prefHeight="32.0" prefWidth="15.0" style=" -fx-background-radius: 0 0 20 20;" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="-2.0" />
+		<Label fx:id="lblProjectsCount" layoutX="14.0" layoutY="58.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="10.0">
+			<graphic>
+				<FontAwesomeIconView fontSmoothingType="LCD" glyphName="BOOK" size="1em" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" textAlignment="CENTER" textOrigin="CENTER">
+					<font>
+						<Font name="FontAwesome Regular" size="18.0" />
+					</font>
+					<styleClass>
+						<String fx:value="icon-outline" />
+						<String fx:value="normal" />
+						<String fx:value="rainforce" />
+					</styleClass>
+				</FontAwesomeIconView>
+			</graphic>
+			<tooltip>
+				<Tooltip contentDisplay="TOP" text="Quantidade de projetos do time" wrapText="true">
+					<font>
+						<Font size="15.0" />
+					</font>
+				</Tooltip>
+			</tooltip>
+		</Label>
+		<Label fx:id="lblMembersCount" layoutX="14.0" layoutY="84.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="10.0">
+			<graphic>
+				<FontAwesomeIconView glyphName="USERS" size="1em">
+					<styleClass>
+						<String fx:value="icon-outline" />
+						<String fx:value="rainforce" />
+					</styleClass>
+				</FontAwesomeIconView>
+			</graphic>
+			<tooltip>
+				<Tooltip contentDisplay="TOP" text="Quantidade de membros no time" wrapText="true">
+					<font>
+						<Font size="15.0" />
+					</font>
+				</Tooltip>
+			</tooltip>
+		</Label>
+	</children>
+	<styleClass>
+		<String fx:value="card" />
+		<String fx:value="borders" />
+	</styleClass>
+
+</AnchorPane>
