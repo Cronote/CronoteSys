@@ -2,26 +2,18 @@
 
 <?import java.lang.String?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="projectCardRoot" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="285.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="projectCardRoot" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="210.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-      <StackPane fx:id="stkColorTag" layoutX="246.0" layoutY="-4.0" prefHeight="38.0" prefWidth="15.0" style="-fx-background-radius: 0 0 20 20;" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="-2.0" />
+      <StackPane fx:id="stkColorTag" layoutX="246.0" layoutY="-4.0" prefHeight="38.0" prefWidth="15.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="-2.0" />
 		<Label fx:id="lblTitle" alignment="TOP_LEFT" layoutX="18.0" layoutY="17.0" prefHeight="34.0" prefWidth="206.0" styleClass="info" text="ESTUDAR LÓGICA DE PROGRAMAÇÃO E ALGEBRA LINEAR" textFill="#ff0101" wrapText="true" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="63.0" AnchorPane.topAnchor="15.0">
 			<font>
 				<Font name="System Bold" size="13.0" />
 			</font>
 		</Label>
-		<AnchorPane layoutX="14.0" layoutY="76.0" prefHeight="20.0" prefWidth="249.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
-			<children>
-				<ProgressBar fx:id="pgbProgress" prefHeight="20.0" prefWidth="248.0" progress="0.28" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="63.0" />
-				<Label fx:id="lblProgress" prefHeight="20.0" prefWidth="40.0" styleClass="info" text="0.00%" AnchorPane.rightAnchor="0.0">
-				</Label>
-			</children>
-		</AnchorPane>
 	</children>
 	<styleClass>
 		<String fx:value="card" />
