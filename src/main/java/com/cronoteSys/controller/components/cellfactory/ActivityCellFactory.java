@@ -10,7 +10,11 @@ import javafx.util.Callback;
 public class ActivityCellFactory implements Callback<ListView<ActivityVO>, ListCell<ActivityVO>> {
 	@Override
 	public ListCell<ActivityVO> call(ListView<ActivityVO> listview) {
-		return new ActivityCellController();
+		ListCell<ActivityVO> cell = new ActivityCellController();
+		cell.setPrefWidth(listview.getWidth()-5.0);
+		cell.setMaxWidth(listview.getWidth()-5.0);
+		return cell;
 	}
+	
 
 }
