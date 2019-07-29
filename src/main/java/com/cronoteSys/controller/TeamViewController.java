@@ -57,7 +57,6 @@ public class TeamViewController implements Initializable {
 			String rgba = viewingTeam.getTeamColor() != null ? ScreenUtil.colorToRGBString(viewingTeam.getTeamColor())
 					: "1,1,1,1";
 			stkColor.setStyle(stkColor.getStyle().concat("-fx-background-color:rgba(" + rgba + ");"));
-			membersLst.setItems(FXCollections.observableList(viewingTeam.getMembersSimpleUser()));
 			btnEdit.setVisible(loggedUser.getIdUser() == viewingTeam.getOwner().getIdUser());
 			btnLeaveTeam.setVisible(true);
 		}

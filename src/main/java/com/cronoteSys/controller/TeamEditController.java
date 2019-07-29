@@ -83,13 +83,6 @@ public class TeamEditController implements Initializable {
 			txtName.setText(editingTeam.getName());
 			txtDesc.setText(editingTeam.getDesc());
 			cpTeamColor.setValue(ScreenUtil.stringToColor(editingTeam.getTeamColor()));
-			editingTeam.getMembersSimpleUser().removeIf(new Predicate<SimpleUser>() {
-				@Override
-				public boolean test(SimpleUser t) {
-					return t.getIdUser().equals(editingTeam.getOwner().getIdUser());
-				}
-			});
-			lstMembers.setItems(FXCollections.observableArrayList(editingTeam.getMembersSimpleUser()));
 		}
 	}
 
