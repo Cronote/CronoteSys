@@ -2,11 +2,11 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXColorPicker?>
-<?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -43,7 +43,7 @@
 					</children>
 				</HBox>
 				<Label text="USUÁRIOS ENCONTRADOS" textFill="WHITE" />
-				<JFXListView fx:id="lstUsers"
+				<ListView fx:id="lstUsers"
 					style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
 			</children>
 		</VBox>
@@ -66,7 +66,7 @@
 					</children>
 				</HBox>
 				<Label text="USUÁRIOS SELECIONADOS" textFill="WHITE" />
-				<JFXListView fx:id="lstMembers"
+				<ListView fx:id="lstMembers"
 					style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
 			</children>
 		</VBox>

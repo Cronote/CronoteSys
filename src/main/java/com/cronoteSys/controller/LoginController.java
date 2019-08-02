@@ -84,7 +84,7 @@ public class LoginController extends MasterController {
 		UserVO user = new LoginBO().login(login);
 		System.out.println(user);
 		if (user != null) {
-
+System.out.println("!=null");
 			if (chkRememberMe.isSelected()) {
 				try {
 					Properties prop = getProp();
@@ -135,7 +135,7 @@ public class LoginController extends MasterController {
 	private void btnLoginClicked(ActionEvent event) {
 		if (txtEmail.validate() && txtPassword.validate()) {
 			String sUsername = txtEmail.getText().trim(), sPasswd = txtPassword.getText().trim();
-			login(new LoginVO(null, sUsername, new GenHash().hashIt(sPasswd)));
+			login(new LoginVO( sUsername, new GenHash().hashIt(sPasswd)));
 		}
 
 	}

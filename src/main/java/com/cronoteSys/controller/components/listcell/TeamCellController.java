@@ -3,6 +3,7 @@ package com.cronoteSys.controller.components.listcell;
 import java.io.File;
 import java.io.IOException;
 
+import com.cronoteSys.model.bo.TeamBO;
 import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.model.vo.TeamVO;
 import com.cronoteSys.util.ScreenUtil;
@@ -56,10 +57,10 @@ public class TeamCellController extends ListCell<TeamVO> {
 				e.printStackTrace();
 			}
 			lblTeamName.setText(item.getName());
-			lblProjectsCount.setText("0");
-//			lblMembersCount.setText(String.valueOf(item.getMembers().size()+1));
+			lblProjectsCount.setText(String.valueOf(new TeamBO().countProjects(item)));
 			String rgba = item.getTeamColor() != null ? ScreenUtil.colorToRGBString(item.getTeamColor()) : "1,1,1,1";
 			stkTeamColor.setStyle(stkTeamColor.getStyle().concat("-fx-background-color:rgba(" + rgba + ");"));
+			lblMembersCount.setText(String.valueOf(item.getMembers().size() + 1));
 			setGraphic(teamCardRoot);
 		} else {
 			setText(null);

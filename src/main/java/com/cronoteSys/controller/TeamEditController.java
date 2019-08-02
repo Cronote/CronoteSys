@@ -7,10 +7,13 @@ import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
 import com.cronoteSys.controller.components.cellfactory.SimplifiedAccountCellFactory;
+import com.cronoteSys.controller.components.cellfactory.TeamMemberCellFactory;
 import com.cronoteSys.model.bo.TeamBO;
 import com.cronoteSys.model.bo.UserBO;
+import com.cronoteSys.model.interfaces.ThreatingUser;
 import com.cronoteSys.model.vo.TeamVO;
 import com.cronoteSys.model.vo.UserVO;
+import com.cronoteSys.model.vo.relation.side.TeamMember;
 import com.cronoteSys.model.vo.view.SimpleUser;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
@@ -31,7 +34,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Skin;
 import javafx.scene.paint.Color;
+import javafx.util.Callback;
+import javafx.scene.layout.AnchorPane;
 
 public class TeamEditController implements Initializable {
 
@@ -45,7 +53,7 @@ public class TeamEditController implements Initializable {
 	@FXML
 	private JFXButton btnSearchUsers;
 	@FXML
-	private JFXListView<SimpleUser> lstUsers;
+	private ListView<ThreatingUser> lstUsers;
 
 	@FXML
 	private JFXButton btnUnselect;
@@ -57,7 +65,7 @@ public class TeamEditController implements Initializable {
 	@FXML
 	private JFXButton btnSearchMembers;
 	@FXML
-	private JFXListView<SimpleUser> lstMembers;
+	private ListView<ThreatingUser> lstMembers;
 	@FXML
 	private JFXColorPicker cpTeamColor;
 	@FXML
@@ -65,16 +73,23 @@ public class TeamEditController implements Initializable {
 	@Inject
 	private UserBO userBO;
 
+	private ListProperty<ThreatingUser> lstMProperty = new SimpleListProperty<ThreatingUser>();
+	private ListProperty<ThreatingUser> lstUProperty = new SimpleListProperty<ThreatingUser>();
 	private UserVO loggedUser;
 	private TeamVO editingTeam;
+	@FXML
+	private AnchorPane rootPaneEditTeam;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loggedUser = (UserVO) SessionUtil.getSession().get("loggedUser");
 		txtName.getValidators().add(new RequiredFieldValidator("Campo obrigatório!"));
-		lstMembers.setCellFactory(new SimplifiedAccountCellFactory());
-		lstUsers.setCellFactory(new SimplifiedAccountCellFactory());
+		lstUsers.setCellFactory(new TeamMemberCellFactory());
+		lstMembers.setCellFactory(new TeamMemberCellFactory());
 		initEvents();
+
+		lstUsers.itemsProperty().bind(lstUProperty);
+		lstMembers.itemsProperty().bind(lstMProperty);
 	}
 
 	public void setEditingTeam(TeamVO editingTeam) {
@@ -83,7 +98,10 @@ public class TeamEditController implements Initializable {
 			txtName.setText(editingTeam.getName());
 			txtDesc.setText(editingTeam.getDesc());
 			cpTeamColor.setValue(ScreenUtil.stringToColor(editingTeam.getTeamColor()));
+			lstMProperty.set(FXCollections.observableArrayList(editingTeam.getMembers()));
+			refreshLists();
 		}
+
 	}
 
 	private void initEvents() {
@@ -116,12 +134,23 @@ public class TeamEditController implements Initializable {
 	}
 
 	private void usersFill(String search) {
-		String members = loggedUser.getIdUser().toString();
-		for (SimpleUser su : lstMembers.getItems()) {
-			members += ("," + su.getIdUser().toString());
+		if (editingTeam == null)
+			editingTeam = new TeamVO();
+		String membersString = loggedUser.getIdUser().toString();
+		if (lstMembers.getItems() != null) {
+			for (int i = 0; i < lstMembers.getItems().size(); i++) {
+				TeamMember tm = (TeamMember) lstMembers.getItems().get(i);
+				membersString += "," + tm.getUser().getIdUser();
+			}
 		}
-		List<SimpleUser> users = userBO.findByNameOrEmail(search, members);
-		lstUsers.setItems(FXCollections.observableList(users));
+		List<UserVO> users = userBO.findByNameOrEmail(search, membersString);
+		lstUProperty.set(FXCollections.observableArrayList(users));
+		refreshLists();
+	}
+
+	private void refreshLists() {
+		lstUsers.refresh();
+		lstMembers.refresh();
 	}
 
 	private void btnSearchUsersClicked(ActionEvent e) {
@@ -131,53 +160,56 @@ public class TeamEditController implements Initializable {
 	}
 
 	private void btnSaveClicked(ActionEvent e) {
-		if (editingTeam == null) {
+		if (editingTeam == null)
 			editingTeam = new TeamVO();
-			editingTeam.setOwner(loggedUser);
-		}
 		if (!txtName.validate())
 			return;
 		editingTeam.setName(txtName.getText());
 		editingTeam.setName(txtName.getText());
 		editingTeam.setDesc(txtDesc.getText());
 		editingTeam.setTeamColor(cpTeamColor.getValue().toString());
-		lstMembers.getItems().removeIf(new Predicate<SimpleUser>() {
-
-			@Override
-			public boolean test(SimpleUser t) {
-				boolean b = t.getIdUser().longValue() == editingTeam.getOwner().getIdUser().longValue();
-				return b;
-			}
-		});
-		List<UserVO> members = new ArrayList<UserVO>();
-		if (lstMembers.getItems().size() > 0) {
-			for (SimpleUser su : lstMembers.getItems()) {
-				UserVO u = new UserVO(su);
-				u.setStats(Byte.valueOf("1"));
-				members.add(u);
+		List<TeamMember> members = new ArrayList<TeamMember>();
+		if (lstMembers.getItems() != null) {
+			for (ThreatingUser tu : lstMembers.getItems()) {
+				members.add((TeamMember) tu);
 			}
 		}
-//		editingTeam.setMembers(members);
+		editingTeam.setMembers(members);
+
 		TeamBO teambo = new TeamBO();
-		if (editingTeam.getId() == null)
+		if (editingTeam.getId() == null) {
+			editingTeam.setOwner(loggedUser);
 			teambo.save(editingTeam);
-		else
+		} else
 			teambo.update(editingTeam);
 	}
 
 	private void btnSelectClicked(ActionEvent e) {
-		SimpleUser selected = lstUsers.getSelectionModel().getSelectedItem();
+		UserVO selected = (UserVO) lstUsers.getSelectionModel().getSelectedItem();
+		List<TeamMember> lstTmp = new ArrayList<TeamMember>();
+		for (ThreatingUser aux : lstMProperty) {
+			lstTmp.add((TeamMember) aux);
+		}
 		if (selected != null) {
-			lstUsers.getItems().remove(selected);
-			lstMembers.getItems().add(selected);
+			lstUProperty.remove(selected);
+			lstTmp.add(new TeamMember(selected, false));
+			lstMProperty.set(FXCollections.observableArrayList(lstTmp));
+			refreshLists();
 		}
 	}
 
 	private void btnUnselectClicked(ActionEvent e) {
-		SimpleUser selected = lstMembers.getSelectionModel().getSelectedItem();
+		TeamMember selected = (TeamMember) lstMembers.getSelectionModel().getSelectedItem();
+		List<UserVO> lstTmp = new ArrayList<UserVO>();
+		for (ThreatingUser aux : lstUProperty) {
+			lstTmp.add((UserVO) aux);
+		}
 		if (selected != null) {
-			lstMembers.getItems().remove(selected);
-			lstUsers.getItems().add(selected);
+			lstMProperty.remove(selected);
+			lstTmp.add(selected.getUser());
+			lstUProperty.set(FXCollections.observableArrayList(lstTmp));
+			refreshLists();
+
 		}
 	}
 }

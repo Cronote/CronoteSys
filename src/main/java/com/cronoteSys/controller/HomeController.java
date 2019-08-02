@@ -411,7 +411,7 @@ class MenuController implements Initializable {
 		String[] userNames = loggedUser.getCompleteName().split(" ");
 		String name = userNames.length > 1 ? userNames[0] + " " + userNames[(userNames.length - 1)] : userNames[0];
 		lblUsername.setText(name);
-		LoginVO login = new LoginBO().getLogin(loggedUser);
+		LoginVO login = loggedUser.getLogin();
 		lblUserEmail.setText(login.getEmail());
 
 	}
