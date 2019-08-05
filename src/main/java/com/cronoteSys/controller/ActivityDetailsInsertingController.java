@@ -156,7 +156,7 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 	private void defaultData() {
 
 		btnDependencies.setVisible(false);
-		obsLstCategory = FXCollections.observableList(new CategoryBO().listByUser(loggedUser));
+		obsLstCategory = FXCollections.observableArrayList(new CategoryBO().listByUser(loggedUser));
 		cboCategory.setConverter(new CategoryConverter(loggedUser));
 		cboCategory.setItems(obsLstCategory);
 		spnEstimatedTimeHour.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99999, 0, 1));

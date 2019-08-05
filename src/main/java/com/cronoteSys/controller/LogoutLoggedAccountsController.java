@@ -11,8 +11,11 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 import com.cronoteSys.controller.components.cellfactory.SavedAccountCellFactory;
+import com.cronoteSys.controller.components.cellfactory.TeamMemberCellFactory;
 import com.cronoteSys.model.bo.LoginBO;
+import com.cronoteSys.model.bo.UserBO;
 import com.cronoteSys.model.dao.UserDAO;
+import com.cronoteSys.model.interfaces.ThreatingUser;
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.model.vo.view.SimpleUser;
@@ -33,43 +36,34 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.StackPane;
 
 public class LogoutLoggedAccountsController implements Initializable {
 
-	@FXML
-	VBox logoutLoggedRoot;
-	@FXML
-	JFXListView<SimpleUser> loggedAccounts;
-	@FXML
-	AnchorPane pnlControls;
-	@FXML
-	JFXButton btnAddAccount;
-	@FXML
-	JFXButton btnLogout;
-	Properties props = new Properties();
-	String ids;
-	@FXML
-	Label lblUserEmail;
-	@FXML
-	Label lblUsername;
-	@FXML
-	Tooltip ttpUserEmail;
-	@FXML
-	StackPane initialPnl;
-	@FXML
-	Label lblUserInitial;
-	UserVO loggedUser = (UserVO) SessionUtil.getSession().get("loggedUser");
+	@FXML private VBox logoutLoggedRoot;
+	@FXML private ListView<ThreatingUser> loggedAccounts;
+	@FXML private AnchorPane pnlControls;
+	@FXML private JFXButton btnAddAccount;
+	@FXML private JFXButton btnLogout;
+	@FXML private Label lblUserEmail;
+	@FXML private Label lblUsername;
+	@FXML private Tooltip ttpUserEmail;
+	@FXML private StackPane initialPnl;
+	@FXML private Label lblUserInitial;
+	private Properties props = new Properties();
+	private String ids;
+	private UserVO loggedUser = (UserVO) SessionUtil.getSession().get("loggedUser");
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		UserDAO uDAO = new UserDAO();
+		UserBO uDAO = new UserBO();
 		initEvents();
 		loadProperties();
-		List<SimpleUser> lst = uDAO.listLoggedUsers(ids, loggedUser.getIdUser().toString());
-		loggedAccounts.setCellFactory(new SavedAccountCellFactory());
+		List<UserVO> lst =  uDAO.listLoggedUsers(ids, loggedUser.getIdUser().toString()); ;
+		loggedAccounts.setCellFactory(new TeamMemberCellFactory(true));
 		loggedAccounts.setItems(FXCollections.observableArrayList(lst));
 	}
 
@@ -83,13 +77,17 @@ public class LogoutLoggedAccountsController implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		ids = props.getProperty("savedAccounts","0");
-
-		lblUserInitial.setText(loggedUser.getCompleteName().substring(0, 1).toUpperCase());
+		ids = props.getProperty("savedAccounts", "0");
+		
 		String[] userNames = loggedUser.getCompleteName().split(" ");
 		String name = userNames.length > 1 ? userNames[0] + " " + userNames[(userNames.length - 1)] : userNames[0];
+		String initials = "";
+		for (String string : userNames) {
+			initials += string.substring(0, 1).toUpperCase();
+		}
+		lblUserInitial.setText(initials);
 		lblUsername.setText(name);
-		LoginVO login = new LoginBO().getLogin(loggedUser);
+		LoginVO login = loggedUser.getLogin();
 		lblUserEmail.setText(login.getEmail());
 		ttpUserEmail.setText(login.getEmail());
 	}
@@ -108,10 +106,10 @@ public class LogoutLoggedAccountsController implements Initializable {
 		});
 
 		loggedAccounts.getSelectionModel().selectedItemProperty()
-				.addListener((ChangeListener<SimpleUser>) (observable, oldValue, newValue) -> {
+				.addListener((ChangeListener<ThreatingUser>) (observable, oldValue, newValue) -> {
 					SessionUtil.clearSession();
 					JFXPopup popup = (JFXPopup) btnLogout.getScene().getWindow();
-					SessionUtil.getSession().put("loggedUser", new UserDAO().find(newValue.getIdUser()));
+					SessionUtil.getSession().put("loggedUser", (UserVO) newValue);
 					ScreenUtil.openNewWindow((Stage) popup.getOwnerWindow(), "Home", false);
 					popup.hide();
 				});
@@ -119,24 +117,24 @@ public class LogoutLoggedAccountsController implements Initializable {
 			@Override
 			public void handle(Event event) {
 				btnAddAccount.setStyle("-fx-background-color:#7C4DB8;");
-				
+
 			}
 		});
 		btnAddAccount.setOnMouseExited(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
 				btnAddAccount.setStyle("-fx-background-color:transparent;");
-				
+
 			}
 		});
-		
+
 		btnAddAccount.setOnAction(event -> {
 			SessionUtil.clearSession();
 			JFXPopup popup = (JFXPopup) btnLogout.getScene().getWindow();
 			popup.hide();
 			SessionUtil.getSession().put("addingAccount", true);
 			ScreenUtil.openNewWindow((Stage) popup.getOwnerWindow(), "Slogin", false);
-			
+
 		});
 	}
 

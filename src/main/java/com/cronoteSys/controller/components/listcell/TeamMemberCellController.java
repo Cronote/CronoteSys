@@ -8,6 +8,7 @@ import com.sun.javafx.scene.control.skin.LabelSkin;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.OverrunStyle;
@@ -75,9 +76,14 @@ public class TeamMemberCellController extends ListCell<ThreatingUser> {
 		});
 	}
 
-	public TeamMemberCellController(Double listViewWidth) {
+	public TeamMemberCellController(Double listViewWidth, boolean fill) {
 		this();
-		rootPane.setPrefWidth(listViewWidth * 0.8);
+		if (fill) {
+			rootPane.setPrefWidth(listViewWidth * 0.99);
+			Double moveLeft = (rootPane.getPrefWidth() * 0.025) * -1;
+			rootPane.setTranslateX(moveLeft);
+		} else
+			rootPane.setPrefWidth(listViewWidth * 0.8);
 	}
 
 	@Override
@@ -86,15 +92,8 @@ public class TeamMemberCellController extends ListCell<ThreatingUser> {
 		if (item != null || !empty) {
 			this.item = item;
 			loadInfos(item);
+			setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 			setGraphic(rootPane);
-
-//			Double necessaryWidth = lblUserInitial.getText().length() * ;
-//			System.out.println(necessaryWidth);
-//			if (initialPnl.getWidth() < necessaryWidth)
-//				initialPnl.setMinWidth(necessaryWidth);
-//			else {
-//				initialPnl.setMinWidth(USE_COMPUTED_SIZE);
-//			}
 
 		} else {
 			setText(null);
@@ -122,9 +121,7 @@ public class TeamMemberCellController extends ListCell<ThreatingUser> {
 		}
 		lblUserInitial.setText(initials.replaceAll(" ", ""));
 		double textSize = initials.length();
-		double containerSize = initialPnl.getMinWidth();
-		textSize = (1-(textSize*10/100.0)) * 25.0;
-		System.out.println(textSize);
+		textSize = (1 - (textSize * 10 / 100.0)) * 25.0;
 		lblUserInitial.setFont(new Font(textSize));
 		lblUsername.setText(name);
 	}
