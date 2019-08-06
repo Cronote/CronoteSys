@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import com.cronoteSys.model.vo.ProjectVO;
+import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
 
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 
 public class ProjectCellController extends ListCell<ProjectVO> {
 	@FXML
@@ -22,6 +24,8 @@ public class ProjectCellController extends ListCell<ProjectVO> {
 	private ProgressBar pgbProgress;
 	@FXML
 	private AnchorPane projectCardRoot;
+	@FXML
+	private StackPane stkColorTag;
 
 	@Override
 	public void updateSelected(boolean selected) {
@@ -47,6 +51,8 @@ public class ProjectCellController extends ListCell<ProjectVO> {
 				e.printStackTrace();
 			}
 			lblTitle.setText(item.getTitle());
+			String color = item.getTeam() != null ? ScreenUtil.colorToRGBString(item.getTeam().getTeamColor()) : "1,1,1,1";
+			stkColorTag.setStyle("-fx-background-radius: 0 0 20 20;" +  "-fx-background-color:" + color + ";");
 			setGraphic(projectCardRoot);
 		} else {
 			setText(null);
