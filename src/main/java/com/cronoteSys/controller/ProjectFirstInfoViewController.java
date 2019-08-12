@@ -17,6 +17,7 @@ import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.model.vo.StatusEnum;
 import com.cronoteSys.model.vo.UserVO;
+import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
@@ -35,6 +36,8 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.control.Label;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXCheckBox;
@@ -43,58 +46,67 @@ public class ProjectFirstInfoViewController implements Initializable {
 	@FXML
 	private AnchorPane firstInfoRoot;
 
-	ProjectManagerController projectManagerController;
+	private ProjectManagerController projectManagerController;
 
 	@FXML
-	Label lblTitle;
+	private Label lblTitle;
 
 	@FXML
-	Label lblDescription;
+	private Label lblDescription;
 
 	@FXML
-	Label lblStartDate;
+	private Label lblStartDate;
 
 	@FXML
-	Label lblEndDate;
+	private Label lblEndDate;
 
 	@FXML
-	Label lblTotalTime;
+	private Label lblTotalTime;
 
 	@FXML
-	Label lblPassedTime;
+	private Label lblPassedTime;
 
 	@FXML
-	Label lblRealDoneTodo;
+	private Label lblRealDoneTodo;
 
 	@FXML
-	JFXProgressBar pgbRealProgress;
+	private JFXProgressBar pgbRealProgress;
 
 	@FXML
-	Label lblReaProgress;
+	private Label lblReaProgress;
 
 	@FXML
-	Label lblEstimatedDoneTodo;
+	private Label lblEstimatedDoneTodo;
 
 	@FXML
-	JFXProgressBar pgbEstimatedProgress;
+	private JFXProgressBar pgbEstimatedProgress;
 
 	@FXML
-	Label lblEstimatedProgress;
+	private Label lblEstimatedProgress;
+	
+	@FXML
+	private HBox pnlInfoTeam;
 
 	@FXML
-	JFXCheckBox chxHoliday;
+	private Label lblTeamName;
+	
+	@FXML
+	private StackPane stkTeamColor;
+	
+	@FXML
+	private JFXCheckBox chxHoliday;
 
 	@FXML
-	JFXCheckBox chxSaturday;
+	private JFXCheckBox chxSaturday;
 
 	@FXML
-	JFXCheckBox chxSunday;
+	private JFXCheckBox chxSunday;
 
 	@FXML
-	JFXButton btnDelete;
+	private JFXButton btnDelete;
 
 	@FXML
-	JFXButton btnEdit;
+	private JFXButton btnEdit;
 
 	private ProjectVO viewingProject;
 
@@ -200,6 +212,19 @@ public class ProjectFirstInfoViewController implements Initializable {
 
 			lblTotalTime.setText(String.format("%d Ano(s), %d mes(es) e %d dia(s)", years, months, days));
 
+			if(project.getTeam()!=null) {
+				pnlInfoTeam.setVisible(true);
+				lblTeamName.setText(project.getTeam().getName());
+				String color = project.getTeam() != null ? ScreenUtil.colorToRGBString(project.getTeam().getTeamColor()) : "1,1,1,1";
+				stkTeamColor.setStyle("-fx-background-color:rgba(" + color + ");");
+				
+			}
+			else {
+				pnlInfoTeam.setVisible(false);
+				
+			}
+		}else {
+			pnlInfoTeam.setVisible(false);
 		}
 	}
 }
