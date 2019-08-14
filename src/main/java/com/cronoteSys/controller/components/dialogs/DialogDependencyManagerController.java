@@ -4,9 +4,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 import com.cronoteSys.controller.components.cellfactory.SimpleActivityCellFactory;
 import com.cronoteSys.filter.ActivityFilter;
+import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.dao.ActivityDAO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.SimpleActivity;
@@ -53,9 +55,11 @@ public class DialogDependencyManagerController implements Initializable {
 	public void setSelectedActivity(ActivityVO selectedActivity) {
 		this.selectedActivity = selectedActivity;
 		filter.setProject(selectedActivity.getProjectVO().getId());
-		activityLst.setItems(FXCollections.observableArrayList(actDAO.getSimpleActivitiesView(filter)));
+		filter.setActivity(selectedActivity.getId());
+		activityLst.setItems(FXCollections.observableArrayList(SimpleActivity.fromList(new ActivityBO().listAllToBeDependency(filter))));
 		activityLst.getItems().remove(SimpleActivity.fromActivity(selectedActivity));
 		activityLst.getItems().removeAll(SimpleActivity.fromList(selectedActivity.getDependencies()));
+		
 		selectedActivitiesLst.setItems(
 				FXCollections.observableArrayList(SimpleActivity.fromList(selectedActivity.getDependencies())));
 		lblActivityTitle.setText(selectedActivity.getTitle());
