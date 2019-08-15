@@ -10,17 +10,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-import com.cronoteSys.model.bo.LoginBO;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.base.IFXValidatableControl;
-import com.jfoenix.skins.JFXDatePickerSkin;
-import com.jfoenix.utils.JFXNodeUtils;
-import com.jfoenix.utils.JFXUtilities;
 import com.jfoenix.validation.RegexValidator;
 import com.jfoenix.validation.RequiredFieldValidator;
 
@@ -45,7 +38,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import sun.font.CStrike;
 
 /**
  * Class that cares about all Screen functions

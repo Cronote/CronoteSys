@@ -23,6 +23,9 @@ import com.cronoteSys.observer.ShowEditViewActivityObservableI;
 import com.cronoteSys.observer.ShowEditViewActivityObserverI;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXTabPane;
 
@@ -57,11 +60,13 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class HomeController implements Initializable {
 
 	@FXML
 	protected HBox root;
+	@FXML protected StackPane stackPaneOne;
 	private MenuController menuControl;
 
 	private void loadProjectManager(ProjectVO project, String mode) {
@@ -75,6 +80,30 @@ public class HomeController implements Initializable {
 		projectManager.setMaxWidth(Double.POSITIVE_INFINITY);
 		HBox.setHgrow(projectManager, Priority.ALWAYS);
 		addNode(projectManager);
+	}
+	
+
+	public void dialogTest() {
+		JFXDialogLayout content = new JFXDialogLayout();
+		content.getStyleClass().addAll("tone1-background");
+		Text texto = new Text("Information");
+		texto.getStyleClass().add("letters_box_icons");
+	    content.setHeading(texto);
+	    texto.setText("We are going to open your default browser window to let \n" +
+	            "you choose the gmail account , allow the specified permissions\n" +
+	            "and then close the window.");
+	    content.setBody(texto);
+	    JFXDialog dialog = new JFXDialog(stackPaneOne, content, JFXDialog.DialogTransition.CENTER);
+	    JFXButton button = new JFXButton("Okay");
+	    button.getStyleClass().addAll("letters_box_icons","btn");
+	    button.setOnAction(new EventHandler<ActionEvent>() {
+	        @Override
+	        public void handle(ActionEvent event) {
+	            dialog.close();
+	        }
+	    });
+	    content.setActions(button);
+	    dialog.show();
 	}
 
 	@Override
@@ -255,6 +284,7 @@ class MenuController implements Initializable {
 	}
 
 	public void btnActivityClicked(ActionEvent e) throws IOException {
+		homeControl.dialogTest();
 		homeControl.clearRoot(false, (Node) e.getSource());
 		ActivityBO.removeOnActivityDeletedListener(homeControl.listenerActivityDelete);
 		if (btnActivity.isSelected()) {
