@@ -82,30 +82,6 @@ public class HomeController implements Initializable {
 		addNode(projectManager);
 	}
 	
-
-	public void dialogTest() {
-		JFXDialogLayout content = new JFXDialogLayout();
-		content.getStyleClass().addAll("tone1-background");
-		Text texto = new Text("Information");
-		texto.getStyleClass().add("letters_box_icons");
-	    content.setHeading(texto);
-	    texto.setText("We are going to open your default browser window to let \n" +
-	            "you choose the gmail account , allow the specified permissions\n" +
-	            "and then close the window.");
-	    content.setBody(texto);
-	    JFXDialog dialog = new JFXDialog(stackPaneOne, content, JFXDialog.DialogTransition.CENTER);
-	    JFXButton button = new JFXButton("Okay");
-	    button.getStyleClass().addAll("letters_box_icons","btn");
-	    button.setOnAction(new EventHandler<ActionEvent>() {
-	        @Override
-	        public void handle(ActionEvent event) {
-	            dialog.close();
-	        }
-	    });
-	    content.setActions(button);
-	    dialog.show();
-	}
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loadMenu();
@@ -284,7 +260,7 @@ class MenuController implements Initializable {
 	}
 
 	public void btnActivityClicked(ActionEvent e) throws IOException {
-		homeControl.dialogTest();
+		ScreenUtil.jfxDialogOpener(homeControl.stackPaneOne);
 		homeControl.clearRoot(false, (Node) e.getSource());
 		ActivityBO.removeOnActivityDeletedListener(homeControl.listenerActivityDelete);
 		if (btnActivity.isSelected()) {

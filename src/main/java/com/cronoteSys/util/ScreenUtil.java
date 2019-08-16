@@ -11,6 +11,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.base.IFXValidatableControl;
@@ -22,6 +25,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -35,7 +39,9 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -395,6 +401,29 @@ public class ScreenUtil {
 			return Color.DEEPPINK;
 		}
 
+	}
+	
+	public static void jfxDialogOpener(StackPane stackpane) {
+		JFXDialogLayout content = new JFXDialogLayout();
+		content.getStyleClass().addAll("tone1-background");
+		Text texto = new Text("Information");
+		texto.getStyleClass().add("letters_box_icons");
+	    content.setHeading(texto);
+	    texto.setText("We are going to open your default browser window to let \n" +
+	            "you choose the gmail account , allow the specified permissions\n" +
+	            "and then close the window.");
+	    content.setBody(texto);
+	    JFXDialog dialog = new JFXDialog(stackpane, content, JFXDialog.DialogTransition.NONE);
+	    JFXButton button = new JFXButton("Okay");
+	    button.getStyleClass().addAll("letters_box_icons","btn");
+	    button.setOnAction(new EventHandler<ActionEvent>() {
+	        @Override
+	        public void handle(ActionEvent event) {
+	            dialog.close();
+	        }
+	    });
+	    content.setActions(button);
+	    dialog.show();
 	}
 
 	private static ArrayList<OnChangeScreen> listeners = new ArrayList<OnChangeScreen>();
