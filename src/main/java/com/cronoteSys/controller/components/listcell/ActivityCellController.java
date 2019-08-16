@@ -2,6 +2,7 @@ package com.cronoteSys.controller.components.listcell;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.ExecutionTimeBO;
@@ -144,7 +145,7 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 				((Label) n).setFont(infoFont);
 				if (n.equals(lblIndex))
 					((Label) n).getStyleClass().add("hide");
-			
+
 			}
 			if (n instanceof Button) {
 				((Button) n).getStyleClass().addAll("btnTransparent", "hide");
@@ -349,11 +350,24 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 		setOnMouseEntered(new EventHandler<Event>() {
 			@Override
 			public void handle(Event event) {
-
-				if (activity.getStats().equals(StatusEnum.NOT_STARTED)) {
+				boolean itsDependency = false;
+				List<ActivityVO> lst = new ArrayList<ActivityVO>();
+				lst.addAll(getListView().getItems());
+				System.out.println(lst.size());
+				for (ActivityVO a : lst) {
+					if (a.getId() == activity.getId())
+						continue;
+					if (a.getDependencies().contains(activity)) {
+						itsDependency = true;
+						break;
+					}
+				}
+				
+				
+				if (activity.getStats().equals(StatusEnum.NOT_STARTED) && !itsDependency) {
 					btnDelete.getStyleClass().add("show");
 				}
-
+				activity.setItsDependency(itsDependency);
 			}
 		});
 		setOnMouseExited(new EventHandler<Event>() {
