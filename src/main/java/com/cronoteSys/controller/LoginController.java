@@ -82,9 +82,7 @@ public class LoginController extends MasterController {
 
 	public void login(LoginVO login) {
 		UserVO user = new LoginBO().login(login);
-		System.out.println(user);
 		if (user != null) {
-System.out.println("!=null");
 			if (chkRememberMe.isSelected()) {
 				try {
 					Properties prop = getProp();
