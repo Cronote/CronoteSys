@@ -403,16 +403,17 @@ public class ScreenUtil {
 
 	}
 	
-	public static void jfxDialogOpener(StackPane stackpane) {
+	public static void jfxDialogOpener(String title, String message) {
+		StackPane stackpane =(StackPane) SessionUtil.getSession().get("stackPane");
 		JFXDialogLayout content = new JFXDialogLayout();
 		content.getStyleClass().addAll("tone1-background");
-		Text texto = new Text("Information");
-		texto.getStyleClass().add("letters_box_icons");
-	    content.setHeading(texto);
-	    texto.setText("We are going to open your default browser window to let \n" +
-	            "you choose the gmail account , allow the specified permissions\n" +
-	            "and then close the window.");
-	    content.setBody(texto);
+		
+		Text titleText = new Text(title);
+		titleText.getStyleClass().add("letters_box_icons");
+	    content.setHeading(titleText);
+	    Text messageText = new Text(message);
+	    messageText.getStyleClass().add("letters_box_icons");
+	    content.setBody(messageText);
 	    JFXDialog dialog = new JFXDialog(stackpane, content, JFXDialog.DialogTransition.NONE);
 	    JFXButton button = new JFXButton("Okay");
 	    button.getStyleClass().addAll("letters_box_icons","btn");

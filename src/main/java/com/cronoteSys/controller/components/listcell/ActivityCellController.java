@@ -12,6 +12,8 @@ import com.cronoteSys.observer.ShowEditViewActivityObservableI;
 import com.cronoteSys.observer.ShowEditViewActivityObserverI;
 import com.cronoteSys.util.ActivityMonitor;
 import com.cronoteSys.util.ActivityMonitor.OnMonitorTick;
+import com.cronoteSys.util.ScreenUtil;
+import com.cronoteSys.util.SessionUtil;
 import com.jfoenix.controls.JFXProgressBar;
 
 import de.jensd.fx.glyphs.GlyphIcon;
@@ -321,6 +323,10 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 							btnDelete.getStyleClass().remove("show");
 						}
 						ActivityMonitor.addActivity(activity);
+					}else {
+						
+						ScreenUtil.jfxDialogOpener("Aviso!", "Um usuário só pode executar uma atividade por vez!\n"
+								+ "Pause ou complete a atividade para começar outra.");
 					}
 				} else {
 					if (execBo.finishExecution(activity) != null) {

@@ -63,7 +63,7 @@
 
             <Pane fx:id="pnlVerification" layoutX="73.0" layoutY="197.0" prefHeight="264.0" prefWidth="566.0" stylesheets="@../styles/Styles.css">
                <children>
-                  <Label contentDisplay="RIGHT" layoutX="393.0" layoutY="56.0" styleClass="letters_box_icons" text="Erros de confirmação" textFill="#333333">
+                  <Label contentDisplay="RIGHT" layoutX="393.0" layoutY="56.0" styleClass="letters_box_icons" text="Erros de confirmação" textFill="#333333" visible="false">
                      <font>
                         <Font size="14.0" />
                      </font>

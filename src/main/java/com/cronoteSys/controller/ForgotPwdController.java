@@ -107,13 +107,11 @@ public class ForgotPwdController extends MasterController {
 			boolean bEmailSent = false;
 			sVerificationCode = new GenCode().genCode();
 			String[] emails = {email};
-			System.out.println(emails.length);
 			EmailVO emailVO = new EmailVO();
 			emailVO.setReceiver(emails);
 			emailVO.setMessage("Olá,\n Aqui está seu código de confirmação:"+ sVerificationCode + "\nUse-o no sistema para trocar sua senha.");
 			emailVO.setSubject("Alteração de senha");
 			bEmailSent = new EmailBO().genericEmail(emailVO);
-			System.out.println(bEmailSent+" KAWABANGA");
 			if (bEmailSent) {
 				pnlVerification.getStyleClass().removeAll("hide");
 				pnlVerification.getStyleClass().add("show");
@@ -127,6 +125,7 @@ public class ForgotPwdController extends MasterController {
 		if (txtCode.validate() && txtPwd.validate() && txtConfirmPwd.validate()) {
 
 			if (!sVerificationCode.equalsIgnoreCase(txtCode.getText().trim())) {
+				lblErrorsIndex.getParent().setVisible(true);
 				int iAttempt = Integer.parseInt(lblErrorsIndex.getText());
 				iAttempt++;
 				lblErrorsIndex.setText(String.valueOf(iAttempt));
@@ -143,6 +142,7 @@ public class ForgotPwdController extends MasterController {
 							}), Duration.INDEFINITE, null));
 					return;
 				}
+				return;
 			}
 			String sPassPureText = txtPwd.getText().trim();
 			if (new LoginBO().changePassword(txtEmail.getText(), sPassPureText)) {
@@ -221,5 +221,6 @@ public class ForgotPwdController extends MasterController {
 		txtEmail.setText("");
 		lblErrorsIndex.setText("0");
 		pnlVerification.setVisible(false);
+		lblErrorsIndex.getParent().setVisible(false);
 	}
 }

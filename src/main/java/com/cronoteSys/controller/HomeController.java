@@ -13,19 +13,13 @@ import com.cronoteSys.controller.TeamViewController.BtnNewTeamClickedI;
 import com.cronoteSys.interfaces.LoadActivityInterface;
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.ActivityBO.OnActivityDeletedI;
-import com.cronoteSys.model.bo.LoginBO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.model.vo.TeamVO;
 import com.cronoteSys.model.vo.UserVO;
-import com.cronoteSys.observer.ShowEditViewActivityObservableI;
-import com.cronoteSys.observer.ShowEditViewActivityObserverI;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXTabPane;
 
@@ -60,7 +54,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 public class HomeController implements Initializable {
 
@@ -117,6 +110,8 @@ public class HomeController implements Initializable {
 				ScreenUtil.paintScreen(root);
 			}
 		});
+		
+		SessionUtil.getSession().put("stackPane", stackPaneOne);
 	}
 
 	private void switchVBoxTeamContent(TeamVO team, String mode) {
@@ -260,7 +255,6 @@ class MenuController implements Initializable {
 	}
 
 	public void btnActivityClicked(ActionEvent e) throws IOException {
-		ScreenUtil.jfxDialogOpener(homeControl.stackPaneOne);
 		homeControl.clearRoot(false, (Node) e.getSource());
 		ActivityBO.removeOnActivityDeletedListener(homeControl.listenerActivityDelete);
 		if (btnActivity.isSelected()) {
