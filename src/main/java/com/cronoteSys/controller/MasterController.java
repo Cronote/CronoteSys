@@ -9,6 +9,9 @@ import com.cronoteSys.util.ScreenUtil;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -40,7 +43,7 @@ public class MasterController {
 
 	}
 
-	public static void saveProp(Properties prop)throws IOException {
+	public static void saveProp(Properties prop) throws IOException {
 		FileOutputStream file = new FileOutputStream("./application.properties");
 		prop.store(file, "");
 	}
@@ -50,5 +53,21 @@ public class MasterController {
 	 */
 	public void setsPreviewsScene(String sPreviewsScene) {
 		this.sPreviewsScene = sPreviewsScene;
+
+		btnBack.setMnemonicParsing(true);
+		String OS = System.getProperty("os.name").toLowerCase();
+		KeyCombination kcBack = null;
+		if (OS.indexOf("mac") >= 0) {
+			kcBack = new KeyCodeCombination(KeyCode.LEFT, KeyCombination.META_DOWN);
+		} else {
+			kcBack = new KeyCodeCombination(KeyCode.LEFT, KeyCombination.ALT_DOWN);
+
+		}
+
+		Runnable rn = () -> btnBackClicked();
+		if (btnBack != null) {
+			btnBack.getScene().getAccelerators().putIfAbsent(kcBack, rn);
+		}
 	}
+
 }
