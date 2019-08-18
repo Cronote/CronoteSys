@@ -9,11 +9,14 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.mail.EmailException;
 
+import com.cronoteSys.model.bo.EmailBO;
 import com.cronoteSys.model.bo.LoginBO;
+import com.cronoteSys.model.vo.EmailVO;
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.util.EmailUtil;
 import com.cronoteSys.util.GenCode;
 import com.cronoteSys.util.GenHash;
+import com.cronoteSys.util.RestUtil;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 import com.cronoteSys.util.validator.PasswordMatchValidator;
@@ -88,7 +91,7 @@ public class ForgotPwdController extends MasterController {
 	}
 
 	@FXML
-	public void btnSendClicked() {
+	public void btnSendClicked() throws EmailException {
 		if (txtEmail.validate()) {
 			String email = txtEmail.getText().trim();
 			if (new LoginBO().loginExists(email) == 0) {
@@ -103,12 +106,14 @@ public class ForgotPwdController extends MasterController {
 
 			boolean bEmailSent = false;
 			sVerificationCode = new GenCode().genCode();
-			try {
-				bEmailSent = new EmailUtil().sendEmail(email, "Olá,\n Aqui está seu código de confirmação:"
-						+ sVerificationCode + "\nUse-o no sistema para trocar sua senha.", "Alteração de senha");
-			} catch (EmailException e) {
-				e.printStackTrace();
-			}
+			String[] emails = {email};
+			System.out.println(emails.length);
+			EmailVO emailVO = new EmailVO();
+			emailVO.setReceiver(emails);
+			emailVO.setMessage("Olá,\n Aqui está seu código de confirmação:"+ sVerificationCode + "\nUse-o no sistema para trocar sua senha.");
+			emailVO.setSubject("Alteração de senha");
+			bEmailSent = new EmailBO().genericEmail(emailVO);
+			System.out.println(bEmailSent+" KAWABANGA");
 			if (bEmailSent) {
 				pnlVerification.getStyleClass().removeAll("hide");
 				pnlVerification.getStyleClass().add("show");

@@ -23,6 +23,9 @@ import com.cronoteSys.observer.ShowEditViewActivityObservableI;
 import com.cronoteSys.observer.ShowEditViewActivityObserverI;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXTabPane;
 
@@ -57,11 +60,13 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class HomeController implements Initializable {
 
 	@FXML
 	protected HBox root;
+	@FXML protected StackPane stackPaneOne;
 	private MenuController menuControl;
 
 	private void loadProjectManager(ProjectVO project, String mode) {
@@ -76,7 +81,7 @@ public class HomeController implements Initializable {
 		HBox.setHgrow(projectManager, Priority.ALWAYS);
 		addNode(projectManager);
 	}
-
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loadMenu();
@@ -255,6 +260,7 @@ class MenuController implements Initializable {
 	}
 
 	public void btnActivityClicked(ActionEvent e) throws IOException {
+		ScreenUtil.jfxDialogOpener(homeControl.stackPaneOne);
 		homeControl.clearRoot(false, (Node) e.getSource());
 		ActivityBO.removeOnActivityDeletedListener(homeControl.listenerActivityDelete);
 		if (btnActivity.isSelected()) {
