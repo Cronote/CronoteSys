@@ -1,11 +1,9 @@
 package com.cronoteSys.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Properties;
-import javafx.util.Duration;
+
 import com.cronoteSys.model.bo.LoginBO;
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.UserVO;
@@ -13,23 +11,19 @@ import com.cronoteSys.util.GenHash;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 import com.cronoteSys.util.SessionUtil;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXSnackbar;
-import com.jfoenix.controls.JFXSnackbar.SnackbarEvent;
-import com.jfoenix.controls.JFXSnackbarLayout;
 import com.jfoenix.controls.JFXTextField;
 
-import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 /**
  *
@@ -37,6 +31,8 @@ import javafx.scene.layout.Pane;
  */
 public class LoginController extends MasterController {
 
+	@FXML
+	private StackPane stackPane;
 	@FXML
 	private Button btnLogin;
 	@FXML
@@ -111,11 +107,7 @@ public class LoginController extends MasterController {
 
 		} else {
 			snackbar.getStyleClass().add("error-snackbar");
-			JFXSnackbarLayout layout = new JFXSnackbarLayout("Credenciais de login incorretas!", "Fechar",
-					action -> snackbar.close());
-			SnackbarEvent event = new SnackbarEvent(layout, Duration.INDEFINITE,
-					PseudoClass.getPseudoClass("error-snackbar"));
-			snackbar.fireEvent(event);
+			ScreenUtil.jfxDialogOpener(stackPane,"Aviso!", "Credenciais incorretas");
 		}
 	}
 

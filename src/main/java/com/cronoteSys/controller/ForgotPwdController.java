@@ -41,6 +41,8 @@ import javafx.util.Duration;
 public class ForgotPwdController extends MasterController {
 
 	@FXML
+	private StackPane stackPane;
+	@FXML
 	private JFXTextField txtEmail;
 	@FXML
 	private Button btnSend;
@@ -95,12 +97,7 @@ public class ForgotPwdController extends MasterController {
 		if (txtEmail.validate()) {
 			String email = txtEmail.getText().trim();
 			if (new LoginBO().loginExists(email) == 0) {
-				snackbar.getStyleClass().removeAll("success-snackbar");
-				snackbar.getStyleClass().add("error-snackbar");
-				snackbar.fireEvent(new SnackbarEvent(
-						new JFXSnackbarLayout("Não há uma conta com o email informado!", "Fechar", action -> {
-							snackbar.close();
-						}), Duration.INDEFINITE, null));
+				ScreenUtil.jfxDialogOpener(stackPane, "Aviso", "Não há uma conta com o email informado!");
 				return;
 			}
 
@@ -133,31 +130,17 @@ public class ForgotPwdController extends MasterController {
 				lblCode.getStyleClass().removeAll("hide");
 				lblCode.getStyleClass().add("show");
 				if (iAttempt > 2) {
-					snackbar.getStyleClass().removeAll("success-snackbar");
-					snackbar.getStyleClass().add("error-snackbar");
-					snackbar.fireEvent(new SnackbarEvent(new JFXSnackbarLayout(
-							"Mensagem de falha por estourar numero de tentativas", "Fechar", action -> {
-								snackbar.close();
-								resetScreen();
-							}), Duration.INDEFINITE, null));
+					ScreenUtil.jfxDialogOpener(stackPane, "Aviso!", "Estorou o numero de tentativas\nTerá que reenviar o email e colocar o novo código.");
 					return;
 				}
 				return;
 			}
 			String sPassPureText = txtPwd.getText().trim();
 			if (new LoginBO().changePassword(txtEmail.getText(), sPassPureText)) {
-
-				snackbar.getStyleClass().removeAll("error-snackbar");
-				snackbar.getStyleClass().add("success-snackbar");
-				snackbar.fireEvent(new SnackbarEvent(
-						new JFXSnackbarLayout("Senha alterada com sucesso!", "Fechar", action -> snackbar.close()),
-						Duration.INDEFINITE, null));
+				ScreenUtil.jfxDialogOpener(stackPane, "Confirmação!", "Senha alterada com sucesso!");
 				resetScreen();
 			} else {
-				snackbar.getStyleClass().removeAll("success-snackbar");
-				snackbar.getStyleClass().add("error-snackbar");
-				snackbar.fireEvent(new SnackbarEvent(new JFXSnackbarLayout("Houve algum problema ao alterar a senha!",
-						"Fechar", action -> snackbar.close()), Duration.INDEFINITE, null));
+				ScreenUtil.jfxDialogOpener(stackPane, "Erro", "Houve algum problema ao alterar a senha!");
 			}
 		}
 	}
