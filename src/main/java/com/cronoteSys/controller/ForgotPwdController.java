@@ -1,34 +1,26 @@
 package com.cronoteSys.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
-import javax.swing.JOptionPane;
 
 import org.apache.commons.mail.EmailException;
 
 import com.cronoteSys.model.bo.EmailBO;
 import com.cronoteSys.model.bo.LoginBO;
 import com.cronoteSys.model.vo.EmailVO;
-import com.cronoteSys.model.vo.LoginVO;
-import com.cronoteSys.util.EmailUtil;
 import com.cronoteSys.util.GenCode;
-import com.cronoteSys.util.GenHash;
-import com.cronoteSys.util.RestUtil;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 import com.cronoteSys.util.validator.PasswordMatchValidator;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXSnackbar;
-import com.jfoenix.controls.JFXSnackbarLayout;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXSnackbar.SnackbarEvent;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -36,7 +28,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.util.Duration;
 
 public class ForgotPwdController extends MasterController {
 
@@ -103,10 +94,11 @@ public class ForgotPwdController extends MasterController {
 
 			boolean bEmailSent = false;
 			sVerificationCode = new GenCode().genCode();
-			String[] emails = {email};
+			String[] emails = { email };
 			EmailVO emailVO = new EmailVO();
 			emailVO.setReceiver(emails);
-			emailVO.setMessage("Olá,\n Aqui está seu código de confirmação:"+ sVerificationCode + "\nUse-o no sistema para trocar sua senha.");
+			emailVO.setMessage("Olá,\n Aqui está seu código de confirmação:" + sVerificationCode
+					+ "\nUse-o no sistema para trocar sua senha.");
 			emailVO.setSubject("Alteração de senha");
 			bEmailSent = new EmailBO().genericEmail(emailVO);
 			if (bEmailSent) {
@@ -130,7 +122,14 @@ public class ForgotPwdController extends MasterController {
 				lblCode.getStyleClass().removeAll("hide");
 				lblCode.getStyleClass().add("show");
 				if (iAttempt > 2) {
-					ScreenUtil.jfxDialogOpener(stackPane, "Aviso!", "Estorou o numero de tentativas\nTerá que reenviar o email e colocar o novo código.");
+					ScreenUtil.jfxDialogOpener(stackPane, "Aviso!",
+							"Estorou o numero de tentativas\nTerá que reenviar o email e colocar o novo código.",
+							new EventHandler<ActionEvent>() {
+								@Override
+								public void handle(ActionEvent event) {
+									resetScreen();
+								}
+							});
 					return;
 				}
 				return;

@@ -421,11 +421,14 @@ public class ScreenUtil {
 	        @Override
 	        public void handle(ActionEvent event) {
 	            dialog.close();
+	            
 	        }
 	    });
 	    content.setActions(button);
 	    dialog.show();
 	}
+	
+	
 	
 	public static void jfxDialogOpener(String title, String message) {
 		StackPane stackpane =(StackPane) SessionUtil.getSession().get("stackPane");
@@ -451,6 +454,33 @@ public class ScreenUtil {
 	    dialog.show();
 	}
 
+	public static void jfxDialogOpener(StackPane stk, String title, String message, EventHandler<ActionEvent> onAction) {
+		StackPane stackpane =stk;
+		JFXDialogLayout content = new JFXDialogLayout();
+		content.getStyleClass().addAll("tone1-background");
+		
+		Text titleText = new Text(title);
+		titleText.getStyleClass().add("letters_box_icons");
+	    content.setHeading(titleText);
+	    Text messageText = new Text(message);
+	    messageText.getStyleClass().add("letters_box_icons");
+	    content.setBody(messageText);
+	    JFXDialog dialog = new JFXDialog(stackpane, content, JFXDialog.DialogTransition.NONE);
+	    JFXButton button = new JFXButton("Okay");
+	    button.getStyleClass().addAll("letters_box_icons","btn");
+	    
+	    button.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				onAction.handle(event);
+				dialog.close();
+				
+			}
+		});
+	    content.setActions(button);
+	    dialog.show();
+	}
 	private static ArrayList<OnChangeScreen> listeners = new ArrayList<OnChangeScreen>();
 
 	public interface OnChangeScreen {
@@ -466,5 +496,6 @@ public class ScreenUtil {
 			l.onScreenChanged(newScreen, hmap);
 		}
 	}
+
 
 }
