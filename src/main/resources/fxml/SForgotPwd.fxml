@@ -16,145 +16,150 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="939.0" styleClass="NotRequired" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.ForgotPwdController">
-  <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="127.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="707.0" minWidth="10.0" prefWidth="693.0" />
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="107.0" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints maxHeight="257.0" minHeight="0.0" prefHeight="93.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="551.0" minHeight="10.0" prefHeight="538.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
-  </rowConstraints>
-   <children>
-      <AnchorPane id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="526.0" prefWidth="689.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-         <children>
-            <Pane id="pane" fx:id="pnlSendEmail" layoutX="73.0" layoutY="49.0" prefHeight="137.0" prefWidth="566.0">
-               <children>
-                  <Button fx:id="btnSend" layoutX="390.0" layoutY="68.0" mnemonicParsing="false" onAction="#btnSendClicked" opacity="0.88" prefHeight="30.0" prefWidth="91.0" text="Enviar" textFill="WHITE">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <styleClass>
-                        <String fx:value="btn" />
-                        <String fx:value="btnsize" />
-                     </styleClass>
-                  </Button>
-                  <Label layoutX="21.0" layoutY="26.0" styleClass="letters_box_icons" text="Digite seu email para receber o código">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <JFXTextField id="txt_email" fx:id="txtEmail" alignment="TOP_LEFT" labelFloat="true" layoutX="21.0" layoutY="67.0" prefHeight="17.0" prefWidth="351.0" promptText="E-mail" styleClass="inputField" stylesheets="@../styles/Styles.css">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </JFXTextField>
-               </children>
-               <styleClass>
-                  <String fx:value="imputpanel" />
-                  <String fx:value="tone1-background" />
-               </styleClass>
-            </Pane>
 
-            <Pane fx:id="pnlVerification" layoutX="73.0" layoutY="197.0" prefHeight="264.0" prefWidth="566.0" stylesheets="@../styles/Styles.css">
+<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/8.0.212" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.ForgotPwdController">
+   <children>
+      <GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="939.0" styleClass="NotRequired">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="127.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="707.0" minWidth="10.0" prefWidth="693.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="107.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="257.0" minHeight="0.0" prefHeight="93.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="551.0" minHeight="10.0" prefHeight="538.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <AnchorPane id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="526.0" prefWidth="689.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <Label contentDisplay="RIGHT" layoutX="393.0" layoutY="56.0" styleClass="letters_box_icons" text="Erros de confirmação" textFill="#333333" visible="false">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <graphic>
-                        <Label fx:id="lblErrorsIndex" prefHeight="20.0" prefWidth="12.0" text="0" textFill="#dd0000">
+                  <Pane id="pane" fx:id="pnlSendEmail" layoutX="73.0" layoutY="49.0" prefHeight="137.0" prefWidth="566.0">
+                     <children>
+                        <Button fx:id="btnSend" layoutX="390.0" layoutY="68.0" mnemonicParsing="false" onAction="#btnSendClicked" opacity="0.88" prefHeight="30.0" prefWidth="91.0" text="Enviar" textFill="WHITE">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                            <font>
                               <Font size="14.0" />
                            </font>
+                           <styleClass>
+                              <String fx:value="btn" />
+                              <String fx:value="btnsize" />
+                           </styleClass>
+                        </Button>
+                        <Label layoutX="21.0" layoutY="26.0" styleClass="letters_box_icons" text="Digite seu email para receber o código">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
                         </Label>
-                     </graphic>
-                  </Label>
-                  <Label layoutX="393.0" layoutY="77.0" prefHeight="90.0" prefWidth="141.0" text="Ao errar 3x o código de confirmação será necessário o reenvio do mesmo." textFill="#333333" wrapText="true">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
+                        <JFXTextField id="txt_email" fx:id="txtEmail" alignment="TOP_LEFT" labelFloat="true" layoutX="21.0" layoutY="67.0" prefHeight="17.0" prefWidth="351.0" promptText="E-mail" styleClass="inputField" stylesheets="@../styles/Styles.css">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </JFXTextField>
+                     </children>
                      <styleClass>
-                        <String fx:value="letters_box_icons" />
+                        <String fx:value="imputpanel" />
+                        <String fx:value="tone1-background" />
+                     </styleClass>
+                  </Pane>
+      
+                  <Pane fx:id="pnlVerification" layoutX="73.0" layoutY="197.0" prefHeight="264.0" prefWidth="566.0" stylesheets="@../styles/Styles.css">
+                     <children>
+                        <Label contentDisplay="RIGHT" layoutX="393.0" layoutY="56.0" styleClass="letters_box_icons" text="Erros de confirmação" textFill="#333333" visible="false">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <graphic>
+                              <Label fx:id="lblErrorsIndex" prefHeight="20.0" prefWidth="12.0" text="0" textFill="#dd0000">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </graphic>
+                        </Label>
+                        <Label layoutX="393.0" layoutY="77.0" prefHeight="90.0" prefWidth="141.0" text="Ao errar 3x o código de confirmação será necessário o reenvio do mesmo." textFill="#333333" wrapText="true">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="letters_box_icons" />
+                              <String fx:value="hide" />
+                           </styleClass>
+                        </Label>
+                        <Button fx:id="btnConfirm" layoutX="233.0" layoutY="210.0" mnemonicParsing="false" onAction="#btnConfirmClicked" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Confirmar" textFill="WHITE">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btnCancel" layoutX="23.0" layoutY="210.0" mnemonicParsing="false" onAction="#btnCancelClicked" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Cancelar" textFill="WHITE">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                        <JFXTextField fx:id="txtCode" alignment="TOP_LEFT" labelFloat="true" layoutX="23.0" layoutY="28.0" prefHeight="17.0" prefWidth="351.0" promptText="Digite o código de confirmação" styleClass="inputField">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </JFXTextField>
+                        <Label fx:id="lblCode" layoutX="23.0" layoutY="59.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="CÓDIGO INCORRETO" textFill="RED" />
+                        <JFXPasswordField id="txt_password" fx:id="txtPwd" alignment="TOP_LEFT" labelFloat="true" layoutX="23.0" layoutY="90.0" prefHeight="17.0" prefWidth="351.0" promptText="Nova senha" styleClass="inputField">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </JFXPasswordField>
+                        <JFXPasswordField id="txt_password" fx:id="txtConfirmPwd" alignment="TOP_LEFT" labelFloat="true" layoutX="23.0" layoutY="152.0" prefHeight="17.0" prefWidth="351.0" promptText="Confirme a nova senha" styleClass="inputField">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </JFXPasswordField>
+                        <StackPane fx:id="popupPoint" layoutX="25.0" layoutY="125.0" prefHeight="14.0" prefWidth="12.0" />
+                     </children>
+                     <styleClass>
+                        <String fx:value="imputpanel" />
+                        <String fx:value="tone1-background" />
                         <String fx:value="hide" />
                      </styleClass>
-                  </Label>
-                  <Button fx:id="btnConfirm" layoutX="233.0" layoutY="210.0" mnemonicParsing="false" onAction="#btnConfirmClicked" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Confirmar" textFill="WHITE">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="btnCancel" layoutX="23.0" layoutY="210.0" mnemonicParsing="false" onAction="#btnCancelClicked" opacity="0.88" prefHeight="26.0" prefWidth="141.0" styleClass="btn" text="Cancelar" textFill="WHITE">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-                  <JFXTextField fx:id="txtCode" alignment="TOP_LEFT" labelFloat="true" layoutX="23.0" layoutY="28.0" prefHeight="17.0" prefWidth="351.0" promptText="Digite o código de confirmação" styleClass="inputField">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </JFXTextField>
-                  <Label fx:id="lblCode" layoutX="23.0" layoutY="59.0" prefHeight="17.0" prefWidth="351.0" styleClass="hide" stylesheets="@../styles/Styles.css" text="CÓDIGO INCORRETO" textFill="RED" />
-                  <JFXPasswordField id="txt_password" fx:id="txtPwd" alignment="TOP_LEFT" labelFloat="true" layoutX="23.0" layoutY="90.0" prefHeight="17.0" prefWidth="351.0" promptText="Nova senha" styleClass="inputField">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </JFXPasswordField>
-                  <JFXPasswordField id="txt_password" fx:id="txtConfirmPwd" alignment="TOP_LEFT" labelFloat="true" layoutX="23.0" layoutY="152.0" prefHeight="17.0" prefWidth="351.0" promptText="Confirme a nova senha" styleClass="inputField">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </JFXPasswordField>
-                  <StackPane fx:id="popupPoint" layoutX="25.0" layoutY="125.0" prefHeight="14.0" prefWidth="12.0" />
+                  </Pane>
                </children>
-               <styleClass>
-                  <String fx:value="imputpanel" />
-                  <String fx:value="tone1-background" />
-                  <String fx:value="hide" />
-               </styleClass>
-            </Pane>
-         </children>
-      </AnchorPane>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
-         <children>
-            <Button fx:id="btnBack" layoutX="41.0" layoutY="39.0" mnemonicParsing="false" onAction="#btnBackClicked" prefHeight="41.0" prefWidth="44.0">
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="btnBack" layoutX="41.0" layoutY="39.0" mnemonicParsing="false" onAction="#btnBackClicked" prefHeight="41.0" prefWidth="44.0">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/icon/backWhite.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="btnDirectional" />
+                     </styleClass>
+                  </Button>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="138.0" prefWidth="697.0" GridPane.columnIndex="1">
+               <children>
+                  <ImageView id="img_cronote" fx:id="imgCronote" fitHeight="90.0" fitWidth="242.0" layoutX="244.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
                      <image>
-                        <Image url="@../image/icon/backWhite.png" />
+                        <Image url="@../image/cronote_logo_white.png" />
                      </image>
                   </ImageView>
-               </graphic>
-               <styleClass>
-                  <String fx:value="btn" />
-                  <String fx:value="btnDirectional" />
-               </styleClass>
-            </Button>
+               </children>
+            </AnchorPane>
+            <Pane fx:id="pnlMidBottomArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
-      </AnchorPane>
-      <AnchorPane prefHeight="138.0" prefWidth="697.0" GridPane.columnIndex="1">
-         <children>
-            <ImageView id="img_cronote" fx:id="imgCronote" fitHeight="90.0" fitWidth="242.0" layoutX="244.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" smooth="false">
-               <cursor>
-                  <Cursor fx:constant="DEFAULT" />
-               </cursor>
-               <image>
-                  <Image url="@../image/cronote_logo_white.png" />
-               </image>
-            </ImageView>
-         </children>
-      </AnchorPane>
-      <Pane fx:id="pnlMidBottomArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      </GridPane>
    </children>
-</GridPane>
+</StackPane>
