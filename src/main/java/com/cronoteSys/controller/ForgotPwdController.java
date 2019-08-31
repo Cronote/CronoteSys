@@ -1,31 +1,26 @@
 package com.cronoteSys.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
-import javax.swing.JOptionPane;
 
 import org.apache.commons.mail.EmailException;
 
+import com.cronoteSys.model.bo.EmailBO;
 import com.cronoteSys.model.bo.LoginBO;
-import com.cronoteSys.model.vo.LoginVO;
-import com.cronoteSys.util.EmailUtil;
+import com.cronoteSys.model.vo.EmailVO;
 import com.cronoteSys.util.GenCode;
-import com.cronoteSys.util.GenHash;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 import com.cronoteSys.util.validator.PasswordMatchValidator;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXSnackbar;
-import com.jfoenix.controls.JFXSnackbarLayout;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXSnackbar.SnackbarEvent;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -33,10 +28,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.util.Duration;
 
 public class ForgotPwdController extends MasterController {
 
+	@FXML
+	private StackPane stackPane;
 	@FXML
 	private JFXTextField txtEmail;
 	@FXML
@@ -88,27 +84,23 @@ public class ForgotPwdController extends MasterController {
 	}
 
 	@FXML
-	public void btnSendClicked() {
+	public void btnSendClicked() throws EmailException {
 		if (txtEmail.validate()) {
 			String email = txtEmail.getText().trim();
 			if (new LoginBO().loginExists(email) == 0) {
-				snackbar.getStyleClass().removeAll("success-snackbar");
-				snackbar.getStyleClass().add("error-snackbar");
-				snackbar.fireEvent(new SnackbarEvent(
-						new JFXSnackbarLayout("Não há uma conta com o email informado!", "Fechar", action -> {
-							snackbar.close();
-						}), Duration.INDEFINITE, null));
+				ScreenUtil.jfxDialogOpener(stackPane, "Aviso", "Não há uma conta com o email informado!");
 				return;
 			}
 
 			boolean bEmailSent = false;
 			sVerificationCode = new GenCode().genCode();
-			try {
-				bEmailSent = new EmailUtil().sendEmail(email, "Olá,\n Aqui está seu código de confirmação:"
-						+ sVerificationCode + "\nUse-o no sistema para trocar sua senha.", "Alteração de senha");
-			} catch (EmailException e) {
-				e.printStackTrace();
-			}
+			String[] emails = { email };
+			EmailVO emailVO = new EmailVO();
+			emailVO.setReceiver(emails);
+			emailVO.setMessage("Olá,\n Aqui está seu código de confirmação:" + sVerificationCode
+					+ "\nUse-o no sistema para trocar sua senha.");
+			emailVO.setSubject("Alteração de senha");
+			bEmailSent = new EmailBO().genericEmail(emailVO);
 			if (bEmailSent) {
 				pnlVerification.getStyleClass().removeAll("hide");
 				pnlVerification.getStyleClass().add("show");
@@ -122,6 +114,7 @@ public class ForgotPwdController extends MasterController {
 		if (txtCode.validate() && txtPwd.validate() && txtConfirmPwd.validate()) {
 
 			if (!sVerificationCode.equalsIgnoreCase(txtCode.getText().trim())) {
+				lblErrorsIndex.getParent().setVisible(true);
 				int iAttempt = Integer.parseInt(lblErrorsIndex.getText());
 				iAttempt++;
 				lblErrorsIndex.setText(String.valueOf(iAttempt));
@@ -129,30 +122,24 @@ public class ForgotPwdController extends MasterController {
 				lblCode.getStyleClass().removeAll("hide");
 				lblCode.getStyleClass().add("show");
 				if (iAttempt > 2) {
-					snackbar.getStyleClass().removeAll("success-snackbar");
-					snackbar.getStyleClass().add("error-snackbar");
-					snackbar.fireEvent(new SnackbarEvent(new JFXSnackbarLayout(
-							"Mensagem de falha por estourar numero de tentativas", "Fechar", action -> {
-								snackbar.close();
-								resetScreen();
-							}), Duration.INDEFINITE, null));
+					ScreenUtil.jfxDialogOpener(stackPane, "Aviso!",
+							"Estorou o numero de tentativas\nTerá que reenviar o email e colocar o novo código.",
+							new EventHandler<ActionEvent>() {
+								@Override
+								public void handle(ActionEvent event) {
+									resetScreen();
+								}
+							});
 					return;
 				}
+				return;
 			}
 			String sPassPureText = txtPwd.getText().trim();
 			if (new LoginBO().changePassword(txtEmail.getText(), sPassPureText)) {
-
-				snackbar.getStyleClass().removeAll("error-snackbar");
-				snackbar.getStyleClass().add("success-snackbar");
-				snackbar.fireEvent(new SnackbarEvent(
-						new JFXSnackbarLayout("Senha alterada com sucesso!", "Fechar", action -> snackbar.close()),
-						Duration.INDEFINITE, null));
+				ScreenUtil.jfxDialogOpener(stackPane, "Confirmação!", "Senha alterada com sucesso!");
 				resetScreen();
 			} else {
-				snackbar.getStyleClass().removeAll("success-snackbar");
-				snackbar.getStyleClass().add("error-snackbar");
-				snackbar.fireEvent(new SnackbarEvent(new JFXSnackbarLayout("Houve algum problema ao alterar a senha!",
-						"Fechar", action -> snackbar.close()), Duration.INDEFINITE, null));
+				ScreenUtil.jfxDialogOpener(stackPane, "Erro", "Houve algum problema ao alterar a senha!");
 			}
 		}
 	}
@@ -216,5 +203,6 @@ public class ForgotPwdController extends MasterController {
 		txtEmail.setText("");
 		lblErrorsIndex.setText("0");
 		pnlVerification.setVisible(false);
+		lblErrorsIndex.getParent().setVisible(false);
 	}
 }

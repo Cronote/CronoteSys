@@ -9,6 +9,8 @@ import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 
+import com.cronoteSys.model.vo.EmailVO;
+
 /**
  * Class that cares about email's functions like to send email messages and to
  * validate email's format
@@ -59,6 +61,8 @@ public class EmailUtil {
 			}
 		});
 	}
+	
+	
 
 	public static boolean validateEmail(String sEmail) {
 		Pattern p = Pattern.compile("^([A-z]+)([A-z0-9-_.]*)@([A-z.]+)\\.[A-z]{2,}$");

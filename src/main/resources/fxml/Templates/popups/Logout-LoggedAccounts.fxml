@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXListView?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -52,7 +52,7 @@
 				</JFXButton>
 			</children>
 		</AnchorPane>
-		<JFXListView fx:id="loggedAccounts" prefWidth="300.0" style="-fx-background-color: transparent;" />
+		<ListView fx:id="loggedAccounts" prefWidth="300.0" style="-fx-background-color: transparent;" />
 		<AnchorPane fx:id="pnlControls" prefHeight="49.0" prefWidth="300.0">
 			<children>
             <Separator prefWidth="200.0" style="-fx-background-color: #A6A6A6; -fx-border-color: #A6A6A6;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />

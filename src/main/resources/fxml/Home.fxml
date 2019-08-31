@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 
 
-<HBox fx:id="root" minHeight="700" minWidth="1080" prefHeight="700" prefWidth="1080.0" styleClass="menu-background" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.HomeController">
+<StackPane fx:id="stackPaneOne" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.HomeController">
+   <children>
+      <HBox fx:id="root" minHeight="700" minWidth="1080" prefHeight="700" prefWidth="1080.0" styleClass="menu-background">
 </HBox>
+   </children>
+</StackPane>

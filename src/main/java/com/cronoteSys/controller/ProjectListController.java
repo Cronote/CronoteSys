@@ -16,6 +16,8 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -29,19 +31,20 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 public class ProjectListController implements Initializable {
+	private ListProperty<ProjectVO> projectLst = new SimpleListProperty<ProjectVO>();
+
+	private UserVO loggedUser;
+
 	@FXML
 	private Button btnAddProject;
 	@FXML
 	private ListView<ProjectVO> cardsList;
-	private List<ProjectVO> projectLst = new ArrayList<ProjectVO>();
-
-	private UserVO loggedUser;
 	@FXML
-	AnchorPane title;
+	private AnchorPane title;
 	@FXML
-	TextField txtSearch;
+	private TextField txtSearch;
 	@FXML
-	Button btnSearch;
+	private Button btnSearch;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -49,8 +52,9 @@ public class ProjectListController implements Initializable {
 		initListeners();
 		loggedUser = (UserVO) SessionUtil.getSession().get("loggedUser");
 		ProjectBO projectBO = new ProjectBO();
-		projectLst = projectBO.listAll(loggedUser);
-		cardsList.setItems(FXCollections.observableArrayList(projectLst));
+		List<ProjectVO> lst = projectBO.listAll(loggedUser);
+		projectLst.set(FXCollections.observableArrayList(lst));
+		cardsList.itemsProperty().bind(projectLst);
 		cardsList.setCellFactory(new ProjectCellFactory());
 		GlyphIcon<?> icon = null;
 		if (projectLst.size() > 0) {
@@ -62,7 +66,7 @@ public class ProjectListController implements Initializable {
 		}
 		icon.setSize("3em");
 		btnAddProject.setGraphic(icon);
-		
+
 	}
 
 	private void initListeners() {
@@ -81,19 +85,18 @@ public class ProjectListController implements Initializable {
 			public void handle(ActionEvent event) {
 				cardsList.getSelectionModel().clearSelection();
 				notifyAllBtnProjectClickedListeners();
-//				notifyAllProjectSelectedListeners(null);
-				//here
 			}
 		});
 
 		ProjectBO.addOnProjectAddedIListener(proj -> {
-			projectLst.add(0,proj);
-			cardsList.setItems(FXCollections.observableArrayList(projectLst));
+			System.out.println("ProjectListController.projectadded()");
+			projectLst.add(0, proj);
+			cardsList.refresh();
 			cardsList.getSelectionModel().select(proj);
 		});
 		ProjectBO.addOnProjectDeletedListener(proj -> {
 			projectLst.remove(proj);
-			cardsList.setItems(FXCollections.observableArrayList(projectLst));			
+			cardsList.refresh();
 		});
 	}
 
@@ -129,5 +132,3 @@ public class ProjectListController implements Initializable {
 		}
 	}
 }
-
-

@@ -12,24 +12,28 @@
 
 <AnchorPane fx:id="activityCardRoot" maxHeight="-Infinity"
 	maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-	prefHeight="117.0" prefWidth="249.0"
-	xmlns="http://javafx.com/javafx/8.0.171"
+	prefWidth="249.0" xmlns="http://javafx.com/javafx/8.0.171"
 	xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<Label fx:id="lblTitle" alignment="TOP_LEFT"
 			contentDisplay="TEXT_ONLY" layoutX="14.0" layoutY="14.0"
 			prefWidth="153.0" styleClass="info"
-			text="Desenvolver o dialog de gerenciar dependências"
-			textFill="#ff0101" wrapText="true" AnchorPane.leftAnchor="14.0"
-			AnchorPane.rightAnchor="82.0" AnchorPane.topAnchor="5.0">
+			text="Desenvolver o dialog de gerenciar dependências" wrapText="true"
+			textFill="#ff0101" AnchorPane.leftAnchor="14.0"
+			AnchorPane.bottomAnchor="80" AnchorPane.rightAnchor="82.0"
+			AnchorPane.topAnchor="10.0">
 			<font>
-				<Font name="System Bold" size="13.0" />
+				<Font name="System Bold" size="16.0" />
 			</font>
 		</Label>
+		<Label fx:id="lblCategory" layoutX="14.0" layoutY="48.0"
+			prefHeight="17.0" styleClass="info" text="CATEGORIA" textFill="WHITE"
+			AnchorPane.leftAnchor="14.0" AnchorPane.bottomAnchor="60" />
 		<Label fx:id="lblStatus" alignment="BASELINE_LEFT"
 			layoutX="14.0" layoutY="70.0" prefWidth="101.0" styleClass="info"
 			text="NÃO INICIADO" textFill="WHITE" AnchorPane.bottomAnchor="26.0"
-			AnchorPane.leftAnchor="14.0" />
+			AnchorPane.leftAnchor="14.0" />	
+
 		<AnchorPane layoutX="12.0" layoutY="93.0" prefHeight="15.0"
 			prefWidth="225.0" AnchorPane.bottomAnchor="3.0"
 			AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0">
@@ -95,8 +99,7 @@
 				<String fx:value="hide" />
 			</styleClass>
 		</Button>
-		<Label fx:id="lblCategory" layoutX="14.0" layoutY="48.0"
-			prefHeight="17.0" styleClass="info" text="CATEGORIA" textFill="WHITE" />
+
 	</children>
 	<styleClass>
 		<String fx:value="card" />

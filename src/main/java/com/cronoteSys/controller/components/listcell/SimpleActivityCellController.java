@@ -1,46 +1,119 @@
 package com.cronoteSys.controller.components.listcell;
 
-import java.io.File;
-import java.io.IOException;
-
 import com.cronoteSys.model.vo.SimpleActivity;
-import com.cronoteSys.util.SessionUtil;
+import com.jfoenix.controls.JFXListCell;
 
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.geometry.Orientation;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
+import javafx.scene.text.Font;
 
 public class SimpleActivityCellController extends ListCell<SimpleActivity> {
 
-	@FXML
-	Label lblTitle;
-	@FXML
-	AnchorPane activityCardRoot;
-	@FXML
-	Label lblCategory;
+	private Label lblTitle;
+	private AnchorPane activityCardRoot;
+	private Label lblCategory;
+private boolean hasToFixHeitgh;
+	public SimpleActivityCellController(Orientation orientation, Double width) {
 
-	{
-		FXMLLoader loader = SessionUtil.getInjector().getInstance(FXMLLoader.class);
-		try {
-			loader.setLocation(
-					new File(getClass().getResource("/fxml/Templates/cell/SimpleActivityCell.fxml").getPath()).toURI()
-							.toURL());
-			loader.setController(this);
-			loader.load();
-		} catch (IOException e) {
-			e.printStackTrace();
+		initComponents();
+
+		switch (orientation) {
+		case HORIZONTAL:
+//			activityCardRoot.setMaxWidth(50.0);
+//			activityCardRoot.setMinWidth(50.0);
+//			setMaxWidth(50.0);
+//			setMinWidth(50.0);
+			activityCardRoot.setPrefWidth(width);
+			setPrefWidth(width);
+
+			AnchorPane.setBottomAnchor(lblCategory, 10.0);
+			AnchorPane.setRightAnchor(lblCategory, 5.0);
+			AnchorPane.setLeftAnchor(lblCategory, 5.0);
+			break;
+		case VERTICAL:
+			Double parentWidth = width*2;
+			hasToFixHeitgh = true;
+			activityCardRoot.setPrefWidth(parentWidth);
+			setPrefWidth(parentWidth);
+			lblTitle.setPrefWidth(parentWidth- (0.05*parentWidth));
+			lblTitle.setWrapText(true);
+			
+			break;
 		}
+//		lblTitle.setPrefWidth(153.0);
 	}
+
+	private void initComponents() {
+		activityCardRoot = new AnchorPane();
+		activityCardRoot.getStyleClass().addAll("card", "borders");
+		lblTitle = new Label();
+		lblCategory = new Label();
+
+		lblTitle.setFont(new Font("system bold", 17.0));
+		lblTitle.getStyleClass().add("info");
+		lblCategory.setFont(new Font("system bold", 15.0));
+		lblCategory.getStyleClass().add("info");
+
+		clearAndAddNodes();
+
+		AnchorPane.setTopAnchor(lblTitle, 10.0);
+		AnchorPane.setRightAnchor(lblTitle, 5.0);
+		AnchorPane.setLeftAnchor(lblTitle, 5.0);
+
+	}
+
+	private void clearAndAddNodes() {
+		activityCardRoot.getChildren().clear();
+		activityCardRoot.getChildren().addAll(lblTitle, lblCategory);
+	}
+
+	public Object[] getHeightOf(Region node) {
+		Group root = new Group();
+		Scene scene = new Scene(root);
+
+		root.getChildren().add(node);
+
+		root.applyCss();
+		root.layout();
+		Double height = node.getHeight();
+		System.out.println(height);
+		Object[] result = { height + 5, node };
+
+		return result;
+
+	}
+
 	@Override
 	public void updateSelected(boolean selected) {
 		super.updateSelected(selected);
 		if (selected) {
+			System.out.println(getHeight());
 			activityCardRoot.getStyleClass().add("cardSelected");
 		} else
 			activityCardRoot.getStyleClass().removeAll("cardSelected");
 
+	}
+	
+	public void presetGraphic(Node value) {
+		if(hasToFixHeitgh) {
+			Double heights = 10+ Double.parseDouble(getHeightOf(lblTitle)[0].toString()) + 5;
+			AnchorPane.setTopAnchor(lblCategory, heights);
+			AnchorPane.setRightAnchor(lblCategory, 5.0);
+			AnchorPane.setLeftAnchor(lblCategory, 5.0);
+//			AnchorPane.setBottomAnchor(lblCategory, 3.0);
+			heights += Double.parseDouble(getHeightOf(lblCategory)[0].toString());
+			heights +=12;
+			activityCardRoot.setPrefHeight(heights);
+			setPrefHeight(heights);
+			clearAndAddNodes();
+		}
+		super.setGraphic(value);
 	}
 	@Override
 	protected void updateItem(SimpleActivity item, boolean empty) {
@@ -49,7 +122,8 @@ public class SimpleActivityCellController extends ListCell<SimpleActivity> {
 		if (item != null || !empty) {
 			lblTitle.setText(item.getTitle());
 			lblCategory.setText(item.getCategoryVO().getDescription());
-			setGraphic(activityCardRoot);
+			presetGraphic(activityCardRoot);
+			setStyle("-fx-background-color:red;");
 		} else {
 			setGraphic(null);
 		}

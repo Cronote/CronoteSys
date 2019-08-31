@@ -5,17 +5,19 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import com.cronoteSys.controller.ActivityListController.ActivitySelectedI;
 import com.cronoteSys.controller.ProjectListController.BtnProjectClickedI;
 import com.cronoteSys.controller.ProjectListController.ProjectSelectedI;
+import com.cronoteSys.controller.TeamListController.TeamSelectedI;
+import com.cronoteSys.controller.TeamViewController.BtnNewTeamClickedI;
+import com.cronoteSys.interfaces.LoadActivityInterface;
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.ActivityBO.OnActivityDeletedI;
-import com.cronoteSys.model.bo.LoginBO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.ProjectVO;
+import com.cronoteSys.model.vo.TeamVO;
 import com.cronoteSys.model.vo.UserVO;
-import com.cronoteSys.observer.ShowEditViewActivityObservableI;
-import com.cronoteSys.observer.ShowEditViewActivityObserverI;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
 import com.jfoenix.controls.JFXPopup;
@@ -57,6 +59,7 @@ public class HomeController implements Initializable {
 
 	@FXML
 	protected HBox root;
+	@FXML protected StackPane stackPaneOne;
 	private MenuController menuControl;
 
 	private void loadProjectManager(ProjectVO project, String mode) {
@@ -71,11 +74,10 @@ public class HomeController implements Initializable {
 		HBox.setHgrow(projectManager, Priority.ALWAYS);
 		addNode(projectManager);
 	}
-
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loadMenu();
-
 		ProjectListController.addOnBtnProjectClickedListener(new BtnProjectClickedI() {
 			@Override
 			public void onBtnProjectClicked() {
@@ -83,7 +85,6 @@ public class HomeController implements Initializable {
 			}
 
 		});
-
 		ProjectListController.addOnProjectSelectedListener(new ProjectSelectedI() {
 			@Override
 			public void onProjectSelect(ProjectVO project) {
@@ -91,13 +92,59 @@ public class HomeController implements Initializable {
 					loadProjectManager(project, "View");
 			}
 		});
-
+		TeamViewController.addOnBtnNewTeamClickedListener(new BtnNewTeamClickedI() {
+			@Override
+			public void onBtnNewTeamClicked(TeamVO team, String mode) {
+				switchVBoxTeamContent(team, mode);
+			}
+		});
+		TeamListController.addOnBtnNewTeamClickedListener(new TeamSelectedI() {
+			@Override
+			public void onTeamSelected(TeamVO team) {
+				switchVBoxTeamContent(team, "view");
+			}
+		});
 		root.getChildren().addListener(new ListChangeListener<Node>() {
 			@Override
 			public void onChanged(Change<? extends Node> c) {
 				ScreenUtil.paintScreen(root);
 			}
 		});
+		
+		SessionUtil.getSession().put("stackPane", stackPaneOne);
+	}
+
+	private void switchVBoxTeamContent(TeamVO team, String mode) {
+		FXMLLoader loader = null;
+		VBox box = null;
+		box = (VBox) root.lookup("#team");
+		if (box == null)
+			box = new VBox();
+		while (box.getChildren().size() > 1) {
+			box.getChildren().remove(1);
+		}
+		try {
+			AnchorPane ap = null;
+			if (mode.equals("view")) {
+				loader = ScreenUtil.loadTemplate("TeamView");
+				ap = (AnchorPane) loader.load();
+				TeamViewController controller = (TeamViewController) loader.getController();
+				controller.setViewingTeam(team);
+			} else {
+				loader = ScreenUtil.loadTemplate("TeamEdit");
+				ap = (AnchorPane) loader.load();
+				if (team != null) {
+					TeamEditController controller = (TeamEditController) loader.getController();
+					controller.setEditingTeam(team);
+				}
+			}
+
+			box.getChildren().add(ap);
+			VBox.setVgrow(ap, Priority.ALWAYS);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		HBox.setHgrow(box, Priority.ALWAYS);
 	}
 
 	private void loadMenu() {
@@ -145,36 +192,27 @@ public class HomeController implements Initializable {
 
 		}
 	};
-	protected ShowEditViewActivityObserverI showListener = new ShowEditViewActivityObserverI() {
+	protected ActivitySelectedI actSelectedListener = new ActivitySelectedI() {
 		@Override
-		public void showEditViewActivity(HashMap<String, Object> hmap) {
-			AnchorPane ap = null;
-			FXMLLoader detailsFxml = null;
+		public void onActivitySelected(HashMap<String, Object> hmap) {
+			FXMLLoader loader = null;
 			removeIndexFromRoot(2);
-			String action = (String) hmap.get("action");
+			String mode = (String) hmap.getOrDefault("action", "view");
 			ActivityVO activity = (ActivityVO) hmap.get("activity");
-			if (action.equalsIgnoreCase("cadastro")) {
-				detailsFxml = ScreenUtil.loadTemplate("ActivityDetailsInserting");
+			AnchorPane ap = null;
+			if (mode.equals("view")) {
+				loader = ScreenUtil.loadTemplate("ActivityDetailsView");
+
 			} else {
-				detailsFxml = ScreenUtil.loadTemplate("ActivityDetailsView");
+				loader = ScreenUtil.loadTemplate("ActivityDetailsInserting");
 			}
-			try {
-				ap = (AnchorPane) addNode(detailsFxml);
-				if (activity != null) {
-					((ActivityDetailsInsertingController) detailsFxml.getController()).loadActivity(activity);
-				}
-			} catch (Exception e) {
-				((ActivityDetailsViewController) detailsFxml.getController()).loadActivity(activity);
-			}
-			ap.setMaxWidth(Double.POSITIVE_INFINITY);
-			ap.setMaxHeight(Double.POSITIVE_INFINITY);
+			ap = (AnchorPane) addNode(loader);
+			if (activity != null)
+				((LoadActivityInterface) loader.getController()).loadActivity(activity);
+
 			HBox.setHgrow(ap, Priority.ALWAYS);
 		}
 	};
-
-	public ShowEditViewActivityObserverI getShowListener() {
-		return showListener;
-	}
 
 }
 
@@ -224,7 +262,7 @@ class MenuController implements Initializable {
 			FXMLLoader p = ScreenUtil.loadTemplate("ActivityList");
 			homeControl.addNode(p);
 			((ActivityListController) p.getController()).setList(null);
-			ShowEditViewActivityObservableI.addShowEditViewActivityListener(homeControl.getShowListener());
+			ActivityListController.addOnActivitySelectedListener(homeControl.actSelectedListener);
 			ActivityBO.addOnActivityDeletedListener(homeControl.listenerActivityDelete);
 		}
 	}
@@ -245,13 +283,35 @@ class MenuController implements Initializable {
 		homeControl.clearRoot(false, (Node) e.getSource());
 	}
 
-	public void btnTeamClicked(ActionEvent e) {
+	public void btnTeamClicked(ActionEvent event) {
 		// TODO: implementar
-		homeControl.clearRoot(false, (Node) e.getSource());
+		homeControl.clearRoot(false, (Node) event.getSource());
 		if (btnTeam.isSelected()) {
 			adjustMenu(true);
-			FXMLLoader p = ScreenUtil.loadTemplate("TeamScreen");
-			VBox box = (VBox) homeControl.addNode(p);
+
+			FXMLLoader teamLstLoader = ScreenUtil.loadTemplate("TeamList");
+			FXMLLoader teamViewLoader = ScreenUtil.loadTemplate("TeamView");
+
+			VBox box = null;
+			try {
+				box = (VBox) homeControl.root.lookup("#team");
+			} catch (Exception e) {
+				box = new VBox();
+			}
+			try {
+				if (box == null) {
+					box = new VBox();
+					box.setId("team");
+				}
+				box.getChildren().add(((HBox) teamLstLoader.load()));
+				AnchorPane ap = (AnchorPane) teamViewLoader.load();
+				box.getChildren().add(ap);
+				VBox.setVgrow(ap, Priority.ALWAYS);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			homeControl.addNode(box);
 			HBox.setHgrow(box, Priority.ALWAYS);
 		}
 	}
@@ -351,7 +411,7 @@ class MenuController implements Initializable {
 		String[] userNames = loggedUser.getCompleteName().split(" ");
 		String name = userNames.length > 1 ? userNames[0] + " " + userNames[(userNames.length - 1)] : userNames[0];
 		lblUsername.setText(name);
-		LoginVO login = new LoginBO().getLogin(loggedUser);
+		LoginVO login = loggedUser.getLogin();
 		lblUserEmail.setText(login.getEmail());
 
 	}

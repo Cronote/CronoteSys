@@ -8,191 +8,135 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="firstInfoRoot" prefHeight="700"
-	prefWidth="697.0" xmlns="http://javafx.com/javafx/8.0.171"
-	xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="firstInfoRoot" prefHeight="700" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-		<Label fx:id="lblTitle" alignment="TOP_LEFT" layoutX="30.0"
-			layoutY="36.0" prefHeight="94.0" prefWidth="637.0"
-			text="Projeto e desenvolvimento de um sistema para gerenciamento de atividades e projetos intitulado cronote"
-			textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="40.0"
-			AnchorPane.rightAnchor="40.0">
+		<Label fx:id="lblTitle" alignment="TOP_LEFT" layoutX="30.0" layoutY="36.0" prefHeight="94.0" prefWidth="637.0" text="Projeto e desenvolvimento de um sistema para gerenciamento de atividades e projetos intitulado cronote" textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="135.0">
 			<font>
 				<Font name="System Bold" size="22.0" />
 			</font>
 		</Label>
-		<Label layoutX="40.0" layoutY="121.0"
-			styleClass="letters_box_icons" text="Descrição"
-			AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
+		<Label layoutX="40.0" layoutY="121.0" styleClass="letters_box_icons" text="Descrição" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
 			<font>
 				<Font name="System Bold" size="20.0" />
 			</font>
 		</Label>
-		<Label fx:id="lblDescription" alignment="TOP_LEFT"
-			layoutX="40.0" layoutY="151.0" prefHeight="68.0" prefWidth="617.0"
-			text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at mattis quam. Quisque sed dolor id dui elementum sodales. Quisque blandit vestibulum est, ut semper quam accumsan et. Maecenas feugiat sem tellus. Nam vitae lectus tincidunt urna cras amet."
-			textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="40.0"
-			AnchorPane.rightAnchor="40.0" />
-		<Label contentDisplay="BOTTOM" graphicTextGap="0.0"
-			layoutX="34.0" layoutY="224.0" styleClass="letters_box_icons"
-			text="Data de início" AnchorPane.leftAnchor="40.0"
-			AnchorPane.rightAnchor="40.0">
+		<Label fx:id="lblDescription" alignment="TOP_LEFT" layoutX="40.0" layoutY="151.0" prefHeight="68.0" prefWidth="617.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at mattis quam. Quisque sed dolor id dui elementum sodales. Quisque blandit vestibulum est, ut semper quam accumsan et. Maecenas feugiat sem tellus. Nam vitae lectus tincidunt urna cras amet." textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
+		<Label contentDisplay="BOTTOM" graphicTextGap="0.0" layoutX="34.0" layoutY="224.0" styleClass="letters_box_icons" text="Data de início" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
 			<font>
 				<Font name="System Bold" size="20.0" />
 			</font>
 			<graphic>
-				<Label fx:id="lblStartDate" text="21/04/2018 13:34"
-					textFill="WHITE">
+				<Label fx:id="lblStartDate" text="21/04/2018 13:34" textFill="WHITE">
 					<font>
 						<Font name="System Bold" size="15.0" />
 					</font>
 				</Label>
 			</graphic>
 		</Label>
-		<Label contentDisplay="BOTTOM" graphicTextGap="0.0"
-			layoutX="229.0" layoutY="224.0" styleClass="letters_box_icons"
-			text="Data de término" AnchorPane.leftAnchor="229.0">
+		<Label contentDisplay="BOTTOM" graphicTextGap="0.0" layoutX="229.0" layoutY="224.0" styleClass="letters_box_icons" text="Data de término" AnchorPane.leftAnchor="229.0">
 			<font>
 				<Font name="System Bold" size="20.0" />
 			</font>
 			<graphic>
-				<Label fx:id="lblEndDate" text="20/11/2018 13:34"
-					textFill="WHITE">
+				<Label fx:id="lblEndDate" text="20/11/2018 13:34" textFill="WHITE">
 					<font>
 						<Font name="System Bold" size="15.0" />
 					</font>
 				</Label>
 			</graphic>
 		</Label>
-		<Label alignment="TOP_LEFT" contentDisplay="BOTTOM"
-			graphicTextGap="0.0" layoutX="30.0" layoutY="283.0"
-			styleClass="letters_box_icons" text="Tempo total"
-			AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
+		<Label alignment="TOP_LEFT" contentDisplay="BOTTOM" graphicTextGap="0.0" layoutX="30.0" layoutY="283.0" styleClass="letters_box_icons" text="Tempo total" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
 			<font>
 				<Font name="System Bold" size="20.0" />
 			</font>
 		</Label>
-		<Label fx:id="lblTotalTime" layoutX="30.0" layoutY="313.0"
-			text="1 Ano(s), 6 mes(es) e 28 dia(s)" textFill="WHITE"
-			AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
+		<Label fx:id="lblTotalTime" layoutX="30.0" layoutY="313.0" text="1 Ano(s), 6 mes(es) e 28 dia(s)" textFill="WHITE" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
 			<font>
 				<Font name="System Bold" size="15.0" />
 			</font>
 		</Label>
-		<Label alignment="TOP_LEFT" contentDisplay="BOTTOM"
-			graphicTextGap="0.0" layoutX="30.0" layoutY="339.0"
-			styleClass="letters_box_icons" text="Tempo percorrido"
-			AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
+		<Label alignment="TOP_LEFT" contentDisplay="BOTTOM" graphicTextGap="0.0" layoutX="30.0" layoutY="339.0" styleClass="letters_box_icons" text="Tempo percorrido" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
 			<font>
 				<Font name="System Bold" size="20.0" />
 			</font>
 		</Label>
-		<Label fx:id="lblPassedTime" layoutX="30.0" layoutY="369.0"
-			text="1 Ano(s)" textFill="WHITE" AnchorPane.leftAnchor="40.0"
-			AnchorPane.rightAnchor="40.0">
+		<Label fx:id="lblPassedTime" layoutX="30.0" layoutY="369.0" text="1 Ano(s)" textFill="WHITE" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0">
 			<font>
 				<Font name="System Bold" size="15.0" />
 			</font>
 		</Label>
-		<VBox layoutX="30.0" layoutY="394.0" prefHeight="51.0"
-			prefWidth="413.0" AnchorPane.leftAnchor="40.0"
-			AnchorPane.rightAnchor="244.0">
+		<VBox layoutX="30.0" layoutY="394.0" prefHeight="51.0" prefWidth="413.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="244.0">
 			<children>
 				<AnchorPane>
 					<children>
-						<Label alignment="TOP_LEFT" contentDisplay="BOTTOM"
-							graphicTextGap="0.0" styleClass="letters_box_icons"
-							text="Progresso real">
+						<Label alignment="TOP_LEFT" contentDisplay="BOTTOM" graphicTextGap="0.0" styleClass="letters_box_icons" text="Progresso real">
 							<font>
 								<Font name="System Bold" size="20.0" />
 							</font>
 						</Label>
-						<Label fx:id="lblRealDoneTodo" text="1/2" textFill="WHITE"
-							AnchorPane.leftAnchor="271.0">
+						<Label fx:id="lblRealDoneTodo" text="1/2" textFill="WHITE" AnchorPane.leftAnchor="271.0">
 							<graphic>
-								<FontAwesomeIconView fill="WHITE"
-									glyphName="FILE_TEXT_ALT" size="2em" />
+								<FontAwesomeIconView fill="WHITE" glyphName="FILE_TEXT_ALT" size="2em" />
 							</graphic>
 						</Label>
 					</children>
 				</AnchorPane>
-				<Label styleClass="lett" text="100.00%" textFill="WHITE"
-					VBox.vgrow="ALWAYS">
+				<Label fx:id="lblReaProgress" styleClass="lett" text="0.00%" textFill="WHITE" VBox.vgrow="ALWAYS">
 					<graphic>
-						<JFXProgressBar fx:id="pgbRealProgress"
-							prefHeight="21.0" prefWidth="319.0" progress="0.0"
-							secondaryProgress="0.3" />
+						<JFXProgressBar fx:id="pgbRealProgress" prefHeight="21.0" prefWidth="319.0" progress="0.0" secondaryProgress="0.0" styleClass="highLightsDetails" />
 					</graphic>
 				</Label>
 			</children>
 		</VBox>
-		<VBox layoutX="30.0" layoutY="454.0" prefHeight="51.0"
-			prefWidth="413.0" AnchorPane.leftAnchor="40.0"
-			AnchorPane.rightAnchor="244.0">
+		<VBox layoutX="30.0" layoutY="454.0" prefHeight="51.0" prefWidth="413.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="244.0">
 			<children>
 				<AnchorPane>
 					<children>
-						<Label alignment="TOP_LEFT" contentDisplay="BOTTOM"
-							graphicTextGap="0.0" styleClass="letters_box_icons"
-							text="Progresso estimado">
+						<Label alignment="TOP_LEFT" contentDisplay="BOTTOM" graphicTextGap="0.0" styleClass="letters_box_icons" text="Progresso estimado">
 							<font>
 								<Font name="System Bold" size="20.0" />
 							</font>
 						</Label>
-						<Label fx:id="lblEstimatedDoneTodo" text="1/2"
-							textFill="WHITE" AnchorPane.leftAnchor="271.0">
+						<Label fx:id="lblEstimatedDoneTodo" text="1/2" textFill="WHITE" AnchorPane.leftAnchor="271.0">
 							<graphic>
-								<FontAwesomeIconView fill="WHITE"
-									glyphName="FILE_TEXT_ALT" size="2em" />
+								<FontAwesomeIconView fill="WHITE" glyphName="FILE_TEXT_ALT" size="2em" />
 							</graphic>
 						</Label>
 					</children>
 				</AnchorPane>
-				<Label text="100.00%" textFill="WHITE">
+				<Label fx:id="lblEstimatedProgress" text="0.00%" textFill="WHITE">
 					<graphic>
-						<JFXProgressBar fx:id="pgbEstimatedProgress"
-							prefHeight="21.0" prefWidth="319.0" progress="0.0"
-							secondaryProgress="0.3" />
+						<JFXProgressBar fx:id="pgbEstimatedProgress" prefHeight="21.0" prefWidth="319.0" progress="0.0" styleClass="highLightsDetails" />
 					</graphic>
 				</Label>
 			</children>
 		</VBox>
-		<HBox layoutX="20.0" layoutY="513.0" prefHeight="21.0"
-			prefWidth="649.0" spacing="10.0" AnchorPane.leftAnchor="40.0"
-			AnchorPane.rightAnchor="30.0">
+		<HBox layoutX="20.0" layoutY="513.0" prefHeight="21.0" prefWidth="649.0" spacing="10.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="30.0">
 			<children>
-				<JFXCheckBox fx:id="chxHoliday" checkedColor="#7c4db8"
-					styleClass="letters_box_icons" text="Considerar feriados?"
-					unCheckedColor="#a6a6a6">
+				<JFXCheckBox fx:id="chxHoliday" checkedColor="#7c4db8" styleClass="letters_box_icons" text="Considerar feriados?" unCheckedColor="#a6a6a6">
 					<font>
 						<Font name="System Bold" size="15.0" />
 					</font>
 				</JFXCheckBox>
-				<JFXCheckBox fx:id="chxSaturday" checkedColor="#7c4db8"
-					styleClass="letters_box_icons" text="Considerar sábados?"
-					unCheckedColor="#a6a6a6">
+				<JFXCheckBox fx:id="chxSaturday" checkedColor="#7c4db8" styleClass="letters_box_icons" text="Considerar sábados?" unCheckedColor="#a6a6a6">
 					<font>
 						<Font name="System Bold" size="15.0" />
 					</font>
 				</JFXCheckBox>
-				<JFXCheckBox fx:id="chxSunday" checkedColor="#7c4db8"
-					styleClass="letters_box_icons" text="Considerar domingos?"
-					unCheckedColor="#a6a6a6">
+				<JFXCheckBox fx:id="chxSunday" checkedColor="#7c4db8" styleClass="letters_box_icons" text="Considerar domingos?" unCheckedColor="#a6a6a6">
 					<font>
 						<Font name="System Bold" size="15.0" />
 					</font>
 				</JFXCheckBox>
 			</children>
 		</HBox>
-		<JFXButton fx:id="btnDelete" contentDisplay="GRAPHIC_ONLY"
-			layoutX="10.0" layoutY="551.0" ripplerFill="#7c4db8"
-			AnchorPane.bottomAnchor="5" AnchorPane.leftAnchor="10.0">
+		<JFXButton fx:id="btnDelete" contentDisplay="GRAPHIC_ONLY" layoutX="10.0" layoutY="551.0" ripplerFill="#7c4db8" AnchorPane.bottomAnchor="5" AnchorPane.leftAnchor="10.0">
 			<graphic>
-				<FontAwesomeIconView glyphName="TRASH_ALT"
-					size="2.5em">
+				<FontAwesomeIconView glyphName="TRASH_ALT" size="2.5em">
 					<styleClass>
 						<String fx:value="letters_box_icons" />
 						<String fx:value="icon" />
@@ -200,12 +144,9 @@
 				</FontAwesomeIconView>
 			</graphic>
 		</JFXButton>
-		<JFXButton fx:id="btnEdit" contentDisplay="GRAPHIC_ONLY"
-			layoutX="635.0" layoutY="551.0" ripplerFill="#7c4db8"
-			AnchorPane.bottomAnchor="5" AnchorPane.rightAnchor="10.0">
+		<JFXButton fx:id="btnEdit" contentDisplay="GRAPHIC_ONLY" layoutX="635.0" layoutY="551.0" ripplerFill="#7c4db8" AnchorPane.bottomAnchor="5" AnchorPane.rightAnchor="10.0">
 			<graphic>
-				<FontAwesomeIconView glyphName="EDIT"
-					size="2.5em">
+				<FontAwesomeIconView glyphName="EDIT" size="2.5em">
 					<styleClass>
 						<String fx:value="letters_box_icons" />
 						<String fx:value="icon" />
@@ -213,5 +154,24 @@
 				</FontAwesomeIconView>
 			</graphic>
 		</JFXButton>
+      <HBox fx:id="pnlInfoTeam" layoutX="562.0" layoutY="23.0" spacing="5.0" AnchorPane.rightAnchor="10.0">
+         <children>
+            <VBox nodeOrientation="RIGHT_TO_LEFT" spacing="10.0">
+               <children>
+                  <Label styleClass="letters_box_icons" text="Time">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblTeamName" prefWidth="100.0" text="Dinamite time" textFill="WHITE" wrapText="true" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font name="System Bold" size="22.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <StackPane fx:id="stkTeamColor" prefHeight="59.0" prefWidth="23.0" />
+         </children>
+      </HBox>
 	</children>
 </AnchorPane>
