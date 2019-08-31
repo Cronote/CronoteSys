@@ -124,7 +124,6 @@ public class ActivityDetailsViewController implements Initializable, LoadActivit
 			lstDependencies.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
 				@Override
 				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-					// TODO Auto-generated method stub
 					lstDependencies.scrollTo(newValue.intValue());
 
 				}
@@ -143,6 +142,9 @@ public class ActivityDetailsViewController implements Initializable, LoadActivit
 					lstDependencies.getSelectionModel().select(++selectedIndex);
 				}
 			});
+		}
+		if(activity.itsDependency()) {
+			btnDelete.getStyleClass().removeAll("show");
 		}
 	}
 
@@ -210,22 +212,7 @@ public class ActivityDetailsViewController implements Initializable, LoadActivit
 		}
 	}
 
-	// TODO:Fazer um observer pra entrar no modo edicao
-	private static ArrayList<ActivitySelectedI> editingActivityListeners = new ArrayList<ActivitySelectedI>();
-
-	public interface ActivitySelectedI {
-		void onActivitySelected(HashMap<String, Object> hmp);
-	}
-
-	public static void addOnActivitySelectedListener(ActivitySelectedI newListener) {
-		editingActivityListeners.add(newListener);
-	}
-
-	private void notifyAllActivitySelectedListeners(HashMap<String, Object> hmp) {
-		for (ActivitySelectedI l : editingActivityListeners) {
-			l.onActivitySelected(hmp);
-		}
-	}
+	
 
 	@Override
 	public void loadProject(ProjectVO proj) {

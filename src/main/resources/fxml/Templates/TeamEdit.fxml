@@ -2,17 +2,18 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXColorPicker?>
-<?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane fx:id="rootPaneEditTeam" prefWidth="819.0"
-	xmlns="http://javafx.com/javafx/8.0.212"
+	xmlns="http://javafx.com/javafx/8.0.171"
 	xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="com.cronoteSys.controller.TeamEditController">
 	<children>
@@ -43,8 +44,19 @@
 					</children>
 				</HBox>
 				<Label text="USUÁRIOS ENCONTRADOS" textFill="WHITE" />
-				<JFXListView fx:id="lstUsers"
-					style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
+				<ListView fx:id="lstUsers"
+					style="-fx-background-color: transparent;-fx-border-color:#A6A6A6;-fx-border-style: segments(10, 15, 15, 15)  line-cap round;" VBox.vgrow="ALWAYS">
+					<placeholder>
+						<AnchorPane>
+							<children>
+								<Label
+									text="Use o campo de texto acima para procurar usuários"
+									textFill="WHITE" wrapText="true" textAlignment="JUSTIFY" AnchorPane.leftAnchor="5.0"
+									AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="20.0" />
+							</children>
+						</AnchorPane>
+					</placeholder>
+				</ListView>
 			</children>
 		</VBox>
 		<VBox layoutX="818.0" layoutY="26.0" prefHeight="272.0"
@@ -65,9 +77,27 @@
 						</JFXButton>
 					</children>
 				</HBox>
+
 				<Label text="USUÁRIOS SELECIONADOS" textFill="WHITE" />
-				<JFXListView fx:id="lstMembers"
-					style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
+				<ListView fx:id="lstMembers"
+					style="-fx-background-color: transparent;-fx-border-color:#A6A6A6;-fx-border-style: segments(10, 15, 15, 15)  line-cap round;" VBox.vgrow="ALWAYS">
+					<placeholder>
+						<AnchorPane>
+							<children>
+
+								<Label contentDisplay="TOP" layoutX="99.0" layoutY="174.0"
+									text="Nenhum membro, arraste da lista ao lado para essa"
+									textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="5.0"
+									AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="20.0">
+									<graphic>
+										<MaterialDesignIconView fill="WHITE"
+											glyphName="ACCOUNT_PLUS" size="4em" />
+									</graphic>
+								</Label>
+							</children>
+						</AnchorPane>
+					</placeholder>
+				</ListView>
 			</children>
 		</VBox>
 		<JFXButton fx:id="btnUnselect" contentDisplay="GRAPHIC_ONLY"

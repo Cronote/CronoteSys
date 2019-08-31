@@ -8,36 +8,57 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="projectCardRoot" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="210.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="projectCardRoot" maxHeight="-Infinity"
+	minHeight="-Infinity" minWidth="-Infinity" prefWidth="210.0"
+	xmlns="http://javafx.com/javafx/8.0.171"
+	xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-      <StackPane fx:id="stkColorTag" layoutX="246.0" layoutY="-4.0" prefHeight="38.0" prefWidth="15.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="-2.0" />
-		<Label fx:id="lblTitle" alignment="TOP_LEFT" layoutX="18.0" layoutY="17.0" prefWidth="206.0" styleClass="info" text="ESTUDAR LÓGICA DE PROGRAMAÇÃO E ALGEBRA LINEAR" textFill="#ff0101" wrapText="true" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="63.0" AnchorPane.topAnchor="15.0">
+		<StackPane fx:id="stkColorTag" layoutX="246.0"
+			layoutY="-4.0" prefHeight="38.0" prefWidth="15.0"
+			AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="-2.0" />
+		<Label fx:id="lblTitle" alignment="TOP_LEFT" layoutX="18.0"
+			layoutY="17.0" prefWidth="206.0" styleClass="info"
+			text="ESTUDAR LÓGICA DE PROGRAMAÇÃO E ALGEBRA LINEAR"
+			textFill="#ff0101" wrapText="true" AnchorPane.bottomAnchor="40.0"
+			AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="63.0"
+			AnchorPane.topAnchor="15.0">
 			<font>
-				<Font name="System Bold" size="13.0" />
+				<Font name="System Bold" size="15.0" />
 			</font>
 		</Label>
-      <Label fx:id="lblTeamMembers" graphicTextGap="3.0" layoutX="56.0" layoutY="52.0" prefHeight="8.0" prefWidth="14.0" styleClass="info" text="0" textFill="WHITE" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="15.0">
-         <font>
-            <Font size="9.0" />
-         </font>
-         <graphic>
-            <FontAwesomeIconView fill="TRANSPARENT" glyphName="USERS" size="1em" stroke="WHITE" />
-         </graphic>
-         <tooltip>
-            <Tooltip text="Quantidade de Membros" />
-         </tooltip>
-      </Label>
-      <Label fx:id="lblActivityDoneTotal" graphicTextGap="3.0" layoutX="31.0" layoutY="79.0" prefHeight="7.0" styleClass="info" text="003/112" textFill="WHITE" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="13.0">
-         <font>
-            <Font size="10.0" />
-         </font>
-         <graphic>
-            <FontAwesomeIconView fill="WHITE" glyphName="FILE_TEXT_ALT" size="1em" text="" />
-         </graphic>
-         <tooltip>
-            <Tooltip text="Quantidade de atividades: Concluidas / Total" />
-         </tooltip>
-      </Label>
+		<Label fx:id="lblTeamMembers" graphicTextGap="3.0"
+			layoutX="56.0" layoutY="52.0" prefHeight="8.0" prefWidth="14.0"
+			styleClass="info" text="0" textFill="WHITE"
+			AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="15.0">
+			<font>
+				<Font size="13.0" />
+			</font>
+			<graphic>
+				<FontAwesomeIconView fill="TRANSPARENT"
+					glyphName="USERS" size="1em" stroke="WHITE" />
+			</graphic>
+			<tooltip>
+				<Tooltip text="Quantidade de Membros" />
+			</tooltip>
+		</Label>
+		<Label fx:id="lblActivityDoneTotal" graphicTextGap="3.0"
+			layoutX="31.0" layoutY="79.0" prefHeight="7.0" styleClass="info"
+			text="003/112" textFill="WHITE" AnchorPane.bottomAnchor="13.0"
+			AnchorPane.rightAnchor="13.0">
+			<font>
+				<Font size="13.0" />
+			</font>
+			<graphic>
+				<FontAwesomeIconView fill="WHITE"
+					glyphName="FILE_TEXT_ALT" size="1em"  />
+			</graphic>
+			<tooltip>
+				<Tooltip text="Quantidade de atividades: Concluidas / Total" />
+				<font>
+					<Font size="13.0" />
+				</font>
+			</tooltip>
+		</Label>
 	</children>
 	<styleClass>
 		<String fx:value="card" />

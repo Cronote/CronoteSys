@@ -41,6 +41,8 @@ import javafx.util.Duration;
 public class SignUpController extends MasterController {
 
 	@FXML
+	private StackPane stackPane;
+	@FXML
 	private JFXTextField txtName;
 	@FXML
 	private JFXDatePicker dateBirthday;
@@ -146,24 +148,16 @@ public class SignUpController extends MasterController {
 			objUser.setEmailRecover(txtSecondEmail.getText().trim());
 			objUser.setBirthDate(dateBirthday.getValue());
 			objUser.setStats(Byte.parseByte("1"));
+			objUser.setLogin(new LoginVO(txtEmail.getText(), sPassEncrypted));
+//			objLogin.setEmail(txtEmail.getText());
+//			objLogin.setPasswd(sPassEncrypted);
 			objUser = new UserBO().save(objUser);
-			objLogin.setTbUser(objUser);
-			objLogin.setEmail(txtEmail.getText());
-			objLogin.setPasswd(sPassEncrypted);
-			objLogin = new LoginBO().save(objLogin);
+//			objLogin = new LoginBO().save(objLogin);
 			if (objUser != null && objLogin != null) {
-				snackbar.getStyleClass().removeAll("error-snackbar");
-				snackbar.getStyleClass().add("success-snackbar");
-				snackbar.fireEvent(new SnackbarEvent(
-						new JFXSnackbarLayout("Cadastrado com sucesso!", "Fechar", action -> snackbar.close()),
-						Duration.INDEFINITE, null));
+				ScreenUtil.jfxDialogOpener(stackPane, "Sucesso", "Cadastrado com sucesso!");
 				new ScreenUtil().clearFields(getThisStage(), pnlInput);
 			} else {
-				snackbar.getStyleClass().removeAll("success-snackbar");
-				snackbar.getStyleClass().add("error-snackbar");
-				snackbar.fireEvent(new SnackbarEvent(
-						new JFXSnackbarLayout("Cadastro incorreto!", "Fechar", action -> snackbar.close()),
-						Duration.INDEFINITE, null));
+				ScreenUtil.jfxDialogOpener(stackPane, "Erro!", "Cadastro incorreto!");
 			}
 		}
 	}

@@ -18,13 +18,13 @@
 		<StackPane fx:id="stkTeamColor" layoutX="212.0" layoutY="4.0" prefHeight="32.0" prefWidth="15.0" style=" -fx-background-radius: 0 0 20 20;" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="-2.0" />
 		<Label fx:id="lblProjectsCount" layoutX="14.0" layoutY="58.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="10.0">
 			<graphic>
-				<FontAwesomeIconView fontSmoothingType="LCD" glyphName="BOOK" size="1em" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" textAlignment="CENTER" textOrigin="CENTER">
+				<FontAwesomeIconView fontSmoothingType="LCD" glyphName="BOOK" size="1em" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" style="-fx-stroke: white;" textAlignment="CENTER" textOrigin="CENTER">
 					<font>
 						<Font name="FontAwesome Regular" size="18.0" />
 					</font>
 					<styleClass>
 						<String fx:value="icon-outline" />
-						<String fx:value="normal" />
+						<String fx:value="normal-white" />
 						<String fx:value="rainforce" />
 					</styleClass>
 				</FontAwesomeIconView>
@@ -39,7 +39,7 @@
 		</Label>
 		<Label fx:id="lblMembersCount" layoutX="14.0" layoutY="84.0" text="0" textFill="WHITE" AnchorPane.leftAnchor="10.0">
 			<graphic>
-				<FontAwesomeIconView glyphName="USERS" size="1em">
+				<FontAwesomeIconView glyphName="USERS" size="1em" style="-fx-stroke: white;">
 					<styleClass>
 						<String fx:value="icon-outline" />
 						<String fx:value="rainforce" />

@@ -13,14 +13,11 @@ import com.cronoteSys.controller.TeamViewController.BtnNewTeamClickedI;
 import com.cronoteSys.interfaces.LoadActivityInterface;
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.ActivityBO.OnActivityDeletedI;
-import com.cronoteSys.model.bo.LoginBO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.model.vo.TeamVO;
 import com.cronoteSys.model.vo.UserVO;
-import com.cronoteSys.observer.ShowEditViewActivityObservableI;
-import com.cronoteSys.observer.ShowEditViewActivityObserverI;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
 import com.jfoenix.controls.JFXPopup;
@@ -62,6 +59,7 @@ public class HomeController implements Initializable {
 
 	@FXML
 	protected HBox root;
+	@FXML protected StackPane stackPaneOne;
 	private MenuController menuControl;
 
 	private void loadProjectManager(ProjectVO project, String mode) {
@@ -76,7 +74,7 @@ public class HomeController implements Initializable {
 		HBox.setHgrow(projectManager, Priority.ALWAYS);
 		addNode(projectManager);
 	}
-
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loadMenu();
@@ -112,6 +110,8 @@ public class HomeController implements Initializable {
 				ScreenUtil.paintScreen(root);
 			}
 		});
+		
+		SessionUtil.getSession().put("stackPane", stackPaneOne);
 	}
 
 	private void switchVBoxTeamContent(TeamVO team, String mode) {
@@ -411,7 +411,7 @@ class MenuController implements Initializable {
 		String[] userNames = loggedUser.getCompleteName().split(" ");
 		String name = userNames.length > 1 ? userNames[0] + " " + userNames[(userNames.length - 1)] : userNames[0];
 		lblUsername.setText(name);
-		LoginVO login = new LoginBO().getLogin(loggedUser);
+		LoginVO login = loggedUser.getLogin();
 		lblUserEmail.setText(login.getEmail());
 
 	}

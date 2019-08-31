@@ -10,30 +10,57 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="activityCardRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="117.0" prefWidth="249.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="activityCardRoot" maxHeight="-Infinity"
+	maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+	prefWidth="249.0" xmlns="http://javafx.com/javafx/8.0.171"
+	xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-		<Label fx:id="lblTitle" alignment="TOP_LEFT" contentDisplay="TEXT_ONLY" layoutX="14.0" layoutY="14.0" prefWidth="153.0" styleClass="info" text="Desenvolver o dialog de gerenciar dependências" textFill="#ff0101" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="82.0" AnchorPane.topAnchor="10.0">
+		<Label fx:id="lblTitle" alignment="TOP_LEFT"
+			contentDisplay="TEXT_ONLY" layoutX="14.0" layoutY="14.0"
+			prefWidth="153.0" styleClass="info"
+			text="Desenvolver o dialog de gerenciar dependências" wrapText="true"
+			textFill="#ff0101" AnchorPane.leftAnchor="14.0"
+			AnchorPane.bottomAnchor="80" AnchorPane.rightAnchor="82.0"
+			AnchorPane.topAnchor="10.0">
 			<font>
-				<Font name="System Bold" size="15.0" />
+				<Font name="System Bold" size="16.0" />
 			</font>
 		</Label>
-		<Label fx:id="lblStatus" alignment="BASELINE_LEFT" layoutX="14.0" layoutY="70.0" prefWidth="101.0" styleClass="info" text="NÃO INICIADO" textFill="WHITE" AnchorPane.bottomAnchor="26.0" AnchorPane.leftAnchor="14.0" />
-		<AnchorPane layoutX="12.0" layoutY="93.0" prefHeight="15.0" prefWidth="225.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0">
+		<Label fx:id="lblCategory" layoutX="14.0" layoutY="48.0"
+			prefHeight="17.0" styleClass="info" text="CATEGORIA" textFill="WHITE"
+			AnchorPane.leftAnchor="14.0" AnchorPane.bottomAnchor="60" />
+		<Label fx:id="lblStatus" alignment="BASELINE_LEFT"
+			layoutX="14.0" layoutY="70.0" prefWidth="101.0" styleClass="info"
+			text="NÃO INICIADO" textFill="WHITE" AnchorPane.bottomAnchor="26.0"
+			AnchorPane.leftAnchor="14.0" />	
+
+		<AnchorPane layoutX="12.0" layoutY="93.0" prefHeight="15.0"
+			prefWidth="225.0" AnchorPane.bottomAnchor="3.0"
+			AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0">
 			<children>
-				<Label fx:id="lblProgress" prefHeight="18.0" styleClass="info" text="0.00%" AnchorPane.rightAnchor="0.0" />
-				<JFXProgressBar fx:id="pgbProgress" layoutY="4.0" prefHeight="9.0" prefWidth="162.0" progress="0.22" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="63.0" AnchorPane.topAnchor="6.0" />
+				<Label fx:id="lblProgress" prefHeight="18.0" styleClass="info"
+					text="0.00%" AnchorPane.rightAnchor="0.0" />
+				<JFXProgressBar fx:id="pgbProgress" layoutY="4.0"
+					prefHeight="9.0" prefWidth="162.0" progress="0.22"
+					AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="0.0"
+					AnchorPane.rightAnchor="63.0" AnchorPane.topAnchor="6.0" />
 			</children>
 		</AnchorPane>
-		<Button fx:id="btnDelete" contentDisplay="GRAPHIC_ONLY" layoutX="282.0" layoutY="7.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="25.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="7.0">
+		<Button fx:id="btnDelete" contentDisplay="GRAPHIC_ONLY"
+			layoutX="282.0" layoutY="7.0" mnemonicParsing="false"
+			prefHeight="20.0" prefWidth="25.0" AnchorPane.rightAnchor="2.0"
+			AnchorPane.topAnchor="7.0">
 			<graphic>
-				<FontAwesomeIconView glyphName="TRASH_ALT" size="2em" AnchorPane.rightAnchor="5.0" />
+				<FontAwesomeIconView glyphName="TRASH_ALT"
+					size="2em" AnchorPane.rightAnchor="5.0" />
 			</graphic>
 			<styleClass>
 				<String fx:value="btnTransparent" />
 				<String fx:value="hide" />
 			</styleClass>
 		</Button>
-		<HBox layoutX="204.0" layoutY="70.0" prefHeight="21.0" AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="6.0">
+		<HBox layoutX="204.0" layoutY="70.0" prefHeight="21.0"
+			AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="6.0">
 			<children>
 				<Label fx:id="lblIndex" styleClass="hide" text="Label">
 					<padding>
@@ -42,25 +69,37 @@
 				</Label>
 			</children>
 		</HBox>
-		<Button fx:id="btnFinalize" contentDisplay="GRAPHIC_ONLY" layoutX="274.0" layoutY="7.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="25.0" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="7.0">
+		<Button fx:id="btnFinalize" contentDisplay="GRAPHIC_ONLY"
+			layoutX="274.0" layoutY="7.0" mnemonicParsing="false"
+			prefHeight="20.0" prefWidth="25.0"
+			style="-fx-background-color: transparent;"
+			AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="7.0">
 			<graphic>
-				<FontAwesomeIconView glyphName="CHECK_CIRCLE_ALT" size="2em" styleClass="letters_box_icons" AnchorPane.rightAnchor="5.0" />
+				<FontAwesomeIconView
+					glyphName="CHECK_CIRCLE_ALT" size="2em"
+					styleClass="letters_box_icons" AnchorPane.rightAnchor="5.0" />
 			</graphic>
 			<styleClass>
 				<String fx:value="btnTransparent" />
 				<String fx:value="hide" />
 			</styleClass>
 		</Button>
-		<Button fx:id="btnPlayPause" contentDisplay="GRAPHIC_ONLY" layoutX="241.0" layoutY="7.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="25.0" style="-fx-background-color: transparent;" text="play" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="7.0">
+		<Button fx:id="btnPlayPause" contentDisplay="GRAPHIC_ONLY"
+			layoutX="241.0" layoutY="7.0" mnemonicParsing="false"
+			prefHeight="20.0" prefWidth="25.0"
+			style="-fx-background-color: transparent;" text="play"
+			AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="7.0">
 			<graphic>
-				<FontAwesomeIconView glyphName="TRASH_ALT" size="2em" styleClass="letters_box_icons" AnchorPane.rightAnchor="5.0" />
+				<FontAwesomeIconView glyphName="TRASH_ALT"
+					size="2em" styleClass="letters_box_icons"
+					AnchorPane.rightAnchor="5.0" />
 			</graphic>
 			<styleClass>
 				<String fx:value="btnTransparent" />
 				<String fx:value="hide" />
 			</styleClass>
 		</Button>
-		<Label fx:id="lblCategory" layoutX="14.0" layoutY="48.0" prefHeight="17.0" styleClass="info" text="CATEGORIA" textFill="WHITE" />
+
 	</children>
 	<styleClass>
 		<String fx:value="card" />
