@@ -88,6 +88,8 @@ public class TeamEditController implements Initializable {
 	private TeamVO editingTeam;
 	private static final DataFormat MEMBER_LIST = new DataFormat("memberList");
 
+	private List<TeamMember> membersBackup = new ArrayList<TeamMember>();
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loggedUser = (UserVO) SessionUtil.getSession().get("loggedUser");
@@ -104,11 +106,17 @@ public class TeamEditController implements Initializable {
 	public void setEditingTeam(TeamVO editingTeam) {
 		this.editingTeam = editingTeam;
 		if (editingTeam != null) {
+			membersBackup.clear();
+			membersBackup.addAll(editingTeam.getMembers());
 			txtName.setText(editingTeam.getName());
 			txtDesc.setText(editingTeam.getDesc());
 			cpTeamColor.setValue(ScreenUtil.stringToColor(editingTeam.getTeamColor()));
 			lstMProperty.set(FXCollections.observableArrayList(editingTeam.getMembers()));
 			refreshLists();
+			for (TeamMember tm : editingTeam.getMembers()) {
+				System.out.println(tm.isInviteAccepted());
+
+			}
 		}
 
 	}
@@ -158,7 +166,6 @@ public class TeamEditController implements Initializable {
 			}
 		});
 
-
 		// Add mouse event handlers for the target
 		lstMembers.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
@@ -177,7 +184,6 @@ public class TeamEditController implements Initializable {
 				dragDropped(event, lstMembers);
 			}
 		});
-
 
 	}
 
@@ -213,16 +219,25 @@ public class TeamEditController implements Initializable {
 		if (!txtName.validate())
 			return;
 		editingTeam.setName(txtName.getText());
-		editingTeam.setName(txtName.getText());
 		editingTeam.setDesc(txtDesc.getText());
 		editingTeam.setTeamColor(cpTeamColor.getValue().toString());
-		List<TeamMember> members = new ArrayList<TeamMember>();
 		if (lstMembers.getItems() != null) {
 			for (ThreatingUser tu : lstMembers.getItems()) {
-				members.add((TeamMember) tu);
+				if (!backupContaints((TeamMember) tu))
+					membersBackup.add((TeamMember) tu);
 			}
+
+			membersBackup.removeIf(new Predicate<TeamMember>() {
+
+				@Override
+				public boolean test(TeamMember t) {
+
+					return !membersContaints(t);
+				}
+			});
+
 		}
-		editingTeam.setMembers(members);
+		editingTeam.setMembers(membersBackup);
 
 		TeamBO teambo = new TeamBO();
 		if (editingTeam.getId() == null) {
@@ -230,6 +245,28 @@ public class TeamEditController implements Initializable {
 			teambo.save(editingTeam);
 		} else
 			teambo.update(editingTeam);
+	}
+
+	private boolean backupContaints(TeamMember tm) {
+		for (TeamMember m : membersBackup) {
+			if (tm.getUser().getIdUser() == m.getUser().getIdUser()) {
+				return true;
+			}
+		}
+
+		return false;
+
+	}
+
+	private boolean membersContaints(TeamMember tm) {
+		for (ThreatingUser tu : lstMembers.getItems()) {
+			if (tm.getUser().getIdUser() == ((TeamMember) tu).getUser().getIdUser()) {
+				return true;
+			}
+		}
+
+		return false;
+
 	}
 
 	private void btnSelectClicked(ActionEvent e) {
@@ -330,7 +367,5 @@ public class TeamEditController implements Initializable {
 		event.setDropCompleted(dragCompleted);
 		event.consume();
 	}
-
-
 
 }
