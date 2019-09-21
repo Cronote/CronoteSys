@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/8.0.212" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.LoginController">
+<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.LoginController">
    <children>
       <GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" prefHeight="788.0" prefWidth="940.0">
       	<columnConstraints>
@@ -57,7 +57,7 @@
       						<Font size="14.0" />
       					</font>
       				</JFXPasswordField>
-      				<Button fx:id="btnLogin" defaultButton="true" layoutX="37.0" layoutY="325.0" mnemonicParsing="false" onAction="#btnLoginClicked" opacity="0.88" prefHeight="44.0" prefWidth="351.0" style="" styleClass="btn" text="ENTRAR" textAlignment="CENTER" textFill="WHITE">
+      				<Button fx:id="btnLogin" defaultButton="true" layoutX="37.0" layoutY="325.0" mnemonicParsing="false" onAction="#btnLoginClicked" opacity="0.88" prefHeight="44.0" prefWidth="351.0" style="" styleClass="btn" text="Entrar" textAlignment="CENTER" textFill="WHITE">
       					<font>
       						<Font name="System Bold" size="23.0" />
       					</font>
@@ -76,7 +76,7 @@
       						<Font size="14.0" />
       					</font>
       					<graphic>
-      						<Hyperlink fx:id="linkSignUp" graphicTextGap="1.0" onAction="#linkSignUpClicked" text="Cadastre-se" textFill="#7c4db8" underline="true">
+      						<Hyperlink fx:id="linkSignUp" graphicTextGap="1.0" onAction="#linkSignUpClicked" text="Cadastre-se" textFill="#b489eb" underline="true">
       							<font>
       								<Font size="14.0" />
       							</font>

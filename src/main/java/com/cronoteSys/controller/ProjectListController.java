@@ -89,7 +89,6 @@ public class ProjectListController implements Initializable {
 		});
 
 		ProjectBO.addOnProjectAddedIListener(proj -> {
-			System.out.println("ProjectListController.projectadded()");
 			projectLst.add(0, proj);
 			cardsList.refresh();
 			cardsList.getSelectionModel().select(proj);

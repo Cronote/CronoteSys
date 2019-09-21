@@ -11,9 +11,6 @@ import com.cronoteSys.interfaces.LoadProjectInterface;
 import com.cronoteSys.model.bo.ProjectBO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.ProjectVO;
-import com.cronoteSys.model.vo.TeamVO;
-import com.cronoteSys.observer.ShowEditViewActivityObservableI;
-import com.cronoteSys.observer.ShowEditViewActivityObserverI;
 import com.cronoteSys.util.ScreenUtil;
 import com.google.inject.Inject;
 
@@ -106,8 +103,7 @@ public class ProjectManagerController implements Initializable {
 				tabPane.getTabs().add(tbActivities);
 				activityListController.listByProject(selectedProject);
 				try {
-					firstInfoViewController
-							.setActivities(activityListController.getList());
+					firstInfoViewController.setActivities(activityListController.getList());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -135,9 +131,11 @@ public class ProjectManagerController implements Initializable {
 				loader = ScreenUtil.loadTemplate("ActivityDetailsInserting");
 				ap = (AnchorPane) loader.load();
 			}
+			ap.getStyleClass().add("tone3-background");
 			if (activity != null)
 				((LoadActivityInterface) loader.getController()).loadActivity(activity);
 			((LoadProjectInterface) loader.getController()).loadProject(selectedProject);
+			HBox.setHgrow(ap, Priority.ALWAYS);
 			hboxContent.getChildren().add(ap);
 			VBox.setVgrow(ap, Priority.ALWAYS);
 		} catch (IOException e1) {

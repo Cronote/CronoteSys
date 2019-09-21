@@ -140,7 +140,7 @@
 				<Font name="System Bold" size="17.0" />
 			</font>
 			<graphic>
-				<Label fx:id="lblLastModified" alignment="TOP_LEFT" graphicTextGap="0.0" text="23/07/2019 11:11" textFill="RED" translateX="-16.0">
+				<Label fx:id="lblLastModified" alignment="TOP_LEFT" graphicTextGap="0.0" text="23/07/2019 11:11" textFill="#a6a6a6" translateX="-16.0">
 					<font>
 						<Font name="System Bold" size="17.0" />
 					</font>

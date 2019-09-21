@@ -74,6 +74,8 @@ public class LoginController extends MasterController {
 		Boolean[] areEmailFields = { true, false };
 		ScreenUtil.addInlineValidation(lstFieldsToValidation, areNotNullFields, areEmailFields);
 		snackbar = new JFXSnackbar(pnlMidBottomArea);
+		
+		txtPassword.setText("Omega1390-");
 	}
 
 	public void login(LoginVO login) {

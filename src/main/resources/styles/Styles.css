@@ -285,6 +285,9 @@ ComboBox{
 .tone2-background{
 	-fx-background-color:#2F3137;
 }
+.tone3-background{
+	-fx-background-color:#3E3F42;
+}
 .borders{
 	-fx-border-color:#737373;
 }
@@ -355,7 +358,7 @@ ComboBox{
     -fx-text-fill: white;
 }
 .inputField{
-	-jfx-focus-color:#7c4db8;
+	-jfx-focus-color:#b489eb;
 	-jfx-unfocus-color:#a6a6a6;
 }
 .jfx-combo-box .list-view{
@@ -431,7 +434,7 @@ ComboBox{
 }
 
 .jfx-date-picker:editable .date-picker-display-node{
-	-jfx-focus-color:#7c4db8;
+	-jfx-focus-color:#b489eb;
 	-jfx-unfocus-color:#a6a6a6;
 	-jfx-label-float:true;
 }
@@ -449,13 +452,14 @@ ComboBox{
 .calendar-grid > .day-name-cell{
 	 -fx-font-size: 16.0;
     -fx-font-weight: BOLD;
-	-fx-text-fill:#7c4db8;	
+	-fx-text-fill:#b489eb;	
 }
 .calendar-grid > .day-cell{
 	-fx-text-fill:#A6A6A6;	
 }
 .calendar-grid > .today{
-	-fx-text-fill:#7c4db8;	
+	-fx-text-fill:#b489eb;	
+	-fx-font-weight: 900 ;
 }
 .calendar-grid > .selected{
 	-fx-text-fill:white;	
@@ -569,4 +573,18 @@ ComboBox{
 
 .highLightsDetails:determinate .bar{
 	-fx-background-color: #7c4db8;
+}
+
+.app-header{
+	-fx-background-color: #7C4DB8;
+}
+
+.app-header > *>.controlBtn:hover{
+	-fx-background-color: rgba(0, 0, 0, 0.2) !important;
+	-fx-cursor:hand;
+} 
+
+.hyperlink:hover {
+	-fx-text-fill: #b489eb;
+	-fx-cursor:hand;
 }
