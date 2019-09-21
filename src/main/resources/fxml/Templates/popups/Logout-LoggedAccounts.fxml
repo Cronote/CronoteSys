@@ -23,14 +23,14 @@
 						</Label>
 					</children>
 				</StackPane>
-				<Label fx:id="lblUsername" layoutX="81.0" layoutY="25.0" prefHeight="21.0" text="Bruno" textFill="#f5f5f5" AnchorPane.leftAnchor="81.0">
+				<Label fx:id="lblUsername" layoutX="81.0" layoutY="25.0" prefHeight="21.0" text="Bruno" textFill="#f5f5f5" AnchorPane.leftAnchor="81.0" AnchorPane.rightAnchor="20.0">
 					<font>
-						<Font size="16.0" />
+						<Font size="18.0" />
 					</font>
 				</Label>
-				<Label fx:id="lblUserEmail" layoutX="81.0" layoutY="50.0" text="bruno.car.ambrosio@gmail.com" textFill="#f5f5f5" AnchorPane.leftAnchor="81.0" AnchorPane.rightAnchor="36.0">
+				<Label fx:id="lblUserEmail" layoutX="81.0" layoutY="50.0" text="bruno.car.ambrosio@gmail.com" textFill="#f5f5f5" AnchorPane.leftAnchor="81.0" AnchorPane.rightAnchor="20.0">
 					<font>
-						<Font size="13.0" />
+						<Font size="14.0" />
 					</font>
 					<tooltip>
 						<Tooltip fx:id="ttpUserEmail">
@@ -40,22 +40,12 @@
 						</Tooltip>
 					</tooltip>
 				</Label>
-				<JFXButton fx:id="btnLogout" layoutX="233.0" layoutY="77.0" prefHeight="31.0" prefWidth="53.0" ripplerFill="BLACK" style="-fx-background-radius: 0;" styleClass="btn" text="Sair" textFill="WHITE" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0">
-					<font>
-						<Font name="System Bold" size="15.0" />
-					</font>
-				</JFXButton>
-				<JFXButton fx:id="btnConfig" layoutX="80.0" layoutY="82.0" prefHeight="31.0" ripplerFill="BLACK" style="-fx-background-radius: 0;" styleClass="btn" text="Configurações" textFill="WHITE" AnchorPane.bottomAnchor="5.0">
-					<font>
-						<Font name="System Bold" size="15.0" />
-					</font>
-				</JFXButton>
 			</children>
 		</AnchorPane>
 		<ListView fx:id="loggedAccounts" prefWidth="300.0" style="-fx-background-color: transparent;" />
 		<AnchorPane fx:id="pnlControls" prefHeight="49.0" prefWidth="300.0">
 			<children>
-            <Separator prefWidth="200.0" style="-fx-background-color: #A6A6A6; -fx-border-color: #A6A6A6;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+				<Separator prefWidth="200.0" style="-fx-background-color: #A6A6A6; -fx-border-color: #A6A6A6;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
 				<JFXButton fx:id="btnAddAccount" layoutY="6.0" ripplerFill="BLACK" text="Adicionar conta" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
 					<font>
 						<Font name="System Bold" size="15.0" />
