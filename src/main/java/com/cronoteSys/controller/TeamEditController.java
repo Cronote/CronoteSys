@@ -1,6 +1,7 @@
 package com.cronoteSys.controller;
 
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -64,10 +65,6 @@ public class TeamEditController implements Initializable {
 	@FXML
 	private ListView<ThreatingUser> lstUsers;
 	@FXML
-	private JFXButton btnUnselect;
-	@FXML
-	private JFXButton btnSelect;
-	@FXML
 	private JFXTextField txtSearchMembers;
 	@FXML
 	private JFXButton btnSearchMembers;
@@ -113,10 +110,6 @@ public class TeamEditController implements Initializable {
 			cpTeamColor.setValue(ScreenUtil.stringToColor(editingTeam.getTeamColor()));
 			lstMProperty.set(FXCollections.observableArrayList(editingTeam.getMembers()));
 			refreshLists();
-			for (TeamMember tm : editingTeam.getMembers()) {
-				System.out.println(tm.isInviteAccepted());
-
-			}
 		}
 
 	}
@@ -132,19 +125,6 @@ public class TeamEditController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				btnSearchUsersClicked(event);
-			}
-		});
-
-		btnSelect.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				btnSelectClicked(event);
-			}
-		});
-		btnUnselect.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				btnUnselectClicked(event);
 			}
 		});
 
@@ -223,8 +203,11 @@ public class TeamEditController implements Initializable {
 		editingTeam.setTeamColor(cpTeamColor.getValue().toString());
 		if (lstMembers.getItems() != null) {
 			for (ThreatingUser tu : lstMembers.getItems()) {
-				if (!backupContaints((TeamMember) tu))
-					membersBackup.add((TeamMember) tu);
+				if (!backupContains((TeamMember) tu)) {
+					TeamMember member = (TeamMember) tu;
+					member.setExpiresAt(LocalDateTime.now().plusMinutes(24));
+					membersBackup.add(member);
+				}
 			}
 
 			membersBackup.removeIf(new Predicate<TeamMember>() {
@@ -232,10 +215,16 @@ public class TeamEditController implements Initializable {
 				@Override
 				public boolean test(TeamMember t) {
 
-					return !membersContaints(t);
+					return !membersContains(t);
 				}
 			});
 
+		}
+		for (TeamMember teamMember : membersBackup) {
+			if (!teamMember.isInviteAccepted() && teamMember.getExpiresAt() == null) {
+				teamMember.setExpiresAt(LocalDateTime.now().plusMinutes(24));
+
+			}
 		}
 		editingTeam.setMembers(membersBackup);
 
@@ -247,7 +236,7 @@ public class TeamEditController implements Initializable {
 			teambo.update(editingTeam);
 	}
 
-	private boolean backupContaints(TeamMember tm) {
+	private boolean backupContains(TeamMember tm) {
 		for (TeamMember m : membersBackup) {
 			if (tm.getUser().getIdUser() == m.getUser().getIdUser()) {
 				return true;
@@ -258,7 +247,7 @@ public class TeamEditController implements Initializable {
 
 	}
 
-	private boolean membersContaints(TeamMember tm) {
+	private boolean membersContains(TeamMember tm) {
 		for (ThreatingUser tu : lstMembers.getItems()) {
 			if (tm.getUser().getIdUser() == ((TeamMember) tu).getUser().getIdUser()) {
 				return true;
@@ -266,12 +255,6 @@ public class TeamEditController implements Initializable {
 		}
 
 		return false;
-
-	}
-
-	private void btnSelectClicked(ActionEvent e) {
-		UserVO selected = (UserVO) lstUsers.getSelectionModel().getSelectedItem();
-		manipulateLists(selected, "member");
 
 	}
 
@@ -301,17 +284,12 @@ public class TeamEditController implements Initializable {
 				List<TeamMember> membersTmp = new ArrayList<TeamMember>();
 				for (Object obj : lstTmp)
 					membersTmp.add((TeamMember) obj);
-				membersTmp.add(new TeamMember((UserVO) selected, false));
+				membersTmp.add(new TeamMember((UserVO) selected, false, LocalDateTime.now()));
 				lstMProperty.set(FXCollections.observableArrayList(membersTmp));
 			}
 			refreshLists();
 
 		}
-	}
-
-	private void btnUnselectClicked(ActionEvent e) {
-		TeamMember selected = (TeamMember) lstMembers.getSelectionModel().getSelectedItem();
-		manipulateLists(selected, "user");
 	}
 
 	private void dragDetected(MouseEvent event, ListView<ThreatingUser> listView) {
@@ -348,7 +326,6 @@ public class TeamEditController implements Initializable {
 		event.consume();
 	}
 
-	@SuppressWarnings("unchecked")
 	private void dragDropped(DragEvent event, ListView<ThreatingUser> listView) {
 		boolean dragCompleted = false;
 
