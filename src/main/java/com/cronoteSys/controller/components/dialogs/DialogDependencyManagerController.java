@@ -4,7 +4,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
 
 import com.cronoteSys.controller.components.cellfactory.SimpleActivityCellFactory;
 import com.cronoteSys.filter.ActivityFilter;
@@ -19,7 +18,6 @@ import com.google.inject.Inject;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -83,7 +81,6 @@ public class DialogDependencyManagerController implements Initializable {
 		initEvents();
 
 	}
-
 
 	private void dragDetected(MouseEvent event, ListView<SimpleActivity> listView) {
 		// Make sure at least one item is selected

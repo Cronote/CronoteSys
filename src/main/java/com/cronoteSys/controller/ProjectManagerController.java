@@ -30,8 +30,8 @@ public class ProjectManagerController implements Initializable {
 	private ProjectBO projectBO;
 	@FXML
 	private TabPane tabPane;
-	private HBox hboxContent = new HBox();;
 
+	private HBox hboxContent = new HBox();;
 	private ProjectFirstInfoController firstInfoController;
 	private ProjectFirstInfoViewController firstInfoViewController;
 	private ActivityListController activityListController;
@@ -49,11 +49,8 @@ public class ProjectManagerController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-//		initActivities();
 	}
 
-	private void initEvents() {
-	}
 
 	public void initFirstInfo(String mode) {
 		FXMLLoader firstInfoLoader = null;
@@ -93,10 +90,8 @@ public class ProjectManagerController implements Initializable {
 	}
 
 	private void initActivities() {
-		System.out.println(selectedProject);
 		if (selectedProject != null) {
 			try {
-
 				FXMLLoader actlivityListLoader = ScreenUtil.loadTemplate("ActivityList");
 				hboxContent.getChildren().add(actlivityListLoader.load());
 				activityListController = ((ActivityListController) actlivityListLoader.getController());
@@ -149,7 +144,6 @@ public class ProjectManagerController implements Initializable {
 			selectedProject = projectBO.update(project);
 		else
 			selectedProject = projectBO.save(project);
-//		setSelectedProject(selectedProject, "view");
 	}
 
 	public void delete(ProjectVO viewingProject) {

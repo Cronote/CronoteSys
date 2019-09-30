@@ -20,13 +20,9 @@ import com.cronoteSys.model.vo.TeamVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXTabPane;
 
-import de.jensd.fx.glyphs.GlyphIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
@@ -46,8 +42,6 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -124,7 +118,7 @@ public class HomeController implements Initializable {
 		root.getChildren().addListener(new ListChangeListener<Node>() {
 			@Override
 			public void onChanged(Change<? extends Node> c) {
-				ScreenUtil.paintScreen(root);
+				ScreenUtil.paintScreen(root, 1, false);
 			}
 		});
 
@@ -155,13 +149,15 @@ public class HomeController implements Initializable {
 					controller.setEditingTeam(team);
 				}
 			}
-
 			box.getChildren().add(ap);
 			VBox.setVgrow(ap, Priority.ALWAYS);
+
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+
 		HBox.setHgrow(box, Priority.ALWAYS);
+		ScreenUtil.paintScreen(box, 0, true);
 	}
 
 	private void loadMenu() {
@@ -321,12 +317,14 @@ class MenuController implements Initializable {
 				AnchorPane ap = (AnchorPane) teamViewLoader.load();
 				box.getChildren().add(ap);
 				VBox.setVgrow(ap, Priority.ALWAYS);
+
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			homeControl.addNode(box);
 			HBox.setHgrow(box, Priority.ALWAYS);
+			ScreenUtil.paintScreen(box, 0, true);
 		}
 	}
 

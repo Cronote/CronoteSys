@@ -3,7 +3,6 @@ package com.cronoteSys.controller.components.listcell;
 import com.cronoteSys.model.interfaces.ThreatingUser;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.model.vo.relation.side.TeamMember;
-import com.sun.javafx.scene.control.skin.LabelSkin;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

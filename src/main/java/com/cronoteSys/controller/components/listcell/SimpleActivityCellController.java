@@ -1,7 +1,6 @@
 package com.cronoteSys.controller.components.listcell;
 
 import com.cronoteSys.model.vo.SimpleActivity;
-import com.jfoenix.controls.JFXListCell;
 
 import javafx.geometry.Orientation;
 import javafx.scene.Group;
@@ -18,17 +17,14 @@ public class SimpleActivityCellController extends ListCell<SimpleActivity> {
 	private Label lblTitle;
 	private AnchorPane activityCardRoot;
 	private Label lblCategory;
-private boolean hasToFixHeitgh;
+	private boolean hasToFixHeitgh;
+
 	public SimpleActivityCellController(Orientation orientation, Double width) {
 
 		initComponents();
 
 		switch (orientation) {
 		case HORIZONTAL:
-//			activityCardRoot.setMaxWidth(50.0);
-//			activityCardRoot.setMinWidth(50.0);
-//			setMaxWidth(50.0);
-//			setMinWidth(50.0);
 			activityCardRoot.setPrefWidth(width);
 			setPrefWidth(width);
 
@@ -37,16 +33,15 @@ private boolean hasToFixHeitgh;
 			AnchorPane.setLeftAnchor(lblCategory, 5.0);
 			break;
 		case VERTICAL:
-			Double parentWidth = width*2;
+			Double parentWidth = width * 2;
 			hasToFixHeitgh = true;
 			activityCardRoot.setPrefWidth(parentWidth);
 			setPrefWidth(parentWidth);
-			lblTitle.setPrefWidth(parentWidth- (0.05*parentWidth));
+			lblTitle.setPrefWidth(parentWidth - (0.05 * parentWidth));
 			lblTitle.setWrapText(true);
-			
+
 			break;
 		}
-//		lblTitle.setPrefWidth(153.0);
 	}
 
 	private void initComponents() {
@@ -82,7 +77,6 @@ private boolean hasToFixHeitgh;
 		root.applyCss();
 		root.layout();
 		Double height = node.getHeight();
-		System.out.println(height);
 		Object[] result = { height + 5, node };
 
 		return result;
@@ -93,28 +87,28 @@ private boolean hasToFixHeitgh;
 	public void updateSelected(boolean selected) {
 		super.updateSelected(selected);
 		if (selected) {
-			System.out.println(getHeight());
 			activityCardRoot.getStyleClass().add("cardSelected");
 		} else
 			activityCardRoot.getStyleClass().removeAll("cardSelected");
 
 	}
-	
+
 	public void presetGraphic(Node value) {
-		if(hasToFixHeitgh) {
-			Double heights = 10+ Double.parseDouble(getHeightOf(lblTitle)[0].toString()) + 5;
+		if (hasToFixHeitgh) {
+			Double heights = 10 + Double.parseDouble(getHeightOf(lblTitle)[0].toString()) + 5;
 			AnchorPane.setTopAnchor(lblCategory, heights);
 			AnchorPane.setRightAnchor(lblCategory, 5.0);
 			AnchorPane.setLeftAnchor(lblCategory, 5.0);
 //			AnchorPane.setBottomAnchor(lblCategory, 3.0);
 			heights += Double.parseDouble(getHeightOf(lblCategory)[0].toString());
-			heights +=12;
+			heights += 12;
 			activityCardRoot.setPrefHeight(heights);
 			setPrefHeight(heights);
 			clearAndAddNodes();
 		}
 		super.setGraphic(value);
 	}
+
 	@Override
 	protected void updateItem(SimpleActivity item, boolean empty) {
 		// TODO Auto-generated method stub

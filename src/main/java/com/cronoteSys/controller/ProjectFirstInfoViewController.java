@@ -2,12 +2,9 @@ package com.cronoteSys.controller;
 
 import java.net.URL;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -16,14 +13,10 @@ import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.model.vo.StatusEnum;
-import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.ScreenUtil;
-import com.cronoteSys.util.SessionUtil;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXTextArea;
-import com.jfoenix.controls.JFXTextField;
-import com.sun.javafx.binding.StringFormatter;
+import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXProgressBar;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -31,16 +24,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.control.Label;
-import com.jfoenix.controls.JFXProgressBar;
-import com.jfoenix.controls.JFXCheckBox;
 
 public class ProjectFirstInfoViewController implements Initializable {
 	@FXML
@@ -83,16 +70,16 @@ public class ProjectFirstInfoViewController implements Initializable {
 
 	@FXML
 	private Label lblEstimatedProgress;
-	
+
 	@FXML
 	private HBox pnlInfoTeam;
 
 	@FXML
 	private Label lblTeamName;
-	
+
 	@FXML
 	private StackPane stkTeamColor;
-	
+
 	@FXML
 	private JFXCheckBox chxHoliday;
 
@@ -131,11 +118,11 @@ public class ProjectFirstInfoViewController implements Initializable {
 		estimatedCount = (int) activities[1];
 
 		this.lblRealDoneTodo.setText(String.format("%d/%.0f", doneCount, total));
-		Double realProgress = doneCount / total;
+		Double realProgress = total > 0 ? doneCount / total : 0;
 		pgbRealProgress.setProgress(realProgress);
 
 		this.lblEstimatedDoneTodo.setText(String.format("%d/%.0f", estimatedCount, total));
-		Double estimatedProgress = estimatedCount / total;
+		Double estimatedProgress = total > 0 ? estimatedCount / total : 0;
 		pgbEstimatedProgress.setProgress(estimatedProgress);
 	}
 
@@ -212,18 +199,18 @@ public class ProjectFirstInfoViewController implements Initializable {
 
 			lblTotalTime.setText(String.format("%d Ano(s), %d mes(es) e %d dia(s)", years, months, days));
 
-			if(project.getTeam()!=null) {
+			if (project.getTeam() != null) {
 				pnlInfoTeam.setVisible(true);
 				lblTeamName.setText(project.getTeam().getName());
-				String color = project.getTeam() != null ? ScreenUtil.colorToRGBString(project.getTeam().getTeamColor()) : "1,1,1,1";
+				String color = project.getTeam() != null ? ScreenUtil.colorToRGBString(project.getTeam().getTeamColor())
+						: "1,1,1,1";
 				stkTeamColor.setStyle("-fx-background-color:rgba(" + color + ");");
-				
-			}
-			else {
+
+			} else {
 				pnlInfoTeam.setVisible(false);
-				
+
 			}
-		}else {
+		} else {
 			pnlInfoTeam.setVisible(false);
 		}
 	}

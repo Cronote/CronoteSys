@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane fx:id="rootPaneViewTeam" prefHeight="352.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.TeamViewController">
+<AnchorPane fx:id="rootPaneViewTeam" id="view" prefHeight="352.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.TeamViewController">
 	<children>
 		<JFXButton fx:id="btnLeaveTeam" contentDisplay="GRAPHIC_ONLY" layoutX="3.0" layoutY="291.0" prefHeight="35.0" prefWidth="51.0" ripplerFill="#7c4db8" visible="false" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0">
 			<graphic>

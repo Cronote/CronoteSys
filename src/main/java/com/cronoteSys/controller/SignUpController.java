@@ -1,13 +1,8 @@
 package com.cronoteSys.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-import javax.swing.JOptionPane;
-
-import com.cronoteSys.model.bo.LoginBO;
 import com.cronoteSys.model.bo.UserBO;
 import com.cronoteSys.model.vo.LoginVO;
 import com.cronoteSys.model.vo.UserVO;
@@ -20,9 +15,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXSnackbar;
-import com.jfoenix.controls.JFXSnackbarLayout;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXSnackbar.SnackbarEvent;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -31,12 +24,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.util.Duration;
 
 public class SignUpController extends MasterController {
 
@@ -72,11 +63,9 @@ public class SignUpController extends MasterController {
 	private LoginVO objLogin;
 	private final StackPane passwordExplanationPane = new StackPane();
 	private PasswordMatchValidator ps = new PasswordMatchValidator();
-	private JFXSnackbar snackbar;
 
 	@FXML
 	protected void initialize() {
-		snackbar = new JFXSnackbar(pnlMidBottomArea);
 		ps.setMessage("SENHAS NÃO COMBINAM");
 		try {
 			Parent lp = ScreenUtil.loadTemplate("/popups/PasswordExplanation").load();

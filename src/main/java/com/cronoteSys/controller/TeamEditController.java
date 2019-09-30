@@ -7,49 +7,36 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
-import org.w3c.dom.ls.LSLoadEvent;
-
-import com.cronoteSys.controller.components.cellfactory.SimplifiedAccountCellFactory;
 import com.cronoteSys.controller.components.cellfactory.TeamMemberCellFactory;
 import com.cronoteSys.model.bo.TeamBO;
 import com.cronoteSys.model.bo.UserBO;
 import com.cronoteSys.model.interfaces.ThreatingUser;
-import com.cronoteSys.model.vo.SimpleActivity;
 import com.cronoteSys.model.vo.TeamVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.model.vo.relation.side.TeamMember;
-import com.cronoteSys.model.vo.view.SimpleUser;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXColorPicker;
-import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Skin;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.paint.Color;
-import javafx.util.Callback;
 import javafx.scene.layout.AnchorPane;
 
 public class TeamEditController implements Initializable {

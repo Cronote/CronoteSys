@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="rootPaneEditTeam" prefWidth="819.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.TeamEditController">
+<AnchorPane fx:id="rootPaneEditTeam" id="edit" prefWidth="819.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.TeamEditController">
 	<children>
 		<JFXTextField fx:id="txtName" focusColor="#7c4db8" labelFloat="true" layoutX="14.0" layoutY="26.0" prefHeight="31.0" prefWidth="450.0" promptText="Nome do time" styleClass="inputField" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="634.0" />
 		<JFXTextArea fx:id="txtDesc" labelFloat="true" layoutX="14.0" layoutY="90.0" prefHeight="48.0" prefWidth="450.0" promptText="Descrição do time - (opicional)" styleClass="inputField" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="634.0" />

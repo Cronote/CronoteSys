@@ -2,10 +2,8 @@ package com.cronoteSys.controller;
 
 import java.net.URL;
 import java.time.Duration;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.controlsfx.control.Rating;
@@ -17,7 +15,6 @@ import com.cronoteSys.interfaces.LoadActivityInterface;
 import com.cronoteSys.interfaces.LoadProjectInterface;
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.CategoryBO;
-import com.cronoteSys.model.dao.CategoryDAO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.CategoryVO;
 import com.cronoteSys.model.vo.ProjectVO;
@@ -25,8 +22,6 @@ import com.cronoteSys.model.vo.StatusEnum;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.observer.ShowEditViewActivityObservableI;
 import com.cronoteSys.observer.ShowEditViewActivityObserverI;
-import com.cronoteSys.util.ActivityMonitor;
-import com.cronoteSys.util.ActivityMonitor.OnMonitorTick;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
 import com.jfoenix.controls.JFXButton;
@@ -45,18 +40,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.Skin;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 public class ActivityDetailsInsertingController implements Initializable, ShowEditViewActivityObservableI, LoadActivityInterface, LoadProjectInterface {
 	@FXML

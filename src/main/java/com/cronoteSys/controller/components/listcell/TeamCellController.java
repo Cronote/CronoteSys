@@ -4,21 +4,15 @@ import java.io.File;
 import java.io.IOException;
 
 import com.cronoteSys.model.bo.TeamBO;
-import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.model.vo.TeamVO;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 
 public class TeamCellController extends ListCell<TeamVO> {

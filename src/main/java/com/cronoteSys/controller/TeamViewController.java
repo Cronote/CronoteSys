@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import com.cronoteSys.controller.components.cellfactory.SimplifiedAccountCellFactory;
 import com.cronoteSys.controller.components.cellfactory.TeamMemberCellFactory;
 import com.cronoteSys.model.bo.TeamBO;
 import com.cronoteSys.model.bo.UserBO;
@@ -13,12 +12,10 @@ import com.cronoteSys.model.interfaces.ThreatingUser;
 import com.cronoteSys.model.vo.TeamVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.model.vo.relation.side.TeamMember;
-import com.cronoteSys.model.vo.view.SimpleUser;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXListView;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;

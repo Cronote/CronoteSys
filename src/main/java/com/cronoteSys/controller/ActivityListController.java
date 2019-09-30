@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import com.cronoteSys.controller.TeamListController.TeamSelectedI;
 import com.cronoteSys.controller.components.cellfactory.ActivityCellFactory;
 import com.cronoteSys.filter.ActivityFilter;
 import com.cronoteSys.model.bo.ActivityBO;
@@ -15,12 +14,8 @@ import com.cronoteSys.model.bo.ActivityBO.OnActivityDeletedI;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.model.vo.StatusEnum;
-import com.cronoteSys.model.vo.TeamVO;
 import com.cronoteSys.model.vo.UserVO;
-import com.cronoteSys.observer.ShowEditViewActivityObservableI;
-import com.cronoteSys.observer.ShowEditViewActivityObserverI;
 import com.cronoteSys.util.SessionUtil;
-import com.sun.org.apache.bcel.internal.generic.LSTORE;
 
 import de.jensd.fx.glyphs.GlyphIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -41,25 +36,25 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import jdk.nashorn.internal.runtime.PropertyListeners;
 
 public class ActivityListController implements Initializable {
 
-	ActivityBO actBO = new ActivityBO();
 	@FXML
 	private Button btnAddActivity;
 	@FXML
 	private ListView<ActivityVO> cardsList;
-	private ListProperty<ActivityVO> activityList = new SimpleListProperty<ActivityVO>();
 	@FXML
-	AnchorPane pane;
+	private AnchorPane pane;
+	@FXML
+	private Label titleLabel;
+	@FXML
+	private HBox SearchGroup;
+
 	private UserVO loggedUser;
 	private ProjectVO selectedProject;
-	@FXML
-	Label titleLabel;
-	@FXML
-	HBox SearchGroup;
-	ActivityFilter filter;
+	private ActivityFilter filter;
+	private ListProperty<ActivityVO> activityList = new SimpleListProperty<ActivityVO>();
+	private ActivityBO actBO = new ActivityBO();
 
 	public void listByProject(ProjectVO project) {
 		selectedProject = project;
@@ -84,7 +79,8 @@ public class ActivityListController implements Initializable {
 	}
 
 	public void setList(ProjectVO project) {
-		filter = new ActivityFilter(project != null ? project.getId() : null, loggedUser.getIdUser());
+		filter = new ActivityFilter(project != null ? project.getId() : null,
+				project != null ? null : loggedUser.getIdUser());
 		List<ActivityVO> lst = actBO.listAll(filter);
 		activityList.set(FXCollections.observableArrayList(lst));
 		cardsList.itemsProperty().bind(activityList);
@@ -196,5 +192,4 @@ public class ActivityListController implements Initializable {
 			l.onActivitySelected(hmp);
 		}
 	}
-
 }

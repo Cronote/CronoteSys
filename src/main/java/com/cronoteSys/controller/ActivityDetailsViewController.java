@@ -2,14 +2,12 @@ package com.cronoteSys.controller;
 
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.controlsfx.control.Rating;
 
-import com.cronoteSys.controller.ActivityListController.ActivitySelectedI;
 import com.cronoteSys.controller.components.cellfactory.SimpleActivityCellFactory;
 import com.cronoteSys.interfaces.LoadActivityInterface;
 import com.cronoteSys.interfaces.LoadProjectInterface;
@@ -19,11 +17,11 @@ import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.model.vo.SimpleActivity;
 import com.cronoteSys.model.vo.StatusEnum;
 import com.cronoteSys.model.vo.UserVO;
-import com.cronoteSys.observer.ShowEditViewActivityObservableI;
-import com.cronoteSys.observer.ShowEditViewActivityObserverI;
 import com.cronoteSys.util.ActivityMonitor;
 import com.cronoteSys.util.ActivityMonitor.OnMonitorTick;
 import com.cronoteSys.util.SessionUtil;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -40,9 +38,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.scene.control.TitledPane;
-import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXButton;
 
 public class ActivityDetailsViewController implements Initializable, LoadActivityInterface, LoadProjectInterface {
 	@FXML

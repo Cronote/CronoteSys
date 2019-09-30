@@ -11,8 +11,6 @@ import com.cronoteSys.util.ScreenUtil;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -101,7 +99,6 @@ public class ProjectCellController extends ListCell<ProjectVO> {
 		projectCardRoot.getChildren().clear();
 		projectCardRoot.getChildren().addAll(lblTitle, lblTeamMembers, lblActivityDoneTotal, stkColorTag);
 
-//		projectCardRoot.setMinHeight(sumHeights);
 		projectCardRoot.setPrefHeight(sumHeights);
 
 		for (Node n : projectCardRoot.getChildren()) {
@@ -115,8 +112,6 @@ public class ProjectCellController extends ListCell<ProjectVO> {
 
 			}
 		}
-//		AnchorPane.setBottomAnchor(lblTeamMembers, 5.0);
-//		AnchorPane.setBottomAnchor(lblActivityDoneTotal, 5.0);
 	}
 
 	public Object[] getHeightOf(Region node) {
@@ -148,27 +143,8 @@ public class ProjectCellController extends ListCell<ProjectVO> {
 	public void updateItem(ProjectVO item, boolean empty) {
 		super.updateItem(item, empty);
 		if (item != null || !empty) {
-//			FXMLLoader loader = SessionUtil.getInjector().getInstance(FXMLLoader.class);
-//			try {
-//				loader.setLocation(new File(getClass().getResource("/fxml/Templates/cell/ProjectCard.fxml").getPath())
-//						.toURI().toURL());
-//				loader.setController(this);
-//				loader.load();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
 			loadInfo(item);
 			fix();
-			setOnMouseClicked(new EventHandler<Event>() {
-
-				@Override
-				public void handle(Event event) {
-					System.out.println(lblTitle.getWidth());
-					System.out.println(getWidth());
-					// TODO Auto-generated method stub
-
-				}
-			});
 			setGraphic(projectCardRoot);
 		} else {
 			setText(null);

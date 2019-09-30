@@ -31,8 +31,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 public class ProjectListController implements Initializable {
-	private ListProperty<ProjectVO> projectLst = new SimpleListProperty<ProjectVO>();
 
+	private ListProperty<ProjectVO> projectLst = new SimpleListProperty<ProjectVO>();
 	private UserVO loggedUser;
 
 	@FXML
