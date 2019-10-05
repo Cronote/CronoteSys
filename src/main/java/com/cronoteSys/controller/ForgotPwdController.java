@@ -91,7 +91,7 @@ public class ForgotPwdController extends MasterController {
 				ScreenUtil.jfxDialogOpener(stackPane, "Aviso", "Não há uma conta com o email informado!");
 				return;
 			}
-
+			
 			boolean bEmailSent = false;
 			sVerificationCode = new GenCode().genCode();
 			String[] emails = { email };

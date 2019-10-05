@@ -94,6 +94,9 @@ public class ProjectFirstInfoViewController implements Initializable {
 
 	@FXML
 	private JFXButton btnEdit;
+	
+	@FXML
+	private JFXButton btnAddTeam;
 
 	private ProjectVO viewingProject;
 

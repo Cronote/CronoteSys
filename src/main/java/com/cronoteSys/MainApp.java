@@ -16,7 +16,7 @@ public class MainApp extends Application {
 		super.stop();
 		System.exit(0);
 	}
-
+	
 	@Override
 	public void start(Stage stage) throws Exception {
 		SessionUtil.setInjector(Guice.createInjector(new GuiceModule()));

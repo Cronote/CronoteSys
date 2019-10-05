@@ -14,7 +14,7 @@
 	<children>
 		<AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: transparent;">
 			<children>
-				<Text layoutX="185.0" layoutY="25.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="letters_box_icons" text="EDITAR CATEGORIAS" textAlignment="CENTER" textOrigin="CENTER" AnchorPane.bottomAnchor="12.1953125" AnchorPane.leftAnchor="185.0" AnchorPane.rightAnchor="184.0" AnchorPane.topAnchor="12.1953125">
+				<Text layoutX="270.0" layoutY="27.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="letters_box_icons" text="TIMES" textAlignment="CENTER" textOrigin="CENTER" AnchorPane.bottomAnchor="12.369140625" AnchorPane.leftAnchor="270.0" AnchorPane.rightAnchor="270.0478515625" AnchorPane.topAnchor="12.369140625">
 					<font>
 						<Font size="22.0" />
 					</font>
@@ -23,13 +23,16 @@
 		</AnchorPane>
 		<AnchorPane prefHeight="118.0" prefWidth="600.0" style="-fx-background-color: transparent;">
 			<children>
-				<Button fx:id="btnSearch" contentDisplay="GRAPHIC_ONLY" layoutX="469.0" layoutY="50.0" mnemonicParsing="false" styleClass="btnTransparent" AnchorPane.rightAnchor="85.0" />
-				<JFXTextField fx:id="txtSearch" focusColor="#7c4db8" labelFloat="true" layoutX="14.0" layoutY="31.0" prefHeight="38.0" prefWidth="491.0" promptText="PESQUISAR" styleClass="inputField" unFocusColor="#a6a6a6" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="95.0">
+				<Button fx:id="btnSearch" contentDisplay="GRAPHIC_ONLY" layoutX="469.0" layoutY="50.0" mnemonicParsing="false" styleClass="btnTransparent" AnchorPane.rightAnchor="85.0">
+					<graphic>
+						<FontAwesomeIconView glyphName="SEARCH" size="2.5em" styleClass="letters_box_icons" />
+					</graphic>
+				</Button>
+				<JFXTextField fx:id="txtSearch" focusColor="#7c4db8" labelFloat="true" layoutX="55.0" layoutY="54.0" prefHeight="31.0" prefWidth="409.0" promptText="PESQUISAR" styleClass="inputField" unFocusColor="#a6a6a6" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="136.0">
 					<font>
 						<Font size="17.0" />
 					</font>
 				</JFXTextField>
-						<FontAwesomeIconView glyphName="SEARCH" layoutX="511.0" layoutY="62.0" size="2.5em" styleClass="letters_box_icons" />
 			</children>
 		</AnchorPane>
 		<AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;">

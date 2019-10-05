@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="firstInfoRoot" prefHeight="589.0" prefWidth="697.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="firstInfoRoot" prefHeight="589.0" prefWidth="697.0" xmlns="http://javafx.com/javafx/8.0.212" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
 		<JFXTextField fx:id="txtTitle" labelFloat="true" layoutX="128.0" layoutY="45.0" maxHeight="-Infinity" prefHeight="26.0" prefWidth="450.0" promptText="Título" styleClass="inputField" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="45.0" />
 		<JFXTextArea fx:id="txtDescription" labelFloat="true" layoutX="128.0" layoutY="117.0" prefHeight="89.0" prefWidth="450.0" promptText="Descrição - (opcional)" styleClass="inputField" wrapText="true" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="55.0" />
@@ -24,11 +24,11 @@
 				<Font name="System Bold" size="15.0" />
 			</font>
 		</Label>
-		<JFXTabPane fx:id="tabDeadline" layoutX="55.0" layoutY="244.0" prefHeight="331.0" prefWidth="587.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="55.0">
+		<JFXTabPane fx:id="tabDeadline" layoutX="55.0" layoutY="244.0" prefHeight="275.0" prefWidth="587.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="55.0">
 			<tabs>
 				<Tab closable="false" text="POR DATAS">
 					<content>
-						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="587.0">
 							<children>
 								<JFXDatePicker fx:id="dtpByDateStart" defaultColor="#7c4db8" layoutX="11.0" layoutY="47.0" promptText="Data de início" AnchorPane.leftAnchor="15.0" />
 								<JFXDatePicker fx:id="dtpByDateEnd" defaultColor="#7c4db8" layoutX="228.0" layoutY="47.0" promptText="Data de término" AnchorPane.rightAnchor="24.0" />
@@ -94,6 +94,11 @@
          <graphic>
             <FontAwesomeIconView glyphName="SAVE" size="2em" styleClass="letters_box_icons" />
          </graphic>
+      </JFXButton>
+      <JFXButton fx:id="btnAddTeam" layoutX="69.0" layoutY="545.0" styleClass="btn" text="Adicionar time ao projeto?" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
       </JFXButton>
 	</children>
 </AnchorPane>

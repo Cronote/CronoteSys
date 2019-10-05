@@ -6,6 +6,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
 
+import com.cronoteSys.controller.components.dialogs.DialogCategoryManagerController;
+import com.cronoteSys.controller.components.dialogs.DialogDependencyManager;
+import com.cronoteSys.controller.components.dialogs.DialogTeamCategoryController;
 import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.ScreenUtil;
@@ -58,6 +61,8 @@ public class ProjectFirstInfoController implements Initializable {
 	private CheckBox chbConsiderHolidays;
 	@FXML
 	private JFXButton btnSave;
+	@FXML
+	private JFXButton btnAddTeam;
 	ProjectManagerController projectManagerController;
 
 	public ProjectFirstInfoController(ProjectManagerController control) {
@@ -100,6 +105,12 @@ public class ProjectFirstInfoController implements Initializable {
 				}
 				getProject();
 			}
+		});
+		
+		btnAddTeam.setOnAction(e->{
+			DialogTeamCategoryController categoryManagerDialog = new DialogTeamCategoryController();
+
+			categoryManagerDialog.showDependencyManagerDialog();
 		});
 
 		tabDeadline.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {

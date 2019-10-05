@@ -125,7 +125,7 @@ public class LoginController extends MasterController {
 			String sUsername = txtEmail.getText().trim(), sPasswd = txtPassword.getText().trim();
 			login(new LoginVO( sUsername, new GenHash().hashIt(sPasswd)));
 		}
-
+		
 	}
 
 	private void registerNewLogin(Integer idUser) {
