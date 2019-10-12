@@ -88,10 +88,23 @@ public class ProjectListController implements Initializable {
 			}
 		});
 
-		ProjectBO.addOnProjectAddedIListener(proj -> {
-			projectLst.add(0, proj);
-			cardsList.refresh();
+		ProjectBO.addOnProjectAddedIListener((proj, mode) -> {
+			if (mode.equals("save"))
+				projectLst.add(0, proj);
+			else {
+				int replaceIndex = 0;
+				for (ProjectVO p : projectLst) {
+					if (p.equals(proj))
+						break;
+					replaceIndex++;
+				}
+				projectLst.remove(replaceIndex);
+				projectLst.add(replaceIndex, proj);
+
+				cardsList.refresh();
+			}
 			cardsList.getSelectionModel().select(proj);
+
 		});
 		ProjectBO.addOnProjectDeletedListener(proj -> {
 			projectLst.remove(proj);

@@ -47,7 +47,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
-public class ActivityDetailsInsertingController implements Initializable, ShowEditViewActivityObservableI, LoadActivityInterface, LoadProjectInterface {
+public class ActivityDetailsInsertingController
+		implements Initializable, ShowEditViewActivityObservableI, LoadActivityInterface, LoadProjectInterface {
 	@FXML
 	private Label lblPaneTitle;
 	// Edição
@@ -87,6 +88,7 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 	private ActivityVO activity;
 	private UserVO loggedUser;
 	ObservableList<CategoryVO> obsLstCategory = FXCollections.emptyObservableList();
+	CategoryBO catBO = new CategoryBO();
 
 	private void initActivity() {
 		activity = new ActivityVO();
@@ -130,7 +132,6 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 			spnEstimatedTimeMinute.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 		}
 	}
-
 
 	private void blockEdition() {
 		txtTitle.setDisable(true);
@@ -192,12 +193,11 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 
 			@Override
 			public void handle(ActionEvent event) {
-				CategoryManagerDialog categoryManagerDialog = new CategoryManagerDialog(cboCategory.getItems());
+				CategoryManagerDialog categoryManagerDialog = new CategoryManagerDialog();
 
 				categoryManagerDialog.showCategoryManagerDialog();
 				CategoryVO selectedCategory = categoryManagerDialog.getSelectedCategory();
-				obsLstCategory = FXCollections.observableList(categoryManagerDialog.getLstCategories());
-				cboCategory.setItems(obsLstCategory);
+				cboCategory.setItems(FXCollections.observableArrayList(catBO.listByUser(loggedUser)));
 				cboCategory.getSelectionModel().select(selectedCategory);
 
 			}
@@ -207,7 +207,6 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 			public void handle(ActionEvent event) {
 				if (txtCategory.validate()) {
 					CategoryVO cat = new CategoryVO();
-					CategoryBO catBO = new CategoryBO();
 					cat.setDescription(txtCategory.getText());
 					cat.setUserVO(loggedUser);
 					cat = catBO.save(cat);
@@ -334,6 +333,6 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 	public void loadProject(ProjectVO proj) {
 		activity.setProjectVO(proj);
 		btnDependencies.setVisible(proj != null);
-		
+
 	}
 }

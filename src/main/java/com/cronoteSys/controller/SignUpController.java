@@ -14,7 +14,6 @@ import com.cronoteSys.util.validator.PasswordMatchValidator;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXPopup;
-import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 
 import javafx.beans.value.ChangeListener;

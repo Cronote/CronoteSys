@@ -6,10 +6,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
 
-import com.cronoteSys.controller.components.dialogs.DialogCategoryManagerController;
-import com.cronoteSys.controller.components.dialogs.DialogDependencyManager;
-import com.cronoteSys.controller.components.dialogs.DialogTeamCategoryController;
+import com.cronoteSys.controller.components.dialogs.ProjectTeamDialog;
 import com.cronoteSys.model.vo.ProjectVO;
+import com.cronoteSys.model.vo.TeamVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
@@ -25,12 +24,14 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
@@ -63,6 +64,17 @@ public class ProjectFirstInfoController implements Initializable {
 	private JFXButton btnSave;
 	@FXML
 	private JFXButton btnAddTeam;
+	@FXML
+	private HBox pnlInfoTeam;
+
+	@FXML
+	private Label lblTeamName;
+
+	@FXML
+	private Button btnClearTeam;
+	@FXML
+	private StackPane stkTeamColor;
+
 	ProjectManagerController projectManagerController;
 
 	public ProjectFirstInfoController(ProjectManagerController control) {
@@ -73,6 +85,9 @@ public class ProjectFirstInfoController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		initDefaults();
 		initEvents();
+		
+		
+		
 
 	}
 
@@ -100,17 +115,21 @@ public class ProjectFirstInfoController implements Initializable {
 						return;
 					if (!dtpByDateEnd.getValue().isAfter(dtpByDateStart.getValue()))
 						return;
+
 				} else {
 
 				}
-				getProject();
+				saveProject();
 			}
 		});
-		
-		btnAddTeam.setOnAction(e->{
-			DialogTeamCategoryController categoryManagerDialog = new DialogTeamCategoryController();
 
-			categoryManagerDialog.showDependencyManagerDialog();
+		btnAddTeam.setOnAction(e -> {
+			ProjectTeamDialog dialogProjectTeamManager = new ProjectTeamDialog();
+
+			dialogProjectTeamManager.showProjectTeamManagerDialog();
+			TeamVO selectedTeam = dialogProjectTeamManager.getSelectedTeam();
+			projectManagerController.getSelectedProject().setTeam(selectedTeam);
+			manageTeam(selectedTeam);
 		});
 
 		tabDeadline.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
@@ -165,7 +184,7 @@ public class ProjectFirstInfoController implements Initializable {
 
 	}
 
-	protected ProjectVO getProject() {
+	protected ProjectVO saveProject() {
 		ProjectVO proj = projectManagerController.getSelectedProject();
 		proj.setTitle(txtTitle.getText());
 		proj.setDescription(txtDescription.getText());
@@ -185,6 +204,29 @@ public class ProjectFirstInfoController implements Initializable {
 			txtDescription.setText(project.getDescription());
 			dtpByDateStart.setValue(project.getStartDate().toLocalDate());
 			dtpByDateEnd.setValue(project.getFinishDate().toLocalDate());
+			TeamVO projectTeam = project.getTeam();
+			manageTeam(projectTeam);
+			
+			btnClearTeam.setOnAction(e -> {
+				manageTeam(null);
+				project.setTeam(null);
+			});
+		}
+	}
+
+	private void manageTeam(TeamVO projectTeam) {
+		if (projectTeam != null) {
+			btnClearTeam.setVisible(true);
+			lblTeamName.setText(projectTeam.getName());
+			stkTeamColor.setStyle(
+					"-fx-background-color:rgba(" + ScreenUtil.colorToRGBString(projectTeam.getTeamColor()) + ")");
+			btnAddTeam.setText("Modificar time");
+		} else {
+			btnClearTeam.setVisible(false);
+			lblTeamName.setText("Nenhum time selecionado!");
+			stkTeamColor.setStyle("-fx-background-color:transparent");
+
+			btnAddTeam.setText("Adicionar time");
 		}
 	}
 }

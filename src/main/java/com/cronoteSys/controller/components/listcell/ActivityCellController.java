@@ -8,11 +8,13 @@ import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.ExecutionTimeBO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.StatusEnum;
+import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.observer.ShowEditViewActivityObservableI;
 import com.cronoteSys.observer.ShowEditViewActivityObserverI;
 import com.cronoteSys.util.ActivityMonitor;
 import com.cronoteSys.util.ActivityMonitor.OnMonitorTick;
 import com.cronoteSys.util.ScreenUtil;
+import com.cronoteSys.util.SessionUtil;
 import com.jfoenix.controls.JFXProgressBar;
 
 import de.jensd.fx.glyphs.GlyphIcon;
@@ -23,6 +25,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -40,20 +43,30 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class ActivityCellController extends ListCell<ActivityVO> implements ShowEditViewActivityObservableI {
-	
+
 	private AnchorPane activityCardRoot;
+
 	private Label lblTitle;
 	private Label lblCategory;
 	private Label lblStatus;
 	private Label lblIndex;
 	private Label lblProgress;
+	private Label lblExecutor = new Label();
+
 	private Button btnDelete;
 	private Button btnFinalize;
 	private Button btnPlayPause;
+
 	private JFXProgressBar pgbProgress;
 
 	private ActivityVO activity;
 	private boolean canExecute = true;
+	private boolean showExecutor = false;
+
+	public ActivityCellController(boolean showExecutor) {
+		// TODO Auto-generated constructor stub
+		this.showExecutor = showExecutor;
+	}
 
 	{
 		activityCardRoot = new AnchorPane();
@@ -127,9 +140,16 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 		AnchorPane.setRightAnchor(ap, 12.0);
 		AnchorPane.setBottomAnchor(ap, 3.0);
 
+		lblExecutor.setStyle("-fx-background-color: Grey;-fx-background-radius:15;");
+		lblExecutor.setPadding(new Insets(5, 5, 5, 5));
+		AnchorPane.setTopAnchor(lblExecutor, -10.0);
+		AnchorPane.setRightAnchor(lblExecutor, -10.0);
+
+		lblExecutor.setVisible(showExecutor && activity.getStats()!=StatusEnum.NOT_STARTED);
+
 		activityCardRoot.getChildren().clear();
 		activityCardRoot.getChildren().addAll(lblTitle, lblCategory, lblStatus, lblIndex, ap, btnPlayPause, btnDelete,
-				btnFinalize);
+				btnFinalize, lblExecutor);
 
 		for (Node n : activityCardRoot.getChildren()) {
 			if (n instanceof Label) {
@@ -165,6 +185,7 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 			hmp.put("action", "view");
 			hmp.put("activity", activity);
 			hmp.put("project", activity.getProjectVO());
+
 			notifyAllListeners(hmp);
 		} else
 			activityCardRoot.getStyleClass().removeAll("cardSelected");
@@ -197,7 +218,7 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 		root.layout();
 		Double height = node.getHeight();
 		Object[] result = { height + 5, node };
-		
+
 		return result;
 
 	}
@@ -240,6 +261,26 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 				btnPlayPause.getStyleClass().addAll("show");
 			else
 				btnPlayPause.getStyleClass().removeAll("show");
+
+			if (activity.getExecutor() != null) {
+				lblExecutor.setVisible(true);
+				UserVO u = activity.getExecutor();
+				String[] userNames = u.getCompleteName().split(" ");
+				String initials = "";
+				int i = 0;
+				for (String string : userNames) {
+					initials += string.substring(0, 1).toUpperCase();
+					if (i == 2)
+						break;
+					i++;
+				}
+				lblExecutor.setText(initials.replaceAll(" ", ""));
+				double textSize = initials.length();
+				textSize = (1 - (textSize * 10 / 100.0)) * 15.0;
+				lblExecutor.setFont(new Font(textSize));
+			} else {
+				lblExecutor.setVisible(false);
+			}
 		}
 		StackPane progressBarPane = (StackPane) pgbProgress.lookup(".bar");
 		paintBar(progressBarPane);
@@ -307,12 +348,14 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 				ActivityBO actBo = new ActivityBO();
 				if (btnPlayPause.getText().equalsIgnoreCase("play")) {
 					if (execBo.startExecution(activity) != null) {
+						activity.setExecutor((UserVO) SessionUtil.getSession().get("loggedUser"));
 						activity = actBo.switchStatus(activity, StatusEnum.NORMAL_IN_PROGRESS);
 						if (btnDelete.isVisible()) {
 							btnDelete.getStyleClass().remove("show");
 						}
 						ActivityMonitor.addActivity(activity);
-					}else {
+
+					} else {
 						ScreenUtil.jfxDialogOpener("Aviso!", "Um usuário só pode executar uma atividade por vez!\n"
 								+ "Pause ou complete a atividade para começar outra.");
 					}

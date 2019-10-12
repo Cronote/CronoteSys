@@ -7,15 +7,13 @@ import com.cronoteSys.model.vo.CategoryVO;
 import com.cronoteSys.util.SessionUtil;
 import com.jfoenix.controls.JFXAlert;
 
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.StageStyle;
 
 public class CategoryManagerDialog {
 
-	public CategoryManagerDialog(ObservableList<CategoryVO> items) {
-		lstCategories = items;
+	public CategoryManagerDialog() {
 	}
 
 	public void showCategoryManagerDialog() {
@@ -30,20 +28,15 @@ public class CategoryManagerDialog {
 			alert.setContent(root);
 			alert.initStyle(StageStyle.UNDECORATED);
 			alert.showAndWait();
-			lstCategories = controller.getCategoryList().getItems();
 			selectedCategory = controller.getCategoryList().getSelectionModel().getSelectedItem();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private ObservableList<CategoryVO> lstCategories;
 
 	private CategoryVO selectedCategory;
 
-	public ObservableList<CategoryVO> getLstCategories() {
-		return lstCategories;
-	}
 
 	public CategoryVO getSelectedCategory() {
 		return selectedCategory;

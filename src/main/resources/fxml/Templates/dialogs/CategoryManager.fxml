@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="411.0" prefWidth="600.0" styleClass="tone1-background" stylesheets="@../../../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.212" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.components.dialogs.DialogCategoryManagerController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="411.0" prefWidth="600.0" styleClass="tone1-background" stylesheets="@../../../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.components.dialogs.DialogCategoryManagerController">
 	<children>
 		<AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: transparent;">
 			<children>
@@ -23,20 +23,22 @@
 		</AnchorPane>
 		<AnchorPane prefHeight="118.0" prefWidth="600.0" style="-fx-background-color: transparent;">
 			<children>
-				<Button fx:id="btnSearch" contentDisplay="GRAPHIC_ONLY" layoutX="469.0" layoutY="50.0" mnemonicParsing="false" styleClass="btnTransparent" AnchorPane.rightAnchor="85.0" />
+				<Button fx:id="btnSearch" contentDisplay="GRAPHIC_ONLY" defaultButton="true" layoutX="505.0" layoutY="36.0" mnemonicParsing="false" styleClass="btnTransparent" AnchorPane.rightAnchor="49.0">
+               <graphic>
+      						<FontAwesomeIconView glyphName="SEARCH" size="2.5em" styleClass="letters_box_icons" />
+               </graphic></Button>
 				<JFXTextField fx:id="txtSearch" focusColor="#7c4db8" labelFloat="true" layoutX="14.0" layoutY="31.0" prefHeight="38.0" prefWidth="491.0" promptText="PESQUISAR" styleClass="inputField" unFocusColor="#a6a6a6" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="95.0">
 					<font>
 						<Font size="17.0" />
 					</font>
 				</JFXTextField>
-						<FontAwesomeIconView glyphName="SEARCH" layoutX="511.0" layoutY="62.0" size="2.5em" styleClass="letters_box_icons" />
 			</children>
 		</AnchorPane>
 		<AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;">
 			<children>
-				<AnchorPane layoutX="5.0" layoutY="7.0" prefHeight="50.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+				<AnchorPane layoutX="5.0" layoutY="7.0" prefHeight="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 					<children>
-						<Text layoutX="191.0" layoutY="27.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="letters_box_icons" text="TIMES CADASTRADOS" textAlignment="CENTER" textOrigin="CENTER" AnchorPane.bottomAnchor="12.369140625" AnchorPane.leftAnchor="191.0" AnchorPane.rightAnchor="191.3310546875" AnchorPane.topAnchor="12.369140625">
+						<Text layoutX="144.0" layoutY="27.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="letters_box_icons" text="CATEGORIAS CADASTRADOS" textAlignment="CENTER" textOrigin="CENTER" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="143.845703125" AnchorPane.rightAnchor="144.154296875" AnchorPane.topAnchor="12.0">
 							<font>
 								<Font size="22.0" />
 							</font>

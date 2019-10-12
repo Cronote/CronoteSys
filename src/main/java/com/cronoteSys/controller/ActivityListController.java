@@ -72,7 +72,6 @@ public class ActivityListController implements Initializable {
 
 		loggedUser = (UserVO) SessionUtil.getSession().get("loggedUser");
 
-		cardsList.setCellFactory(new ActivityCellFactory());
 		initEvents();
 		initObservers();
 
@@ -82,6 +81,7 @@ public class ActivityListController implements Initializable {
 		filter = new ActivityFilter(project != null ? project.getId() : null,
 				project != null ? null : loggedUser.getIdUser());
 		List<ActivityVO> lst = actBO.listAll(filter);
+		cardsList.setCellFactory(new ActivityCellFactory(project != null));
 		activityList.set(FXCollections.observableArrayList(lst));
 		cardsList.itemsProperty().bind(activityList);
 		setBtnAddIcon();
