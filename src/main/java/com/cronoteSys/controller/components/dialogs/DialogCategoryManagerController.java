@@ -4,8 +4,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.cronoteSys.controller.components.cellfactory.CategoryCellFactory;
+import com.cronoteSys.model.bo.CategoryBO;
+import com.cronoteSys.model.bo.TeamBO;
 import com.cronoteSys.model.dao.CategoryDAO;
 import com.cronoteSys.model.vo.CategoryVO;
+import com.cronoteSys.model.vo.ProjectVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.SessionUtil;
 import com.google.inject.Inject;
@@ -36,15 +39,20 @@ public class DialogCategoryManagerController implements Initializable {
 	@FXML
 	private Button btnCancel;
 	@Inject
-	private CategoryDAO catDao;
+	private CategoryBO catbo;
 	private ObservableList<CategoryVO> lstCategories = FXCollections.emptyObservableList();
 	private UserVO loggedUser = (UserVO) SessionUtil.getSession().get("loggedUser");
+	private ProjectVO project;
+	
+	public void setProject(ProjectVO project) {
+		this.project = project;
+		loadList();
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		lstCategories = FXCollections.observableList(catDao.getList(loggedUser.getIdUser()));
-		categoryList.setItems(lstCategories);
+		loadList();
 		categoryList.setCellFactory(new CategoryCellFactory());
 		btnConfirm.setDisable(true);
 		btnConfirm.setOnAction(new EventHandler<ActionEvent>() {
@@ -64,10 +72,13 @@ public class DialogCategoryManagerController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				String search = txtSearch.getText().trim();
+				String users = new TeamBO().getMemberIdArrayAsString(loggedUser.getIdUser().toString(),
+						project != null ? project.getTeam() : null);
 				if (!search.isEmpty()) {
-					lstCategories = FXCollections.observableList(catDao.listByDescriptionAndUser(search, loggedUser));
+
+					lstCategories = FXCollections.observableList(catbo.listByUsers(search, users));
 				} else {
-					lstCategories = FXCollections.observableList(catDao.getList(loggedUser.getIdUser()));
+					lstCategories = FXCollections.observableList(catbo.listByUsers("", users));
 				}
 				categoryList.setItems(lstCategories);
 			}
@@ -85,9 +96,15 @@ public class DialogCategoryManagerController implements Initializable {
 		});
 	}
 
+	private void loadList() {
+		String users = new TeamBO().getMemberIdArrayAsString(loggedUser.getIdUser().toString(),
+				project != null ? project.getTeam() : null);
+		lstCategories = FXCollections.observableList(catbo.listByUsers("", users));
+		categoryList.setItems(lstCategories);
+	}
+
 	public ListView<CategoryVO> getCategoryList() {
 		return categoryList;
 	}
-
 
 }

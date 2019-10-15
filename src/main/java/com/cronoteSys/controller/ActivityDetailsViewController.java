@@ -164,6 +164,9 @@ public class ActivityDetailsViewController implements Initializable, LoadActivit
 	}
 
 	private void initEvents() {
+		lblTitle.setOnMouseEntered(event -> {
+			System.out.println(detailsRoot.getWidth());
+		});
 		if (btnEdit != null) {
 			btnEdit.setOnAction(new EventHandler<ActionEvent>() {
 				@Override

@@ -15,6 +15,7 @@ import com.cronoteSys.interfaces.LoadActivityInterface;
 import com.cronoteSys.interfaces.LoadProjectInterface;
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.CategoryBO;
+import com.cronoteSys.model.bo.TeamBO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.CategoryVO;
 import com.cronoteSys.model.vo.ProjectVO;
@@ -72,6 +73,7 @@ public class ActivityDetailsInsertingController
 	private Button btnSave;
 	@FXML
 	private Button btnAddCategory;
+
 	@FXML
 	private Button btnConfirmAdd;
 	@FXML
@@ -146,7 +148,9 @@ public class ActivityDetailsInsertingController
 	private void defaultData() {
 
 		btnDependencies.setVisible(false);
-		obsLstCategory = FXCollections.observableArrayList(new CategoryBO().listByUser(loggedUser));
+		String users = new TeamBO().getMemberIdArrayAsString(loggedUser.getIdUser().toString(),
+				activity.getProjectVO() != null ? activity.getProjectVO().getTeam() : null);
+		obsLstCategory = FXCollections.observableArrayList(new CategoryBO().listByUsers("", users));
 		cboCategory.setConverter(new CategoryConverter(loggedUser));
 		cboCategory.setItems(obsLstCategory);
 		spnEstimatedTimeHour.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99999, 0, 1));
@@ -182,6 +186,7 @@ public class ActivityDetailsInsertingController
 		btnAddCategory.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				System.out.println(detailsRoot.getWidth());
 				switchCategoryMode();
 				Node[] field = { txtCategory };
 				Boolean[] isNotnull = { true };
@@ -193,7 +198,7 @@ public class ActivityDetailsInsertingController
 
 			@Override
 			public void handle(ActionEvent event) {
-				CategoryManagerDialog categoryManagerDialog = new CategoryManagerDialog();
+				CategoryManagerDialog categoryManagerDialog = new CategoryManagerDialog(activity.getProjectVO());
 
 				categoryManagerDialog.showCategoryManagerDialog();
 				CategoryVO selectedCategory = categoryManagerDialog.getSelectedCategory();
@@ -310,17 +315,6 @@ public class ActivityDetailsInsertingController
 		btnAddCategory.setVisible(!btnAddCategory.isVisible());
 	}
 
-	private void switchCategoryErrorLabel(boolean show) {
-		Label lbl = (Label) txtCategory.getScene().lookup("#lblCategoryValidation");
-		if (show) {
-			lbl.getStyleClass().removeAll("hide");
-			txtCategory.getStyleClass().add("error");
-		} else {
-			txtCategory.getStyleClass().removeAll("error");
-			lbl.getStyleClass().add("hide");
-		}
-	}
-
 	@Override
 	public void notifyAllListeners(HashMap<String, Object> hmp) {
 		for (ShowEditViewActivityObserverI l : listeners) {
@@ -333,6 +327,11 @@ public class ActivityDetailsInsertingController
 	public void loadProject(ProjectVO proj) {
 		activity.setProjectVO(proj);
 		btnDependencies.setVisible(proj != null);
+
+		String users = new TeamBO().getMemberIdArrayAsString(loggedUser.getIdUser().toString(),
+				activity.getProjectVO() != null ? activity.getProjectVO().getTeam() : null);
+		obsLstCategory = FXCollections.observableArrayList(new CategoryBO().listByUsers("", users));
+		cboCategory.setItems(obsLstCategory);
 
 	}
 }
