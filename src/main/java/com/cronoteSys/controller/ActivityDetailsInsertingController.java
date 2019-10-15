@@ -186,7 +186,6 @@ public class ActivityDetailsInsertingController
 		btnAddCategory.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println(detailsRoot.getWidth());
 				switchCategoryMode();
 				Node[] field = { txtCategory };
 				Boolean[] isNotnull = { true };
@@ -245,7 +244,7 @@ public class ActivityDetailsInsertingController
 
 				int i = LIMIT - (newValue != null ? newValue.length() : 0);
 				if (i > 5) {
-					lblDescriptionLimit.setStyle("-fx-text-fill:black;");
+					lblDescriptionLimit.setStyle("-fx-text-fill:#A6A6A6;");
 				} else {
 					lblDescriptionLimit.setStyle("-fx-text-fill:red;");
 
