@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/8.0.212" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.ForgotPwdController">
+<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.ForgotPwdController">
    <children>
       <GridPane id="Screen" fx:id="pnlRoot" gridLinesVisible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="939.0" styleClass="NotRequired">
         <columnConstraints>
@@ -32,7 +32,7 @@
          <children>
             <AnchorPane id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="526.0" prefWidth="689.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <Pane id="pane" fx:id="pnlSendEmail" layoutX="73.0" layoutY="38.0" prefHeight="159.0" prefWidth="566.0">
+                  <Pane id="pane" fx:id="pnlSendEmail" layoutX="73.0" layoutY="38.0" prefHeight="137.0" prefWidth="566.0">
                      <children>
                         <Button fx:id="btnSend" layoutX="391.0" layoutY="96.0" mnemonicParsing="false" onAction="#btnSendClicked" opacity="0.88" prefHeight="30.0" prefWidth="91.0" text="Enviar" textFill="WHITE">
                            <cursor>
