@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import com.cronoteSys.model.vo.ActivityVO;
+import com.cronoteSys.model.vo.TeamVO;
 import com.cronoteSys.util.SessionUtil;
 import com.jfoenix.controls.JFXAlert;
 
@@ -11,31 +12,31 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.StageStyle;
 
-public class DialogDependencyManager {
-	public DialogDependencyManager(ActivityVO selected) {
-		this.selected= selected;
-	}
+public class ProjectTeamDialog {
 
-	public void showDependencyManagerDialog() {
-		
+	public void showProjectTeamManagerDialog() {
+
 		try {
 			FXMLLoader loader = SessionUtil.getInjector().getInstance(FXMLLoader.class);
 			loader.setLocation(
-					new File(getClass().getResource("/fxml/Templates/dialogs/DependencyManager.fxml").getPath()).toURI()
-							.toURL());
+					new File(getClass().getResource("/fxml/Templates/dialogs/TeamProjectManager.fxml").getPath())
+							.toURI().toURL());
 			Parent root = loader.load();
-			DialogDependencyManagerController controller =loader.getController();
-			controller.setSelectedActivity(selected);
+			DialogProjectTeamController controller = loader.getController();
 			JFXAlert<ActivityVO> alert = new JFXAlert<ActivityVO>();
 			alert.setContent(root);
 			alert.initStyle(StageStyle.UNDECORATED);
 			alert.showAndWait();
+			selectedTeam = controller.getSelectedTeam();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
+	private TeamVO selectedTeam;
 
-	private ActivityVO selected;
+	public TeamVO getSelectedTeam() {
+		return selectedTeam;
+	}
 
 }

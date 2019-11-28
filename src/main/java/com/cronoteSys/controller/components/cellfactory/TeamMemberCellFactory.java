@@ -2,7 +2,6 @@ package com.cronoteSys.controller.components.cellfactory;
 
 import com.cronoteSys.controller.components.listcell.TeamMemberCellController;
 import com.cronoteSys.model.interfaces.ThreatingUser;
-import com.cronoteSys.model.vo.relation.side.TeamMember;
 
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;

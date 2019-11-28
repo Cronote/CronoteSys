@@ -31,8 +31,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 public class ProjectListController implements Initializable {
-	private ListProperty<ProjectVO> projectLst = new SimpleListProperty<ProjectVO>();
 
+	private ListProperty<ProjectVO> projectLst = new SimpleListProperty<ProjectVO>();
 	private UserVO loggedUser;
 
 	@FXML
@@ -88,11 +88,23 @@ public class ProjectListController implements Initializable {
 			}
 		});
 
-		ProjectBO.addOnProjectAddedIListener(proj -> {
-			System.out.println("ProjectListController.projectadded()");
-			projectLst.add(0, proj);
-			cardsList.refresh();
+		ProjectBO.addOnProjectAddedIListener((proj, mode) -> {
+			if (mode.equals("save"))
+				projectLst.add(0, proj);
+			else {
+				int replaceIndex = 0;
+				for (ProjectVO p : projectLst) {
+					if (p.equals(proj))
+						break;
+					replaceIndex++;
+				}
+				projectLst.remove(replaceIndex);
+				projectLst.add(replaceIndex, proj);
+
+				cardsList.refresh();
+			}
 			cardsList.getSelectionModel().select(proj);
+
 		});
 		ProjectBO.addOnProjectDeletedListener(proj -> {
 			projectLst.remove(proj);

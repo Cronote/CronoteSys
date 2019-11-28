@@ -2,10 +2,8 @@ package com.cronoteSys.controller;
 
 import java.net.URL;
 import java.time.Duration;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.controlsfx.control.Rating;
@@ -17,7 +15,7 @@ import com.cronoteSys.interfaces.LoadActivityInterface;
 import com.cronoteSys.interfaces.LoadProjectInterface;
 import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.CategoryBO;
-import com.cronoteSys.model.dao.CategoryDAO;
+import com.cronoteSys.model.bo.TeamBO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.CategoryVO;
 import com.cronoteSys.model.vo.ProjectVO;
@@ -25,8 +23,6 @@ import com.cronoteSys.model.vo.StatusEnum;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.observer.ShowEditViewActivityObservableI;
 import com.cronoteSys.observer.ShowEditViewActivityObserverI;
-import com.cronoteSys.util.ActivityMonitor;
-import com.cronoteSys.util.ActivityMonitor.OnMonitorTick;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
 import com.jfoenix.controls.JFXButton;
@@ -45,20 +41,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.Skin;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
-public class ActivityDetailsInsertingController implements Initializable, ShowEditViewActivityObservableI, LoadActivityInterface, LoadProjectInterface {
+public class ActivityDetailsInsertingController
+		implements Initializable, ShowEditViewActivityObservableI, LoadActivityInterface, LoadProjectInterface {
 	@FXML
 	private Label lblPaneTitle;
 	// Edição
@@ -82,6 +73,7 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 	private Button btnSave;
 	@FXML
 	private Button btnAddCategory;
+
 	@FXML
 	private Button btnConfirmAdd;
 	@FXML
@@ -98,6 +90,7 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 	private ActivityVO activity;
 	private UserVO loggedUser;
 	ObservableList<CategoryVO> obsLstCategory = FXCollections.emptyObservableList();
+	CategoryBO catBO = new CategoryBO();
 
 	private void initActivity() {
 		activity = new ActivityVO();
@@ -131,17 +124,17 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 			if (!activity.getStats().equals(StatusEnum.NOT_STARTED)) {
 				blockEdition();
 			}
-			long horas = activity.getEstimatedTime().toHours();
-			Duration minutos = activity.getEstimatedTime().minus(horas, ChronoUnit.HOURS);
-			String hora = String.format("%02d", horas);
-			String minuto = String.format("%02d", minutos.toMinutes());
-			spnEstimatedTimeHour.getValueFactory().setValue(Integer.parseInt(hora));
-			spnEstimatedTimeMinute.getValueFactory().setValue(Integer.parseInt(minuto));
-			spnEstimatedTimeHour.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
-			spnEstimatedTimeMinute.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
+			fillTime(activity.getEstimatedTime(), spnEstimatedTimeHour, spnEstimatedTimeMinute);
+//			long horas = activity.getEstimatedTime().toHours();
+//			Duration minutos = activity.getEstimatedTime().minus(horas, ChronoUnit.HOURS);
+//			String hora = String.format("%02d", horas);
+//			String minuto = String.format("%02d", minutos.toMinutes());
+//			spnEstimatedTimeHour.getValueFactory().setValue(Integer.parseInt(hora));
+//			spnEstimatedTimeMinute.getValueFactory().setValue(Integer.parseInt(minuto));
+//			spnEstimatedTimeHour.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
+//			spnEstimatedTimeMinute.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 		}
 	}
-
 
 	private void blockEdition() {
 		txtTitle.setDisable(true);
@@ -156,7 +149,9 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 	private void defaultData() {
 
 		btnDependencies.setVisible(false);
-		obsLstCategory = FXCollections.observableArrayList(new CategoryBO().listByUser(loggedUser));
+		String users = new TeamBO().getMemberIdArrayAsString(loggedUser.getIdUser().toString(),
+				activity.getProjectVO() != null ? activity.getProjectVO().getTeam() : null);
+		obsLstCategory = FXCollections.observableArrayList(new CategoryBO().listByUsers("", users));
 		cboCategory.setConverter(new CategoryConverter(loggedUser));
 		cboCategory.setItems(obsLstCategory);
 		spnEstimatedTimeHour.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 99999, 0, 1));
@@ -203,12 +198,11 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 
 			@Override
 			public void handle(ActionEvent event) {
-				CategoryManagerDialog categoryManagerDialog = new CategoryManagerDialog(cboCategory.getItems());
+				CategoryManagerDialog categoryManagerDialog = new CategoryManagerDialog(activity.getProjectVO());
 
 				categoryManagerDialog.showCategoryManagerDialog();
 				CategoryVO selectedCategory = categoryManagerDialog.getSelectedCategory();
-				obsLstCategory = FXCollections.observableList(categoryManagerDialog.getLstCategories());
-				cboCategory.setItems(obsLstCategory);
+				cboCategory.setItems(FXCollections.observableArrayList(catBO.listByUser(loggedUser)));
 				cboCategory.getSelectionModel().select(selectedCategory);
 
 			}
@@ -218,7 +212,6 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 			public void handle(ActionEvent event) {
 				if (txtCategory.validate()) {
 					CategoryVO cat = new CategoryVO();
-					CategoryBO catBO = new CategoryBO();
 					cat.setDescription(txtCategory.getText());
 					cat.setUserVO(loggedUser);
 					cat = catBO.save(cat);
@@ -252,7 +245,7 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 
 				int i = LIMIT - (newValue != null ? newValue.length() : 0);
 				if (i > 5) {
-					lblDescriptionLimit.setStyle("-fx-text-fill:black;");
+					lblDescriptionLimit.setStyle("-fx-text-fill:#A6A6A6;");
 				} else {
 					lblDescriptionLimit.setStyle("-fx-text-fill:red;");
 
@@ -288,6 +281,44 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 			}
 		});
 
+		ratePriority.ratingProperty().addListener((ChangeListener<Number>) (observable, oldValue, newValue) -> {
+			if (newValue != null) {
+				CategoryVO selectedCategory = cboCategory.getSelectionModel().getSelectedItem();
+				if (selectedCategory != null) {
+					getSuggestion(selectedCategory, newValue.intValue());
+				}
+			}
+		});
+
+		cboCategory.getSelectionModel().selectedItemProperty()
+				.addListener((ChangeListener<CategoryVO>) (observable, oldValue, newValue) -> {
+					if (newValue != null) {
+						Integer rate = (int) ratePriority.getRating();
+						if (rate != null) {
+							getSuggestion(newValue, rate);
+						}
+					}
+				});
+
+	}
+
+	private void getSuggestion(CategoryVO category, Integer rate) {
+		if (activity.getEstimatedTime() == null || activity.getEstimatedTime().isZero()) {
+		Duration suggestedDuration = new ActivityBO().timeSuggestionFor(loggedUser.getIdUser(), rate, category);
+		if (suggestedDuration != null)
+			fillTime(suggestedDuration, spnEstimatedTimeHour, spnEstimatedTimeMinute);
+		}
+	}
+
+	private void fillTime(Duration suggestedDuration, Spinner<Integer> spinnerHour, Spinner<Integer> spinnerMinute) {
+		long horas = suggestedDuration.toHours();
+		Duration minutos = suggestedDuration.minus(horas, ChronoUnit.HOURS);
+		String hora = String.format("%02d", horas);
+		String minuto = String.format("%02d", minutos.toMinutes());
+		spinnerHour.getValueFactory().setValue(Integer.parseInt(hora));
+		spinnerMinute.getValueFactory().setValue(Integer.parseInt(minuto));
+		spinnerHour.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
+		spinnerMinute.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 	}
 
 	private void btnSaveClicked(ActionEvent event) {
@@ -322,17 +353,6 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 		btnAddCategory.setVisible(!btnAddCategory.isVisible());
 	}
 
-	private void switchCategoryErrorLabel(boolean show) {
-		Label lbl = (Label) txtCategory.getScene().lookup("#lblCategoryValidation");
-		if (show) {
-			lbl.getStyleClass().removeAll("hide");
-			txtCategory.getStyleClass().add("error");
-		} else {
-			txtCategory.getStyleClass().removeAll("error");
-			lbl.getStyleClass().add("hide");
-		}
-	}
-
 	@Override
 	public void notifyAllListeners(HashMap<String, Object> hmp) {
 		for (ShowEditViewActivityObserverI l : listeners) {
@@ -345,6 +365,11 @@ public class ActivityDetailsInsertingController implements Initializable, ShowEd
 	public void loadProject(ProjectVO proj) {
 		activity.setProjectVO(proj);
 		btnDependencies.setVisible(proj != null);
-		
+
+		String users = new TeamBO().getMemberIdArrayAsString(loggedUser.getIdUser().toString(),
+				activity.getProjectVO() != null ? activity.getProjectVO().getTeam() : null);
+		obsLstCategory = FXCollections.observableArrayList(new CategoryBO().listByUsers("", users));
+		cboCategory.setItems(obsLstCategory);
+
 	}
 }

@@ -13,7 +13,6 @@ import com.cronoteSys.util.ScreenUtil.OnChangeScreen;
 import com.cronoteSys.util.SessionUtil;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 
 import javafx.event.ActionEvent;
@@ -50,7 +49,6 @@ public class LoginController extends MasterController {
 	private JFXCheckBox chkRememberMe;
 	@FXML
 	private Pane pnlMidBottomArea;
-	private JFXSnackbar snackbar;
 
 	@FXML
 	public void initialize() {
@@ -73,7 +71,6 @@ public class LoginController extends MasterController {
 		Boolean[] areNotNullFields = { true, true };
 		Boolean[] areEmailFields = { true, false };
 		ScreenUtil.addInlineValidation(lstFieldsToValidation, areNotNullFields, areEmailFields);
-		snackbar = new JFXSnackbar(pnlMidBottomArea);
 	}
 
 	public void login(LoginVO login) {
@@ -106,7 +103,6 @@ public class LoginController extends MasterController {
 			ScreenUtil.openNewWindow(getThisStage(), "Home", true, hmp);
 
 		} else {
-			snackbar.getStyleClass().add("error-snackbar");
 			ScreenUtil.jfxDialogOpener(stackPane,"Aviso!", "Credenciais incorretas");
 		}
 	}
@@ -127,7 +123,7 @@ public class LoginController extends MasterController {
 			String sUsername = txtEmail.getText().trim(), sPasswd = txtPassword.getText().trim();
 			login(new LoginVO( sUsername, new GenHash().hashIt(sPasswd)));
 		}
-
+		
 	}
 
 	private void registerNewLogin(Integer idUser) {

@@ -8,6 +8,7 @@ import com.cronoteSys.model.bo.ActivityBO;
 import com.cronoteSys.model.bo.ExecutionTimeBO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.StatusEnum;
+import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.observer.ShowEditViewActivityObservableI;
 import com.cronoteSys.observer.ShowEditViewActivityObserverI;
 import com.cronoteSys.util.ActivityMonitor;
@@ -24,6 +25,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -35,28 +37,37 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.Skin;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
 
 public class ActivityCellController extends ListCell<ActivityVO> implements ShowEditViewActivityObservableI {
+
 	private AnchorPane activityCardRoot;
+
 	private Label lblTitle;
 	private Label lblCategory;
 	private Label lblStatus;
 	private Label lblIndex;
 	private Label lblProgress;
+	private Label lblExecutor = new Label();
+
 	private Button btnDelete;
 	private Button btnFinalize;
 	private Button btnPlayPause;
+
 	private JFXProgressBar pgbProgress;
 
 	private ActivityVO activity;
-
 	private boolean canExecute = true;
+	private boolean showExecutor = false;
+	private UserVO loggedUser = (UserVO) SessionUtil.getSession().get("loggedUser");
+
+	public ActivityCellController(boolean showExecutor) {
+		// TODO Auto-generated constructor stub
+		this.showExecutor = showExecutor;
+	}
 
 	{
 		activityCardRoot = new AnchorPane();
@@ -69,15 +80,12 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 		lblTitle.setWrapText(true);
 		lblTitle.setFont(new Font("System bold", 15));
 		lblTitle.setAlignment(Pos.TOP_LEFT);
-//		lblTitle.setStyle("-fx-background-color:red");
 		AnchorPane.setTopAnchor(lblTitle, 10.0);
 		AnchorPane.setLeftAnchor(lblTitle, 14.0);
 		AnchorPane.setRightAnchor(lblTitle, 82.0);
 
 		lblCategory = new Label();
-
 		lblStatus = new Label();
-
 		lblIndex = new Label();
 		lblProgress = new Label();
 
@@ -133,9 +141,16 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 		AnchorPane.setRightAnchor(ap, 12.0);
 		AnchorPane.setBottomAnchor(ap, 3.0);
 
+		lblExecutor.setStyle("-fx-background-color: Grey;-fx-background-radius:15;");
+		lblExecutor.setPadding(new Insets(5, 5, 5, 5));
+		AnchorPane.setTopAnchor(lblExecutor, -10.0);
+		AnchorPane.setRightAnchor(lblExecutor, -10.0);
+
+		lblExecutor.setVisible(showExecutor && activity.getStats() != StatusEnum.NOT_STARTED);
+
 		activityCardRoot.getChildren().clear();
 		activityCardRoot.getChildren().addAll(lblTitle, lblCategory, lblStatus, lblIndex, ap, btnPlayPause, btnDelete,
-				btnFinalize);
+				btnFinalize, lblExecutor);
 
 		for (Node n : activityCardRoot.getChildren()) {
 			if (n instanceof Label) {
@@ -171,10 +186,10 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 			hmp.put("action", "view");
 			hmp.put("activity", activity);
 			hmp.put("project", activity.getProjectVO());
+
 			notifyAllListeners(hmp);
 		} else
 			activityCardRoot.getStyleClass().removeAll("cardSelected");
-
 	}
 
 	@Override
@@ -200,7 +215,6 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 		Scene scene = new Scene(root);
 
 		root.getChildren().add(node);
-
 		root.applyCss();
 		root.layout();
 		Double height = node.getHeight();
@@ -242,16 +256,33 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 						break;
 					}
 					canExecute = true;
-
 				}
 			}
-
 			if (canExecute)
 				btnPlayPause.getStyleClass().addAll("show");
 			else
 				btnPlayPause.getStyleClass().removeAll("show");
-		}
 
+			if (activity.getExecutor() != null) {
+				lblExecutor.setVisible(true);
+				UserVO u = activity.getExecutor();
+				String[] userNames = u.getCompleteName().split(" ");
+				String initials = "";
+				int i = 0;
+				for (String string : userNames) {
+					initials += string.substring(0, 1).toUpperCase();
+					if (i == 2)
+						break;
+					i++;
+				}
+				lblExecutor.setText(initials.replaceAll(" ", ""));
+				double textSize = initials.length();
+				textSize = (1 - (textSize * 10 / 100.0)) * 15.0;
+				lblExecutor.setFont(new Font(textSize));
+			} else {
+				lblExecutor.setVisible(false);
+			}
+		}
 		StackPane progressBarPane = (StackPane) pgbProgress.lookup(".bar");
 		paintBar(progressBarPane);
 	}
@@ -317,22 +348,22 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 				ExecutionTimeBO execBo = new ExecutionTimeBO();
 				ActivityBO actBo = new ActivityBO();
 				if (btnPlayPause.getText().equalsIgnoreCase("play")) {
-					if (execBo.startExecution(activity) != null) {
-						activity = actBo.switchStatus(activity, StatusEnum.NORMAL_IN_PROGRESS);
+					
+					if (execBo.startExecution(activity,loggedUser) != null) {
+						activity.setExecutor(loggedUser);
+						activity = actBo.switchStatus(activity, StatusEnum.NORMAL_IN_PROGRESS,loggedUser);
 						if (btnDelete.isVisible()) {
 							btnDelete.getStyleClass().remove("show");
 						}
 						ActivityMonitor.addActivity(activity);
-					}else {
-						
+
+					} else {
 						ScreenUtil.jfxDialogOpener("Aviso!", "Um usuário só pode executar uma atividade por vez!\n"
 								+ "Pause ou complete a atividade para começar outra.");
 					}
 				} else {
-					if (execBo.finishExecution(activity) != null) {
-						activity = actBo.switchStatus(activity, StatusEnum.NORMAL_PAUSED);
-						ActivityMonitor.removeActivity(activity);
-					}
+					activity = actBo.switchStatus(activity, StatusEnum.NORMAL_PAUSED,loggedUser);
+					ActivityMonitor.removeActivity(activity);
 				}
 				loadActivity();
 			}
@@ -342,14 +373,11 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 			public void handle(ActionEvent event) {
 				ExecutionTimeBO execBo = new ExecutionTimeBO();
 				ActivityBO actBo = new ActivityBO();
-				if (execBo.finishExecution(activity) != null) {
-					activity = actBo.switchStatus(activity, StatusEnum.NORMAL_FINALIZED);
-					btnPlayPause.getStyleClass().removeAll("show");
-					btnFinalize.getStyleClass().removeAll("show");
-					loadActivity();
-
-					ActivityMonitor.removeActivity(activity);
-				}
+				activity = actBo.switchStatus(activity, StatusEnum.NORMAL_FINALIZED,loggedUser);
+				btnPlayPause.getStyleClass().removeAll("show");
+				btnFinalize.getStyleClass().removeAll("show");
+				loadActivity();
+				ActivityMonitor.removeActivity(activity);
 
 			}
 		});
@@ -359,7 +387,6 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 				boolean itsDependency = false;
 				List<ActivityVO> lst = new ArrayList<ActivityVO>();
 				lst.addAll(getListView().getItems());
-				System.out.println(lst.size());
 				for (ActivityVO a : lst) {
 					if (a.getId() == activity.getId())
 						continue;
@@ -368,8 +395,6 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 						break;
 					}
 				}
-				
-				
 				if (activity.getStats().equals(StatusEnum.NOT_STARTED) && !itsDependency) {
 					btnDelete.getStyleClass().add("show");
 				}
@@ -380,7 +405,6 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 			@Override
 			public void handle(Event event) {
 				btnDelete.getStyleClass().removeAll("show");
-
 			}
 		});
 		pgbProgress.skinProperty().addListener(
@@ -398,7 +422,6 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 				if (act.getId() == activity.getId())
 					activity = act;
 				loadProgressAndRealtime();
-
 			}
 		});
 	}
@@ -429,7 +452,5 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 		for (ShowEditViewActivityObserverI l : listeners) {
 			l.showEditViewActivity(hmp);
 		}
-
 	}
-
 }

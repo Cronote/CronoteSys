@@ -1,54 +1,42 @@
 package com.cronoteSys.controller;
 
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
-import org.w3c.dom.ls.LSLoadEvent;
-
-import com.cronoteSys.controller.components.cellfactory.SimplifiedAccountCellFactory;
 import com.cronoteSys.controller.components.cellfactory.TeamMemberCellFactory;
 import com.cronoteSys.model.bo.TeamBO;
 import com.cronoteSys.model.bo.UserBO;
 import com.cronoteSys.model.interfaces.ThreatingUser;
-import com.cronoteSys.model.vo.SimpleActivity;
 import com.cronoteSys.model.vo.TeamVO;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.model.vo.relation.side.TeamMember;
-import com.cronoteSys.model.vo.view.SimpleUser;
 import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXColorPicker;
-import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Skin;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.paint.Color;
-import javafx.util.Callback;
 import javafx.scene.layout.AnchorPane;
 
 public class TeamEditController implements Initializable {
@@ -63,10 +51,6 @@ public class TeamEditController implements Initializable {
 	private JFXButton btnSearchUsers;
 	@FXML
 	private ListView<ThreatingUser> lstUsers;
-	@FXML
-	private JFXButton btnUnselect;
-	@FXML
-	private JFXButton btnSelect;
 	@FXML
 	private JFXTextField txtSearchMembers;
 	@FXML
@@ -88,6 +72,8 @@ public class TeamEditController implements Initializable {
 	private TeamVO editingTeam;
 	private static final DataFormat MEMBER_LIST = new DataFormat("memberList");
 
+	private List<TeamMember> membersBackup = new ArrayList<TeamMember>();
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loggedUser = (UserVO) SessionUtil.getSession().get("loggedUser");
@@ -104,6 +90,8 @@ public class TeamEditController implements Initializable {
 	public void setEditingTeam(TeamVO editingTeam) {
 		this.editingTeam = editingTeam;
 		if (editingTeam != null) {
+			membersBackup.clear();
+			membersBackup.addAll(editingTeam.getMembers());
 			txtName.setText(editingTeam.getName());
 			txtDesc.setText(editingTeam.getDesc());
 			cpTeamColor.setValue(ScreenUtil.stringToColor(editingTeam.getTeamColor()));
@@ -127,19 +115,6 @@ public class TeamEditController implements Initializable {
 			}
 		});
 
-		btnSelect.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				btnSelectClicked(event);
-			}
-		});
-		btnUnselect.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				btnUnselectClicked(event);
-			}
-		});
-
 		lstUsers.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
 				dragDetected(event, lstUsers);
@@ -157,7 +132,6 @@ public class TeamEditController implements Initializable {
 				dragDropped(event, lstUsers);
 			}
 		});
-
 
 		// Add mouse event handlers for the target
 		lstMembers.setOnDragDetected(new EventHandler<MouseEvent>() {
@@ -177,7 +151,6 @@ public class TeamEditController implements Initializable {
 				dragDropped(event, lstMembers);
 			}
 		});
-
 
 	}
 
@@ -213,16 +186,34 @@ public class TeamEditController implements Initializable {
 		if (!txtName.validate())
 			return;
 		editingTeam.setName(txtName.getText());
-		editingTeam.setName(txtName.getText());
 		editingTeam.setDesc(txtDesc.getText());
 		editingTeam.setTeamColor(cpTeamColor.getValue().toString());
-		List<TeamMember> members = new ArrayList<TeamMember>();
 		if (lstMembers.getItems() != null) {
 			for (ThreatingUser tu : lstMembers.getItems()) {
-				members.add((TeamMember) tu);
+				if (!backupContains((TeamMember) tu)) {
+					TeamMember member = (TeamMember) tu;
+					member.setExpiresAt(LocalDateTime.now().plusMinutes(24));
+					membersBackup.add(member);
+				}
+			}
+
+			membersBackup.removeIf(new Predicate<TeamMember>() {
+
+				@Override
+				public boolean test(TeamMember t) {
+
+					return !membersContains(t);
+				}
+			});
+
+		}
+		for (TeamMember teamMember : membersBackup) {
+			if (!teamMember.isInviteAccepted() && teamMember.getExpiresAt() == null) {
+				teamMember.setExpiresAt(LocalDateTime.now().plusMinutes(24));
+
 			}
 		}
-		editingTeam.setMembers(members);
+		editingTeam.setMembers(membersBackup);
 
 		TeamBO teambo = new TeamBO();
 		if (editingTeam.getId() == null) {
@@ -232,9 +223,25 @@ public class TeamEditController implements Initializable {
 			teambo.update(editingTeam);
 	}
 
-	private void btnSelectClicked(ActionEvent e) {
-		UserVO selected = (UserVO) lstUsers.getSelectionModel().getSelectedItem();
-		manipulateLists(selected, "member");
+	private boolean backupContains(TeamMember tm) {
+		for (TeamMember m : membersBackup) {
+			if (tm.getUser().getIdUser() == m.getUser().getIdUser()) {
+				return true;
+			}
+		}
+
+		return false;
+
+	}
+
+	private boolean membersContains(TeamMember tm) {
+		for (ThreatingUser tu : lstMembers.getItems()) {
+			if (tm.getUser().getIdUser() == ((TeamMember) tu).getUser().getIdUser()) {
+				return true;
+			}
+		}
+
+		return false;
 
 	}
 
@@ -264,17 +271,12 @@ public class TeamEditController implements Initializable {
 				List<TeamMember> membersTmp = new ArrayList<TeamMember>();
 				for (Object obj : lstTmp)
 					membersTmp.add((TeamMember) obj);
-				membersTmp.add(new TeamMember((UserVO) selected, false));
+				membersTmp.add(new TeamMember((UserVO) selected, false, LocalDateTime.now()));
 				lstMProperty.set(FXCollections.observableArrayList(membersTmp));
 			}
 			refreshLists();
 
 		}
-	}
-
-	private void btnUnselectClicked(ActionEvent e) {
-		TeamMember selected = (TeamMember) lstMembers.getSelectionModel().getSelectedItem();
-		manipulateLists(selected, "user");
 	}
 
 	private void dragDetected(MouseEvent event, ListView<ThreatingUser> listView) {
@@ -311,7 +313,6 @@ public class TeamEditController implements Initializable {
 		event.consume();
 	}
 
-	@SuppressWarnings("unchecked")
 	private void dragDropped(DragEvent event, ListView<ThreatingUser> listView) {
 		boolean dragCompleted = false;
 
@@ -330,7 +331,5 @@ public class TeamEditController implements Initializable {
 		event.setDropCompleted(dragCompleted);
 		event.consume();
 	}
-
-
 
 }

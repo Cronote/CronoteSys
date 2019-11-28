@@ -5,7 +5,6 @@ import com.cronoteSys.util.ScreenUtil;
 import com.cronoteSys.util.SessionUtil;
 import com.cronoteSys.util.guice.GuiceModule;
 import com.google.inject.Guice;
-import com.jfoenix.controls.JFXAutoCompletePopup;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -17,7 +16,7 @@ public class MainApp extends Application {
 		super.stop();
 		System.exit(0);
 	}
-
+	
 	@Override
 	public void start(Stage stage) throws Exception {
 		SessionUtil.setInjector(Guice.createInjector(new GuiceModule()));

@@ -13,17 +13,16 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class MasterController {
 
-	private Stage thisStage;
 	@FXML
 	private Button btnBack;
 	@FXML
 	protected Pane pnlRoot;
 
+	private Stage thisStage;
 	private String sPreviewsScene;
 
 	public void btnBackClicked() {
@@ -62,12 +61,10 @@ public class MasterController {
 			kcBack = new KeyCodeCombination(KeyCode.LEFT, KeyCombination.META_DOWN);
 		} else {
 			kcBack = new KeyCodeCombination(KeyCode.LEFT, KeyCombination.ALT_DOWN);
-
 		}
 
-		Runnable rn = () -> btnBackClicked();
 		if (btnBack != null) {
-			btnBack.getScene().getAccelerators().putIfAbsent(kcBack, rn);
+			btnBack.getScene().getAccelerators().putIfAbsent(kcBack, () -> btnBackClicked());
 		}
 	}
 

@@ -11,10 +11,9 @@ import com.cronoteSys.interfaces.LoadProjectInterface;
 import com.cronoteSys.model.bo.ProjectBO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.ProjectVO;
-import com.cronoteSys.model.vo.TeamVO;
-import com.cronoteSys.observer.ShowEditViewActivityObservableI;
-import com.cronoteSys.observer.ShowEditViewActivityObserverI;
+import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.ScreenUtil;
+import com.cronoteSys.util.SessionUtil;
 import com.google.inject.Inject;
 
 import javafx.fxml.FXML;
@@ -33,8 +32,8 @@ public class ProjectManagerController implements Initializable {
 	private ProjectBO projectBO;
 	@FXML
 	private TabPane tabPane;
-	private HBox hboxContent = new HBox();;
 
+	private HBox hboxContent = new HBox();;
 	private ProjectFirstInfoController firstInfoController;
 	private ProjectFirstInfoViewController firstInfoViewController;
 	private ActivityListController activityListController;
@@ -52,11 +51,8 @@ public class ProjectManagerController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-//		initActivities();
 	}
 
-	private void initEvents() {
-	}
 
 	public void initFirstInfo(String mode) {
 		FXMLLoader firstInfoLoader = null;
@@ -96,18 +92,15 @@ public class ProjectManagerController implements Initializable {
 	}
 
 	private void initActivities() {
-		System.out.println(selectedProject);
 		if (selectedProject != null) {
 			try {
-
 				FXMLLoader actlivityListLoader = ScreenUtil.loadTemplate("ActivityList");
 				hboxContent.getChildren().add(actlivityListLoader.load());
 				activityListController = ((ActivityListController) actlivityListLoader.getController());
 				tabPane.getTabs().add(tbActivities);
 				activityListController.listByProject(selectedProject);
 				try {
-					firstInfoViewController
-							.setActivities(activityListController.getList());
+					firstInfoViewController.setActivities(activityListController.getList());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -135,9 +128,11 @@ public class ProjectManagerController implements Initializable {
 				loader = ScreenUtil.loadTemplate("ActivityDetailsInserting");
 				ap = (AnchorPane) loader.load();
 			}
+			ap.getStyleClass().add("tone3-background");
 			if (activity != null)
 				((LoadActivityInterface) loader.getController()).loadActivity(activity);
 			((LoadProjectInterface) loader.getController()).loadProject(selectedProject);
+			HBox.setHgrow(ap, Priority.ALWAYS);
 			hboxContent.getChildren().add(ap);
 			VBox.setVgrow(ap, Priority.ALWAYS);
 		} catch (IOException e1) {
@@ -148,14 +143,13 @@ public class ProjectManagerController implements Initializable {
 
 	protected void saveProject(ProjectVO project) {
 		if (project.getId() != null)
-			selectedProject = projectBO.update(project);
+			selectedProject = projectBO.update(project, (UserVO) SessionUtil.getSession().get("loggedUser"));
 		else
 			selectedProject = projectBO.save(project);
-//		setSelectedProject(selectedProject, "view");
 	}
 
 	public void delete(ProjectVO viewingProject) {
-		projectBO.delete(viewingProject);
+		projectBO.delete(viewingProject,(UserVO) SessionUtil.getSession().get("loggedUser"));
 
 	}
 

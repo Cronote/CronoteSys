@@ -3,7 +3,6 @@ package com.cronoteSys.controller.components.listcell;
 import com.cronoteSys.model.interfaces.ThreatingUser;
 import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.model.vo.relation.side.TeamMember;
-import com.sun.javafx.scene.control.skin.LabelSkin;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -28,6 +27,7 @@ public class TeamMemberCellController extends ListCell<ThreatingUser> {
 	private Label lblUserInitial;
 	private Label lblUsername;
 	private Label lblUserEmail;
+	private Label lblInviteStatus;
 	private Tooltip ttpUserEmail;
 	private ThreatingUser item;
 
@@ -35,28 +35,35 @@ public class TeamMemberCellController extends ListCell<ThreatingUser> {
 		lblUserInitial = new Label();
 		initialPnl = new BorderPane(lblUserInitial);
 		initialPnl.setStyle("-fx-background-color:grey;-fx-background-radius:30;");
-		initialPnl.setMinWidth(50.0);
-		initialPnl.setPrefWidth(50.0);
+		initialPnl.setMinWidth(60.0);
+		initialPnl.setPrefWidth(60.0);
 		lblUserEmail = new Label();
 		lblUsername = new Label();
-		VBox vbox = new VBox(5);
-		vbox.getChildren().addAll(lblUsername, lblUserEmail);
+		lblInviteStatus = new Label();
+		VBox vbox1 = new VBox(5);
+		VBox vbox2 = new VBox(5);
+		vbox2.getChildren().addAll(lblUserEmail, lblInviteStatus);
+		vbox1.setSpacing(1);
+		vbox2.setSpacing(10);
+		vbox1.getChildren().addAll(lblUsername, vbox2);
 		ttpUserEmail = new Tooltip();
 		Tooltip.install(lblUserEmail, ttpUserEmail);
 		rootPane = new HBox(7.0);
 		rootPane.setPadding(new Insets(10));
-		rootPane.getChildren().addAll(initialPnl, vbox);
+		rootPane.getChildren().addAll(initialPnl, vbox1);
 		rootPane.getStyleClass().addAll("card", "borders");
-		HBox.setHgrow(vbox, Priority.ALWAYS);
+		HBox.setHgrow(vbox1, Priority.ALWAYS);
 
 		lblUserInitial.setTextOverrun(OverrunStyle.CLIP);
 		lblUserInitial.setFont(new Font("system bold", 22));
 		lblUsername.setFont(new Font(16));
 		ttpUserEmail.setFont(new Font(17));
-		lblUserEmail.setFont(new Font(13));
+		lblUserEmail.setFont(new Font(12));
+		lblInviteStatus.setFont(new Font("system bold", 12));
 		lblUserInitial.setTextFill(Color.WHITE);
 		lblUsername.setTextFill(Color.WHITE);
 		lblUserEmail.setTextFill(Color.WHITE);
+		lblInviteStatus.setTextFill(Color.WHITE);
 
 		lblUsername.needsLayoutProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
@@ -105,7 +112,16 @@ public class TeamMemberCellController extends ListCell<ThreatingUser> {
 	private void loadInfos(ThreatingUser item) {
 		UserVO u = null;
 		if (item instanceof TeamMember) {
-			u = ((TeamMember) item).getUser();
+			TeamMember tm = ((TeamMember) item);
+			u = tm.getUser();
+
+			if (tm.getExpiresAt() == null) {
+				lblInviteStatus.setText("Membro");
+			} else {
+				lblInviteStatus.setText("Convite enviado");
+
+			}
+
 		} else {
 			u = ((UserVO) item);
 		}
@@ -124,6 +140,7 @@ public class TeamMemberCellController extends ListCell<ThreatingUser> {
 		textSize = (1 - (textSize * 10 / 100.0)) * 25.0;
 		lblUserInitial.setFont(new Font(textSize));
 		lblUsername.setText(name);
+
 	}
 
 	@Override

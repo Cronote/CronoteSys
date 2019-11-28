@@ -23,9 +23,6 @@ import com.cronoteSys.util.SessionUtil;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXTabPane;
 
-import de.jensd.fx.glyphs.GlyphIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
@@ -45,8 +42,6 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -54,12 +49,19 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 public class HomeController implements Initializable {
 
 	@FXML
 	protected HBox root;
-	@FXML protected StackPane stackPaneOne;
+	@FXML
+	protected StackPane stackPaneOne;
+	@FXML
+	protected AnchorPane appHeader;
+	@FXML
+	private ToggleButton btnLogout;
 	private MenuController menuControl;
 
 	private void loadProjectManager(ProjectVO project, String mode) {
@@ -74,10 +76,19 @@ public class HomeController implements Initializable {
 		HBox.setHgrow(projectManager, Priority.ALWAYS);
 		addNode(projectManager);
 	}
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		loadMenu();
+		btnLogout.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				SessionUtil.clearSession();
+				ScreenUtil.openNewWindow((Stage) stackPaneOne.getScene().getWindow(), "Slogin", false);
+
+			}
+
+		});
 		ProjectListController.addOnBtnProjectClickedListener(new BtnProjectClickedI() {
 			@Override
 			public void onBtnProjectClicked() {
@@ -107,10 +118,10 @@ public class HomeController implements Initializable {
 		root.getChildren().addListener(new ListChangeListener<Node>() {
 			@Override
 			public void onChanged(Change<? extends Node> c) {
-				ScreenUtil.paintScreen(root);
+				ScreenUtil.paintScreen(root, 1, false);
 			}
 		});
-		
+
 		SessionUtil.getSession().put("stackPane", stackPaneOne);
 	}
 
@@ -138,13 +149,15 @@ public class HomeController implements Initializable {
 					controller.setEditingTeam(team);
 				}
 			}
-
 			box.getChildren().add(ap);
 			VBox.setVgrow(ap, Priority.ALWAYS);
+
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+
 		HBox.setHgrow(box, Priority.ALWAYS);
+		ScreenUtil.paintScreen(box, 0, true);
 	}
 
 	private void loadMenu() {
@@ -222,8 +235,6 @@ class MenuController implements Initializable {
 	@FXML
 	private TitledPane menu;
 	@FXML
-	private ImageView imgLogo;
-	@FXML
 	private ToggleButton btnActivity;
 	@FXML
 	private ToggleButton btnReport;
@@ -245,7 +256,6 @@ class MenuController implements Initializable {
 	private Label lblUsername;
 	@FXML
 	private Label lblUserEmail;
-	private ToggleButton btnSizeToggle = new ToggleButton();
 	private HomeController homeControl;
 	BooleanProperty shortLarge = new SimpleBooleanProperty(false);
 
@@ -307,12 +317,14 @@ class MenuController implements Initializable {
 				AnchorPane ap = (AnchorPane) teamViewLoader.load();
 				box.getChildren().add(ap);
 				VBox.setVgrow(ap, Priority.ALWAYS);
+
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			homeControl.addNode(box);
 			HBox.setHgrow(box, Priority.ALWAYS);
+			ScreenUtil.paintScreen(box, 0, true);
 		}
 	}
 
@@ -323,12 +335,6 @@ class MenuController implements Initializable {
 	}
 
 	private void initEvents() {
-		btnSizeToggle.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				adjustMenu(btnSizeToggle.isSelected());
-			}
-		});
 		btnActivity.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -365,12 +371,10 @@ class MenuController implements Initializable {
 			AnchorPane ap = new AnchorPane();
 			ap.getStyleClass().add("title");
 			Label label = new Label("HOME");
-			ap.getChildren().addAll(label, btnSizeToggle);
 			ap.setPrefWidth(Double.POSITIVE_INFINITY);
 			AnchorPane.setLeftAnchor(label, 5.0);
 			AnchorPane.setBottomAnchor(label, 5.0);
 			AnchorPane.setTopAnchor(label, 5.0);
-			AnchorPane.setRightAnchor(btnSizeToggle, 0.0);
 			menu.setGraphic(ap);
 			menu.getGraphic().prefWidth(Double.POSITIVE_INFINITY);
 			menu.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
@@ -402,26 +406,28 @@ class MenuController implements Initializable {
 			ToggleButton btn = ((ToggleButton) node);
 			node.setUserData(btn.getGraphicTextGap());
 		}
-		btnSizeToggle.getStyleClass().addAll("btnTransparent");
-		adjustBtnIcon(false);
-		btnSizeToggle.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 
 		UserVO loggedUser = (UserVO) SessionUtil.getSession().get("loggedUser");
-		lblUserInitial.setText(loggedUser.getCompleteName().substring(0, 1).toUpperCase());
+		LoginVO login = loggedUser.getLogin();
+
+		lblUserEmail.setText(login.getEmail());
 		String[] userNames = loggedUser.getCompleteName().split(" ");
 		String name = userNames.length > 1 ? userNames[0] + " " + userNames[(userNames.length - 1)] : userNames[0];
+		String initials = "";
+		for (String string : userNames) {
+			initials += string.substring(0, 1).toUpperCase();
+		}
+		lblUserInitial.setText(initials.replaceAll(" ", ""));
+		double textSize = initials.length();
+		textSize = (1 - (textSize * 10 / 100.0)) * 25.0;
+		lblUserInitial.setFont(new Font(textSize));
 		lblUsername.setText(name);
-		LoginVO login = loggedUser.getLogin();
-		lblUserEmail.setText(login.getEmail());
 
 	}
 
 	protected void adjustMenu(boolean makeItShort) {
 		if (makeItShort) {
 			menu.setPrefWidth(SHORT_WIDTH);
-			imgLogo.setImage(null);
-			imgLogo.setTranslateX(0);
-			imgLogo.maxWidth(SHORT_WIDTH);
 			lblUserEmail.setVisible(false);
 			lblUsername.setVisible(false);
 			loggedCard.maxWidth(SHORT_WIDTH);
@@ -432,8 +438,6 @@ class MenuController implements Initializable {
 			}
 		} else {
 			menu.setPrefWidth(LARGE_WIDTH);
-			imgLogo.setImage(new Image(getClass().getResourceAsStream("/image/cronote_logo_white.png")));
-			imgLogo.maxWidth(LARGE_WIDTH);
 			loggedCard.maxWidth(LARGE_WIDTH);
 			lblUserEmail.setVisible(true);
 			lblUsername.setVisible(true);
@@ -444,18 +448,6 @@ class MenuController implements Initializable {
 				btn.setContentDisplay(ContentDisplay.LEFT);
 			}
 		}
-		adjustBtnIcon(makeItShort);
-	}
-
-	private void adjustBtnIcon(boolean isShort) {
-		GlyphIcon<?> icon = null;
-		if (isShort) {
-			icon = new FontAwesomeIconView(FontAwesomeIcon.ANGLE_RIGHT);
-		} else {
-			icon = new FontAwesomeIconView(FontAwesomeIcon.ANGLE_LEFT);
-		}
-		icon.setSize("1.5em");
-		btnSizeToggle.setGraphic(icon);
 	}
 
 }// MenuController

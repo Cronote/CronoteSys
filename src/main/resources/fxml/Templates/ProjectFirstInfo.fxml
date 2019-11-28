@@ -7,36 +7,31 @@
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="firstInfoRoot" prefHeight="589.0" prefWidth="697.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-		<JFXTextField fx:id="txtTitle" labelFloat="true" layoutX="128.0" layoutY="45.0" maxHeight="-Infinity" prefHeight="26.0" prefWidth="450.0" promptText="Título" styleClass="inputField" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="45.0" />
-		<JFXTextArea fx:id="txtDescription" labelFloat="true" layoutX="128.0" layoutY="117.0" prefHeight="89.0" prefWidth="450.0" promptText="Descrição - (opcional)" styleClass="inputField" wrapText="true" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="55.0" />
+		<JFXTextField fx:id="txtTitle" labelFloat="true" layoutX="128.0" layoutY="45.0" maxHeight="-Infinity" prefHeight="26.0" prefWidth="450.0" promptText="Título" styleClass="inputField" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="155.0" AnchorPane.topAnchor="45.0" />
+		<JFXTextArea fx:id="txtDescription" labelFloat="true" layoutX="128.0" layoutY="117.0" prefHeight="89.0" prefWidth="587.0" promptText="Descrição - (opcional)" styleClass="inputField" wrapText="true" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="55.0" />
 		<Label layoutX="55.0" layoutY="223.0" styleClass="letters_box_icons" text="PRAZO DO PROJETO" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="55.0">
 			<font>
 				<Font name="System Bold" size="15.0" />
 			</font>
 		</Label>
-		<JFXTabPane fx:id="tabDeadline" layoutX="55.0" layoutY="244.0" prefHeight="331.0" prefWidth="587.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="55.0">
+		<JFXTabPane fx:id="tabDeadline" layoutX="55.0" layoutY="244.0" prefHeight="275.0" prefWidth="587.0" tabClosingPolicy="UNAVAILABLE" visible="false" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="55.0">
 			<tabs>
-				<Tab closable="false" text="POR DATAS">
-					<content>
-						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-							<children>
-								<JFXDatePicker fx:id="dtpByDateStart" defaultColor="#7c4db8" layoutX="11.0" layoutY="47.0" promptText="Data de início" AnchorPane.leftAnchor="15.0" />
-								<JFXDatePicker fx:id="dtpByDateEnd" defaultColor="#7c4db8" layoutX="228.0" layoutY="47.0" promptText="Data de término" AnchorPane.rightAnchor="24.0" />
-							</children>
-						</AnchorPane>
-					</content>
-				</Tab>
-				<Tab closable="false" disable="true" text="POR TEMPO">
+				<Tab closable="false" text="POR DATAS" />
+				<Tab closable="false" text="POR TEMPO">
 					<content>
 						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="215.0" prefWidth="450.0">
 							<children>
@@ -90,10 +85,50 @@
 				</Tab>
 			</tabs>
 		</JFXTabPane>
-      <JFXButton fx:id="btnSave" contentDisplay="GRAPHIC_ONLY" layoutX="642.0" layoutY="536.0" ripplerFill="#7c4db8" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="24.0">
-         <graphic>
-            <FontAwesomeIconView glyphName="SAVE" size="2em" styleClass="letters_box_icons" />
-         </graphic>
-      </JFXButton>
+		<JFXButton fx:id="btnSave" contentDisplay="GRAPHIC_ONLY" layoutX="642.0" layoutY="536.0" ripplerFill="#7c4db8" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="24.0">
+			<graphic>
+				<FontAwesomeIconView glyphName="SAVE" size="2em" styleClass="letters_box_icons" />
+			</graphic>
+		</JFXButton>
+		<JFXButton fx:id="btnAddTeam" layoutX="69.0" layoutY="545.0" styleClass="btn" text="Adicionar time ao projeto?" textFill="WHITE">
+			<font>
+				<Font name="System Bold" size="14.0" />
+			</font>
+		</JFXButton>
+		<HBox fx:id="pnlInfoTeam" layoutX="572.0" layoutY="33.0" spacing="5.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="15.0">
+			<children>
+				<VBox nodeOrientation="RIGHT_TO_LEFT" spacing="10.0">
+					<children>
+						<Label contentDisplay="RIGHT" graphicTextGap="45.0" styleClass="letters_box_icons" text="Time">
+							<font>
+								<Font size="16.0" />
+							</font>
+							<graphic>
+								<Button fx:id="btnClearTeam" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" styleClass="btnTransparent" text="Button" textAlignment="CENTER" visible="false">
+									<graphic>
+										<FontAwesomeIconView glyphName="TRASH_ALT" size="2em" styleClass="letters_box_icons" />
+									</graphic>
+									<tooltip>
+										<Tooltip text="Deletar time do projeto" />
+									</tooltip>
+								</Button>
+							</graphic>
+						</Label>
+						<Label fx:id="lblTeamName" prefWidth="100.0" text="Nenhum time selecionado!" textFill="WHITE" wrapText="true" VBox.vgrow="ALWAYS">
+							<font>
+								<Font name="System Bold" size="18.0" />
+							</font>
+						</Label>
+					</children>
+				</VBox>
+				<StackPane fx:id="stkTeamColor" prefHeight="59.0" prefWidth="23.0" />
+			</children>
+		</HBox>
+      <AnchorPane layoutX="55.0" layoutY="251.0" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="587.0" AnchorPane.bottomAnchor="158.0" AnchorPane.leftAnchor="55.0" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="251.0">
+         <children>
+            <JFXDatePicker fx:id="dtpByDateStart" defaultColor="#7c4db8" layoutX="11.0" layoutY="47.0" promptText="Data de início" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="47.0" />
+            <JFXDatePicker fx:id="dtpByDateEnd" defaultColor="#7c4db8" layoutX="228.0" layoutY="47.0" promptText="Data de término" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="47.0" />
+         </children>
+      </AnchorPane>
 	</children>
 </AnchorPane>

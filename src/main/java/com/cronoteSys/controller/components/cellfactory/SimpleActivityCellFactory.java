@@ -2,7 +2,6 @@ package com.cronoteSys.controller.components.cellfactory;
 
 import com.cronoteSys.controller.components.listcell.SimpleActivityCellController;
 import com.cronoteSys.model.vo.SimpleActivity;
-import com.jfoenix.controls.JFXListCell;
 
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;

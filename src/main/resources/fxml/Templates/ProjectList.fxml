@@ -10,39 +10,20 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="title" prefHeight="700.0"
-	prefWidth="238.0" xmlns="http://javafx.com/javafx/8.0.171"
-	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="com.cronoteSys.controller.ProjectListController">
+<AnchorPane fx:id="title" prefHeight="700.0" prefWidth="238.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.ProjectListController">
 	<children>
-		<HBox alignment="CENTER" layoutX="10.0" layoutY="58.0"
-			maxWidth="200.0" prefHeight="26.0" prefWidth="204.0"
-			style="-fx-border-color: white;" styleClass="textfild"
-			AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+		<HBox visible="false" alignment="CENTER" layoutX="10.0" layoutY="58.0" maxWidth="200.0" prefHeight="26.0" prefWidth="204.0" style="-fx-border-color: white;" styleClass="textfild" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
 			<children>
-				<TextField fx:id="txtSearch" prefHeight="25.0"
-					prefWidth="165.0" style="-fx-border-width: 0;-fx-text-fill:white;"
-					styleClass="textfild" HBox.hgrow="ALWAYS" />
-				<Button fx:id="btnSearch" contentDisplay="GRAPHIC_ONLY"
-					mnemonicParsing="false" styleClass="btnTransparent"
-					textAlignment="CENTER">
+				<TextField fx:id="txtSearch" prefHeight="25.0" prefWidth="165.0" style="-fx-border-width: 0;-fx-text-fill:white;" styleClass="textfild" HBox.hgrow="ALWAYS" />
+				<Button fx:id="btnSearch" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" styleClass="btnTransparent" textAlignment="CENTER">
 					<graphic>
-						<FontAwesomeIconView fill="#ebe7e7"
-							glyphName="SEARCH" size="2em" textAlignment="CENTER" />
+						<FontAwesomeIconView fill="#ebe7e7" glyphName="SEARCH" size="2em" textAlignment="CENTER" />
 					</graphic>
 				</Button>
 			</children>
 		</HBox>
-		<ListView fx:id="cardsList" layoutX="22.4" layoutY="104.0"
-			prefHeight="494.0" prefWidth="211.0"
-			style="-fx-background-color: transparent;"
-			AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="12.0"
-			AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="104.0" />
-		<Button fx:id="btnAddProject" contentDisplay="GRAPHIC_ONLY"
-			layoutX="104.0" layoutY="616.0" mnemonicParsing="false"
-			styleClass="btnTransparent" text="Button"
-			AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="95.0"
-			AnchorPane.rightAnchor="95.0">
+		<ListView fx:id="cardsList" layoutX="22.4" layoutY="104.0" prefHeight="494.0" prefWidth="211.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="104.0" />
+		<Button fx:id="btnAddProject" contentDisplay="GRAPHIC_ONLY" layoutX="104.0" layoutY="616.0" mnemonicParsing="false" styleClass="btnTransparent" text="Button" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="95.0" AnchorPane.rightAnchor="95.0">
 			<graphic>
 				<FontAwesomeIconView glyphName="PLUS" size="2em">
 					<styleClass>
@@ -52,8 +33,7 @@
 				</FontAwesomeIconView>
 			</graphic>
 		</Button>
-		<Label alignment="BASELINE_LEFT" layoutX="68.0"
-			styleClass="letters_box_icons" text="PROJETOS">
+		<Label alignment="BASELINE_LEFT" layoutX="68.0" styleClass="letters_box_icons" text="PROJETOS">
 			<font>
 				<Font size="19.0" />
 			</font>

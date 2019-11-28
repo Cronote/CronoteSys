@@ -37,7 +37,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -293,17 +292,22 @@ public class ScreenUtil {
 
 	}
 
-	public static void paintScreen(HBox root) {
+	public static void paintScreen(Pane root, int startFrom, boolean reverse) {
 		int nodeIndex = 0;
 		for (Node node : root.getChildren()) {
-//			System.out.print(node);
-			if (nodeIndex > 0) {
-//				System.out.println(" " +nodeIndex );
+			if (nodeIndex >= startFrom) {
 				node.getStyleClass().removeAll("tone1-background", "tone2-background");
-				if (nodeIndex % 2 == 0)
-					node.getStyleClass().addAll("tone1-background");
-				else
-					node.getStyleClass().addAll("tone2-background");
+				if (!reverse) {
+					if (nodeIndex % 2 == 0)
+						node.getStyleClass().addAll("tone1-background");
+					else
+						node.getStyleClass().addAll("tone2-background");
+				} else {
+					if (nodeIndex % 2 == 0)
+						node.getStyleClass().addAll("tone2-background");
+					else
+						node.getStyleClass().addAll("tone1-background");
+				}
 			}
 			nodeIndex++;
 		}
@@ -397,90 +401,90 @@ public class ScreenUtil {
 		try {
 			return Color.valueOf(colorString);
 		} catch (Exception e) {
-			e.printStackTrace(); 
+			e.printStackTrace();
 			return Color.DEEPPINK;
 		}
 
 	}
-	
+
 	public static void jfxDialogOpener(StackPane stackPane, String title, String message) {
 		StackPane stackpane = stackPane;
 		JFXDialogLayout content = new JFXDialogLayout();
 		content.getStyleClass().addAll("tone1-background");
-		
+
 		Text titleText = new Text(title);
 		titleText.getStyleClass().add("letters_box_icons");
-	    content.setHeading(titleText);
-	    Text messageText = new Text(message);
-	    messageText.getStyleClass().add("letters_box_icons");
-	    content.setBody(messageText);
-	    JFXDialog dialog = new JFXDialog(stackpane, content, JFXDialog.DialogTransition.NONE);
-	    JFXButton button = new JFXButton("Okay");
-	    button.getStyleClass().addAll("letters_box_icons","btn");
-	    button.setOnAction(new EventHandler<ActionEvent>() {
-	        @Override
-	        public void handle(ActionEvent event) {
-	            dialog.close();
-	            
-	        }
-	    });
-	    content.setActions(button);
-	    dialog.show();
-	}
-	
-	
-	
-	public static void jfxDialogOpener(String title, String message) {
-		StackPane stackpane =(StackPane) SessionUtil.getSession().get("stackPane");
-		JFXDialogLayout content = new JFXDialogLayout();
-		content.getStyleClass().addAll("tone1-background");
-		
-		Text titleText = new Text(title);
-		titleText.getStyleClass().add("letters_box_icons");
-	    content.setHeading(titleText);
-	    Text messageText = new Text(message);
-	    messageText.getStyleClass().add("letters_box_icons");
-	    content.setBody(messageText);
-	    JFXDialog dialog = new JFXDialog(stackpane, content, JFXDialog.DialogTransition.NONE);
-	    JFXButton button = new JFXButton("Okay");
-	    button.getStyleClass().addAll("letters_box_icons","btn");
-	    button.setOnAction(new EventHandler<ActionEvent>() {
-	        @Override
-	        public void handle(ActionEvent event) {
-	            dialog.close();
-	        }
-	    });
-	    content.setActions(button);
-	    dialog.show();
+		content.setHeading(titleText);
+		Text messageText = new Text(message);
+		messageText.getStyleClass().add("letters_box_icons");
+		content.setBody(messageText);
+		JFXDialog dialog = new JFXDialog(stackpane, content, JFXDialog.DialogTransition.NONE);
+		JFXButton button = new JFXButton("Okay");
+		button.getStyleClass().addAll("letters_box_icons", "btn");
+		button.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				dialog.close();
+
+			}
+		});
+		content.setActions(button);
+		dialog.show();
 	}
 
-	public static void jfxDialogOpener(StackPane stk, String title, String message, EventHandler<ActionEvent> onAction) {
-		StackPane stackpane =stk;
+	public static void jfxDialogOpener(String title, String message) {
+		StackPane stackpane = (StackPane) SessionUtil.getSession().get("stackPane");
 		JFXDialogLayout content = new JFXDialogLayout();
 		content.getStyleClass().addAll("tone1-background");
-		
+
 		Text titleText = new Text(title);
 		titleText.getStyleClass().add("letters_box_icons");
-	    content.setHeading(titleText);
-	    Text messageText = new Text(message);
-	    messageText.getStyleClass().add("letters_box_icons");
-	    content.setBody(messageText);
-	    JFXDialog dialog = new JFXDialog(stackpane, content, JFXDialog.DialogTransition.NONE);
-	    JFXButton button = new JFXButton("Okay");
-	    button.getStyleClass().addAll("letters_box_icons","btn");
-	    
-	    button.setOnAction(new EventHandler<ActionEvent>() {
-			
+		content.setHeading(titleText);
+		Text messageText = new Text(message);
+		messageText.getStyleClass().add("letters_box_icons");
+		content.setBody(messageText);
+		JFXDialog dialog = new JFXDialog(stackpane, content, JFXDialog.DialogTransition.NONE);
+		JFXButton button = new JFXButton("Okay");
+		button.getStyleClass().addAll("letters_box_icons", "btn");
+		button.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				dialog.close();
+			}
+		});
+		content.setActions(button);
+		dialog.show();
+	}
+
+	public static void jfxDialogOpener(StackPane stk, String title, String message,
+			EventHandler<ActionEvent> onAction) {
+		StackPane stackpane = stk;
+		JFXDialogLayout content = new JFXDialogLayout();
+		content.getStyleClass().addAll("tone1-background");
+
+		Text titleText = new Text(title);
+		titleText.getStyleClass().add("letters_box_icons");
+		content.setHeading(titleText);
+		Text messageText = new Text(message);
+		messageText.getStyleClass().add("letters_box_icons");
+		content.setBody(messageText);
+		JFXDialog dialog = new JFXDialog(stackpane, content, JFXDialog.DialogTransition.NONE);
+		JFXButton button = new JFXButton("Okay");
+		button.getStyleClass().addAll("letters_box_icons", "btn");
+
+		button.setOnAction(new EventHandler<ActionEvent>() {
+
 			@Override
 			public void handle(ActionEvent event) {
 				onAction.handle(event);
 				dialog.close();
-				
+
 			}
 		});
-	    content.setActions(button);
-	    dialog.show();
+		content.setActions(button);
+		dialog.show();
 	}
+
 	private static ArrayList<OnChangeScreen> listeners = new ArrayList<OnChangeScreen>();
 
 	public interface OnChangeScreen {
@@ -496,6 +500,5 @@ public class ScreenUtil {
 			l.onScreenChanged(newScreen, hmap);
 		}
 	}
-
 
 }
