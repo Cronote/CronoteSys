@@ -30,7 +30,7 @@
 			style="-fx-background-color: transparent;"
 			AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="0.0"
 			AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="104.0" />
-		<HBox fx:id="SearchGroup" alignment="CENTER" layoutX="20.0" layoutY="61.0"
+		<HBox visible="false" fx:id="SearchGroup" alignment="CENTER" layoutX="20.0" layoutY="61.0"
 			maxWidth="266.0" prefHeight="37.0" prefWidth="201.0"
 			style="-fx-border-color: white;" styleClass="textfild"
 			AnchorPane.leftAnchor="20.0"

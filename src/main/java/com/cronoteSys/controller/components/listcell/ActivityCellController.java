@@ -62,6 +62,7 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 	private ActivityVO activity;
 	private boolean canExecute = true;
 	private boolean showExecutor = false;
+	private UserVO loggedUser = (UserVO) SessionUtil.getSession().get("loggedUser");
 
 	public ActivityCellController(boolean showExecutor) {
 		// TODO Auto-generated constructor stub
@@ -145,7 +146,7 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 		AnchorPane.setTopAnchor(lblExecutor, -10.0);
 		AnchorPane.setRightAnchor(lblExecutor, -10.0);
 
-		lblExecutor.setVisible(showExecutor && activity.getStats()!=StatusEnum.NOT_STARTED);
+		lblExecutor.setVisible(showExecutor && activity.getStats() != StatusEnum.NOT_STARTED);
 
 		activityCardRoot.getChildren().clear();
 		activityCardRoot.getChildren().addAll(lblTitle, lblCategory, lblStatus, lblIndex, ap, btnPlayPause, btnDelete,
@@ -347,9 +348,10 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 				ExecutionTimeBO execBo = new ExecutionTimeBO();
 				ActivityBO actBo = new ActivityBO();
 				if (btnPlayPause.getText().equalsIgnoreCase("play")) {
-					if (execBo.startExecution(activity) != null) {
-						activity.setExecutor((UserVO) SessionUtil.getSession().get("loggedUser"));
-						activity = actBo.switchStatus(activity, StatusEnum.NORMAL_IN_PROGRESS);
+					
+					if (execBo.startExecution(activity,loggedUser) != null) {
+						activity.setExecutor(loggedUser);
+						activity = actBo.switchStatus(activity, StatusEnum.NORMAL_IN_PROGRESS,loggedUser);
 						if (btnDelete.isVisible()) {
 							btnDelete.getStyleClass().remove("show");
 						}
@@ -360,10 +362,8 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 								+ "Pause ou complete a atividade para começar outra.");
 					}
 				} else {
-					if (execBo.finishExecution(activity) != null) {
-						activity = actBo.switchStatus(activity, StatusEnum.NORMAL_PAUSED);
-						ActivityMonitor.removeActivity(activity);
-					}
+					activity = actBo.switchStatus(activity, StatusEnum.NORMAL_PAUSED,loggedUser);
+					ActivityMonitor.removeActivity(activity);
 				}
 				loadActivity();
 			}
@@ -373,13 +373,11 @@ public class ActivityCellController extends ListCell<ActivityVO> implements Show
 			public void handle(ActionEvent event) {
 				ExecutionTimeBO execBo = new ExecutionTimeBO();
 				ActivityBO actBo = new ActivityBO();
-				if (execBo.finishExecution(activity) != null) {
-					activity = actBo.switchStatus(activity, StatusEnum.NORMAL_FINALIZED);
-					btnPlayPause.getStyleClass().removeAll("show");
-					btnFinalize.getStyleClass().removeAll("show");
-					loadActivity();
-					ActivityMonitor.removeActivity(activity);
-				}
+				activity = actBo.switchStatus(activity, StatusEnum.NORMAL_FINALIZED,loggedUser);
+				btnPlayPause.getStyleClass().removeAll("show");
+				btnFinalize.getStyleClass().removeAll("show");
+				loadActivity();
+				ActivityMonitor.removeActivity(activity);
 
 			}
 		});

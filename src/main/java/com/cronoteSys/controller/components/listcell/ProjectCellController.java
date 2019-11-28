@@ -171,7 +171,7 @@ public class ProjectCellController extends ListCell<ProjectVO> {
 	}
 
 	private void activitiesInfo(ProjectVO item) {
-		List<ActivityVO> lst = new ActivityBO().listAll(new ActivityFilter(item.getId(), item.getUserVO().getIdUser()));
+		List<ActivityVO> lst = new ActivityBO().listAll(new ActivityFilter(item.getId(), null));
 		Integer total = lst.size();
 		Integer done = 0;
 		for (ActivityVO ac : lst) {

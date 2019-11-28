@@ -12,7 +12,7 @@
 
 <AnchorPane fx:id="title" prefHeight="700.0" prefWidth="238.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cronoteSys.controller.ProjectListController">
 	<children>
-		<HBox alignment="CENTER" layoutX="10.0" layoutY="58.0" maxWidth="200.0" prefHeight="26.0" prefWidth="204.0" style="-fx-border-color: white;" styleClass="textfild" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+		<HBox visible="false" alignment="CENTER" layoutX="10.0" layoutY="58.0" maxWidth="200.0" prefHeight="26.0" prefWidth="204.0" style="-fx-border-color: white;" styleClass="textfild" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
 			<children>
 				<TextField fx:id="txtSearch" prefHeight="25.0" prefWidth="165.0" style="-fx-border-width: 0;-fx-text-fill:white;" styleClass="textfild" HBox.hgrow="ALWAYS" />
 				<Button fx:id="btnSearch" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" styleClass="btnTransparent" textAlignment="CENTER">

@@ -71,8 +71,6 @@ public class LoginController extends MasterController {
 		Boolean[] areNotNullFields = { true, true };
 		Boolean[] areEmailFields = { true, false };
 		ScreenUtil.addInlineValidation(lstFieldsToValidation, areNotNullFields, areEmailFields);
-		
-		txtPassword.setText("Omega1390-");
 	}
 
 	public void login(LoginVO login) {

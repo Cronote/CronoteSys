@@ -14,29 +14,44 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<TitledPane id="menu" fx:id="menu" alignment="CENTER" animated="false" collapsible="false" maxHeight="Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="232.0" styleClass="menu-background" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<TitledPane id="menu" fx:id="menu" alignment="CENTER"
+	animated="false" collapsible="false" maxHeight="Infinity"
+	maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+	prefWidth="232.0" styleClass="menu-background"
+	xmlns="http://javafx.com/javafx/8.0.171"
+	xmlns:fx="http://javafx.com/fxml/1">
 	<content>
 		<VBox prefHeight="700.0">
 			<children>
-				<FlowPane fx:id="topMenu" alignment="TOP_CENTER" prefWidth="232.0" VBox.vgrow="NEVER">
+				<FlowPane fx:id="topMenu" alignment="TOP_CENTER"
+					prefWidth="232.0" VBox.vgrow="NEVER">
 					<children>
-						<AnchorPane fx:id="loggedCard" prefHeight="84.0" prefWidth="199.0">
+						<AnchorPane fx:id="loggedCard" prefHeight="84.0"
+							prefWidth="199.0">
 							<children>
-								<StackPane fx:id="initialPnl" layoutY="18.0" prefHeight="49.0" prefWidth="53.0" style="-fx-background-radius: 30; -fx-background-color: grey;" AnchorPane.bottomAnchor="17.0" AnchorPane.topAnchor="18.0">
+								<StackPane fx:id="initialPnl" layoutY="18.0"
+									prefHeight="49.0" prefWidth="53.0"
+									style="-fx-background-radius: 30; -fx-background-color: grey;"
+									AnchorPane.bottomAnchor="17.0" AnchorPane.topAnchor="18.0">
 									<children>
-										<Label fx:id="lblUserInitial" prefHeight="32.0" text="N" textFill="#f5f5f5">
+										<Label fx:id="lblUserInitial" prefHeight="32.0" text="N"
+											textFill="#f5f5f5">
 											<font>
 												<Font name="System Bold" size="31.0" />
 											</font>
 										</Label>
 									</children>
 								</StackPane>
-								<Label fx:id="lblUsername" layoutX="55.0" layoutY="18.0" prefHeight="21.0" text="Bruno" textFill="#f5f5f5" AnchorPane.leftAnchor="55.0">
+								<Label fx:id="lblUsername" layoutX="55.0" layoutY="18.0"
+									prefHeight="21.0" text="Bruno" textFill="#f5f5f5"
+									AnchorPane.leftAnchor="55.0">
 									<font>
 										<Font size="16.0" />
 									</font>
 								</Label>
-								<Label fx:id="lblUserEmail" layoutX="56.0" layoutY="44.0" prefWidth="143.0" text="bruno.car.ambrosio@gmail.com" textFill="#f5f5f5" AnchorPane.rightAnchor="0.0">
+								<Label fx:id="lblUserEmail" layoutX="56.0" layoutY="44.0"
+									prefWidth="143.0" text="bruno.car.ambrosio@gmail.com"
+									textFill="#f5f5f5" AnchorPane.rightAnchor="0.0">
 									<font>
 										<Font size="13.0" />
 									</font>
@@ -50,9 +65,15 @@
 								</Label>
 							</children>
 						</AnchorPane>
-						<ToggleButton fx:id="btnActivity" cacheShape="false" ellipsisString="" graphicTextGap="80.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="240.0" text="ATIVIDADES" textAlignment="CENTER">
+						<ToggleButton fx:id="btnActivity" cacheShape="false"
+							ellipsisString="" graphicTextGap="80.0" mnemonicParsing="false"
+							prefHeight="47.0" prefWidth="240.0" text="ATIVIDADES"
+							textAlignment="CENTER">
 							<graphic>
-								<FontAwesomeIconView fontSmoothingType="LCD" glyphName="FILE_TEXT_ALT" size="2em" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" textAlignment="CENTER" textOrigin="CENTER">
+								<FontAwesomeIconView fontSmoothingType="LCD"
+									glyphName="FILE_TEXT_ALT" size="2em" stroke="TRANSPARENT"
+									strokeLineCap="ROUND" strokeLineJoin="ROUND"
+									textAlignment="CENTER" textOrigin="CENTER">
 									<font>
 										<Font name="FontAwesome Regular" size="18.0" />
 									</font>
@@ -74,9 +95,15 @@
 								<ToggleGroup fx:id="btnWindows" />
 							</toggleGroup>
 						</ToggleButton>
-						<ToggleButton fx:id="btnProject" cacheShape="false" ellipsisString="" graphicTextGap="80.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" text="  PROJETOS" textAlignment="CENTER" toggleGroup="$btnWindows">
+						<ToggleButton fx:id="btnProject" cacheShape="false"
+							ellipsisString="" graphicTextGap="80.0" mnemonicParsing="false"
+							prefHeight="50.0" prefWidth="240.0" text="  PROJETOS"
+							textAlignment="CENTER" toggleGroup="$btnWindows">
 							<graphic>
-								<FontAwesomeIconView fontSmoothingType="LCD" glyphName="BOOK" size="2em" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" textAlignment="CENTER" textOrigin="CENTER">
+								<FontAwesomeIconView fontSmoothingType="LCD"
+									glyphName="BOOK" size="2em" stroke="TRANSPARENT"
+									strokeLineCap="ROUND" strokeLineJoin="ROUND"
+									textAlignment="CENTER" textOrigin="CENTER">
 									<font>
 										<Font name="FontAwesome Regular" size="18.0" />
 									</font>
@@ -96,29 +123,11 @@
 								<String fx:value="letters_box_icons" />
 							</styleClass>
 						</ToggleButton>
-						<ToggleButton fx:id="btnReport" cacheShape="false" disable="true" ellipsisString="" graphicTextGap="65.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="51.0" prefWidth="239.0" text="RELATÓRIOS" textAlignment="CENTER" toggleGroup="$btnWindows">
-							<font>
-								<Font size="15.0" />
-							</font>
-							<styleClass>
-								<String fx:value="btnTransparent" />
-								<String fx:value="btnWindows" />
-								<String fx:value="letters_box_icons" />
-							</styleClass>
-                     <graphic>
-                        <FontAwesomeIconView fontSmoothingType="LCD" glyphName="LINE_CHART" size="2em" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" textAlignment="CENTER" textOrigin="CENTER">
-                           <font>
-                              <Font name="FontAwesome Regular" size="18.0" />
-                           </font>
-                           <styleClass>
-                              <String fx:value="icon-outline" />
-                              <String fx:value="normal" />
-                              <String fx:value="rainforce" />
-                           </styleClass>
-                        </FontAwesomeIconView>
-                     </graphic>
-						</ToggleButton>
-						<ToggleButton fx:id="btnTeam" cacheShape="false" ellipsisString="" graphicTextGap="110.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="239.0" text="TIMES" textAlignment="CENTER" toggleGroup="$btnWindows">
+						
+						<ToggleButton fx:id="btnTeam" cacheShape="false"
+							ellipsisString="" graphicTextGap="110.0" mnemonicParsing="false"
+							prefHeight="51.0" prefWidth="239.0" text="TIMES"
+							textAlignment="CENTER" toggleGroup="$btnWindows">
 							<font>
 								<Font size="15.0" />
 							</font>
@@ -128,9 +137,40 @@
 								<String fx:value="letters_box_icons" />
 							</styleClass>
 							<graphic>
-								<FontAwesomeIconView glyphName="USERS" size="3em">
+								<FontAwesomeIconView glyphName="USERS"
+									size="3em">
 									<styleClass>
 										<String fx:value="icon-outline" />
+										<String fx:value="rainforce" />
+									</styleClass>
+								</FontAwesomeIconView>
+							</graphic>
+						</ToggleButton>
+						<ToggleButton fx:id="btnReport" visible="false"
+							cacheShape="false" disable="true" ellipsisString=""
+							graphicTextGap="65.0" mnemonicParsing="false"
+							nodeOrientation="LEFT_TO_RIGHT" prefHeight="51.0"
+							prefWidth="239.0" text="RELATÓRIOS" textAlignment="CENTER"
+							toggleGroup="$btnWindows">
+							<font>
+								<Font size="15.0" />
+							</font>
+							<styleClass>
+								<String fx:value="btnTransparent" />
+								<String fx:value="btnWindows" />
+								<String fx:value="letters_box_icons" />
+							</styleClass>
+							<graphic>
+								<FontAwesomeIconView fontSmoothingType="LCD"
+									glyphName="LINE_CHART" size="2em" stroke="TRANSPARENT"
+									strokeLineCap="ROUND" strokeLineJoin="ROUND"
+									textAlignment="CENTER" textOrigin="CENTER">
+									<font>
+										<Font name="FontAwesome Regular" size="18.0" />
+									</font>
+									<styleClass>
+										<String fx:value="icon-outline" />
+										<String fx:value="normal" />
 										<String fx:value="rainforce" />
 									</styleClass>
 								</FontAwesomeIconView>

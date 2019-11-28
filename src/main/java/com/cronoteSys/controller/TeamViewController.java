@@ -118,16 +118,16 @@ public class TeamViewController implements Initializable {
 		lst.addAll(viewingTeam.getMembers());
 		if (viewingTeam.getMembers().contains(loggedUser)) {
 			viewingTeam.getMembers().remove(loggedUser);
-			new TeamBO().update(viewingTeam, "leaving");
+			new TeamBO().update(viewingTeam, "leaving", loggedUser);
 		}
 		if (loggedUser.getIdUser().equals(viewingTeam.getOwner().getIdUser())) {
 			if (viewingTeam.getMembers().size() > 0) {
 				TeamMember member = viewingTeam.getMembers().remove(0);
 				UserVO newOwner = member.getUser();
 				viewingTeam.setOwner(newOwner);
-				new TeamBO().update(viewingTeam, "leaving");
+				new TeamBO().update(viewingTeam, "leaving", loggedUser);
 			} else {
-				new TeamBO().delete(viewingTeam);
+				new TeamBO().delete(viewingTeam, loggedUser);
 			}
 		}
 	}

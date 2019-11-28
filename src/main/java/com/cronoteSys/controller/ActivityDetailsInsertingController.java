@@ -124,14 +124,15 @@ public class ActivityDetailsInsertingController
 			if (!activity.getStats().equals(StatusEnum.NOT_STARTED)) {
 				blockEdition();
 			}
-			long horas = activity.getEstimatedTime().toHours();
-			Duration minutos = activity.getEstimatedTime().minus(horas, ChronoUnit.HOURS);
-			String hora = String.format("%02d", horas);
-			String minuto = String.format("%02d", minutos.toMinutes());
-			spnEstimatedTimeHour.getValueFactory().setValue(Integer.parseInt(hora));
-			spnEstimatedTimeMinute.getValueFactory().setValue(Integer.parseInt(minuto));
-			spnEstimatedTimeHour.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
-			spnEstimatedTimeMinute.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
+			fillTime(activity.getEstimatedTime(), spnEstimatedTimeHour, spnEstimatedTimeMinute);
+//			long horas = activity.getEstimatedTime().toHours();
+//			Duration minutos = activity.getEstimatedTime().minus(horas, ChronoUnit.HOURS);
+//			String hora = String.format("%02d", horas);
+//			String minuto = String.format("%02d", minutos.toMinutes());
+//			spnEstimatedTimeHour.getValueFactory().setValue(Integer.parseInt(hora));
+//			spnEstimatedTimeMinute.getValueFactory().setValue(Integer.parseInt(minuto));
+//			spnEstimatedTimeHour.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
+//			spnEstimatedTimeMinute.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 		}
 	}
 
@@ -280,6 +281,44 @@ public class ActivityDetailsInsertingController
 			}
 		});
 
+		ratePriority.ratingProperty().addListener((ChangeListener<Number>) (observable, oldValue, newValue) -> {
+			if (newValue != null) {
+				CategoryVO selectedCategory = cboCategory.getSelectionModel().getSelectedItem();
+				if (selectedCategory != null) {
+					getSuggestion(selectedCategory, newValue.intValue());
+				}
+			}
+		});
+
+		cboCategory.getSelectionModel().selectedItemProperty()
+				.addListener((ChangeListener<CategoryVO>) (observable, oldValue, newValue) -> {
+					if (newValue != null) {
+						Integer rate = (int) ratePriority.getRating();
+						if (rate != null) {
+							getSuggestion(newValue, rate);
+						}
+					}
+				});
+
+	}
+
+	private void getSuggestion(CategoryVO category, Integer rate) {
+		if (activity.getEstimatedTime() == null || activity.getEstimatedTime().isZero()) {
+		Duration suggestedDuration = new ActivityBO().timeSuggestionFor(loggedUser.getIdUser(), rate, category);
+		if (suggestedDuration != null)
+			fillTime(suggestedDuration, spnEstimatedTimeHour, spnEstimatedTimeMinute);
+		}
+	}
+
+	private void fillTime(Duration suggestedDuration, Spinner<Integer> spinnerHour, Spinner<Integer> spinnerMinute) {
+		long horas = suggestedDuration.toHours();
+		Duration minutos = suggestedDuration.minus(horas, ChronoUnit.HOURS);
+		String hora = String.format("%02d", horas);
+		String minuto = String.format("%02d", minutos.toMinutes());
+		spinnerHour.getValueFactory().setValue(Integer.parseInt(hora));
+		spinnerMinute.getValueFactory().setValue(Integer.parseInt(minuto));
+		spinnerHour.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
+		spinnerMinute.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_VERTICAL);
 	}
 
 	private void btnSaveClicked(ActionEvent event) {

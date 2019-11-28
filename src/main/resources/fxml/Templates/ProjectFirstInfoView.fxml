@@ -115,7 +115,7 @@
 				</Label>
 			</children>
 		</VBox>
-		<HBox layoutX="20.0" layoutY="513.0" prefHeight="21.0" prefWidth="649.0" spacing="10.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="30.0">
+		<HBox visible="false" layoutX="20.0" layoutY="513.0" prefHeight="21.0" prefWidth="649.0" spacing="10.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="30.0">
 			<children>
 				<JFXCheckBox fx:id="chxHoliday" checkedColor="#7c4db8" styleClass="letters_box_icons" text="Considerar feriados?" unCheckedColor="#a6a6a6">
 					<font>

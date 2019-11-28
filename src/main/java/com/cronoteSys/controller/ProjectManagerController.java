@@ -11,7 +11,9 @@ import com.cronoteSys.interfaces.LoadProjectInterface;
 import com.cronoteSys.model.bo.ProjectBO;
 import com.cronoteSys.model.vo.ActivityVO;
 import com.cronoteSys.model.vo.ProjectVO;
+import com.cronoteSys.model.vo.UserVO;
 import com.cronoteSys.util.ScreenUtil;
+import com.cronoteSys.util.SessionUtil;
 import com.google.inject.Inject;
 
 import javafx.fxml.FXML;
@@ -141,13 +143,13 @@ public class ProjectManagerController implements Initializable {
 
 	protected void saveProject(ProjectVO project) {
 		if (project.getId() != null)
-			selectedProject = projectBO.update(project);
+			selectedProject = projectBO.update(project, (UserVO) SessionUtil.getSession().get("loggedUser"));
 		else
 			selectedProject = projectBO.save(project);
 	}
 
 	public void delete(ProjectVO viewingProject) {
-		projectBO.delete(viewingProject);
+		projectBO.delete(viewingProject,(UserVO) SessionUtil.getSession().get("loggedUser"));
 
 	}
 

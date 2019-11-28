@@ -75,6 +75,7 @@ public class CategoryCell extends ListCell<CategoryVO> {
 							lblCategoryName.setVisible(isEditing.get());
 							txtCategoryName.setVisible(!isEditing.get());
 							isEditing.set(!isEditing.get());
+							category = new CategoryBO().save(item);
 						} else {
 							return;
 						}
@@ -85,7 +86,6 @@ public class CategoryCell extends ListCell<CategoryVO> {
 					}
 					lblCategoryName.setText(item.getDescription());
 					txtCategoryName.setText(item.getDescription());
-					category = new CategoryBO().save(item);
 					loadIcon();
 				}
 			});

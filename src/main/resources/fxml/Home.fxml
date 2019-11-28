@@ -22,12 +22,12 @@
                   </ImageView>
 						<HBox alignment="CENTER" layoutX="604.0" AnchorPane.rightAnchor="0.0">
 							<children>
-								<ToggleButton mnemonicParsing="false" prefHeight="38.0" prefWidth="220.0" style="-fx-background-color: transparent;" styleClass="controlBtn" text="CONFIGURAÇÕES" textAlignment="CENTER" textFill="WHITE" HBox.hgrow="ALWAYS">
+								<ToggleButton mnemonicParsing="false" visible="false" prefHeight="38.0" prefWidth="220.0" style="-fx-background-color: transparent;" styleClass="controlBtn" text="CONFIGURAÇÕES" textAlignment="CENTER" textFill="WHITE" HBox.hgrow="ALWAYS">
 									<font>
 										<Font size="15.0" />
 									</font>
 								</ToggleButton>
-								<ToggleButton mnemonicParsing="false" prefHeight="38.0" prefWidth="130.0" style="-fx-background-color: transparent;" styleClass="controlBtn" text="AJUDA" textAlignment="CENTER" textFill="WHITE">
+								<ToggleButton mnemonicParsing="false" visible="false" prefHeight="38.0" prefWidth="130.0" style="-fx-background-color: transparent;" styleClass="controlBtn" text="AJUDA" textAlignment="CENTER" textFill="WHITE">
 									<font>
 										<Font size="15.0" />
 									</font>
